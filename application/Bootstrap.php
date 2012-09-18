@@ -10,6 +10,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headMeta()->setHttpEquiv('Content-Type', 'text/html;charset=utf-8');
         set_include_path('../library/'.get_include_path());
 
+        $view->getHelper('BaseUrl')->setBaseUrl('http://cdtproject.local');
+
         require_once 'Zend/Loader/Autoloader.php';
 
         $loader = Zend_Loader_Autoloader::getInstance();

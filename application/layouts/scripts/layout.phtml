@@ -3,22 +3,23 @@
 <html>
 	<head>
         <?php echo $this->headMeta(); ?>
+        <base href="<?php echo $this->baseUrl();?>" />
 		<meta name="author" content="Labredes" >
 		<meta name="description" content="CDT PROJECT" >
 		<meta name="keywords" content="CDT PROJECT" >
 		<title>CDT Project</title>
 		<link rel="shortcut icon" href="imagem/favicon.ico" />
         <!-- atualizar depois -->
-		<script type="text/javascript" src="/js/libs/jquery-1.6.2.min.js" ></script>
+		<script type="text/javascript" src="js/libs/jquery-1.6.2.min.js" ></script>
 
 	</head>
 <body class="body_main_content" >
 	<!--	CONTEUDO DO TOPO	-->
 	<div id="topoFixo">
-		<? echo $this->render('/includes/top.phtml'); ?>
+		<? echo $this->render('includes/top.phtml'); ?>
 	</div>
 	<!--	CONTEUDO DO CONTEUDO	-->
 		<?php echo $this->layout()->content ?>				
 	<!--	CONTEUDO DO FOOTER		-->
-	 <? echo $this->render('/includes/footer.phtml'); ?>
+	 <? echo $this->render('includes/footer.phtml'); ?>
 </body></html>
