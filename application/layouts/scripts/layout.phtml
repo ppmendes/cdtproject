@@ -8,6 +8,7 @@
 		<meta name="description" content="CDT PROJECT" >
 		<meta name="keywords" content="CDT PROJECT" >
 		<title>CDT Project</title>
+        <?php echo $this->headLink()->appendStylesheet('css/global.css') ?>
 		<link rel="shortcut icon" href="imagem/favicon.ico" />
         <!-- atualizar depois -->
 		<script type="text/javascript" src="js/libs/jquery-1.6.2.min.js" ></script>
@@ -16,10 +17,10 @@
 <body class="body_main_content" >
 	<!--	CONTEUDO DO TOPO	-->
 	<div id="topoFixo">
-		<? echo $this->render('includes/top.phtml'); ?>
+		<?php echo $this->render('includes/top.phtml'); ?>
 	</div>
 	<!--	CONTEUDO DO CONTEUDO	-->
 		<?php echo $this->layout()->content ?>				
 	<!--	CONTEUDO DO FOOTER		-->
-	 <? echo $this->render('includes/footer.phtml'); ?>
+	 <?php echo $this->render('includes/footer.phtml'); ?>
 </body></html>
