@@ -5,35 +5,38 @@ class Application_Form_Projetos extends Zend_Form
 
     public function init()
     {
+        $this->setIsArray('true');
+        $this->setElementsBelongTo('projetos');
+
         // Setar metodo
         $this->setMethod('post');
 
         //Nome do projeto input type text
-        $this->addElement('text', 'projeto_nome', array(
+        $this->addElement('text', 'nome', array(
             'label'      => 'Nome do projeto:',
-            'required'   => true            
+            'required'   => true,
         ));
 
         //Apelido do projeto input type text
-        $this->addElement('text', 'projeto_apelido', array(
+        $this->addElement('text', 'apelido', array(
             'label'      => 'Apelido do Projeto:',
             'required'   => true
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('text', 'projeto_coordenador_tecnico', array(
+        $this->addElement('text', 'coordenador_tecnico', array(
             'label'      => 'Coordenador Técnico:',
             'required'   => true
         ));
 
         //Gerência input type text
-        $this->addElement('text', 'projeto_gerencia', array(
+        $this->addElement('text', 'gerencia', array(
             'label'      => 'Gerência:',
             'required'   => true
         ));
 
         //Gerente input type text
-        $this->addElement('text', 'projeto_gerente', array(
+        $this->addElement('text', 'gerente', array(
             'label'      => 'Gerente do Projeto:',
             'required'   => true
         ));
