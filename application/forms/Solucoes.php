@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Solucoes extends Zend_Form
+class Application_Form_Projetos extends Zend_Form
 {
 
     public function init()
