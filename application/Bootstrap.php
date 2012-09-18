@@ -6,13 +6,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         $this->bootstrap('view');
         $view = $this->getResource('view');
-        $view->doctype('XHTML1_STRICT');
-	//$resource = $this->getPluginResource('db');
-	//$db = $resource->getDbAdapter();
-	//$sql = "SHOW tables";
-	//echo "<pre>";
-	//print_r($db->fetchAll($sql));
-	//echo "</pre>";
+        $view->doctype('HTML5');
+        $view->headMeta()->setHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+        set_include_path('../library/'.get_include_path());
+
+        require_once 'Zend/Loader/Autoloader.php';
+
+        $loader = Zend_Loader_Autoloader::getInstance();
+
+        $loader->registerNamespace('Application_');
     }
 
 }
