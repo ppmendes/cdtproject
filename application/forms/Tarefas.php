@@ -82,6 +82,10 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true
         ));
 
+        $this->addElement('checkbox', 'marco_arquivo', array(
+            'label'      => 'Marco:',
+            'required'   => true
+        ));
         //adicionar fase de desenvolvimento
         //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
         //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
