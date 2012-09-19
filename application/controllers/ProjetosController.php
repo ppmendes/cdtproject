@@ -17,7 +17,6 @@ class ProjetosController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_Projetos();
 
-        echo "&nbsp;";
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 echo "<pre>";

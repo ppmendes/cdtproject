@@ -1,6 +1,7 @@
 .zend_form{
     width: 1000px;
     margin: 10px auto;
+    overflow: hidden;
 }
 
 .zend_form dt{
