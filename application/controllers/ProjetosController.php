@@ -14,14 +14,19 @@ class ProjetosController extends Zend_Controller_Action
     }
 
     public function addAction(){
+        $request = $this->getRequest();
         $form = new Application_Form_Projetos();
-        $this->view->form = $form;
 
+        echo "&nbsp;";
         if($this->getRequest()->isPost()){
-            echo "<pre>";
-            print_r($form->getValues());
-            echo "</pre>";
+            if($form->isValid($request->getPost())){
+                echo "<pre>";
+                print_r($form->getValues());
+                echo "</pre>";
+            }
         }
+
+        $this->view->form = $form;
 
 
     }

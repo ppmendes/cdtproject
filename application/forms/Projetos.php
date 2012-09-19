@@ -40,8 +40,35 @@ class Application_Form_Projetos extends Zend_Form
             'label'      => 'Gerente do Projeto:',
             'required'   => true
         ));
+		
+		//adicionar fase de desenvolvimento
+		//$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
+        //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
 
-        /* Parte feita por Laura */
+        //$fasesDesenvolvimentoArray = array();
+        //foreach ($todasFasesDesenvolvimento AS $row){
+        //    $fasesDesenvolvimentoArray[$row->id] = $row->nome;
+        //}
+
+        $array_tipo_projeto = array(
+            1 => 'Apoio a Graduação',
+            2 => 'Apoio a Treinamentos, Workshop\'s e Eventos',
+            3 => 'Consultorias Técnicas',
+            4 => 'Cursos de capacitação técnica e científica',
+            5 => 'Depósitos de Patentes',
+            6 => 'Pesquisa, Desenvolvimento &amp; Inovação',
+            7 => 'Programas de Desenvolvimento Tecnológico e Empreendedorismo',
+            8 => 'Projetos de Laboratórios',
+            9 => 'Projetos de Departamentos',
+            10 => 'Serviços Tecnológicos',
+            11 => 'Programas de Apoio Administrativo',
+        );
+		
+		$this->addElement('select', 'projeto_tipo_id', array(
+            'label'      => 'Tipo de Projeto:',
+			'multiOptions'  => $array_tipo_projeto,
+            'required'   => true
+        ));
 
         /* Parte feita por Daniel */
 

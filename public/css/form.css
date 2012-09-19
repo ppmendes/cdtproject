@@ -19,7 +19,12 @@
     margin-left: 10px;
 }
 
-.zend_form input{
+.zend_form input, .zend_form select,
+.zend_form textarea{
     width: 300px;
+}
+
+.zend_form textarea{
+    height: 150px;
 }
 
