@@ -40,27 +40,66 @@ class Application_Form_Projetos extends Zend_Form
             'label'      => 'Gerente do Projeto:',
             'required'   => true
         ));
-		
-		//adicionar fase de desenvolvimento
-		//$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
-        //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
 
-        //$fasesDesenvolvimentoArray = array();
-        //foreach ($todasFasesDesenvolvimento AS $row){
-        //    $fasesDesenvolvimentoArray[$row->id] = $row->nome;
-        //}
-		
-		//$this->addElement('select', 'fases_desenvolvimentos_id', array(
-        //    'label'      => 'Titulo Solucao Tecnologica:',
-		//	'multiOptions'  => $fasesDesenvolvimentoArray,
-        //    'required'   => true
-        //
-        //));
+        /* Parte feita por Laura */
+
+        /* Parte feita por Daniel */
+
+        //Orçamento previsto input type text
+        $this->addElement('text', 'orcamento', array(
+            'label'      => 'Orçamento Previsto:',
+            'required'   => true
+        ));
+
+        //Contrapartida input input type text
+        $this->addElement('text', 'contrapartida', array(
+            'label'      => 'Contrapartida:',
+            'required'   => true
+        ));
+
+        //Descrição da Contrapartida (TAP)
+        $this->addElement('text', 'contrapartida_descricao', array(
+            'label'      => 'Descrição da Contrapartida:',
+            'required'   => true
+        ));
+
+        //Valor Total do projeto (vai ser Orçamento mais contrapartida)
+        $this->addElement('text', 'valor_total_projeto', array(
+            'label'      => 'Valor Total:',
+            'required'   => true
+        ));
+
+        //CCO do orçamento input type text  editavel (não tem regra)
+        $this->addElement('text', 'orcamento_CCO', array(
+            'label'      => 'CCO do orçamento (% CDT):',
+            'required'   => true
+        ));
+
+        /* parte feito por Eduardo */
+
+        //Descrição da CCO input type textarea
+        $this->addElement('textarea', 'descricao_CCO', array(
+                    'label'      => 'Descrição da CCO:',
+                    'required'   => true
+        ));
+
+        //Horas trabalhadas input type text
+        $this->addElement('text', 'horas_trabalhadas', array(
+                    'label'      => 'Horas trabalhadas:',
+                    'required'   => false
+                ));
+
+        //Horas Programadas input type tex(horas agendadas caso de uso)
+        $this->addElement('text', 'horas_programadas', array(
+                    'label'      => 'Horas Programadas:',
+                    'required'   => false
+                ));
+
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => 'Inserir Solucao',
+            'label'    => 'Inserir Projeto',
         ));
 
     }
