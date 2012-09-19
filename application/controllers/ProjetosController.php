@@ -13,7 +13,7 @@ class ProjetosController extends Zend_Controller_Action
 	
     }
 
-    public function addAction(){
+    public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Projetos();
 
