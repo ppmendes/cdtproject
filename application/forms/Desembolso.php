@@ -56,7 +56,7 @@ class Application_Form_Desembolso extends Zend_Form
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => 'Inserir Beneficiário',
+            'label'    => 'Inserir Desembolso',
         ));
 
     }
