@@ -17,6 +17,12 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => true,
         ));
 
+        //Sigla da instituiçãp input type text
+        $this->addElement('text', 'siglas', array(
+            'label'      => 'Sigla da instituição:',
+            'required'   => true,
+        ));
+
         //CNPJ input type text
         $this->addElement('text', 'cnpj', array(
             'label'      => 'CNPJ:',
