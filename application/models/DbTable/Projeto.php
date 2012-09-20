@@ -45,7 +45,7 @@ class Application_Model_DbTable_Projeto extends Zend_Db_Table_Abstract
             'refColumns'        => 'prioridade_id'
         ),
         'Application_Model_DbTable_ProjetoTipo' => array(
-            'columns'           => 'projeto_tipo_id',
+            'columns'           => 'projeto_tipo_id', //
             'refTableClass'     => 'Application_Model_DbTable_ProjetoTipo',
             'refColumns'        => 'projeto_tipo_id'
         ),
