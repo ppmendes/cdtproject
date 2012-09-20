@@ -32,7 +32,7 @@ class Application_Model_DbTable_Projeto extends Zend_Db_Table_Abstract
         'Application_Model_DbTable_Instituicao' => array(
             'columns'           => 'gerencia',
             'refTableClass'     => 'Application_Model_DbTable_Instituicao',
-            'refColumns'        => 'id'
+            'refColumns'        => 'instituicao_id'
         ),
         'Application_Model_DbTable_ModoContratacao' => array(
             'columns'           => 'modo_contratacao_id',
