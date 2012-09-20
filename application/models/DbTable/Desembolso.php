@@ -1,9 +1,9 @@
 <?php
 
-class Application_Model_DbTable_Desembolco extends Zend_Db_Table_Abstract
+class Application_Model_DbTable_Desembolso extends Zend_Db_Table_Abstract
 {
 
-    protected $_name = 'desembolco';
+    protected $_name = 'desembolso';
     protected $_referenceMap    = array(
         'Application_Model_DbTable_EstadoProjeto' => array(
             'columns'           => 'estado_projeto_id',
