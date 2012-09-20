@@ -2,10 +2,7 @@
 
 class Application_Model_Usuario
 {
-    /**
-     * Busca a Solução e seus respectivos relacionamentos pelo ID da solução
-     * Retorna um array com a Solução
-     */
+
     public function find($id){
         //DB TABLE
         $table = new Application_Model_DbTable_Usuario();
@@ -23,7 +20,6 @@ class Application_Model_Usuario
 
     }
 
-    //recebe o id dentro de soluções
     public function update($usuario)
     {
 
