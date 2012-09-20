@@ -10,7 +10,12 @@ class ProjetosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-	
+	    $projetoModel = new Application_Model_Projeto();
+        $projetoModel = $projetoModel->find(1);
+        $prioridade = $projetoModel->findParentApplication_Model_DbTable_Prioridade();
+        echo "<pre>";
+
+        echo "</pre>";
     }
 
     public function adicionarAction(){
