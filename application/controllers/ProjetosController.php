@@ -18,15 +18,19 @@ class ProjetosController extends Zend_Controller_Action
         $instituicao = $projetoModel->findParentApplication_Model_DbTable_Instituicao();
         $estado_projeto = $projetoModel->findParentApplication_Model_DbTable_EstadoProjeto();
         $categoriaFinanciador = $projetoModel->findParentApplication_Model_DbTable_CategoriaFinanciador();
-        echo "<pre>";
+        $coordenador = $projetoModel->findParentApplication_Model_DbTable_UsuarioByCoordenador();
+        $gerente = $projetoModel->findParentApplication_Model_DbTable_UsuarioByGerente();
+        $criador = $projetoModel->findParentApplication_Model_DbTable_UsuarioByCriador();
 
-        echo "</pre>";
         $this->view->prioridade = $prioridade;
         $this->view->modoContratacao = $modoContratacao;
         $this->view->projetoTipo = $projetoTipo;
         $this->view->instituicao = $instituicao;
         $this->view->estado_projeto = $estado_projeto;
         $this->view->categoriaFinanciador = $categoriaFinanciador;
+        $this->view->coordenador = $coordenador;
+        $this->view->gerente = $gerente;
+        $this->view->criador = $criador;
 
     }
 
