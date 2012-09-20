@@ -6,6 +6,7 @@ class Application_Form_Projetos extends Zend_Form
     public function init()
     {
         $this->setIsArray('true');
+        $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('projetos');
 
         // Setar metodo
@@ -50,6 +51,12 @@ class Application_Form_Projetos extends Zend_Form
         //    $fasesDesenvolvimentoArray[$row->id] = $row->nome;
         //}
 
+        //instituição
+        $this->addElement('text', 'instituicao', array(
+            'label'      => 'Instituição:',
+            'required'   => true
+        ));
+
         $array_tipo_projeto = array(
             1 => 'Apoio a Graduação',
             2 => 'Apoio a Treinamentos, Workshop\'s e Eventos',
@@ -69,6 +76,67 @@ class Application_Form_Projetos extends Zend_Form
 			'multiOptions'  => $array_tipo_projeto,
             'required'   => true
         ));
+
+        //modo de contratação
+        $array_modo_contratacao = array(
+            1 => 'Contratos',
+            2 => 'Convênios',
+            3 => 'Consultorias Técnicas',
+            4 => 'Termos de Cooperação',
+            5 => 'Projetos Internos',
+            6 => 'Programação de Apoio Administrativo',
+        );
+
+        $this->addElement('select', 'modo_contratacao', array(
+            'label'      => 'Modo de Contratação:',
+            'multiOptions'  => $array_modo_contratacao,
+            'required'   => true
+        ));
+
+        //Categoria de Financiador (publico, privado, rec. prop)
+        $array_categoria_financiadora = array(
+            1 => 'Público',
+            2 => 'Privado',
+            3 => 'Recursos Próprios',
+        );
+
+        $this->addElement('select', 'categoria_financiadora', array(
+            'label'      => 'Categoria de Financiador:',
+            'multiOptions'  => $array_categoria_financiadora,
+            'required'   => true
+        ));
+
+        //taxa fai
+        $this->addElement('text', 'taxa_fai', array(
+            'label'      => 'Taxa FAI:',
+            'required'   => true
+        ));
+
+        //justificativa da taxa fai
+        $this->addElement('text', 'justificativa_fai', array(
+            'label'      => 'Justificativa da Taxa FAI:',
+            'required'   => true
+        ));
+
+        //Data de Início (Atual)
+        $this->addElement('text', 'data_inicio', array(
+            'label'      => 'Data de Início:',
+            'required'   => true
+        ));
+
+        //Data de Final Prevista
+        $this->addElement('text', 'data_final_prevista', array(
+            'label'      => 'Data Final Prevista:',
+            'required'   => true
+        ));
+
+        //Data de Final Real
+        $this->addElement('text', 'data_final_real', array(
+            'label'      => 'Data Final Real:',
+            'required'   => true
+        ));
+
+
 
         /* Parte feita por Daniel */
 
@@ -122,12 +190,18 @@ class Application_Form_Projetos extends Zend_Form
                     'required'   => false
                 ));
 
+        //teste upload
+        $this->addElement('file', 'teste_upload', array(
+            'label'      => 'Teste Upload:',
+            'required'   => true
+        ));
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Projeto',
         ));
+
 
     }
 }
