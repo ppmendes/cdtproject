@@ -77,6 +77,12 @@ class Application_Form_Beneficiarios extends Zend_Form
             'required'   => true,
         ));
 
+        //Área do conhecimento input type text
+        $this->addElement('text', 'area_conhecimento', array(
+            'label'      => 'Área do conhecimento:',
+            'required'   => true,
+        ));
+
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
