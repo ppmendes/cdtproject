@@ -90,7 +90,7 @@ class Application_Form_Instituicoes extends Zend_Form
         ));
 
         //Responsável pela instituição input type text
-        $this->addElement('text', 'denominacao', array(
+        $this->addElement('text', 'responsavel', array(
             'label'      => 'Responsável pela instituição:',
             'required'   => true
         ));
@@ -105,6 +105,12 @@ class Application_Form_Instituicoes extends Zend_Form
         $this->addElement('text', 'descricao', array(
             'label'      => 'Descrição:',
             'required'   => false
+        ));
+
+        //Denominação input type text
+        $this->addElement('text', 'denominacao', array(
+            'label'      => 'Denominação:',
+            'required'   => true
         ));
 
         // Add the submit button
