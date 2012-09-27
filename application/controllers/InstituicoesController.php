@@ -13,8 +13,6 @@ class InstituicoesController extends Zend_Controller_Action
         $instituicao = new Application_Model_Instituicao();
         $instituicao = $instituicao->fetchAll();
 
-
-
         /*$prioridade = $projetoModel->findParentApplication_Model_DbTable_Prioridade();
         $modoContratacao = $projetoModel->findParentApplication_Model_DbTable_ModoContratacao();
         $projetoTipo = $projetoModel->findParentApplication_Model_DbTable_ProjetoTipo();
@@ -35,6 +33,7 @@ class InstituicoesController extends Zend_Controller_Action
         $this->view->gerente = $gerente;
         $this->view->criador = $criador;    */
         $this->view->instituicao = $instituicao->toArray();
+
     }
 
     public function adicionarAction(){
