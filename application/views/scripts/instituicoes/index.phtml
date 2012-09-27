@@ -1,1 +1,62 @@
-instituicoes
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable();
+    });
+</script>
+
+<table id='table_id' border='1'>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>siglas</th>
+        <th>cnpj</th>
+        <th>responsavel</th>
+        <th>telefone</th>
+        <th>e-mail</th>
+        <th>telefone 2</th>
+        <th>fax</th>
+        <th>endereço</th>
+        <th>complemento</th>
+        <th>Pais Id</th>
+        <th>Estado Id</th>
+        <th>Cidade Id</th>
+        <th>CEP</th>
+        <th>website</th>
+        <th>Tipo</th>
+        <th>descriçao</th>
+        <th>Pai Id</th>
+        <th>denominacao</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    //$arrayPais = $this->pais->toArray();
+    foreach($this->instituicao as $row)
+    {
+        //$row = $row->toArray();
+        echo "<tr id='".$row['instituicao_id']."'>";
+        echo "<td>" .$row['nome']. "</td>";
+        echo "<td>" .$row['siglas']. "</td>";
+        echo "<td>" .$row['cnpj']. "</td>";
+        echo "<td>" .$row['responsavel']. "</td>";
+        echo "<td>" .$row['telefone']. "</td>";
+        echo "<td>" .$row['e_mail']. "</td>";
+        echo "<td>" .$row['telefone2']. "</td>";
+        echo "<td>" .$row['fax']. "</td>";
+        echo "<td>" .$row['endereco']. "</td>";
+        echo "<td>" .$row['complemento']. "</td>";
+        echo "<td>" .$row['pais_id']. "</td>";
+        echo "<td>" .$row['estados_id']. "</td>";
+        echo "<td>" .$row['cidade_id']. "</td>";
+        echo "<td>" .$row['cep']. "</td>";
+        echo "<td>" .$row['website']. "</td>";
+        echo "<td>" .$row['tipo']. "</td>";
+        echo "<td>" .$row['descricao']. "</td>";
+        echo "<td>" .$row['pai_id']. "</td>";
+        echo "<td>" .$row['denominacao_id']. "</td>";
+    }
+
+    echo "</tr>";
+    echo "</tbody></table>";
+?>
