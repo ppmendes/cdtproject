@@ -14,10 +14,10 @@ class InstituicoesController extends Zend_Controller_Action
 
         $select = $db->select()
             ->from(array('i' => 'instituicao'))
-            ->join(array('p' => 'pais'), 'i.pais_id = p.pais_id')
-            ->join(array('e' => 'estados'), 'i.estados_id = e.estados_id')
-            ->join(array('c' => 'cidade'), 'i.cidade_id = c.cidade_id')
-            ->join(array('d' => 'denominacao'), 'i.denominacao_id = d.denominacao_id');
+            ->joinLeft(array('p' => 'pais'), 'i.pais_id = p.pais_id')
+            ->joinLeft(array('e' => 'estados'), 'i.estados_id = e.estados_id')
+            ->joinLeft(array('c' => 'cidade'), 'i.cidade_id = c.cidade_id')
+            ->joinLeft(array('d' => 'denominacao'), 'i.denominacao_id = d.denominacao_id');
 
         $stmt = $select->query();
 
