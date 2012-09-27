@@ -10,21 +10,8 @@ class InstituicoesController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-
-        $select = $db->select()
-            ->from(array('i' => 'instituicao'))
-            ->joinLeft(array('p' => 'pais'), 'i.pais_id = p.pais_id')
-            ->joinLeft(array('e' => 'estados'), 'i.estados_id = e.estados_id')
-            ->joinLeft(array('c' => 'cidade'), 'i.cidade_id = c.cidade_id')
-            ->joinLeft(array('d' => 'denominacao'), 'i.denominacao_id = d.denominacao_id');
-
-        $stmt = $select->query();
-
-        $result = $stmt->fetchAll();
-
-        $this->view->instituicao = $result;
-
+        $intituicaoModel = new Application_Model_Instituicao();
+        $this->view->instituicao = $intituicaoModel->selectAll();
     }
 
     public function adicionarAction(){
