@@ -47,15 +47,15 @@
         <th>fax</th>
         <th>endereço</th>
         <th>complemento</th>
-        <th>Pais Id</th>
-        <th>Estado Id</th>
-        <th>Cidade Id</th>
+        <th>País</th>
+        <th>Estado</th>
+        <th>Cidade</th>
         <th>CEP</th>
         <th>website</th>
         <th>Tipo</th>
         <th>descriçao</th>
         <th>Pai Id</th>
-        <th>denominacao</th>
+        <th>Denominacao</th>
     </tr>
     </thead>
     <tbody>
@@ -76,15 +76,15 @@
         echo "<td>" .$row['fax']. "</td>";
         echo "<td>" .$row['endereco']. "</td>";
         echo "<td>" .$row['complemento']. "</td>";
-        echo "<td>" .$row['pais_id']. "</td>";
-        echo "<td>" .$row['estados_id']. "</td>";
-        echo "<td>" .$row['cidade_id']. "</td>";
+        echo "<td>" .$row['pais_nome']. "</td>";
+        echo "<td>" .$row['uf']. "</td>";
+        echo "<td>" .$row['cidade_nome']. "</td>";
         echo "<td>" .$row['cep']. "</td>";
         echo "<td>" .$row['website']. "</td>";
         echo "<td>" .$row['tipo']. "</td>";
         echo "<td>" .$row['descricao']. "</td>";
         echo "<td>" .$row['pai_id']. "</td>";
-        echo "<td>" .$row['denominacao_id']. "</td>";
+        echo "<td>" .$row['denominacao_nome']. "</td>";
     }
 
     echo "</tr>";

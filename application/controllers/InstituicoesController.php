@@ -10,29 +10,20 @@ class InstituicoesController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $instituicao = new Application_Model_Instituicao();
-        $instituicao = $instituicao->fetchAll();
+        $db = Zend_Db_Table::getDefaultAdapter();
 
-        /*$prioridade = $projetoModel->findParentApplication_Model_DbTable_Prioridade();
-        $modoContratacao = $projetoModel->findParentApplication_Model_DbTable_ModoContratacao();
-        $projetoTipo = $projetoModel->findParentApplication_Model_DbTable_ProjetoTipo();
-        $instituicao = $projetoModel->findParentApplication_Model_DbTable_Instituicao();
-        $estado_projeto = $projetoModel->findParentApplication_Model_DbTable_EstadoProjeto();
-        $categoriaFinanciador = $projetoModel->findParentApplication_Model_DbTable_CategoriaFinanciador();
-        $coordenador = $projetoModel->findParentApplication_Model_DbTable_UsuarioByCoordenador();
-        $gerente = $projetoModel->findParentApplication_Model_DbTable_UsuarioByGerente();
-        $criador = $projetoModel->findParentApplication_Model_DbTable_UsuarioByCriador();
+        $select = $db->select()
+            ->from(array('i' => 'instituicao'))
+            ->join(array('p' => 'pais'), 'i.pais_id = p.pais_id')
+            ->join(array('e' => 'estados'), 'i.estados_id = e.estados_id')
+            ->join(array('c' => 'cidade'), 'i.cidade_id = c.cidade_id')
+            ->join(array('d' => 'denominacao'), 'i.denominacao_id = d.denominacao_id');
 
-        $this->view->prioridade = $prioridade;
-        $this->view->modoContratacao = $modoContratacao;
-        $this->view->projetoTipo = $projetoTipo;
-        $this->view->instituicao = $instituicao;
-        $this->view->estado_projeto = $estado_projeto;
-        $this->view->categoriaFinanciador = $categoriaFinanciador;
-        $this->view->coordenador = $coordenador;
-        $this->view->gerente = $gerente;
-        $this->view->criador = $criador;    */
-        $this->view->instituicao = $instituicao->toArray();
+        $stmt = $select->query();
+
+        $result = $stmt->fetchAll();
+
+        $this->view->instituicao = $result;
 
     }
 
