@@ -28,4 +28,11 @@ class Application_Model_Instituicao
     {
 
     }
+
+    public function fetchAll()
+    {
+        $table = new Application_Model_DbTable_Instituicao;
+        $instituicao = $table->fetchAll();
+        return $instituicao;
+    }
 }
