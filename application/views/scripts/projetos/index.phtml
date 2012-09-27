@@ -1,35 +1,98 @@
-<?php
-    print_r($this->prioridade->toArray());
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable();
+    });
+</script>
 
-    echo "<br/><br/><br/><br/><br/><br/>";
+<table id='table_id' border='1'>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Apelido</th>
+        <th>Website</th>
+        <th>Data de início</th>
+        <th>Data final</th>
+        <th>Data final real</th>
+        <th>Estado do projeto</th>
+        <th>Porcentagem completa</th>
+        <th>Cor identificadora</th>
+        <th>Descrição</th>
+        <th>Orçamento</th>
+        <th>Contrapartida</th>
+        <th>Descrição da contrapartida</th>
+        <th>Orçamento atual</th>
+        <th>Criador</th>
+        <th>Prioridade</th>
+        <th>Taxa FAI</th>
+        <th>Justificativa</th>
+        <th>Coordenador técnico</th>
+        <th>Gerência</th>
+        <th>Gerente</th>
+        <th>Orçamento CCO</th>
+        <th>Descrição CCO</th>
+        <th>Horas trabalhadas</th>
+        <th>Horas agendadas</th>
+        <th>Prazo</th>
+        <th>Resultados esperados</th>
+        <th>Escopo</th>
+        <th>Não escopo</th>
+        <th>Partes interessadas</th>
+        <th>Ligações</th>
+        <th>Equipe</th>
+        <th>Premissas</th>
+        <th>Restrições</th>
+        <th>Metas</th>
+        <th>Tipo do projeto</th>
+        <th>Categoria de financiador</th>
+        <th>Modo de contratação</th>
+    </tr>
+    </thead>
+    <tbody>
 
-    print_r($this->modoContratacao->toArray());
-
-    echo "<br/><br/><br/><br/><br/><br/>";
-
-    print_r($this->projetoTipo->toArray());
-
-    echo "<br/><br/><br/><br/><br/><br/>";
-
-    print_r($this->instituicao->toArray());
-
-    echo "<br/><br/><br/><br/><br/><br/>";
-
-//    print_r($this->estadoProjeto->toArray());
-//
-//    echo "<br/><br/><br/><br/><br/><br/>";
-
-    print_r($this->categoriaFinanciador->toArray());
-
-    echo "<br/><br/><br/><br/><br/><br/>";
-
-    print_r($this->coordenador->toArray());
-
-    echo "<br/><br/><br/><br/><br/><br/>";
-
-    print_r($this->gerente->toArray());
-
-    echo "<br/><br/><br/><br/><br/><br/>";
-
-    print_r($this->criador->toArray());
+    <?php
+    foreach($this->projetos as $row)
+    {
+    //$row = $row->toArray();
+    echo "<tr id='".$row['projeto_id']."'>";
+    echo "<td>" . $row['nome'] . "</td>";
+    echo "<td>" . $row['apelido'] . "</td>";
+    echo "<td >" . $row['website'] . "</td>";
+    echo "<td >" . $row['data_inicio'] . "</td>";
+    echo "<td >" . $row['data_final'] . "</td>";
+    echo "<td >" . $row['data_final_real'] . "</td>";
+    echo "<td >" . $row['estado_projeto_id'] . "</td>";
+    echo "<td >" . $row['percentagem_completo'] . "</td>";
+    echo "<td >" . $row['color_identificador'] . "</td>";
+    echo "<td >" . $row['descricao'] . "</td>";
+    echo "<td >" . $row['orcamento'] . "</td>";
+    echo "<td >" . $row['contrapartida'] . "</td>";
+    echo "<td >" . $row['contrapartida_descricao'] . "</td>";
+    echo "<td >" . $row['orcamento_atual'] . "</td>";
+    echo "<td >" . $row['criador'] . "</td>";
+    echo "<td >" . $row['prioridade_id'] . "</td>";
+    echo "<td >" . $row['taxa_fai'] . "</td>";
+    echo "<td >" . $row['justificacao'] . "</td>";
+    echo "<td >" . $row['coordenador_tecnico'] . "</td>";
+    echo "<td >" . $row['gerencia'] . "</td>";
+    echo "<td >" . $row['gerente'] . "</td>";
+    echo "<td >" . $row['orcamento_CCO'] . "</td>";
+    echo "<td >" . $row['descricao_CCO'] . "</td>";
+    echo "<td >" . $row['horas_trabalhadas'] . "</td>";
+    echo "<td >" . $row['horas_agendadas'] . "</td>";
+    echo "<td >" . $row['prazo'] . "</td>";
+    echo "<td >" . $row['resultados_esperados'] . "</td>";
+    echo "<td >" . $row['escopo'] . "</td>";
+    echo "<td >" . $row['nao_escopo'] . "</td>";
+    echo "<td >" . $row['partes_interessadas'] . "</td>";
+    echo "<td >" . $row['ligacoes'] . "</td>";
+    echo "<td >" . $row['equipe'] . "</td>";
+    echo "<td >" . $row['premissas'] . "</td>";
+    echo "<td >" . $row['restricoes'] . "</td>";
+    echo "<td >" . $row['metas'] . "</td>";
+    echo "<td >" . $row['projeto_tipo_id'] . "</td>";
+    echo "<td >" . $row['categoria_financiador_id'] . "</td>";
+    echo "<td >" . $row['modo_contratacao_id'] . "</td>";
+    echo "</tr>";
+    }
+    echo "</tbody></table>";
 ?>
