@@ -12,7 +12,7 @@ class Application_Model_DbTable_Empenho extends Zend_Db_Table_Abstract
         ),
         'Application_Model_DbTable_Projeto' => array(
             'columns'           => 'projeto_id',
-            'refTableClass'     => 'beneficiario_id',
+            'refTableClass'     => 'Application_Model_DbTable_Projeto',
             'refColumns'        => 'projeto_id'
         ),
         'Application_Model_DbTable_Tarefa' => array(
