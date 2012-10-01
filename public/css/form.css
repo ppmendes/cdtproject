@@ -33,3 +33,9 @@
     height: 150px;
 }
 
+.zend_form select:disabled{
+    color: #545454;
+}
+
+
+
