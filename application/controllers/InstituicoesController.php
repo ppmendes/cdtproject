@@ -10,8 +10,8 @@ class InstituicoesController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $intituicaoModel = new Application_Model_Instituicao();
-        $this->view->instituicao = $intituicaoModel->selectAll();
+        $instituicaoModel = new Application_Model_Instituicao();
+        $this->view->instituicao = $instituicaoModel->selectAll();
     }
 
     public function adicionarAction(){

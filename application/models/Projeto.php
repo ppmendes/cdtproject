@@ -24,11 +24,21 @@ class Application_Model_Projeto
 
     }
 
-    public function fetchAll()
+    public function selectAll()
     {
-        $table = new Application_Model_DbTable_Projeto;
-        $projeto = $table->fetchAll();
-        return $projeto;
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()
+            ->from(array('p' => 'projeto'))
+            ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
+            ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
+            ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
+            ->joinLeft(array('ga' => 'instituicao'), 'p.gerencia = ga.instituicao_id',array('ga.instituicao_id'=>'ga.instituicao_id','ga.nome'=>'ga.nome'));
+        $stmt = $select->query();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
     }
 }
 

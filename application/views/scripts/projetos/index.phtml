@@ -42,6 +42,7 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>Instituição</th>
         <th>Nome</th>
         <th>Apelido</th>
         <th>Data de início</th>
@@ -58,18 +59,19 @@
     <?php
     foreach($this->projetos as $row)
     {
-    //$row = $row->toArray();
+    //print_r($row);
     echo "<tr id='".$row['projeto_id']."'>";
-    echo "<td>" . $row['projeto_id'] . "</td>";
-    echo "<td>" . $row['nome'] . "</td>";
-    echo "<td>" . $row['apelido'] . "</td>";
-    echo "<td >" . $row['data_inicio'] . "</td>";
-    echo "<td >" . $row['data_final'] . "</td>";
-    echo "<td >" . $row['data_final_real'] . "</td>";
-    echo "<td >" . $row['estado_projeto_id'] . "</td>";
-    echo "<td >" . $row['percentagem_completo'] . "</td>";
-    echo "<td >" . $row['prioridade_id'] . "</td>";
-    echo "<td >" . $row['coordenador_tecnico'] . "</td>";
+    echo "<td>" .   $row['projeto_id'] . "</td>";
+    echo "<td>" .   $row['ga.nome'] . "</td>";
+    echo "<td>" .   $row['nome'] . "</td>";
+    echo "<td>" .   $row['apelido'] . "</td>";
+    echo "<td >" .  $row['data_inicio'] . "</td>";
+    echo "<td >" .  $row['data_final'] . "</td>";
+    echo "<td >" .  $row['data_final_real'] . "</td>";
+    echo "<td >" .  $row['nome_estado'] . "</td>";
+    echo "<td >" .  $row['percentagem_completo'] . "</td>";
+    echo "<td >" .  $row['nome_prioridade'] . "</td>";
+    echo "<td >" .  $row['ct.sobrenome'] . "</td>";
     echo "</tr>";
     }
     echo "</tbody></table>";

@@ -11,8 +11,8 @@ class ProjetosController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $projetoModel = new Application_Model_Projeto();
-        $projetoModel = $projetoModel->fetchAll();
-        /*$prioridade = $projetoModel->findParentApplication_Model_DbTable_Prioridade();
+        /*$projetoModel = $projetoModel->fetchAll();
+        $prioridade = $projetoModel->findParentApplication_Model_DbTable_Prioridade();
         $modoContratacao = $projetoModel->findParentApplication_Model_DbTable_ModoContratacao();
         $projetoTipo = $projetoModel->findParentApplication_Model_DbTable_ProjetoTipo();
         $instituicao = $projetoModel->findParentApplication_Model_DbTable_Instituicao();
@@ -31,7 +31,7 @@ class ProjetosController extends Zend_Controller_Action
         $this->view->coordenador = $coordenador;
         $this->view->gerente = $gerente;
         $this->view->criador = $criador;    */
-        $this->view->projetos = $projetoModel->toArray();
+        $this->view->projetos = $projetoModel->selectAll();
 
     }
 
