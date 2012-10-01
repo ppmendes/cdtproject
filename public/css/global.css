@@ -3,6 +3,11 @@
     padding: 0;
 }
 
+body{
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 12px;
+}
+
 #topo{
     background-color: #024C74;
 }
