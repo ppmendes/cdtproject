@@ -11,26 +11,6 @@ class ProjetosController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $projetoModel = new Application_Model_Projeto();
-        /*$projetoModel = $projetoModel->fetchAll();
-        $prioridade = $projetoModel->findParentApplication_Model_DbTable_Prioridade();
-        $modoContratacao = $projetoModel->findParentApplication_Model_DbTable_ModoContratacao();
-        $projetoTipo = $projetoModel->findParentApplication_Model_DbTable_ProjetoTipo();
-        $instituicao = $projetoModel->findParentApplication_Model_DbTable_Instituicao();
-        $estado_projeto = $projetoModel->findParentApplication_Model_DbTable_EstadoProjeto();
-        $categoriaFinanciador = $projetoModel->findParentApplication_Model_DbTable_CategoriaFinanciador();
-        $coordenador = $projetoModel->findParentApplication_Model_DbTable_UsuarioByCoordenador();
-        $gerente = $projetoModel->findParentApplication_Model_DbTable_UsuarioByGerente();
-        $criador = $projetoModel->findParentApplication_Model_DbTable_UsuarioByCriador();
-
-        $this->view->prioridade = $prioridade;
-        $this->view->modoContratacao = $modoContratacao;
-        $this->view->projetoTipo = $projetoTipo;
-        $this->view->instituicao = $instituicao;
-        $this->view->estado_projeto = $estado_projeto;
-        $this->view->categoriaFinanciador = $categoriaFinanciador;
-        $this->view->coordenador = $coordenador;
-        $this->view->gerente = $gerente;
-        $this->view->criador = $criador;    */
         $this->view->projetos = $projetoModel->selectAll();
 
     }
@@ -75,6 +55,19 @@ class ProjetosController extends Zend_Controller_Action
 
         $this->view->detalhes = $detalhes;
 
+
+    }
+
+    public function excluirAction(){
+        //$request = $this->getRequest();
+        $excluir = new Application_Form_Projetos();
+        $model = new Application_Model_Projeto;
+        $id = $this->_getParam('projeto_id');
+
+        $model->delete($id);
+        $this->_redirect('/projetos/');
+
+        $this->view->excluir = $excluir;
 
     }
 
