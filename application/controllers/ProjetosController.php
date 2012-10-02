@@ -18,12 +18,29 @@ class ProjetosController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Projetos();
+        $model = new Application_Model_Projeto;
+        $id = $this->_getParam('projeto_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                echo "<pre>";
-                print_r($form->getValues());
-                echo "</pre>";
+//                echo "<pre>";
+//                print_r($form->getValues());
+//                echo "</pre>";
+                $data = $form->getValues();
+                if($id){
+                    $model->update($data, $id);
+                }else{
+                    $model->insert($data);
+                }
+
+                //$this->_redirect('/projetos/');
+            }
+        }elseif ($id){
+            $data = $model->find($id)->toArray();
+
+            if(is_array($data)){
+                $form->setAction('/projetos/detalhes/projeto_id/' . $id);
+                $form->populate(array("projetos" => $data));
             }
         }
 

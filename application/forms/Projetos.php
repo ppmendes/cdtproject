@@ -52,10 +52,10 @@ class Application_Form_Projetos extends Zend_Form
         //}
 
         //instituição
-        $this->addElement('text', 'instituicao', array(
-            'label'      => 'Instituição:',
-            'required'   => true
-        ));
+//        $this->addElement('text', 'instituicao', array(
+//            'label'      => 'Instituição:',
+//            'required'   => true
+//        ));
 
         $array_tipo_projeto = array(
             1 => 'Apoio a Graduação',
@@ -87,7 +87,7 @@ class Application_Form_Projetos extends Zend_Form
             6 => 'Programação de Apoio Administrativo',
         );
 
-        $this->addElement('select', 'modo_contratacao', array(
+        $this->addElement('select', 'modo_contratacao_id', array(
             'label'      => 'Modo de Contratação:',
             'multiOptions'  => $array_modo_contratacao,
             'required'   => true
@@ -100,7 +100,7 @@ class Application_Form_Projetos extends Zend_Form
             3 => 'Recursos Próprios',
         );
 
-        $this->addElement('select', 'categoria_financiadora', array(
+        $this->addElement('select', 'categoria_financiador_id', array(
             'label'      => 'Categoria de Financiador:',
             'multiOptions'  => $array_categoria_financiadora,
             'required'   => true
@@ -112,9 +112,9 @@ class Application_Form_Projetos extends Zend_Form
             'required'   => true
         ));
 
-        //justificativa da taxa fai
-        $this->addElement('text', 'justificativa_fai', array(
-            'label'      => 'Justificativa da Taxa FAI:',
+        //justificacao
+        $this->addElement('text', 'justificacao', array(
+            'label'      => 'Justificação:',
             'required'   => true
         ));
 
@@ -125,8 +125,8 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Data de Final Prevista
-        $this->addElement('text', 'data_final_prevista', array(
-            'label'      => 'Data Final Prevista:',
+        $this->addElement('text', 'data_final', array(
+            'label'      => 'Data Final:',
             'required'   => true
         ));
 
@@ -158,11 +158,11 @@ class Application_Form_Projetos extends Zend_Form
             'required'   => true
         ));
 
-        //Valor Total do projeto (vai ser Orçamento mais contrapartida)
-        $this->addElement('text', 'valor_total_projeto', array(
-            'label'      => 'Valor Total:',
-            'required'   => true
-        ));
+//        //Valor Total do projeto (vai ser Orçamento mais contrapartida)
+//        $this->addElement('text', 'valor_total_projeto', array(
+//            'label'      => 'Valor Total:',
+//            'required'   => true
+//        ));
 
         //CCO do orçamento input type text  editavel (não tem regra)
         $this->addElement('text', 'orcamento_CCO', array(
@@ -185,16 +185,67 @@ class Application_Form_Projetos extends Zend_Form
                 ));
 
         //Horas Programadas input type tex(horas agendadas caso de uso)
-        $this->addElement('text', 'horas_programadas', array(
-                    'label'      => 'Horas Programadas:',
+        $this->addElement('text', 'horas_agendadas', array(
+                    'label'      => 'Horas Agendadas:',
                     'required'   => false
                 ));
 
-        //teste upload
-        $this->addElement('file', 'teste_upload', array(
-            'label'      => 'Teste Upload:',
-            'required'   => true
+        $this->addElement('text', 'estado_projeto_id', array(
+            'label'      => 'Estado do Projeto:',
+            'required'   => false
         ));
+
+        $this->addElement('text', 'descricao', array(
+            'label'      => 'Descrição:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'prioridade_id', array(
+            'label'      => 'Prioridade:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'prazo', array(
+            'label'      => 'Prazo:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'resultados_esperados', array(
+            'label'      => 'Resultados Esperados:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'escopo', array(
+            'label'      => 'Escopo:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'nao_escopo', array(
+            'label'      => 'Não Escopo:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'partes_interessadas', array(
+            'label'      => 'Partes Interessadas:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'ligacoes', array(
+            'label'      => 'Ligações:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'equipe', array(
+            'label'      => 'Equipe:',
+            'required'   => false
+        ));
+
+
+        //teste upload
+//        $this->addElement('file', 'teste_upload', array(
+//            'label'      => 'Teste Upload:',
+//            'required'   => false
+//        ));
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
