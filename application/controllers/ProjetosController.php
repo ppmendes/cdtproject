@@ -52,6 +52,32 @@ class ProjetosController extends Zend_Controller_Action
 
     }
 
+    public function detalhesAction(){
+        $request = $this->getRequest();
+        $detalhes = new Application_Form_Projetos();
+        $model = new Application_Model_Projeto;
+        $id = $this->_getParam('projeto_id');
+
+        if($this->getRequest()->isPost()){
+            if($detalhes->isValid($request->getPost())){
+                echo "<pre>";
+                print_r($detalhes->getValues());
+                echo "</pre>";
+            }
+        }
+
+        $data = $model->find($id)->toArray();
+
+        if(is_array($data)){
+            $detalhes->setAction('/projetos/detalhes/projeto_id/' . $id);
+            $detalhes->populate(array("projetos" => $data));
+        }
+
+        $this->view->detalhes = $detalhes;
+
+
+    }
+
 
 }
 

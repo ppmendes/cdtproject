@@ -12,7 +12,7 @@ class Application_Model_DbTable_Solicitacao extends Zend_Db_Table_Abstract
             'refColumns'        => 'projeto_id'
         ),
         'Application_Model_DbTable_Usuario' => array(
-            'columns'           => 'usuario_id',
+            'columns'           => 'coordenador_projeto',
             'refTableClass'     => 'Application_Model_DbTable_Usuario',
             'refColumns'        => 'usuario_id'
         ),
@@ -21,15 +21,10 @@ class Application_Model_DbTable_Solicitacao extends Zend_Db_Table_Abstract
             'refTableClass'     => 'Application_Model_DbTable_Beneficiario',
             'refColumns'        => 'beneficiario_id'
         ),
-        'Application_Model_DbTable_EstadoSolicitacao' => array(
-            'columns'           => 'estado_solicitacao_id',
-            'refTableClass'     => 'Application_Model_DbTable_EstadoSolicitacao',
-            'refColumns'        => 'estado_solicitacao_id'
-        ),
-        'Application_Model_DbTable_Rubrica' => array(
-            'columns'           => 'rubrica_id',
-            'refTableClass'     => 'Application_Model_DbTable_Rubrica',
-            'refColumns'        => 'rubrica_id'
+        'Application_Model_DbTable_TipoSolicitacao' => array(
+            'columns'           => 'tipo_solicitacao_id',
+            'refTableClass'     => 'Application_Model_DbTable_TipoSolicitacao',
+            'refColumns'        => 'tipo_solicitacao_id'
         ),
     );
 }

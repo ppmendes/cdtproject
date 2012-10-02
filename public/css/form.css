@@ -1,7 +1,10 @@
 .zend_form{
-    width: 1000px;
+    width: 1020px;
     margin: 10px auto;
     overflow: hidden;
+    background-color: #ECECEC;
+    border: solid 1px #CCCCCC;
+    padding: 10px;
 }
 
 .zend_form dt{
@@ -23,9 +26,16 @@
 .zend_form input, .zend_form select,
 .zend_form textarea{
     width: 300px;
+    border: solid 1px #CCCCCC;
 }
 
 .zend_form textarea{
     height: 150px;
 }
+
+.zend_form select:disabled{
+    color: #545454;
+}
+
+
 
