@@ -9,8 +9,11 @@ class Application_Model_Projeto
 		return $projeto;
 	}
 
-    public function insert($projeto)
+    public function insert($data)
     {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "projeto";
+        $db->insert($table, $data);
 
     }
 
@@ -26,9 +29,13 @@ class Application_Model_Projeto
 
     }
 
-    public function update($projeto)
+    public function update($data, $id)
     {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "projeto";
+        $where = $db->quoteInto('projeto_id = ?', $id);
 
+        $db->update($table, $data, $where);
     }
 
     public function selectAll()
