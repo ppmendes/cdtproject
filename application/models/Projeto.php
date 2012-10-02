@@ -16,6 +16,13 @@ class Application_Model_Projeto
 
     public function delete($id)
     {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "projeto";
+        $deletado = true;
+        $where = $db->quoteInto('projeto_id = ?', $id);
+        $data = array('deletado' => $deletado);
+
+        $db->update($table, $data, $where);
 
     }
 
@@ -30,6 +37,7 @@ class Application_Model_Projeto
 
         $select = $db->select()
             ->from(array('p' => 'projeto'))
+            ->where('p.deletado = ?', false)
             ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
             ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
             ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
