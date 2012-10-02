@@ -20,6 +20,13 @@ class Application_Model_Instituicao
 
     public function delete($id)
     {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "instituicao";
+        $deletado = true;
+        $where = $db->quoteInto('instituicao_id = ?', $id);
+        $data = array('deletado' => $deletado);
+
+        $db->update($table, $data, $where);
 
     }
 
