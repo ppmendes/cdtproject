@@ -57,7 +57,7 @@
     {
         //$row = $row->toArray();
         echo "<tr id='".$row['instituicao_id']."'>";
-        echo "<td><a href=\"views/scripts/instituicoes/detalhes.phtml\">" .$row['nome']. "</a></td>";
+        echo "<td><a href='/instituicoes/detalhes/instituicao_id/{$row['instituicao_id']}'>" .$row['nome']. "</a></td>";
         echo "<td>" .$row['ativo']. "</td>";
         echo "<td>" .$row['arquivado']. "</td>";
         echo "<td>" .$row['tipo']. "</td>";
