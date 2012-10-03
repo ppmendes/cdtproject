@@ -12,10 +12,7 @@ class Application_Model_Projeto
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Projeto;
-        foreach($data as $row)
-        {
-            $table->insert($row);
-        }
+        $table->insert($data['projetos']);
     }
 
     public function delete($id)
@@ -35,10 +32,8 @@ class Application_Model_Projeto
 
         $table = new Application_Model_DbTable_Projeto;
         $where = $table->getAdapter()->quoteInto('projeto_id = ?',$id);
-        foreach($data as $row)
-        {
-        $table->update($row, $where);
-        }
+
+        $table->update($data['projetos'],$where);
     }
 
     public function selectAll()

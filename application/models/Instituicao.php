@@ -18,12 +18,12 @@ class Application_Model_Instituicao
 
     public function delete($id)
     {
+
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "instituicao";
         $deletado = true;
         $where = $db->quoteInto('instituicao_id = ?', $id);
         $data = array('deletado' => $deletado);
-
         $db->update($table, $data, $where);
 
     }
@@ -36,6 +36,7 @@ class Application_Model_Instituicao
         $where = $db->quoteInto('instituicao_id = ?', $id);
 
         $db->update($table, $data, $where);
+        print_r($data);
     }
 
     /*public function selectAll()
@@ -44,7 +45,7 @@ class Application_Model_Instituicao
 
         $select = $db->select()
             ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel'));
-
+            ->where('deletado = ?', false);
         $stmt = $select->query();
 
         $result = $stmt->fetchAll();
