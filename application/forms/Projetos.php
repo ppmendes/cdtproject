@@ -206,8 +206,9 @@ class Application_Form_Projetos extends Zend_Form
             'required'   => false
         ));
 
-        $this->addElement('text', 'prioridade_id', array(
+        $this->addElement('select', 'prioridade_id', array(
             'label'      => 'Prioridade:',
+            'multiOptions' => Application_Model_Prioridade::getOptions(),
             'required'   => false
         ));
 
