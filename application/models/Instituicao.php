@@ -2,20 +2,18 @@
 
 class Application_Model_Instituicao
 {
-	/**
-	* Busca a Solução e seus respectivos relacionamentos pelo ID da solução
-	* Retorna um array com a Solução
-	*/
-    public function find($id){
+   public function find($id){
         //DB TABLE
         $table = new Application_Model_DbTable_Instituicao;
         $instituicao = $table->find($id)->current();
         return $instituicao;
     }
 
-    public function insert($instituicao)
+    public function insert($data)
     {
-
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "instituicao";
+        $db->insert($table, $data);
     }
 
     public function delete($id)
@@ -31,9 +29,13 @@ class Application_Model_Instituicao
     }
 
     //recebe o id dentro de soluções
-    public function update($instituicao)
+    public function update($data,$id)
     {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "instituicao";
+        $where = $db->quoteInto('instituicao_id = ?', $id);
 
+        $db->update($table, $data, $where);
     }
 
     /*public function selectAll()

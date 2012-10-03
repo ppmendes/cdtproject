@@ -17,12 +17,25 @@ class InstituicoesController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Instituicoes();
+        $model = new Application_Model_Instituicao;
+        $id = $this->_getParam('instituicao_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                echo "<pre>";
-                print_r($form->getValues());
-                echo "</pre>";
+
+                $data = $form->getValues();
+                if($id){
+                    $model->update($data, $id);
+                }else{
+                    $model->insert($data);
+                }
+            }
+        }elseif ($id){
+            $data = $model->find($id)->toArray();
+
+            if(is_array($data)){
+                $form->setAction('/instituicoes/detalhes/instituicao_id/' . $id);
+                $form->populate(array("instituicao" => $data));
             }
         }
 
@@ -37,24 +50,19 @@ class InstituicoesController extends Zend_Controller_Action
 
         if($this->getRequest()->isPost()){
             if($detalhes->isValid($request->getPost())){
-
-                $data=$detalhes->getValues();
-                if($id)
-                {
-                    $where = $model->getAdapter()->quoteInto('id = ?',$id);
-                    $model->update($data,$where);
-                }else{
-                    $model->insert($data);
-                }
-                $this->_redirect('/instituicao');
-            }
-        }elseif($id){
-            $data = $model->find($id)->toArray();
-            if(is_array($data)){
-                $detalhes->setAction('/instituicao/detalhes/instituicao_id/' . $id);
-                $detalhes->populate(array("instituicao" => $data));
+                echo "<pre>";
+                print_r($detalhes->getValues());
+                echo "</pre>";
             }
         }
+
+        $data = $model->find($id)->toArray();
+
+        if(is_array($data)){
+            $detalhes->setAction('/instituicoes/detalhes/instituicao_id/' . $id);
+            $detalhes->populate(array("instituicao" => $data));
+        }
+
         $this->view->detalhes = $detalhes;
     }
 
@@ -82,7 +90,6 @@ class InstituicoesController extends Zend_Controller_Action
         $this->_redirect('/instituicao/');
 
         $this->view->excluir = $excluir;
-
     }
 }
 
