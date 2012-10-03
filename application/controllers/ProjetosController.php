@@ -33,7 +33,7 @@ class ProjetosController extends Zend_Controller_Action
                     $model->insert($data);
                 }
 
-                //$this->_redirect('/projetos/');
+                $this->_redirect('/projetos/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
@@ -54,14 +54,8 @@ class ProjetosController extends Zend_Controller_Action
         $detalhes = new Application_Form_Projetos();
         $model = new Application_Model_Projeto;
         $id = $this->_getParam('projeto_id');
+        $this->view->id = $id;
 
-        if($this->getRequest()->isPost()){
-            if($detalhes->isValid($request->getPost())){
-                echo "<pre>";
-                print_r($detalhes->getValues());
-                echo "</pre>";
-            }
-        }
 
         $data = $model->find($id)->toArray();
 

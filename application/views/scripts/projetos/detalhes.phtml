@@ -1,7 +1,22 @@
 <script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente excluir o projeto?");
+        if (answer) {
+            top.location.href = '/../projetos/excluir/projeto_id/'+id;
+        }
+        else {
+            alert("O projeto não foi excluído!");
+        }
+    }
+</script>
+
 <?php
-echo "<a href='/../projetos/excluir/projeto_id/1'>excluir</a>";
-echo "<a href='/../projetos/adicionar/projeto_id/1'>editar</a>";
+ $id = $this->id;
+
+echo "<button onclick='confirmarExclusao($id)'>excluir</button>";
+echo "<a href='/../projetos/adicionar/projeto_id/$id'>editar</a>";
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
 ?>
