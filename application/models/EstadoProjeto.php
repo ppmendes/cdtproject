@@ -13,6 +13,21 @@ class Application_Model_EstadoProjeto
         return $estado_projeto;
     }
 
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_EstadoProjeto;
+            $estadoProjeto = $table->fetchAll();
+            foreach($estadoProjeto as $item){
+                $options[$item['estado_projeto_id']] = $item['nome_estado'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public function insert($estado_projeto)
     {
 

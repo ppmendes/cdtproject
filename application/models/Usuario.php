@@ -10,6 +10,21 @@ class Application_Model_Usuario
         return $usuario;
     }
 
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Usuario;
+            $usuario = $table->fetchAll();
+            foreach($usuario as $item){
+                $options[$item['usuario_id']] = $item['nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public function insert($usuario)
     {
 

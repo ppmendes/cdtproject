@@ -9,6 +9,21 @@ class Application_Model_Instituicao
         return $instituicao;
     }
 
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Instituicao;
+            $instituicao = $table->fetchAll();
+            foreach($instituicao as $item){
+                $options[$item['instituicao_id']] = $item['nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public function insert($data)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -44,7 +59,7 @@ class Application_Model_Instituicao
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $select = $db->select()
-            ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel'));
+            ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel'))
             ->where('deletado = ?', false);
         $stmt = $select->query();
 
