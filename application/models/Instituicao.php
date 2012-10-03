@@ -11,14 +11,12 @@ class Application_Model_Instituicao
 
     public function insert($data)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "instituicao";
-        $db->insert($table, $data);
+        $table = new Application_Model_DbTable_Instituicao;
+        $table->insert($data['instituicao']);
     }
 
     public function delete($id)
     {
-
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "instituicao";
         $deletado = true;
@@ -31,12 +29,12 @@ class Application_Model_Instituicao
     //recebe o id dentro de soluções
     public function update($data,$id)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "instituicao";
-        $where = $db->quoteInto('instituicao_id = ?', $id);
 
-        $db->update($table, $data, $where);
-        print_r($data);
+        print_r($data['instituicao']);
+        //$table = new Application_Model_DbTable_Instituicao;
+        //$where = $table->getAdapter()->quoteInto('instituicao_id = ?',$id);
+
+        //$table->update($data['instituicao'], $where);
     }
 
     public function selectAll()
@@ -44,8 +42,9 @@ class Application_Model_Instituicao
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $select = $db->select()
-            ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel'));
+            ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel','deletado'))
             ->where('deletado = ?', false);
+
         $stmt = $select->query();
 
         $result = $stmt->fetchAll();
