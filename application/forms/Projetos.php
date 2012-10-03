@@ -47,9 +47,9 @@ class Application_Form_Projetos extends Zend_Form
             'label'      => 'Criador:',
             'required'   => true
         ));
-		
-		//adicionar fase de desenvolvimento
-		//$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
+
+        //adicionar fase de desenvolvimento
+        //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
         //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
 
         //$fasesDesenvolvimentoArray = array();
@@ -63,52 +63,24 @@ class Application_Form_Projetos extends Zend_Form
 //            'required'   => true
 //        ));
 
-        $array_tipo_projeto = array(
-            1 => 'Apoio a Graduação',
-            2 => 'Apoio a Treinamentos, Workshop\'s e Eventos',
-            3 => 'Consultorias Técnicas',
-            4 => 'Cursos de capacitação técnica e científica',
-            5 => 'Depósitos de Patentes',
-            6 => 'Pesquisa, Desenvolvimento &amp; Inovação',
-            7 => 'Programas de Desenvolvimento Tecnológico e Empreendedorismo',
-            8 => 'Projetos de Laboratórios',
-            9 => 'Projetos de Departamentos',
-            10 => 'Serviços Tecnológicos',
-            11 => 'Programas de Apoio Administrativo',
-        );
-		
-		$this->addElement('select', 'projeto_tipo_id', array(
+        $this->addElement('select', 'projeto_tipo_id', array(
             'label'      => 'Tipo de Projeto:',
-			'multiOptions'  => $array_tipo_projeto,
+            'multiOptions' => Application_Model_ProjetoTipo::getOptions(),
             'required'   => true
         ));
 
         //modo de contratação
-        $array_modo_contratacao = array(
-            1 => 'Contratos',
-            2 => 'Convênios',
-            3 => 'Consultorias Técnicas',
-            4 => 'Termos de Cooperação',
-            5 => 'Projetos Internos',
-            6 => 'Programação de Apoio Administrativo',
-        );
 
         $this->addElement('select', 'modo_contratacao_id', array(
             'label'      => 'Modo de Contratação:',
-            'multiOptions'  => $array_modo_contratacao,
+            'multiOptions' => Application_Model_ModoContratacao::getOptions(),
             'required'   => true
         ));
 
         //Categoria de Financiador (publico, privado, rec. prop)
-        $array_categoria_financiadora = array(
-            1 => 'Público',
-            2 => 'Privado',
-            3 => 'Recursos Próprios',
-        );
-
         $this->addElement('select', 'categoria_financiador_id', array(
-            'label'      => 'Categoria de Financiador:',
-            'multiOptions'  => $array_categoria_financiadora,
+            'label'      => 'Categoria Financiador:',
+            'multiOptions' => Application_Model_CategoriaFinanciador::getOptions(),
             'required'   => true
         ));
 
@@ -159,7 +131,7 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Descrição da Contrapartida (TAP)
-        $this->addElement('text', 'contrapartida_descricao', array(
+        $this->addElement('textarea', 'contrapartida_descricao', array(
             'label'      => 'Descrição da Contrapartida:',
             'required'   => true
         ));
@@ -180,28 +152,28 @@ class Application_Form_Projetos extends Zend_Form
 
         //Descrição da CCO input type textarea
         $this->addElement('textarea', 'descricao_CCO', array(
-                    'label'      => 'Descrição da CCO:',
-                    'required'   => true
+            'label'      => 'Descrição da CCO:',
+            'required'   => true
         ));
 
         //Horas trabalhadas input type text
         $this->addElement('text', 'horas_trabalhadas', array(
-                    'label'      => 'Horas trabalhadas:',
-                    'required'   => false
-                ));
+            'label'      => 'Horas trabalhadas:',
+            'required'   => false
+        ));
 
         //Horas Programadas input type tex(horas agendadas caso de uso)
         $this->addElement('text', 'horas_agendadas', array(
-                    'label'      => 'Horas Agendadas:',
-                    'required'   => false
-                ));
+            'label'      => 'Horas Agendadas:',
+            'required'   => false
+        ));
 
         $this->addElement('text', 'estado_projeto_id', array(
             'label'      => 'Estado do Projeto:',
             'required'   => false
         ));
 
-        $this->addElement('text', 'descricao', array(
+        $this->addElement('textarea', 'descricao', array(
             'label'      => 'Descrição:',
             'required'   => false
         ));
