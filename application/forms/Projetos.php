@@ -41,6 +41,12 @@ class Application_Form_Projetos extends Zend_Form
             'label'      => 'Gerente do Projeto:',
             'required'   => true
         ));
+
+        //Criador input type text
+        $this->addElement('text', 'criador', array(
+            'label'      => 'Criador:',
+            'required'   => true
+        ));
 		
 		//adicionar fase de desenvolvimento
 		//$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
