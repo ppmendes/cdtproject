@@ -251,7 +251,7 @@ class Application_Form_Projetos extends Zend_Form
             'required'   => false
         ));
 
-        $this->addElement('text', 'porcentagem_completo', array(
+        $this->addElement('text', 'percentagem_completo', array(
             'label'      => 'Porcentagem Completo:',
             'required'   => false
         ));
