@@ -23,5 +23,20 @@ class Application_Model_Estados
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Estados();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['estados_id']] = $item['estados_nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

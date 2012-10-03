@@ -6,10 +6,12 @@ class Application_Form_Instituicoes extends Zend_Form
     public function init()
     {
         $this->setIsArray('true');
+        //$this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('instituicao');
 
         // Setar metodo
         $this->setMethod('post');
+
 
         //Nome da instituição input type text
         $this->addElement('text', 'nome', array(
@@ -65,15 +67,17 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => false
         ));
 
-        //Cidade input type text
-        $this->addElement('text', 'cidade', array(
-            'label'      => 'Cidade:',
+        //Estado input type text
+        $this->addElement('select', 'estado', array(
+            'label'      => 'Estado:',
+            'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => true
         ));
 
-        //Estado input type text
-        $this->addElement('text', 'estado', array(
-            'label'      => 'Estado:',
+        //Cidade input type text
+        $this->addElement('select', 'cidade', array(
+            'label'      => 'Cidade:',
+            'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => true
         ));
 
@@ -108,8 +112,9 @@ class Application_Form_Instituicoes extends Zend_Form
         ));
 
         //Denominação input type text
-        $this->addElement('text', 'denominacao', array(
+        $this->addElement('select', 'denominacao', array(
             'label'      => 'Denominação:',
+            'multiOptions' => Application_Model_Denominacao::getOptions(),
             'required'   => true
         ));
 

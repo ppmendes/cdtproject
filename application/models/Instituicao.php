@@ -9,31 +9,14 @@ class Application_Model_Instituicao
         return $instituicao;
     }
 
-    public static function getOptions(){
-        try{
-            $options = array();
-            $table = new Application_Model_DbTable_Instituicao;
-            $instituicao = $table->fetchAll();
-            foreach($instituicao as $item){
-                $options[$item['instituicao_id']] = $item['nome'];
-            }
-            return $options;
-        } catch(Exception $e){
-
-        }
-
-    }
-
     public function insert($data)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "instituicao";
-        $db->insert($table, $data);
+        $table = new Application_Model_DbTable_Instituicao;
+        $table->insert($data['instituicao']);
     }
 
     public function delete($id)
     {
-
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "instituicao";
         $deletado = true;
@@ -43,15 +26,13 @@ class Application_Model_Instituicao
 
     }
 
-    //recebe o id dentro de soluções
+    //recebe o id e a data a ser atualizada
     public function update($data,$id)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "instituicao";
-        $where = $db->quoteInto('instituicao_id = ?', $id);
+        $table = new Application_Model_DbTable_Instituicao;
+        $where = $table->getAdapter()->quoteInto('instituicao_id = ?',$id);
 
-        $db->update($table, $data, $where);
-        print_r($data);
+        $table->update($data['instituicao'], $where);
     }
 
     /*public function selectAll()
@@ -59,8 +40,9 @@ class Application_Model_Instituicao
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $select = $db->select()
-            ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel'))
+            ->from('vw_instituicao_projeto_ativo_arquivado',array('instituicao_id','nome','ativo','arquivado','tipo','responsavel','deletado'))
             ->where('deletado = ?', false);
+
         $stmt = $select->query();
 
         $result = $stmt->fetchAll();
