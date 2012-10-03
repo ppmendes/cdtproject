@@ -25,14 +25,16 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('text', 'coordenador_tecnico', array(
+        $this->addElement('select', 'coordenador_tecnico', array(
             'label'      => 'Coordenador Técnico:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
 
         //Gerência input type text
-        $this->addElement('text', 'gerencia', array(
+        $this->addElement('select', 'gerencia', array(
             'label'      => 'Gerência:',
+            'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true
         ));
 
@@ -43,8 +45,9 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Criador input type text
-        $this->addElement('text', 'criador', array(
+        $this->addElement('select', 'criador', array(
             'label'      => 'Criador:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
 		
@@ -63,52 +66,24 @@ class Application_Form_Projetos extends Zend_Form
 //            'required'   => true
 //        ));
 
-        $array_tipo_projeto = array(
-            1 => 'Apoio a Graduação',
-            2 => 'Apoio a Treinamentos, Workshop\'s e Eventos',
-            3 => 'Consultorias Técnicas',
-            4 => 'Cursos de capacitação técnica e científica',
-            5 => 'Depósitos de Patentes',
-            6 => 'Pesquisa, Desenvolvimento &amp; Inovação',
-            7 => 'Programas de Desenvolvimento Tecnológico e Empreendedorismo',
-            8 => 'Projetos de Laboratórios',
-            9 => 'Projetos de Departamentos',
-            10 => 'Serviços Tecnológicos',
-            11 => 'Programas de Apoio Administrativo',
-        );
-		
-		$this->addElement('select', 'projeto_tipo_id', array(
+        $this->addElement('select', 'projeto_tipo_id', array(
             'label'      => 'Tipo de Projeto:',
-			'multiOptions'  => $array_tipo_projeto,
+            'multiOptions' => Application_Model_ProjetoTipo::getOptions(),
             'required'   => true
         ));
 
         //modo de contratação
-        $array_modo_contratacao = array(
-            1 => 'Contratos',
-            2 => 'Convênios',
-            3 => 'Consultorias Técnicas',
-            4 => 'Termos de Cooperação',
-            5 => 'Projetos Internos',
-            6 => 'Programação de Apoio Administrativo',
-        );
 
         $this->addElement('select', 'modo_contratacao_id', array(
             'label'      => 'Modo de Contratação:',
-            'multiOptions'  => $array_modo_contratacao,
+            'multiOptions' => Application_Model_ModoContratacao::getOptions(),
             'required'   => true
         ));
 
         //Categoria de Financiador (publico, privado, rec. prop)
-        $array_categoria_financiadora = array(
-            1 => 'Público',
-            2 => 'Privado',
-            3 => 'Recursos Próprios',
-        );
-
         $this->addElement('select', 'categoria_financiador_id', array(
-            'label'      => 'Categoria de Financiador:',
-            'multiOptions'  => $array_categoria_financiadora,
+            'label'      => 'Categoria Financiador:',
+            'multiOptions' => Application_Model_CategoriaFinanciador::getOptions(),
             'required'   => true
         ));
 
@@ -159,7 +134,7 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Descrição da Contrapartida (TAP)
-        $this->addElement('text', 'contrapartida_descricao', array(
+        $this->addElement('textarea', 'contrapartida_descricao', array(
             'label'      => 'Descrição da Contrapartida:',
             'required'   => true
         ));
@@ -187,64 +162,65 @@ class Application_Form_Projetos extends Zend_Form
         //Horas trabalhadas input type text
         $this->addElement('text', 'horas_trabalhadas', array(
                     'label'      => 'Horas trabalhadas:',
-                    'required'   => false
+                    'required'   => true
                 ));
 
         //Horas Programadas input type tex(horas agendadas caso de uso)
         $this->addElement('text', 'horas_agendadas', array(
                     'label'      => 'Horas Agendadas:',
-                    'required'   => false
+                    'required'   => true
                 ));
 
-        $this->addElement('text', 'estado_projeto_id', array(
+        $this->addElement('select', 'estado_projeto_id', array(
             'label'      => 'Estado do Projeto:',
-            'required'   => false
+            'multiOptions' => Application_Model_EstadoProjeto::getOptions(),
+            'required'   => true
         ));
 
-        $this->addElement('text', 'descricao', array(
+        $this->addElement('textarea', 'descricao', array(
             'label'      => 'Descrição:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('select', 'prioridade_id', array(
             'label'      => 'Prioridade:',
             'multiOptions' => Application_Model_Prioridade::getOptions(),
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'prazo', array(
             'label'      => 'Prazo:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'resultados_esperados', array(
             'label'      => 'Resultados Esperados:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'escopo', array(
             'label'      => 'Escopo:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'nao_escopo', array(
             'label'      => 'Não Escopo:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'partes_interessadas', array(
             'label'      => 'Partes Interessadas:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'ligacoes', array(
             'label'      => 'Ligações:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'equipe', array(
             'label'      => 'Equipe:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'website', array(
