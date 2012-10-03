@@ -26,15 +26,13 @@ class Application_Model_Instituicao
 
     }
 
-    //recebe o id dentro de soluções
+    //recebe o id e a data a ser atualizada
     public function update($data,$id)
     {
+        $table = new Application_Model_DbTable_Instituicao;
+        $where = $table->getAdapter()->quoteInto('instituicao_id = ?',$id);
 
-        print_r($data['instituicao']);
-        //$table = new Application_Model_DbTable_Instituicao;
-        //$where = $table->getAdapter()->quoteInto('instituicao_id = ?',$id);
-
-        //$table->update($data['instituicao'], $where);
+        $table->update($data['instituicao'], $where);
     }
 
     public function selectAll()
