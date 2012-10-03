@@ -11,12 +11,20 @@
         }
     }
 </script>
+<script>
+    function editar(id)
+    {
+        top.location.href = '/../projetos/adicionar/projeto_id/'+id;
+
+    }
+</script>
 
 <?php
  $id = $this->id;
 
-echo "<button onclick='confirmarExclusao($id)'>excluir</button>";
-echo "<a href='/../projetos/adicionar/projeto_id/$id'>editar</a>";
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='editar($id)'>Editar</button>";
+
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
 ?>
