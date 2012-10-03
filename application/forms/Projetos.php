@@ -25,14 +25,16 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('text', 'coordenador_tecnico', array(
+        $this->addElement('select', 'coordenador_tecnico', array(
             'label'      => 'Coordenador Técnico:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
 
         //Gerência input type text
-        $this->addElement('text', 'gerencia', array(
+        $this->addElement('select', 'gerencia', array(
             'label'      => 'Gerência:',
+            'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true
         ));
 
@@ -43,13 +45,14 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Criador input type text
-        $this->addElement('text', 'criador', array(
+        $this->addElement('select', 'criador', array(
             'label'      => 'Criador:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
-
-        //adicionar fase de desenvolvimento
-        //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
+		
+		//adicionar fase de desenvolvimento
+		//$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
         //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
 
         //$fasesDesenvolvimentoArray = array();
@@ -152,71 +155,72 @@ class Application_Form_Projetos extends Zend_Form
 
         //Descrição da CCO input type textarea
         $this->addElement('textarea', 'descricao_CCO', array(
-            'label'      => 'Descrição da CCO:',
-            'required'   => true
+                    'label'      => 'Descrição da CCO:',
+                    'required'   => true
         ));
 
         //Horas trabalhadas input type text
         $this->addElement('text', 'horas_trabalhadas', array(
-            'label'      => 'Horas trabalhadas:',
-            'required'   => false
-        ));
+                    'label'      => 'Horas trabalhadas:',
+                    'required'   => true
+                ));
 
         //Horas Programadas input type tex(horas agendadas caso de uso)
         $this->addElement('text', 'horas_agendadas', array(
-            'label'      => 'Horas Agendadas:',
-            'required'   => false
-        ));
+                    'label'      => 'Horas Agendadas:',
+                    'required'   => true
+                ));
 
-        $this->addElement('text', 'estado_projeto_id', array(
+        $this->addElement('select', 'estado_projeto_id', array(
             'label'      => 'Estado do Projeto:',
-            'required'   => false
+            'multiOptions' => Application_Model_EstadoProjeto::getOptions(),
+            'required'   => true
         ));
 
         $this->addElement('textarea', 'descricao', array(
             'label'      => 'Descrição:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('select', 'prioridade_id', array(
             'label'      => 'Prioridade:',
             'multiOptions' => Application_Model_Prioridade::getOptions(),
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'prazo', array(
             'label'      => 'Prazo:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'resultados_esperados', array(
             'label'      => 'Resultados Esperados:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'escopo', array(
             'label'      => 'Escopo:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'nao_escopo', array(
             'label'      => 'Não Escopo:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'partes_interessadas', array(
             'label'      => 'Partes Interessadas:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'ligacoes', array(
             'label'      => 'Ligações:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'equipe', array(
             'label'      => 'Equipe:',
-            'required'   => false
+            'required'   => true
         ));
 
         $this->addElement('text', 'website', array(
