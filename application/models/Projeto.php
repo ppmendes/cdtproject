@@ -11,10 +11,11 @@ class Application_Model_Projeto
 
     public function insert($data)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "projeto";
-        $db->insert($table, $data);
-
+        $table = new Application_Model_DbTable_Projeto;
+        foreach($data as $row)
+        {
+            $table->insert($row);
+        }
     }
 
     public function delete($id)
@@ -31,11 +32,13 @@ class Application_Model_Projeto
 
     public function update($data, $id)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "projeto";
-        $where = $db->quoteInto('projeto_id = ?', $id);
 
-        $db->update($table, $data, $where);
+        $table = new Application_Model_DbTable_Projeto;
+        $where = $table->getAdapter()->quoteInto('projeto_id = ?',$id);
+        foreach($data as $row)
+        {
+        $table->update($row, $where);
+        }
     }
 
     public function selectAll()
