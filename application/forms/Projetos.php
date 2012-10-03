@@ -246,6 +246,40 @@ class Application_Form_Projetos extends Zend_Form
             'required'   => false
         ));
 
+        $this->addElement('text', 'website', array(
+            'label'      => 'Website:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'porcentagem_completo', array(
+            'label'      => 'Porcentagem Completo:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'color_identificador', array(
+            'label'      => 'Cor identificadora:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'orcamento_atual', array(
+            'label'      => 'Orçamento Atual:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'premissas', array(
+            'label'      => 'Premissas:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'restricoes', array(
+            'label'      => 'Restrições:',
+            'required'   => false
+        ));
+
+        $this->addElement('text', 'metas', array(
+            'label'      => 'Metas:',
+            'required'   => false
+        ));
 
         //teste upload
 //        $this->addElement('file', 'teste_upload', array(
