@@ -66,8 +66,7 @@ class InstituicoesController extends Zend_Controller_Action
         $this->view->detalhes = $detalhes;
     }
 
-    public function atualizar()
-    {
+    /*public function atualizar(){
         //$request = $this->getRequest();
         $atualizar = new Application_Form_Instituicoes();
         $model = new Application_Model_Instituicao();
@@ -78,7 +77,7 @@ class InstituicoesController extends Zend_Controller_Action
         $this->_redirect('/instituicao/');
 
         $this->view->atualizar = $atualizar;
-    }
+    }*/
 
     public function excluirAction(){
         //$request = $this->getRequest();
@@ -87,7 +86,8 @@ class InstituicoesController extends Zend_Controller_Action
         $id = $this->_getParam('instituicao_id');
 
         $model->delete($id);
-        $this->_redirect('/instituicao/');
+
+        $this->_redirect('/instituicoes/');
 
         $this->view->excluir = $excluir;
     }
