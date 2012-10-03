@@ -39,8 +39,9 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Gerente input type text
-        $this->addElement('text', 'gerente', array(
+        $this->addElement('select', 'gerente', array(
             'label'      => 'Gerente do Projeto:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
 
