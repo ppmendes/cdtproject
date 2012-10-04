@@ -115,7 +115,7 @@ class Application_Form_Beneficiarios extends Zend_Form
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => 'Inserir Beneficiário',
+            'label'    => 'Enviar',
         ));
 
     }

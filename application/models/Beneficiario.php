@@ -12,7 +12,7 @@ class Application_Model_Beneficiario
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Beneficiario;
-        $table->insert($data['beneficiarios']);
+        $table->insert($data['beneficiario']);
     }
 
     public function delete($id)
@@ -33,7 +33,7 @@ class Application_Model_Beneficiario
         $table = new Application_Model_DbTable_Beneficiario;
         $where = $table->getAdapter()->quoteInto('beneficiario_id = ?',$id);
 
-        $table->update($data['beneficiarios'],$where);
+        $table->update($data['beneficiario'],$where);
     }
 
     public function selectAll()

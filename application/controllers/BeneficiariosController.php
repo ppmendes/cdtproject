@@ -40,7 +40,7 @@ class BeneficiariosController extends Zend_Controller_Action
 
             if(is_array($data)){
                 $form->setAction('/beneficiarios/detalhes/beneficiario_id/' . $id);
-                $form->populate(array("beneficiarios" => $data));
+                $form->populate(array("beneficiario" => $data));
             }
         }
 
@@ -61,7 +61,7 @@ class BeneficiariosController extends Zend_Controller_Action
 
         if(is_array($data)){
             $detalhes->setAction('/beneficiarios/detalhes/beneficiario_id/' . $id);
-            $detalhes->populate(array("beneficiarios" => $data));
+            $detalhes->populate(array("beneficiario" => $data));
         }
 
         $this->view->detalhes = $detalhes;

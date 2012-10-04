@@ -2,19 +2,19 @@
 <script>
     function confirmarExclusao(id)
     {
-        var answer = confirm("Deseja realmente excluir o projeto?");
+        var answer = confirm("Deseja realmente excluir o beneficiario?");
         if (answer) {
-            top.location.href = '/../projetos/excluir/projeto_id/'+id;
+            top.location.href = '/../beneficiarios/excluir/beneficiario_id/'+id;
         }
         else {
-            alert("O projeto não foi excluído!");
+            alert("O beneficiario não foi excluído!");
         }
     }
 </script>
 <script>
     function editar(id)
     {
-        top.location.href = '/../projetos/adicionar/projeto_id/'+id;
+        top.location.href = '/../beneficiarios/adicionar/beneficiario_id/'+id;
 
     }
 </script>

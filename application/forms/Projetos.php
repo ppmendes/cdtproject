@@ -268,7 +268,7 @@ class Application_Form_Projetos extends Zend_Form
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => 'Submeter Projeto',
+            'label'    => 'Enviar',
         ));
 
 
