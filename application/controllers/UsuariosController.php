@@ -30,14 +30,14 @@ class UsuarioController extends Zend_Controller_Action
                 }else{
                     $model->insert($data);
                 }
-                $this->_redirect('/usuario/');
+                $this->_redirect('/usuarios/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                $form->setAction('/usuario/detalhes/usuario_id/' . $id);
-                $form->populate(array("usuario" => $data));
+                $form->setAction('/usuarios/detalhes/usuario_id/' . $id);
+                $form->populate(array("usuarios" => $data));
             }
         }
 
@@ -55,8 +55,8 @@ class UsuarioController extends Zend_Controller_Action
         $data = $model->find($id)->toArray();
 
         if(is_array($data)){
-            $detalhes->setAction('/usuario/detalhes/usuario_id/' . $id);
-            $detalhes->populate(array("usuario" => $data));
+            $detalhes->setAction('/usuarios/detalhes/usuario_id/' . $id);
+            $detalhes->populate(array("usuarios" => $data));
         }
 
         $this->view->detalhes = $detalhes;
@@ -83,7 +83,7 @@ class UsuarioController extends Zend_Controller_Action
 
         $model->delete($id);
 
-        $this->_redirect('/usuario/');
+        $this->_redirect('/usuarios/');
 
         $this->view->excluir = $excluir;
     }

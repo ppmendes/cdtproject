@@ -62,11 +62,11 @@
 
 <?php
 
-    foreach($this->usuario as $row) // "$this->usuario" nome da variável definida no controller
+    foreach($this->usuario as $row) // "$this->usuarios" nome da variável definida no controller
     {
         echo "<tr id='".$row['usuario_id']."'>";
         echo "<td>" .$row['u.sobrenome']. "</td>";
-        echo "<td><a href='/usuario/detalhes/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
+        echo "<td><a href='/usuarios/detalhes/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
         echo "<td>" .$row['i.nome']. "</td>";
         echo "</tr>";
     }
