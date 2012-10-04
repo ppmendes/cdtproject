@@ -49,4 +49,19 @@ class Application_Model_Instituicao
 
         return $result;
     }
+/*
+    public function selectAll()
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()
+            ->from(array('i' => 'instituicao'))
+            ->joinInner(array('pi' => 'projeto_institucao'), 'i.instituicao_id = pi.instituicao_id');
+
+        $stmt = $select->query();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }*/
 }
