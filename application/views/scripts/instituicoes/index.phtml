@@ -33,11 +33,22 @@
         });
     });
 </script>
+<script>
+    function adicionar()
+    {
+        top.location.href = '/../instituicoes/adicionar/';
+
+    }
+</script>
 <style>
     table * *{
         text-align: center;
     }
+    .novoprojeto {
+        float:right;
+    }
 </style>
+<button class='novoprojeto' onclick='adicionar()'>Nova Instituicao</button>
 
 <table id='table_id' border='0'>
     <thead>

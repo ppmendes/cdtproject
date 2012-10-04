@@ -24,5 +24,20 @@ class Application_Model_Denominacao
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Denominacao();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['denominacao_id']] = $item['denominacao_nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

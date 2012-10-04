@@ -25,10 +25,12 @@ class InstituicoesController extends Zend_Controller_Action
 
                 $data = $form->getValues();
                 if($id){
+
                     $model->update($data, $id);
                 }else{
                     $model->insert($data);
                 }
+                //$this->_redirect('/instituicoes/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
@@ -47,19 +49,13 @@ class InstituicoesController extends Zend_Controller_Action
         $detalhes = new Application_Form_Instituicoes();
         $model = new Application_Model_Instituicao;
         $id = $this->_getParam('instituicao_id');
+        $this->view->id = $id;
 
-        if($this->getRequest()->isPost()){
-            if($detalhes->isValid($request->getPost())){
-                echo "<pre>";
-                print_r($detalhes->getValues());
-                echo "</pre>";
-            }
-        }
 
         $data = $model->find($id)->toArray();
 
         if(is_array($data)){
-            $detalhes->setAction('/instituicoes/detalhes/instituicao_id/' . $id);
+            $detalhes->setAction('/instiuicoes/detalhes/instituicao_id/' . $id);
             $detalhes->populate(array("instituicao" => $data));
         }
 

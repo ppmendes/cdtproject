@@ -1,7 +1,30 @@
 <script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente excluir a instituicao?");
+        if (answer) {
+            top.location.href = '/../instituicoes/excluir/instituicao_id/'+id;
+        }
+        else {
+            alert("A instituicao não foi excluído!");
+        }
+    }
+</script>
+<script>
+    function editar(id)
+    {
+        top.location.href = '/../instituicoes/adicionar/instituicao_id/'+id;
+
+    }
+</script>
+
 <?php
-echo "<a href='/../instituicoes/excluir/instituicao_id/1'>excluir</a></br>";
-echo "<a href='/../instituicoes/adicionar/instituicao_id/1'>editar</a>";
+$id = $this->id;
+
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='editar($id)'>Editar</button>";
+
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
 ?>

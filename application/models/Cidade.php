@@ -23,5 +23,20 @@ class Application_Model_Cidade
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Cidade;
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['cidade_id']] = $item['cidade_nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 
