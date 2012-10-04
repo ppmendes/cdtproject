@@ -52,5 +52,20 @@ class Application_Model_Beneficiario
 
         return $result;
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Beneficiario;
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['beneficiario_id']] = $item['nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

@@ -23,4 +23,19 @@ class Application_Model_PreEmpenho
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_PreEmpenho();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['pre_empenho_id']] = $item['pre_empenho_historico'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
