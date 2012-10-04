@@ -4,10 +4,12 @@ class Application_Model_Estados
 {
     public function find($id){
         //DB TABLE
-        $table = new Application_Model_DbTable_Estadps;
+        $table = new Application_Model_DbTable_Estados;
         $acesso = $table->find($id)->current();
-        return $estados;
+        return $acesso;
     }
+
+
 
     public function insert($estados)
     {

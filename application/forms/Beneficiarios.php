@@ -93,18 +93,21 @@ class Application_Form_Beneficiarios extends Zend_Form
             'required'   => true,
         ));
 
-        $this->addElement('text', 'pais_id', array(
+        $this->addElement('select', 'pais_id', array(
             'label'      => 'País:',
+            'multiOptions' => Application_Model_Pais::getOptions(),
             'required'   => true,
         ));
 
-        $this->addElement('text', 'estados_id', array(
+        $this->addElement('select', 'estados_id', array(
             'label'      => 'Estado:',
+            'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => true,
         ));
 
-        $this->addElement('text', 'cidade_id', array(
+        $this->addElement('select', 'cidade_id', array(
             'label'      => 'Cidade:',
+            'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => true,
         ));
 
