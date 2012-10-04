@@ -23,4 +23,18 @@ class Application_Model_PerfilUsuario
     {
 
     }
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_PerfilUsuario();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['perfil_id']] = $item['perfil_nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
