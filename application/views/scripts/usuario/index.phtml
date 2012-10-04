@@ -1,0 +1,74 @@
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function adicionar()
+    {
+        top.location.href = '/../usuarios/adicionar/';
+
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novoprojeto {
+        float:right;
+    }
+</style>
+<button class='novoprojeto' onclick='adicionar()'>Novo Usuário</button>
+
+<table id='table_id' border='0'>
+    <thead>
+    <tr>
+        <th>Usuário</th>
+        <th>Nome Usuário</th>
+        <th>Instituição</th>
+    </tr>
+    </thead>
+    <tbody>
+
+<?php
+
+    foreach($this->usuario as $row) // "$this->usuario" nome da variável definida no controller
+    {
+        echo "<tr id='".$row['usuario_id']."'>";
+        echo "<td>" .$row['u.sobrenome']. "</td>";
+        echo "<td><a href='/usuario/detalhes/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
+        echo "<td>" .$row['i.nome']. "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>

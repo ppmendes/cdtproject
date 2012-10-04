@@ -23,7 +23,6 @@ class Application_Model_Instituicao
         $where = $db->quoteInto('instituicao_id = ?', $id);
         $data = array('deletado' => $deletado);
         $db->update($table, $data, $where);
-
     }
 
     //recebe o id e a data a ser atualizada

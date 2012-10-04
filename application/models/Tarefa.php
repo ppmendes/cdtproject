@@ -9,9 +9,10 @@ class Application_Model_Tarefa
         return $tarefa;
     }
 
-    public function insert($tarefa)
+    public function insert($data)
     {
-
+        $table = new Application_Model_DbTable_Tarefa();
+        $table->insert($data['tarefa']);
     }
 
     public function delete($id)
