@@ -24,5 +24,20 @@ class Application_Model_Empenho
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Empenho;
+            $empenho = $table->fetchAll();
+            foreach($empenho as $item){
+                $options[$item['empenho_id']] = $item['descricao'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

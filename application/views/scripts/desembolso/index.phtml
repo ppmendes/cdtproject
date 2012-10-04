@@ -1,1 +1,84 @@
-Desembolso
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function adicionar()
+    {
+        top.location.href = '/../desembolso/adicionar/';
+
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novoprojeto {
+        float:right;
+    }
+</style>
+<button class='novodesembolso' onclick='adicionar()'>Novo Desembolso</button>
+
+<table id='table_id' border='1'>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Desembolso_Exec_Rel</th>
+        <th>Empenho</th>
+        <th>Código do Documento Hábil</th>
+        <th>Data do Documento</th>
+        <th>Ordem Bancária</th>
+        <th>Data do Pagamento</th>
+        <th>Valor</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    foreach($this->desembolsos as $row)
+    {
+        //$row = $row->toArray();
+        echo "<tr id='".$row['desembolso_id']."'>";
+        echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
+        echo "<td>" .   $row['desembolso_exec_rel'] . "</td>";
+        echo "<td>" . $row['empenho_id'] . "</td>";
+        echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
+        echo "<td >" .  $row['data_documento_habil'] . "</td>";
+        echo "<td >" .  $row['order_dinheiro'] . "</td>";
+        echo "<td >" .  $row['data_pagamento'] . "</td>";
+        echo "<td >" .  $row['valor_desembolso'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>
