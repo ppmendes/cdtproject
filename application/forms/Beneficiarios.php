@@ -66,7 +66,7 @@ class Application_Form_Beneficiarios extends Zend_Form
         ));
 
         //Escolaridade input type text
-        $this->addElement('text', 'educacao', array(
+        $this->addElement('text', 'escolaridade_id', array(
             'label'      => 'Escolaridade:',
             'required'   => true,
         ));
@@ -78,8 +78,28 @@ class Application_Form_Beneficiarios extends Zend_Form
         ));
 
         //Área do conhecimento input type text
-        $this->addElement('text', 'area_conhecimento', array(
+        $this->addElement('text', 'area_conhecimento_id', array(
             'label'      => 'Área do conhecimento:',
+            'required'   => true,
+        ));
+
+        $this->addElement('text', 'tipo_beneficiario_id', array(
+            'label'      => 'Tipo do Beneficiário:',
+            'required'   => true,
+        ));
+
+        $this->addElement('text', 'pais_id', array(
+            'label'      => 'País:',
+            'required'   => true,
+        ));
+
+        $this->addElement('text', 'estados_id', array(
+            'label'      => 'Estado:',
+            'required'   => true,
+        ));
+
+        $this->addElement('text', 'cidade_id', array(
+            'label'      => 'Cidade:',
             'required'   => true,
         ));
 
