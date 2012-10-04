@@ -42,11 +42,12 @@ class Application_Form_Beneficiarios extends Zend_Form
         ));
 
         //Banco input type text
-        $this->addElement('text', 'banco_id', array(
-            'label'      => 'Banco:',
-            'required'   => true,
-        ));
 
+        $this->addElement('select', 'banco_id', array(
+            'label'      => 'Banco:',
+            'multiOptions' => Application_Model_Banco::getOptions(),
+            'required'   => true
+        ));
         //Agencia input type text
         $this->addElement('text', 'agencia_banco', array(
             'label'      => 'Agência:',
@@ -66,9 +67,11 @@ class Application_Form_Beneficiarios extends Zend_Form
         ));
 
         //Escolaridade input type text
-        $this->addElement('text', 'educacao', array(
+
+        $this->addElement('select', 'escolaridade_id', array(
             'label'      => 'Escolaridade:',
-            'required'   => true,
+            'multiOptions' => Application_Model_Escolaridade::getOptions(),
+            'required'   => true
         ));
 
         //E-mail input type text
@@ -78,8 +81,33 @@ class Application_Form_Beneficiarios extends Zend_Form
         ));
 
         //Área do conhecimento input type text
-        $this->addElement('text', 'area_conhecimento', array(
-            'label'      => 'Área do conhecimento:',
+
+        $this->addElement('select', 'area_conhecimento_id', array(
+            'label'      => 'Área do conhecimento::',
+            'multiOptions' => Application_Model_AreaConhecimento::getOptions(),
+            'required'   => true
+        ));
+
+        $this->addElement('text', 'tipo_beneficiario_id', array(
+            'label'      => 'Tipo do Beneficiário:',
+            'required'   => true,
+        ));
+
+        $this->addElement('select', 'pais_id', array(
+            'label'      => 'País:',
+            'multiOptions' => Application_Model_Pais::getOptions(),
+            'required'   => true,
+        ));
+
+        $this->addElement('select', 'estados_id', array(
+            'label'      => 'Estado:',
+            'multiOptions' => Application_Model_Estados::getOptions(),
+            'required'   => true,
+        ));
+
+        $this->addElement('select', 'cidade_id', array(
+            'label'      => 'Cidade:',
+            'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => true,
         ));
 
@@ -87,7 +115,7 @@ class Application_Form_Beneficiarios extends Zend_Form
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'label'    => 'Inserir Beneficiário',
+            'label'    => 'Enviar',
         ));
 
     }
