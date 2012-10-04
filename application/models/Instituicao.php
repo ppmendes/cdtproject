@@ -35,7 +35,7 @@ class Application_Model_Instituicao
         $table->update($data['instituicao'], $where);
     }
 
-    /*public function selectAll()
+    public function selectAll()
     {
         $db = Zend_Db_Table::getDefaultAdapter();
 
@@ -48,8 +48,8 @@ class Application_Model_Instituicao
         $result = $stmt->fetchAll();
 
         return $result;
-    }*/
-
+    }
+/*
     public function selectAll()
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -63,5 +63,5 @@ class Application_Model_Instituicao
         $result = $stmt->fetchAll();
 
         return $result;
-    }
+    }*/
 }

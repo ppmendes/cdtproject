@@ -23,5 +23,19 @@ class Application_Model_Pais
     {
 
     }
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Pais();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['pais_id']] = $item['pais_nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

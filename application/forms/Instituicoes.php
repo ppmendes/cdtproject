@@ -30,16 +30,21 @@ class Application_Form_Instituicoes extends Zend_Form
             'label'      => 'CNPJ:',
             'required'   => true
         ));
-
-        //E-mail input type text
-        $this->addElement('text', 'e_mail', array(
-            'label'      => 'E-mail:',
+        //Responsável pela instituição input type text
+        $this->addElement('text', 'responsavel', array(
+            'label'      => 'Responsável pela instituição:',
             'required'   => true
         ));
 
         //Telefone type text
         $this->addElement('text', 'telefone', array(
             'label'      => 'Telefone:',
+            'required'   => true
+        ));
+
+        //E-mail input type text
+        $this->addElement('text', 'e_mail', array(
+            'label'      => 'E-mail:',
             'required'   => true
         ));
 
@@ -67,15 +72,22 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => false
         ));
 
+        //pais input type text
+        $this->addElement('select', 'pais_id', array(
+            'label'      => 'Pais:',
+            'multiOptions' => Application_Model_Pais::getOptions(),
+            'required'   => true
+        ));
+
         //Estado input type text
-        $this->addElement('select', 'estado', array(
+        $this->addElement('select', 'estados_id', array(
             'label'      => 'Estado:',
             'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => true
         ));
 
         //Cidade input type text
-        $this->addElement('select', 'cidade', array(
+        $this->addElement('select', 'cidade_id', array(
             'label'      => 'Cidade:',
             'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => true
@@ -93,11 +105,6 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => false
         ));
 
-        //Responsável pela instituição input type text
-        $this->addElement('text', 'responsavel', array(
-            'label'      => 'Responsável pela instituição:',
-            'required'   => true
-        ));
 
         //Tipo de instituição input type text
         $this->addElement('text', 'tipo', array(
@@ -111,8 +118,14 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => false
         ));
 
+        //pai_id input type text
+        $this->addElement('text', 'pai_id', array(
+            'label'      => 'Instituicao Pai:',
+            'required'   => false
+        ));
+
         //Denominação input type text
-        $this->addElement('select', 'denominacao', array(
+        $this->addElement('select', 'denominacao_id', array(
             'label'      => 'Denominação:',
             'multiOptions' => Application_Model_Denominacao::getOptions(),
             'required'   => true
