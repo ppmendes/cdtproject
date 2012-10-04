@@ -9,21 +9,6 @@ class Application_Model_Pais
         return $pais;
     }
 
-    public static function getOptions(){
-        try{
-            $options = array();
-            $table = new Application_Model_DbTable_Pais;
-            $pais = $table->fetchAll();
-            foreach($pais as $item){
-                $options[$item['pais_id']] = $item['pais_nome'];
-            }
-            return $options;
-        } catch(Exception $e){
-
-        }
-
-    }
-
     public function insert($pais)
     {
 
