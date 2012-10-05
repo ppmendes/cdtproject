@@ -28,13 +28,13 @@ class Application_Model_Usuario
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Usuario;
-        $table->insert($data['usuarios']);
+        $table->insert($data['usuario']);
     }
 
     public function delete($id)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "usuarios";
+        $table = "usuario";
         $deletado = true;
         $where = $db->quoteInto('usuario_id = ?', $id);
         $data = array('deletado' => $deletado);
@@ -46,7 +46,7 @@ class Application_Model_Usuario
         $table = new Application_Model_DbTable_Usuario;
         $where = $table->getAdapter()->quoteInto('usuario_id = ?',$id);
 
-        $table->update($data['usuarios'], $where);
+        $table->update($data['usuario'], $where);
     }
 
     public function selectAll()
@@ -54,7 +54,7 @@ class Application_Model_Usuario
         $db = Zend_Db_Table::getDefaultAdapter();
         // ainda resta apresentar historico de login do usuarios
         $select = $db->select()
-            ->from(array('u'=>'usuarios'))
+            ->from(array('u'=>'usuario'))
             ->where('u.deletado=?',false)
             ->joinLeft(array('i'=>'instituicao'),'u.instituicao_id = i.instituicao_id',array('u.usuario_id'=>'u.usuario_id','u.sobrenome'=>'u.sobrenome','u.nome'=>'u.nome','i.nome'=>'i.nome'));
 
