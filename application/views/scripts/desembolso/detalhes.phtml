@@ -1,0 +1,22 @@
+<script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente extornar o desembolso?");
+        if (answer) {
+            top.location.href = '/../desembolso/excluir/desembolso_id/'+id;
+        }
+        else {
+            alert("O desembolso não foi extornado!");
+        }
+    }
+</script>
+
+<?php
+ $id = $this->id;
+
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+
+$this->detalhes->setAction($this->url());
+echo $this->detalhes;
+?>

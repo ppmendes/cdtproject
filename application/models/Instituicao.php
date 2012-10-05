@@ -63,4 +63,19 @@ class Application_Model_Instituicao
 
         return $result;
     }*/
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Instituicao();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['instituicao_id']] = $item['nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
