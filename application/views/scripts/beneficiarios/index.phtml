@@ -73,9 +73,7 @@
     foreach($this->beneficiarios as $row)
     {
         //$row = $row->toArray();
-        if($row['extornado']===true){
-            $bg='red';
-        }
+
         echo "<tr id='".$row['beneficiario_id']."'>";
         echo "<td>" .   $row['beneficiario_id'] . "</td>";
         echo "<td><a href='/beneficiarios/detalhes/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
