@@ -6,7 +6,7 @@ class Application_Form_Usuarios extends Zend_Form
     public function init()
     {
         $this->setIsArray('true');
-        //$this->setAttrib('enctype', 'multipart/form-data');
+        $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('usuario');
 
         // Setar metodo
@@ -77,7 +77,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));
 
         //password input type text
-        $this->addElement('text', 'password', array(
+        $this->addElement('password', 'password', array(
             'label'      => 'Password:',
             'required'   => true
         ));
@@ -133,10 +133,11 @@ class Application_Form_Usuarios extends Zend_Form
             'label'      => 'Notas:',
             'required'   => false
         ));
+
         //icono ou imagen input type text
-        $this->addElement('text', 'icono', array(
+        $this->addElement('file', 'icono', array(
             'label'      => 'Icono:',
-            'required'   => false
+            'required'   => true
         ));
 
         //Descrição input type text
