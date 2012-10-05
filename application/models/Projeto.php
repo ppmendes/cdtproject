@@ -38,20 +38,24 @@ class Application_Model_Projeto
 
     public function selectAll()
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
 
-        $select = $db->select()
-            ->from(array('p' => 'projeto'))
-            ->where('p.deletado = ?', false)
-            ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
-            ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
-            ->joinLeft(array('ct' => 'usuarios'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
-            ->joinLeft(array('ga' => 'instituicao'), 'p.gerencia = ga.instituicao_id',array('ga.instituicao_id'=>'ga.instituicao_id','ga.nome'=>'ga.nome'));
-        $stmt = $select->query();
+            $select = $db->select()
+                ->from(array('p' => 'projeto'))
+                ->where('p.deletado = ?', false)
+                ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
+                ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
+                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
+                ->joinLeft(array('ga' => 'instituicao'), 'p.gerencia = ga.instituicao_id',array('ga.instituicao_id'=>'ga.instituicao_id','ga.nome'=>'ga.nome'));
+            $stmt = $select->query();
 
-        $result = $stmt->fetchAll();
+            $result = $stmt->fetchAll();
 
-        return $result;
+            return $result;
+        }catch(Exception $e){
+           echo $e->getMessage();
+        }
     }
 
     public static function getOptions(){
