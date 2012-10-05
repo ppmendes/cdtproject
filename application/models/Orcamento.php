@@ -24,4 +24,19 @@ class Application_Model_Orcamento
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Orcamento();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['orcamento_id']] = $item['descricao_orcamento'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }

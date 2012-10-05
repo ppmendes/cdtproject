@@ -1,0 +1,29 @@
+<script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente excluir o projeto?");
+        if (answer) {
+            top.location.href = '/../empenhos/excluir/projeto_id/'+id;
+        }
+        else {
+            alert("O empenho não foi excluído!");
+        }
+    }
+</script>
+<script>
+    function editar(id)
+    {
+        top.location.href = '/../empenhos/adicionar/projeto_id/'+id;
+    }
+</script>
+
+<?php
+ $id = $this->id;
+
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='editar($id)'>Editar</button>";
+
+$this->detalhes->setAction($this->url());
+echo $this->detalhes;
+?>

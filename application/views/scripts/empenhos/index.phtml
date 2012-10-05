@@ -1,0 +1,92 @@
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function adicionar()
+    {
+        top.location.href = '/../empenhos/adicionar/';
+
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novoprojeto {
+        float:right;
+    }
+</style>
+    <button class='novoprojeto' onclick='adicionar()'>Novo Empenho</button>
+
+<table id='table_id' border='1'>
+    <thead>
+    <tr>
+        <th>descricao</th>
+        <th>data</th>
+        <th>beneficiario_id</th>
+        <th>projeto_id</th>
+        <th>tarefa_id</th>
+        <th>valor_empenho</th>
+        <th>numero_parcelas</th>
+        <th>data_inicio_bolsa</th>
+        <th>data_fim_bolsa</th>
+        <th>orcamento_id</th>
+        <th>usuario_id</th>
+        <th>pre_empenho_id</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    foreach($this->resultado as $row)
+    {
+    //$row = $row->toArray();
+    echo "<tr id='".$row['empenho_id']."'>";
+    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['descricao'] . "</a></td>";
+    echo "<td>" .   $row['data'] . "</td>";
+    echo "<td >" .  $row['beneficiario_id'] . "</td>";
+    echo "<td >" .  $row['projeto_id'] . "</td>";
+    echo "<td >" .  $row['tarefa_id'] . "</td>";
+    echo "<td >" .  $row['valor_empenho'] . "</td>";
+    echo "<td >" .  $row['numero_parcelas'] . "</td>";
+    echo "<td >" .  $row['data_inicio_bolsa'] . "</td>";
+    echo "<td >" .  $row['data_fim_bolsa'] . "</td>";
+    echo "<td >" .  $row['orcamento_id'] . "</td>";
+    echo "<td >" .  $row['usuario_id'] . "</td>";
+    echo "<td >" .  $row['pre_empenho_id'] . "</td>";
+    echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>

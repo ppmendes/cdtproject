@@ -5,7 +5,7 @@ class Application_Model_Empenho
 
     public function find($id){
         //DB TABLE
-        $table = new Application_Model_Empenho();
+        $table = new Application_Model_DbTable_Empenho();
         $empenho = $table->find($id)->current();
         return $empenho;
     }
@@ -38,6 +38,20 @@ class Application_Model_Empenho
 
         }
 
+    }
+
+    public function selectAll()
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()
+            ->from(array('e' => 'empenho'));
+
+        $stmt = $select->query();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
     }
 }
 
