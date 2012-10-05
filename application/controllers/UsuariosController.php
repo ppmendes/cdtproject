@@ -1,6 +1,6 @@
 <?php
 
-class UsuarioController extends Zend_Controller_Action
+class UsuariosController extends Zend_Controller_Action
 {
 
     public function init()
@@ -38,7 +38,7 @@ class UsuarioController extends Zend_Controller_Action
 
             if(is_array($data)){
                 $form->setAction('/usuarios/detalhes/usuario_id/' . $id);
-                $form->populate(array("usuarios" => $data));
+                $form->populate(array("usuario" => $data));
             }
         }
 
@@ -57,7 +57,7 @@ class UsuarioController extends Zend_Controller_Action
 
         if(is_array($data)){
             $detalhes->setAction('/usuarios/detalhes/usuario_id/' . $id);
-            $detalhes->populate(array("usuarios" => $data));
+            $detalhes->populate(array("usuario" => $data));
         }
 
         $this->view->detalhes = $detalhes;

@@ -135,7 +135,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));
         //icono ou imagen input type text
         $this->addElement('text', 'icono', array(
-            'label'      => 'Notas:',
+            'label'      => 'Icono:',
             'required'   => false
         ));
 
