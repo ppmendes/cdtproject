@@ -23,30 +23,26 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-        // array para atributo situação
-        $array_situacao_tarefa = array(
-            1 => 'Ativa',
-            2 => 'Inativo(a)',
-        );
-
-        //situação da tarefa select type
-        $this->addElement('select', 'situacao', array(
-            'label'      => 'Situação:',
-            'multiOptions'  => $array_situacao_tarefa,
-            'required'   => true
-        ));
+//        // array para atributo situação
+//        $array_situacao_tarefa = array(
+//            1 => 'Ativa',
+//            2 => 'Inativo(a)',
+//        );
+//
+//        //situação da tarefa select type
+//        $this->addElement('select', 'situacao', array(
+//            'label'      => 'Situação:',
+//            'multiOptions'  => $array_situacao_tarefa,
+//            'required'   => true
+//        ));
 
         // array para prioridade da tarefas
-        $array_prioridade_tarefa = array(
-            1 => 'Normal',
-            2 => 'Baixa',
-            3 => 'Alta',
-        );
+
 
         //prioridade da tarefa select type
-        $this->addElement('select', 'prioridade', array(
+        $this->addElement('select', 'prioridade_id', array(
             'label'      => 'Prioridade:',
-            'multiOptions'  => $array_prioridade_tarefa,
+            'multiOptions'  => Application_Model_Prioridade::getOptions(),
             'required'   => true
         ));
 
@@ -76,15 +72,99 @@ class Application_Form_Tarefas extends Zend_Form
         );
 
         //progresso da tarefa select type
-        $this->addElement('select', 'progresso', array(
-            'label'      => 'Progresso:',
+        $this->addElement('select', 'percentagem_completo', array(
+            'label'      => 'Porcentagem Completa:',
             'multiOptions'  => $array_progresso_tarefa,
             'required'   => true
         ));
 
-        $this->addElement('checkbox', 'marco_arquivo', array(
-            'label'      => 'Marco:',
-            'required'   => true
+//        $this->addElement('checkbox', 'marco_arquivo', array(
+//            'label'      => 'Marco:',
+//            'required'   => true
+//        ));
+
+        $this->addElement('text', 'tarefa_id_pai', array(
+            'label'      => 'Tarefa ID Pai:',
+            'required'   => true,
+        ));
+
+        $this->addElement('text', 'milestone', array(
+            'label'      => 'Milestone:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'dono', array(
+            'label'      => 'Dono:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'data_inicio', array(
+            'label'      => 'Data de Início:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'duracao', array(
+            'label'      => 'Duração:',
+            'required'   => true,
+        ));
+        $this->addElement('select', 'tipo_duracao_id', array(
+            'label'      => 'Tipo de Duração:',
+            'multiOptions' => Application_Model_TipoDuracao::getOptions(),
+            'required'   => true,
+        ));
+        $this->addElement('text', 'horas_trabalhadas', array(
+            'label'      => 'Horas Trabalhadas:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'data_final', array(
+            'label'      => 'Data Final:',
+            'required'   => true,
+        ));
+        $this->addElement('select', 'estado_tarefa_id', array(
+            'label'      => 'Estado da tarefa:',
+            'multiOptions' => Application_Model_EstadoTarefa::getOptions(),
+            'required'   => true,
+        ));
+        $this->addElement('text', 'descricao', array(
+            'label'      => 'Descrição:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'orcamento_tarefa', array(
+            'label'      => 'Orçamento da Tarefa:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'website_relacionado', array(
+            'label'      => 'Website Relacionado:',
+            'required'   => true,
+        ));
+        $this->addElement('select', 'criador', array(
+            'label'      => 'Criador:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
+            'required'   => true,
+        ));
+        $this->addElement('text', 'tarefa_dinamica', array(
+            'label'      => 'Tarefa Dinâmica:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'acesso_id', array(
+            'label'      => 'Acesso:',
+            'required'   => true,
+        ));
+        $this->addElement('text', 'tarefa_notificacao', array(
+            'label'      => 'Notificação:',
+            'required'   => true,
+        ));
+        $this->addElement('select', 'tipo_tarefa_id', array(
+            'label'      => 'Tipo de tarefa:',
+            'multiOptions' => Application_Model_TipoTarefa::getOptions(),
+            'required'   => true,
+        ));
+        $this->addElement('select', 'projeto_id', array(
+            'label'      => 'Projeto:',
+            'multiOptions' => Application_Model_Projeto::getOptions(),
+            'required'   => true,
+        ));
+        $this->addElement('select', 'instituicao_id', array(
+            'label'      => 'Instituicao:',
+            'multiOptions' => Application_Model_Instituicao::getOptions(),
+            'required'   => true,
         ));
         //adicionar fase de desenvolvimento
         //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();

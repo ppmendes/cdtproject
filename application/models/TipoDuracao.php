@@ -9,6 +9,21 @@ class Application_Model_TipoDuracao
         return $tipo_duracao;
     }
 
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_TipoDuracao;
+            $data = $table->fetchAll();
+            foreach($data as $item){
+                $options[$item['tipo_duracao_id']] = $item['duracao_nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public function insert($tipo_duracao)
     {
 
