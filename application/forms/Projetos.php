@@ -32,9 +32,9 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Gerência input type text
-        $this->addElement('select', 'gerencia', array(
-            'label'      => 'Gerência:',
-            'multiOptions' => Application_Model_Instituicao::getOptions(),
+        $this->addElement('select', 'instituicao_gerencia_id', array(
+            'label'      => 'Instituição de Gerência:',
+            'multiOptions' => Application_Model_InstituicaoGerencia::getOptions(),
             'required'   => true
         ));
 

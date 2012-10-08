@@ -18,9 +18,9 @@ class Application_Form_Desembolso extends Zend_Form
         ));
 
         //Empenho a liquidar input type text
-        $this->addElement('text', 'empenho_id', array(
+        $this->addElement('select', 'empenho_id', array(
             'label'      => 'Empenho a liquidar:',
-            //'multiOptions' => Application_Model_Empenho::getOptions(),
+            'multiOptions' => Application_Model_Empenho::getOptions(),
             'required'   => true,
         ));
 
