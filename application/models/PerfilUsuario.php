@@ -29,7 +29,7 @@ class Application_Model_PerfilUsuario
             $table = new Application_Model_DbTable_PerfilUsuario();
             $resultado = $table->fetchAll();
             foreach($resultado as $item){
-                $options[$item['perfil_id']] = $item['perfil_nome'];
+                $options[$item['perfil_usuario_id']] = $item['perfil_nome'];
             }
             return $options;
         } catch(Exception $e){
