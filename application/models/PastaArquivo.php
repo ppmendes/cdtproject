@@ -24,4 +24,18 @@ class Application_Model_PastaArquivo
     {
 
     }
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_PastaArquivo();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['pasta_arquivo_id']] = $item['nome_pasta'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }

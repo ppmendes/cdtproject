@@ -23,4 +23,19 @@ class Application_Model_TipoArquivo
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_TipoArquivo();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['tipo_arquivo_id']] = $item['nome_tipo'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }

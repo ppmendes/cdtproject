@@ -13,48 +13,31 @@ class Application_Form_Arquivos extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('arquivos');
+        $this->setElementsBelongTo('arquivo');
 
         // Setar metodo
         $this->setMethod('post');
 
         // array para atributo pasta
-        $array_pasta_arquivo = array(
-            1 => 'Raiz',
 
-        );
-
-        //situação da tarefa select type
-        $this->addElement('select', 'pasta', array(
-            'label'      => 'Pasta:',
-            'multiOptions'  => $array_pasta_arquivo,
-            'required'   => true
-        ));
-
-        //versao do arquivo input type text
-        $this->addElement('text', 'nome', array(
-            'label'      => 'Versão:',
+        //nome real do arquivo input type text
+        $this->addElement('text', 'nome_real', array(
+            'label'      => 'Nome Real:',
             'required'   => true,
         ));
 
-        // array para atributo tipo de arquivo
-        $array_tipo_arquivo = array(
-            1 => 'Desconhecido',
-            2 => 'Documento',
-            3 => 'Aplicativo',
-        );
+        //nome do arquivo input type text
 
-        //tipo de arquivo select type
-        $this->addElement('select', 'tipo', array(
-            'label'      => 'Tipo de Arquivo:',
-            'multiOptions'  => $array_tipo_arquivo,
+        $this->addElement('file', 'nome_arquivo', array(
+            'label'      => 'Arquivo:',
             'required'   => true
         ));
 
-        //tarefa input type text
-        $this->addElement('text', 'nome_tarefa', array(
-            'label'      => 'Tarefa:',
-            'required'   => true,
+        //arquivo id pai  da tarefa select type
+        $this->addElement('text', 'arquivo_id_pae', array(
+            'label'      => 'Arquivo Pae:',
+            //'multiOptions'  => $array_pasta_arquivo,
+            'required'   => false
         ));
 
         //descriçao do arquivo input type textarea
@@ -63,10 +46,69 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true
         ));
 
-        $this->addElement('file', 'teste_upload', array(
-            'label'      => 'Teste Upload:',
+        //tipo de arquivo select type
+        $this->addElement('select', 'tipo_aruivo_id', array(
+            'label'      => 'Tipo de Arquivo:',
+            'multiOptions'  => Application_Model_TipoArquivo::getOptions(),
             'required'   => true
         ));
+
+        //dono do arquivo input type text
+        //item preenchido automaticamnete
+        $this->addElement('text', 'dono_arquivo', array(
+            'label'      => 'Dono:',
+            'required'   => true,
+        ));
+
+        //data do arquivo input type text
+        $this->addElement('text', 'data_arquivo', array(
+            'label'      => 'Data:',
+            'required'   => true,
+        ));
+        //tamanho do arquivo input type text
+        $this->addElement('text', 'tamanho', array(
+            'label'      => 'Tamanho:',
+            'required'   => true,
+        ));
+        //versao do arquivo input type text
+        $this->addElement('text', 'versao', array(
+            'label'      => 'Versão:',
+            'required'   => true,
+        ));
+        //icono do arquivo input type text
+        $this->addElement('text', 'icon_arquivo', array(
+            'label'      => 'Icono:',
+            'required'   => true,
+        ));
+        //pasta do arquivo select type
+        $this->addElement('select', 'pasta_arquivo_id', array(
+            'label'      => 'Pasta:',
+            'multiOptions'  => Application_Model_PastaArquivo::getOptions(),
+            'required'   => true
+        ));
+
+        //projeto id pai  da tarefa select type
+        $this->addElement('select', 'projeto_id', array(
+            'label'      => 'Projeto:',
+            'multiOptions'  =>Application_Model_Projeto::getOptions(),
+            'required'   => true
+        ));
+        //tarefa id pai  da tarefa select type
+        $this->addElement('text', 'tarefa_id', array(
+            'label'      => 'tarefa:',
+           // 'multiOptions'  =>Application_Model_Projeto::getOptions(),
+            'required'   => true
+        ));
+        //projeto id pai  da tarefa select type
+        $this->addElement('select', 'institucao_id', array(
+            'label'      => 'Instituicao:',
+            'multiOptions'  =>Application_Model_Instituicao::getOptions(),
+            'required'   => true
+        ));
+
+
+
+
 
         //adicionar fase de desenvolvimento
         //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
