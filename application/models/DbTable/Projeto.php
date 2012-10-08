@@ -29,10 +29,10 @@ class Application_Model_DbTable_Projeto extends Zend_Db_Table_Abstract
             'refTableClass'     => 'Application_Model_DbTable_EstadoProjeto',
             'refColumns'        => 'estado_projeto_id'
         ),
-        'Application_Model_DbTable_Instituicao' => array(
-            'columns'           => 'gerencia',
-            'refTableClass'     => 'Application_Model_DbTable_Instituicao',
-            'refColumns'        => 'instituicao_id'
+        'Application_Model_DbTable_InstituicaoGerencia' => array(
+            'columns'           => 'instituicao_gerencia_id',
+            'refTableClass'     => 'Application_Model_DbTable_InstituicaoGerencia',
+            'refColumns'        => 'instituicao_gerencia_id'
         ),
         'Application_Model_DbTable_ModoContratacao' => array(
             'columns'           => 'modo_contratacao_id',
