@@ -12,7 +12,7 @@ class Application_Model_Tarefa
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Tarefa;
-        $table->insert($data['tarefa']);
+        $table->insert($data['tarefas']);
     }
 
     public function delete($id)
@@ -33,7 +33,7 @@ class Application_Model_Tarefa
         $table = new Application_Model_DbTable_Tarefa;
         $where = $table->getAdapter()->quoteInto('tarefa_id = ?',$id);
 
-        $table->update($data['tarefa'],$where);
+        $table->update($data['tarefas'],$where);
     }
 
     public function selectAll()
@@ -44,7 +44,7 @@ class Application_Model_Tarefa
             $select = $db->select()
                 ->from(array('t' => 'tarefa'))
                 ->where('t.deletado = ?', false)
-                ->joinLeft(array('us' => 'usuario'), 't.criador = us.usuario_id',array('us.usuario_id'=>'us.usuario_id','us.nome'=>'us.nome'))
+                ->joinLeft(array('us' => 'usuario'), 't.criador = us.usuario_id',array('us.usuario_id'=>'us.usuario_id','us.username'=>'us.username'))
                 ->joinLeft(array('pr' => 'projeto'), 't.projeto_id = pr.projeto_id',array('pr.projeto_id'=>'pr.projeto_id','pr.nome'=>'pr.nome'));
 //                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
 //                ->joinLeft(array('ga' => 'instituicao_gerencia'), 'p.instituicao_gerencia_id = ga.instituicao_gerencia_id',array(
