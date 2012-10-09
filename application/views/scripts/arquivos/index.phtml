@@ -1,1 +1,86 @@
-Arquivos
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function adicionar()
+    {
+        top.location.href = '/../arquivos/adicionar/';
+
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novoprojeto {
+        float:right;
+    }
+</style>
+<button class='novoprojeto' onclick='adicionar()'>Novo Arquivo</button>
+
+<table id='table_id' border='0'>
+    <thead>
+    <tr>
+        <th>Nome de Arquivo</th>
+        <th>Descriçao</th>
+        <th>Versões</th>
+        <th>Tipo de Arquivo</th>
+        <th>Pasta</th>
+        <th>Nome da Tarefa</th>
+        <th>Responsável</th>
+        <th>Tamanho</th>
+        <th>Data</th>
+    </tr>
+    </thead>
+    <tbody>
+
+<?php
+
+    foreach($this->arquivo as $row) // "$this->usuarios" nome da variável definida no controller
+    {
+
+        echo "<tr id='".$row['a.arquivo_id']."'>";
+        echo "<td><a href='/arquivos/detalhes/arquivo_id/{$row['a.arquivo_id']}'>" .$row['a.nome_arquivo']. "</a></td>";
+        //echo "<td>" .$row['a.versao']. "</td>";
+        //echo "<td>" .$row['ta.nome_tipo']. "</td>";
+        //echo "<td>" .$row['a.nome_arquivo']. "</td>";
+        //echo "<td>" .$row['t.nome']. "</td>";
+        //echo "<td>" .$row['u.nome']. "</td>";
+        //echo "<td>" .$row['a.tamanho']. "</td>";
+        //echo "<td>" .$row['a.data_arquivo']. "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>

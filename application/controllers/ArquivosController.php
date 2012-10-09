@@ -16,26 +16,69 @@ class ArquivosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $instituicaoModel = new Application_Model_Instituicao();
-        $this->view->instituicao = $instituicaoModel->selectAll();
+        $arquivoModel = new Application_Model_Arquivo;
+        $this->view->arquivo = $arquivoModel->selectAll();
     }
 
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Arquivos();
-
-        echo "&nbsp;";
+        $model = new Application_Model_Arquivo;
+        $id = $this->_getParam('arquivo_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                echo "<pre>";
-                print_r($form->getValues());
-                echo "</pre>";
+
+                $data = $form->getValues();
+                if($id){
+
+                    $model->update($data, $id);
+                }else{
+                    $model->insert($data);
+                }
+                $this->_redirect('/arquivos/');
+            }
+        }elseif ($id){
+            $data = $model->find($id)->toArray();
+
+            if(is_array($data)){
+
+                $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
+                $form->populate(array("arquivo" => $data));
             }
         }
 
         $this->view->form = $form;
     }
 
+    public function detalhesAction(){
+        //$request = $this->getRequest();
+        $detalhes = new Application_Form_Arquivos();
+        $model = new Application_Model_Arquivo;
+        $id = $this->_getParam('arquivo_id');
+        $this->view->id = $id;
 
+
+       // $data = $model->find($id)->toArray();
+
+        if(@is_array($data)){
+            $detalhes->setAction('/arquivos/detalhes/arquivo_id/' . $id);
+            $detalhes->populate(array("arquivo" => $data));
+        }
+
+        $this->view->detalhes = $detalhes;
+    }
+
+    public function excluirAction(){
+        //$request = $this->getRequest();
+        $excluir = new Application_Form_Arquivos();
+        $model = new Application_Model_Arquivo;
+        $id = $this->_getParam('arquivo_id');
+
+        $model->delete($id);
+
+        $this->_redirect('/arquivos/');
+
+        $this->view->excluir = $excluir;
+    }
 }
