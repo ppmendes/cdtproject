@@ -9,6 +9,21 @@ class Application_Model_TipoBeneficiario
         return $tipo_beneficiario;
     }
 
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_TipoBeneficiario;
+            $tipoBeneficiario = $table->fetchAll();
+            foreach($tipoBeneficiario as $item){
+                $options[$item['tipo_beneficiario_id']] = $item['nome_tipo'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public function insert($tipo_beneficiario)
     {
 

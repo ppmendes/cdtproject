@@ -11,7 +11,8 @@ class BeneficiariosController extends Zend_Controller_Action
     public function indexAction()
     {
         $beneficiariosModel = new Application_Model_Beneficiario();
-        $this->view->beneficiarios = $beneficiariosModel->selectAll();
+        $this->view->beneficiariospf = $beneficiariosModel->selectAllpf();
+        $this->view->beneficiariospj = $beneficiariosModel->selectAllpj();
 
     }
 
