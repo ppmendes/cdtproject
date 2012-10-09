@@ -2,7 +2,19 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	protected function _initDoctype()
+    protected function _initLog()
+    {
+        $logger = new Zend_Log();
+
+        $writer = new Zend_Log_Writer_Firebug();
+
+        $logger->addWriter($writer);
+
+        Zend_Registry::set('Log', $logger);
+
+    }
+
+    protected function _initDoctype()
     {
         $this->bootstrap('view');
         $view = $this->getResource('view');
@@ -18,6 +30,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $loader->registerNamespace('Application_');
     }
+
+
 
 }
 

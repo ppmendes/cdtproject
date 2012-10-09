@@ -51,16 +51,20 @@ class Application_Model_Usuario
 
     public function selectAll()
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        // ainda resta apresentar historico de login do usuarios
-        $select = $db->select()
-            ->from(array('u'=>'usuario'))
-            ->where('u.deletado=?',false)
-            ->joinLeft(array('i'=>'instituicao'),'u.instituicao_id = i.instituicao_id',array('u.usuario_id'=>'u.usuario_id','u.sobrenome'=>'u.sobrenome','u.nome'=>'u.nome','i.nome'=>'i.nome'));
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            // ainda resta apresentar historico de login do usuarios
+            $select = $db->select()
+                ->from(array('u'=>'usuario'))
+                ->where('u.deletado=?',false)
+                ->joinLeft(array('i'=>'instituicao'),'u.instituicao_id = i.instituicao_id',array('u.usuario_id'=>'u.usuario_id','u.sobrenome'=>'u.sobrenome','u.nome'=>'u.nome','i.nome'=>'i.nome'));
 
-        $stmt = $select->query();
-        $result = $stmt->fetchAll();
-        return $result;
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch(Exception $e){
+            Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
+        }
     }
 }
 
