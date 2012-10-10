@@ -37,7 +37,7 @@ class Application_Model_PastaArquivo
         $table->update($data['pasta_arquivos'],$where);
     }
 
-    /*public function selectAll()
+    public function selectAll()
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
@@ -58,7 +58,7 @@ class Application_Model_PastaArquivo
         }catch(Exception $e){
             echo $e->getMessage();
         }
-    }*/
+    }
 
     public static function getOptions(){
         try{
