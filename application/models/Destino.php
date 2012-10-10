@@ -24,5 +24,20 @@ class Application_Model_Destino
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Destino();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['destino_id']] = $item['nome_destino'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

@@ -29,9 +29,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $loader = Zend_Loader_Autoloader::getInstance();
 
         $loader->registerNamespace('Application_');
+
     }
 
-
+    protected function _initJQuery()
+    {
+        $this->view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+    }
 
 }
 
