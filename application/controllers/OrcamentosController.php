@@ -10,22 +10,26 @@ class OrcamentosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $orcamentoModel = new Application_Model_Projeto();
+        $orcamentoModel = new Application_Model_Orcamento();
         $this->view->orcamentos = $orcamentoModel->selectAll();
 
     }
 
     public function adicionarAction(){
-        $request = $this->getRequest();
-        $form = new Application_Form_Orcamentos();
-        $model = new Application_Model_Projeto;
-        $id = $this->_getParam('orcamento_id');
 
-        if($this->getRequest()->isPost()){
+
+        //$request = $this->getRequest();
+
+        $form = new Application_Form_Orcamentos();
+        $this->view->form = $form;
+        //$model = new Application_Model_Projeto;
+        //$id = $this->_getParam('orcamento_id');
+
+        /*if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-//                print_r($form->getValues());
-//                echo "</pre>";
+                  //echo "<pre>";
+                  //print_r($form->getValues());
+                  //echo "</pre>";
                 $data = $form->getValues();
                 if($id){
                     $model->update($data, $id);
@@ -42,11 +46,9 @@ class OrcamentosController extends Zend_Controller_Action
                 $form->setAction('/orcamentos/detalhes/orcamento_id/' . $id);
                 $form->populate(array("orcamentos" => $data));
             }
-        }
+        }*/
 
-        $this->view->form = $form;
-
-
+       //$this->view->form = $form;
     }
 
     public function detalhesAction(){
