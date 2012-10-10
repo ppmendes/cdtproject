@@ -36,6 +36,7 @@ class Application_Model_Rubrica
                 {
                     $options2[$item['rubrica_id']] = $item['codigo_rubrica']." - ".$item['descricao'];
                     $options[] = $item['codigo_rubrica']." - ".$item['descricao'];
+
                 }
             }
             return $options;
