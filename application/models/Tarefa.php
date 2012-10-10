@@ -73,5 +73,20 @@ class Application_Model_Tarefa
         }
 
     }
+
+    public static function getOptions1(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Tarefa();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['tarefa_id']] = $item['nome'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

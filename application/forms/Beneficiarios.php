@@ -88,8 +88,9 @@ class Application_Form_Beneficiarios extends Zend_Form
             'required'   => true
         ));
 
-        $this->addElement('text', 'tipo_beneficiario_id', array(
+        $this->addElement('select', 'tipo_beneficiario_id', array(
             'label'      => 'Tipo do Beneficiário:',
+            'multiOptions' => Application_Model_TipoBeneficiario::getOptions(),
             'required'   => true,
         ));
 
