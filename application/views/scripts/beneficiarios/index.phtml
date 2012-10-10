@@ -1,6 +1,6 @@
 <script>
     $(document).ready(function() {
-        $('#table_id').dataTable({
+        $('#table_id_pf').dataTable({
             "sDom": 'R<"H"lfr>t<"F"ip<',
             "bJQueryUI": true,
             "sPaginationType": "full_numbers",
@@ -21,6 +21,29 @@
                     "sLast":     " >> "
                 }
             }
+        });
+
+            $('#table_id_pj').dataTable({
+                "sDom": 'R<"H"lfr>t<"F"ip<',
+                "bJQueryUI": true,
+                "sPaginationType": "full_numbers",
+                "oLanguage": {
+                    "sProcessing": "Processando...",
+                    "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                    "sZeroRecords": "Nada Encontrado",
+                    "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                    "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                    "sLoadingRecords": "Carregando...",
+                    "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                    "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                    "sSearch": "BUSCA",
+                    "oPaginate": {
+                        "sFirst":    " <<  ",
+                        "sPrevious": " < ",
+                        "sNext":     " > ",
+                        "sLast":     " >> "
+                    }
+                }
             //"bSort": false,
 //            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
 //            "aoColumns": [
@@ -40,6 +63,20 @@
 
     }
 </script>
+
+<script>
+    function funcaoFiltro(valor){
+        if(valor == 'cpf' ){
+            $('#table_id_pf_wrapper').css('display','block');
+            $('#table_id_pj_wrapper').css('display','none');
+        }
+        if(valor == 'cnpj' ){
+            $('#table_id_pj_wrapper').css('display','block');
+            $('#table_id_pf_wrapper').css('display','none');
+        }
+    }
+</script>
+
 <style>
     table * *{
         text-align: center;
@@ -47,30 +84,37 @@
     .novobeneficiario {
         float:right;
     }
+    #table_id_pj_wrapper {
+        display:none;
+    }
 </style>
-<button class='novobeneficiario' onclick='adicionar()'>Novo Beneficiario</button>
 
-<table id='table_id' border='1'>
+<button class='novobeneficiario' onclick='adicionar()'>Novo Beneficiario</button>
+<input type="radio" name="tipobeneficiario" checked="checked" onclick="funcaoFiltro('cpf')">Pessoa Física</br>
+<input type="radio" name="tipobeneficiario" onclick="funcaoFiltro('cnpj')">Pessoa Jurídica
+
+
+<table id='table_id_pf'>
     <thead>
     <tr>
         <th>Id</th>
         <th>Nome</th>
         <th>CPF</th>
-        <th>RG</th>
         <th>Endereço</th>
         <th>Telefone</th>
         <th>Banco</th>
+        <th>E-mail</th>
+        <th>RG</th>
         <th>Agência</th>
         <th>Conta</th>
         <th>NIT/PIS</th>
         <th>Escolaridade</th>
-        <th>E-mail</th>
     </tr>
     </thead>
     <tbody>
 
     <?php
-    foreach($this->beneficiarios as $row)
+    foreach($this->beneficiariospf as $row)
     {
         //$row = $row->toArray();
 
@@ -78,14 +122,46 @@
         echo "<td>" .   $row['beneficiario_id'] . "</td>";
         echo "<td><a href='/beneficiarios/detalhes/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
         echo "<td>" .   $row['cpf_cnpj'] . "</td>";
-        echo "<td>" .   $row['rg_ie'] . "</td>";
         echo "<td >" .  $row['endereco'] . "</td>";
         echo "<td >" .  $row['telefone'] . "</td>";
         echo "<td >" .  $row['ba.nome_banco'] . "</td>";
-        echo "<td >" .  $row['agencia_banco'] . "</td>";
+        echo "<td >" .  $row['email'] . "</td>";
+        echo "<td >" .   $row['rg_ie'] . "</td>";
+        echo "<td>" .  $row['agencia_banco'] . "</td>";
         echo "<td >" .  $row['conta_bancaria'] . "</td>";
         echo "<td >" .  $row['nit_pis'] . "</td>";
         echo "<td >" .  $row['es.nome_escolaridade'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>
+
+    <table id='table_id_pj'>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nome</th>
+            <th>CNPJ</th>
+            <th>Endereço</th>
+            <th>Telefone</th>
+            <th>Banco</th>
+            <th>E-mail</th>
+        </tr>
+        </thead>
+        <tbody>
+
+    <?php
+    foreach($this->beneficiariospj as $row)
+    {
+        //$row = $row->toArray();
+
+        echo "<tr id='".$row['beneficiario_id']."'>";
+        echo "<td>" .   $row['beneficiario_id'] . "</td>";
+        echo "<td><a href='/beneficiarios/detalhes/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
+        echo "<td>" .   $row['cpf_cnpj'] . "</td>";
+        echo "<td >" .  $row['endereco'] . "</td>";
+        echo "<td >" .  $row['telefone'] . "</td>";
+        echo "<td >" .  $row['ba.nome_banco'] . "</td>";
         echo "<td >" .  $row['email'] . "</td>";
         echo "</tr>";
     }

@@ -47,7 +47,7 @@ class Application_Form_Arquivos extends Zend_Form
         ));
 
         //tipo de arquivo select type
-        $this->addElement('select', 'tipo_aruivo_id', array(
+        $this->addElement('select', 'tipo_arquivo_id', array(
             'label'      => 'Tipo de Arquivo:',
             'multiOptions'  => Application_Model_TipoArquivo::getOptions(),
             'required'   => true
@@ -100,7 +100,7 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true
         ));
         //projeto id pai  da tarefa select type
-        $this->addElement('select', 'institucao_id', array(
+        $this->addElement('select', 'instituicao_id', array(
             'label'      => 'Instituicao:',
             'multiOptions'  =>Application_Model_Instituicao::getOptions(),
             'required'   => true

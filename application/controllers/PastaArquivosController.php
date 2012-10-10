@@ -1,6 +1,6 @@
 <?php
 
-class BeneficiariosController extends Zend_Controller_Action
+class PastaArquivosController extends Zend_Controller_Action
 {
 
     public function init()
@@ -10,17 +10,16 @@ class BeneficiariosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $beneficiariosModel = new Application_Model_Beneficiario();
-        $this->view->beneficiariospf = $beneficiariosModel->selectAllpf();
-        $this->view->beneficiariospj = $beneficiariosModel->selectAllpj();
+        $pasta_arquivoModel = new Application_Model_PastaArquivo();
+        $this->view->pasta_arquivos = $pasta_arquivoModel->selectAll();
 
     }
 
     public function adicionarAction(){
         $request = $this->getRequest();
-        $form = new Application_Form_Beneficiarios();
-        $model = new Application_Model_Beneficiario();
-        $id = $this->_getParam('beneficiario_id');
+        $form = new Application_Form_PastaArquivos();
+        $model = new Application_Model_PastaArquivo();
+        $id = $this->_getParam('pasta_arquivo_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -34,14 +33,14 @@ class BeneficiariosController extends Zend_Controller_Action
                     $model->insert($data);
                 }
 
-                $this->_redirect('/beneficiarios/');
+                $this->_redirect('/arquivos/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                $form->setAction('/beneficiarios/detalhes/beneficiario_id/' . $id);
-                $form->populate(array("beneficiario" => $data));
+                $form->setAction('/pastaArquivos/detalhes/pasta_arquivo_id/' . $id);
+                $form->populate(array("pasta_arquivos" => $data));
             }
         }
 
@@ -52,17 +51,17 @@ class BeneficiariosController extends Zend_Controller_Action
 
     public function detalhesAction(){
         $request = $this->getRequest();
-        $detalhes = new Application_Form_Beneficiarios();
-        $model = new Application_Model_Beneficiario();
-        $id = $this->_getParam('beneficiario_id');
+        $detalhes = new Application_Form_PastaArquivos();
+        $model = new Application_Model_PastaArquivo();
+        $id = $this->_getParam('pasta_arquivo_id');
         $this->view->id = $id;
 
 
         $data = $model->find($id)->toArray();
 
         if(is_array($data)){
-            $detalhes->setAction('/beneficiarios/detalhes/beneficiario_id/' . $id);
-            $detalhes->populate(array("beneficiario" => $data));
+            $detalhes->setAction('/pastaArquivos/detalhes/pasta_arquivo_id/' . $id);
+            $detalhes->populate(array("pasta_arquivos" => $data));
         }
 
         $this->view->detalhes = $detalhes;
@@ -72,12 +71,12 @@ class BeneficiariosController extends Zend_Controller_Action
 
     public function excluirAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Beneficiarios();
-        $model = new Application_Model_Beneficiario();
-        $id = $this->_getParam('beneficiario_id');
+        $excluir = new Application_Form_PastaArquivos();
+        $model = new Application_Model_PastaArquivo();
+        $id = $this->_getParam('pasta_arquivo_id');
 
         $model->delete($id);
-        $this->_redirect('/beneficiarios/');
+        $this->_redirect('/arquivos/');
 
         $this->view->excluir = $excluir;
 
