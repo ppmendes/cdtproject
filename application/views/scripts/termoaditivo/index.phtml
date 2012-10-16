@@ -34,14 +34,19 @@
     });
 </script>
 <script>
-    function adicionar()
+    function prorrogar()
     {
-        top.location.href = '/../arquivos/adicionar/';
+        top.location.href = '/../termoaditivo/prorrogar/';
 
     }
-    function adicionarPasta()
+    function remanejar()
     {
-        top.location.href = '/../pastaarquivos/adicionar/';
+        top.location.href = '/../termoaditivo/remanejar/';
+
+    }
+    function alterar()
+    {
+        top.location.href = '/../termoaditivo/alterar/';
 
     }
 </script>
@@ -49,45 +54,50 @@
     table * *{
         text-align: center;
     }
-    .novoprojeto {
+    .prorrogar, .remanejar, .alterar {
         float:right;
     }
 </style>
-<button class='novoprojeto' onclick='adicionar()'>Novo Arquivo</button>
-<button class='novoprojeto' onclick='adicionarPasta()'>Nova Pasta</button>
+<button class='prorrogar' onclick='prorrogar()'>Prorrogar</button>
+<button class='remanejar' onclick='remanejar()'>Remanejar</button>
+<button class='alterar' onclick='alterar()'>Alterar</button>
+
 
 <table id='table_id' border='0'>
     <thead>
     <tr>
-        <th>Nome de Arquivo</th>
-        <th>Descriçao</th>
-        <th>Versões</th>
-        <th>Tipo de Arquivo</th>
-        <th>Pasta</th>
-        <th>Nome da Tarefa</th>
-        <th>Responsável</th>
-        <th>Tamanho</th>
-        <th>Data</th>
+        <th>Id</th>
+        <th>Instituicao</th>
+        <th>Nome</th>
+        <th>Apelido</th>
+        <th>Data de início</th>
+        <th>Data final</th>
+        <th>Data final real</th>
+        <th>Estado do projeto</th>
+        <th>Porcentagem completa</th>
+        <th>Prioridade</th>
+        <th>Coordenador técnico</th>
     </tr>
     </thead>
     <tbody>
 
-<?php
-
-    foreach($this->arquivo as $row) // "$this->usuarios" nome da variável definida no controller
+    <?php
+    foreach($this->projetos as $row)
     {
-
-        echo "<tr id='".$row['a.arquivo_id']."'>";
-        echo "<td><a href='/arquivos/detalhes/arquivo_id/{$row['a.arquivo_id']}'>" .$row['a.nome_arquivo']. "</a></td>";
-        echo "<td>" .$row['a.versao']. "</td>";
-        echo "<td>" .$row['a.descricao_arquivo']. "</td>";
-        echo "<td>" .$row['ta.nome_tipo']. "</td>";
-        echo "<td>" .$row['a.nome_arquivo']. "</td>";
-        echo "<td>" .$row['t.nome']. "</td>";
-        echo "<td>" .$row['u.nome']. "</td>";
-        echo "<td>" .$row['a.tamanho']. "</td>";
-        echo "<td>" .$row['a.data_arquivo']. "</td>";
-        echo "</tr>";
+    //$row = $row->toArray();
+    echo "<tr id='".$row['projeto_id']."'>";
+    echo "<td>" .   $row['projeto_id'] . "</td>";
+    echo "<td>" .   $row['ga.nome_instituicao_gerencia'] . "</td>";
+    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";
+    echo "<td>" .   $row['apelido'] . "</td>";
+    echo "<td >" .  $row['data_inicio'] . "</td>";
+    echo "<td >" .  $row['data_final'] . "</td>";
+    echo "<td >" .  $row['data_final_real'] . "</td>";
+    echo "<td >" .  $row['nome_estado'] . "</td>";
+    echo "<td >" .  $row['percentagem_completo'] . "</td>";
+    echo "<td >" .  $row['nome_prioridade'] . "</td>";
+    echo "<td >" .  $row['ct.sobrenome'] . "</td>";
+    echo "</tr>";
     }
     echo "</tbody></table>";
 ?>
