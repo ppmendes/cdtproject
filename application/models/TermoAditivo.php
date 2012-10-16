@@ -5,8 +5,8 @@ class Application_Model_TermoAditivo
 	public function find($id){
 		//DB TABLE
 		$table = new Application_Model_DbTable_TermoAditivo();
-		$termo_aditivo = $table->find($id)->current();
-		return $termo_aditivo;
+		$termoAditivo = $table->find($id)->current();
+		return $termoAditivo;
 	}
 
     public function insert($data)
