@@ -4,7 +4,7 @@
     {
         var answer = confirm("Deseja realmente excluir a pasta?");
         if (answer) {
-            top.location.href = '/../pastaArquivo/excluir/pasta_arquivo_id/'+id;
+            top.location.href = '/../pastaarquivos/excluir/pasta_arquivo_id/'+id;
         }
         else {
             alert("A pasta não foi excluída!");
@@ -14,7 +14,7 @@
 <script>
     function editar(id)
     {
-        top.location.href = '/../pastaArquivos/adicionar/pasta_arquivo_id/'+id;
+        top.location.href = '/../pastaarquivos/adicionar/pasta_arquivo_id/'+id;
 
     }
 </script>
@@ -27,4 +27,5 @@ echo "<button onclick='editar($id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
+// comentario
 ?>
