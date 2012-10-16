@@ -37,19 +37,17 @@ class Application_Model_PastaArquivo
         $table->update($data['pasta_arquivo'],$where);
     }
 
-    /*public function selectAll()
+    public function selectAll()
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
-
             $select = $db->select()
-                ->from(array('p' => 'projeto'))
-                ->where('p.deletado = ?', false)
-                ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
-                ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
-                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
-                ->joinLeft(array('ga' => 'instituicao_gerencia'), 'p.instituicao_gerencia_id = ga.instituicao_gerencia_id',array(
-                'ga.instituicao_gerencia_id'=>'ga.instituicao_gerencia_id','ga.nome_instituicao_gerencia'=>'ga.nome_instituicao_gerencia'));
+                ->from(array('pa' => 'pasta_arquivo'), array('pa.pasta_arquivo_id'=>'pa.pasta_arquivo_id', 'pa.nome_pasta'=>'pa.nome_pasta'))
+                //->where('a.deletado = ?', false)
+                ->joinLeft(array('p' => 'projeto'), 'pa.projeto_id = p.projeto_id', array('p.nome'=>'p.nome'))
+                ->joinLeft(array('t' => 'tarefa'), 'pa.tarefa_id = t.tarefa_id', array('t.nome'=>'t.nome'));
+
+
             $stmt = $select->query();
 
             $result = $stmt->fetchAll();
@@ -58,7 +56,7 @@ class Application_Model_PastaArquivo
         }catch(Exception $e){
             echo $e->getMessage();
         }
-    }*/
+    }
 
     public static function getOptions(){
         try{

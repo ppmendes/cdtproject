@@ -10,8 +10,8 @@ class PastaArquivosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $pasta_arquivoModel = new Application_Model_PastaArquivo();
-        $this->view->pasta_arquivos = $pasta_arquivoModel->selectAll();
+        $pastaarquivoModel = new Application_Model_PastaArquivo();
+        $this->view->pastaarquivo = $pastaarquivoModel->selectAll();
 
     }
 
@@ -33,42 +33,39 @@ class PastaArquivosController extends Zend_Controller_Action
                     $model->insert($data);
                 }
 
-                $this->_redirect('/arquivos/');
+                //$this->_redirect('/arquivos/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                $form->setAction('/pastaArquivos/detalhes/pasta_arquivo_id/' . $id);
-                $form->populate(array("pasta_arquivos" => $data));
+                $form->setAction('/pastaarquivos/detalhes/pasta_arquivo_id/' . $id);
+                $form->populate(array("pastaarquivo" => $data));
             }
         }
 
         $this->view->form = $form;
-
-
     }
 
     public function detalhesAction(){
-        $request = $this->getRequest();
+        //$request = $this->getRequest();
         $detalhes = new Application_Form_PastaArquivos();
         $model = new Application_Model_PastaArquivo();
         $id = $this->_getParam('pasta_arquivo_id');
         $this->view->id = $id;
+        var_dump($id);
+        exit;
 
 
         $data = $model->find($id)->toArray();
 
-        if(is_array($data)){
-            $detalhes->setAction('/pastaArquivos/detalhes/pasta_arquivo_id/' . $id);
-            $detalhes->populate(array("pasta_arquivos" => $data));
+        if(@is_array($data)){
+            $detalhes->setAction('/pastaarquivos/detalhes/pasta_arquivo_id/' . $id);
+            $detalhes->populate(array("pastaarquivo" => $data));
         }
 
         $this->view->detalhes = $detalhes;
-
-
     }
-
     public function excluirAction(){
         //$request = $this->getRequest();
         $excluir = new Application_Form_PastaArquivos();
@@ -76,7 +73,7 @@ class PastaArquivosController extends Zend_Controller_Action
         $id = $this->_getParam('pasta_arquivo_id');
 
         $model->delete($id);
-        $this->_redirect('/arquivos/');
+        //$this->_redirect('/arquivos/');
 
         $this->view->excluir = $excluir;
 
