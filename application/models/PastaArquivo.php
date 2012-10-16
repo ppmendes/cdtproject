@@ -31,10 +31,10 @@ class Application_Model_PastaArquivo
     public function update($data, $id)
     {
 
-        $table = new Application_Model_DbTable_Projeto;
+        $table = new Application_Model_DbTable_PastaArquivo;
         $where = $table->getAdapter()->quoteInto('pasta_arquivo_id = ?',$id);
+        $table->update($data['pasta_arquivos'],$where);
 
-        $table->update($data['pasta_arquivo'],$where);
     }
 
     public function selectAll()

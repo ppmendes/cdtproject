@@ -6,10 +6,15 @@ class Application_Form_PastaArquivos extends Zend_Form
     public function init()
     {
         $this->setIsArray('true');
-        $this->setElementsBelongTo('pasta_arquivo');
+        $this->setElementsBelongTo('pasta_arquivos');
 
         // Setar metodo
         $this->setMethod('post');
+
+        /*$this->addElement('text', 'pasta_arquivo_id', array(
+            'label'      => 'Pasta ID:',
+            'required'   => true
+        ));*/
 
         //sub pasta de:
         $this->addElement('select', 'pasta_arquivo_pae', array(
