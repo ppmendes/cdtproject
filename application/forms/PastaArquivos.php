@@ -24,35 +24,23 @@ class Application_Form_PastaArquivos extends Zend_Form
             'required'   => true
         ));
 
-        // nome da instituicao
-        $this->addElement('select', 'nome', array(
-            'label'      => 'Nome da Instituição:',
-            'multiOptions' => Application_Model_Instituicao::getOptions(),
-            'required'   => true
-        ));
-
-        // nome da tarefa
-        $this->addElement('select', 'nome', array(
-            'label'      => 'Nome da Tarefa:',
-            'multiOptions' => Application_Model_Tarefa::getOptions1(),
-            'required'   => true
-        ));
-
         //descrição pasta
         $this->addElement('text', 'descricao_pasta', array(
             'label'      => 'Descrição Pasta:',
             'required'   => true
         ));
 
-        // projeto ID
-        $this->addElement('text', 'projeto_id', array(
-            'label'      => 'projeto ID:',
+        // nome do projeto
+        $this->addElement('select', 'projeto_id', array(
+            'label'      => 'Nome do Projeto:',
+            'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true
         ));
 
-        // projeto ID
-        $this->addElement('text', 'tarefa_id', array(
-            'label'      => 'tarefa ID:',
+        // nome da tarefa
+        $this->addElement('select', 'tarefa_id', array(
+            'label'      => 'Nome da Tarefa:',
+            'multiOptions' => Application_Model_Tarefa::getOptions1(),
             'required'   => true
         ));
 

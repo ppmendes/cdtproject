@@ -13,7 +13,7 @@ class Application_Model_PastaArquivo
     public function insert($data)
     {
         $table = new Application_Model_DbTable_PastaArquivo();
-        $table->insert($data['pasta_arquivos']);
+        $table->insert($data['pasta_arquivo']);
     }
 
     public function delete($id)
@@ -34,7 +34,7 @@ class Application_Model_PastaArquivo
         $table = new Application_Model_DbTable_Projeto;
         $where = $table->getAdapter()->quoteInto('pasta_arquivo_id = ?',$id);
 
-        $table->update($data['pasta_arquivos'],$where);
+        $table->update($data['pasta_arquivo'],$where);
     }
 
     public function selectAll()
