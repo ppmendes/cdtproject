@@ -32,11 +32,17 @@ class Application_Form_Usuarios extends Zend_Form
             'label'      => 'Sobrenome:',
             'required'   => true
         ));
-        //data de nacimento input type text
-        $this->addElement('text', 'data_nacimento', array(
-            'label'      => 'Data de Nacimento:',
-            'required'   => true
-        ));
+        //data de nascimento input type text
+        /*$this->addElement('text', 'data_nascimento', array(
+            'label'      => 'Data de Nascimento:',
+            'required'   => true,
+            'class'      => 'datePicker'
+        ));*/
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
+        $emtDatePicker->setLabel('Data de Nascimento: ');
+        $emtDatePicker->setJQueryParam('dateFormat', 'dd/mm/yy');
+
+        $this->addElement($emtDatePicker);
 
         //website type text
         $this->addElement('text', 'website_lattes', array(
