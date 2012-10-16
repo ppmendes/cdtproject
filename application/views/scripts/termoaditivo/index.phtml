@@ -1,0 +1,103 @@
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function prorrogar()
+    {
+        top.location.href = '/../termoaditivo/prorrogar/';
+
+    }
+    function remanejar()
+    {
+        top.location.href = '/../termoaditivo/remanejar/';
+
+    }
+    function alterar()
+    {
+        top.location.href = '/../termoaditivo/alterar/';
+
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .prorrogar, .remanejar, .alterar {
+        float:right;
+    }
+</style>
+<button class='prorrogar' onclick='prorrogar()'>Prorrogar</button>
+<button class='remanejar' onclick='remanejar()'>Remanejar</button>
+<button class='alterar' onclick='alterar()'>Alterar</button>
+
+
+<table id='table_id' border='0'>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Instituicao</th>
+        <th>Nome</th>
+        <th>Apelido</th>
+        <th>Data de início</th>
+        <th>Data final</th>
+        <th>Data final real</th>
+        <th>Estado do projeto</th>
+        <th>Porcentagem completa</th>
+        <th>Prioridade</th>
+        <th>Coordenador técnico</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    foreach($this->projetos as $row)
+    {
+    //$row = $row->toArray();
+    echo "<tr id='".$row['projeto_id']."'>";
+    echo "<td>" .   $row['projeto_id'] . "</td>";
+    echo "<td>" .   $row['ga.nome_instituicao_gerencia'] . "</td>";
+    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";
+    echo "<td>" .   $row['apelido'] . "</td>";
+    echo "<td >" .  $row['data_inicio'] . "</td>";
+    echo "<td >" .  $row['data_final'] . "</td>";
+    echo "<td >" .  $row['data_final_real'] . "</td>";
+    echo "<td >" .  $row['nome_estado'] . "</td>";
+    echo "<td >" .  $row['percentagem_completo'] . "</td>";
+    echo "<td >" .  $row['nome_prioridade'] . "</td>";
+    echo "<td >" .  $row['ct.sobrenome'] . "</td>";
+    echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>
