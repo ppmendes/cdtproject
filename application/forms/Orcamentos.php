@@ -29,14 +29,23 @@ class Application_Form_Orcamentos extends Zend_Form
 
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
         $emt->setLabel('Autocomplete');
-        $emt->setJQueryParam('data', Application_Model_Rubrica::getOptions());
+        $emt->setJQueryParam('data', Application_Model_Rubrica::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+                             'function(event,ui) { $("#orcamento-autoid").val(ui.item.id) }')
+            ));
         $this->addElement($emt);
+
+        //set hidden
+        $this->addElement('hidden', 'autoid', array(
+            'value'      => ''
+        ));
 
         //descrição
         $this->addElement('text', 'descricao', array(
             'label'      => 'Descrição:',
             'required'   => true,
         ));
+
 
         //finalidade
         $this->addElement('textarea', 'finalidade', array(
