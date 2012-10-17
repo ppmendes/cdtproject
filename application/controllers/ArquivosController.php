@@ -44,7 +44,7 @@ class ArquivosController extends Zend_Controller_Action
             if(is_array($data)){
 
                 $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
-                $form->populate(array("arquivo" => $data));
+                $form->populate(array("arquivos" => $data));
             }
         }
 
@@ -59,11 +59,11 @@ class ArquivosController extends Zend_Controller_Action
         $this->view->id = $id;
 
 
-       // $data = $model->find($id)->toArray();
+        $data = $model->find($id)->toArray();
 
-        if(@is_array($data)){
+        if(is_array($data)){
             $detalhes->setAction('/arquivos/detalhes/arquivo_id/' . $id);
-            $detalhes->populate(array("arquivo" => $data));
+            $detalhes->populate(array("arquivos" => $data));
         }
 
         $this->view->detalhes = $detalhes;

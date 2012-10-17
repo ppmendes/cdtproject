@@ -13,7 +13,7 @@ class Application_Form_Arquivos extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('arquivo');
+        $this->setElementsBelongTo('arquivos');
 
         // Setar metodo
         $this->setMethod('post');
