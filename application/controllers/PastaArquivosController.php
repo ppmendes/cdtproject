@@ -10,8 +10,8 @@ class PastaArquivosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $pasta_arquivoModel = new Application_Model_PastaArquivo();
-        $this->view->pasta_arquivos = $pasta_arquivoModel->selectAll();
+        $pastaarquivoModel = new Application_Model_PastaArquivo();
+        $this->view->pastaarquivo = $pastaarquivoModel->selectAll();
 
     }
 
@@ -27,6 +27,7 @@ class PastaArquivosController extends Zend_Controller_Action
 //                print_r($form->getValues());
 //                echo "</pre>";
                 $data = $form->getValues();
+
                 if($id){
                     $model->update($data, $id);
                 }else{
@@ -39,14 +40,12 @@ class PastaArquivosController extends Zend_Controller_Action
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                $form->setAction('/pastaArquivos/detalhes/pasta_arquivo_id/' . $id);
+                $form->setAction('/pastaarquivos/detalhes/pasta_arquivo_id/' . $id);
                 $form->populate(array("pasta_arquivos" => $data));
             }
         }
 
         $this->view->form = $form;
-
-
     }
 
     public function detalhesAction(){
@@ -59,14 +58,14 @@ class PastaArquivosController extends Zend_Controller_Action
 
         $data = $model->find($id)->toArray();
 
+
+
         if(is_array($data)){
-            $detalhes->setAction('/pastaArquivos/detalhes/pasta_arquivo_id/' . $id);
+            $detalhes->setAction('/pastaarquivos/detalhes/pasta_arquivo_id/' . $id);
             $detalhes->populate(array("pasta_arquivos" => $data));
         }
 
         $this->view->detalhes = $detalhes;
-
-
     }
 
     public function excluirAction(){
@@ -76,7 +75,7 @@ class PastaArquivosController extends Zend_Controller_Action
         $id = $this->_getParam('pasta_arquivo_id');
 
         $model->delete($id);
-        $this->_redirect('/arquivos/');
+        //$this->_redirect('/arquivos/');
 
         $this->view->excluir = $excluir;
 

@@ -14,7 +14,7 @@ class Application_Form_Usuarios extends Zend_Form
 
 
         //tipo de usuario  input type radio
-        $this->addElement('radio','tipo_usuario',array(
+        $this->addElement('select','tipo_usuario',array(
             'required' => true,
             'label' => 'Tipo:',
             'multiOptions'=>array('usuario'=>'usuario', 'contato'=>'contato')
@@ -40,7 +40,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));*/
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
-        $emtDatePicker->setJQueryParam('dateFormat', 'dd/mm/yy');
+        $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
 
         $this->addElement($emtDatePicker);
 
