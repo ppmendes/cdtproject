@@ -12,7 +12,7 @@ class Application_Model_Arquivo
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Arquivo;
-        $table->insert($data['arquivo']);
+        $table->insert($data['arquivos']);
     }
 
     public function delete($id)
