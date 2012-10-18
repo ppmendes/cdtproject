@@ -11,19 +11,27 @@ class Application_Model_TermoAditivo
 
     public function insert($data)
     {
+        $data['termo_aditivo']['data_modificacao'] = date('Y-m-d h:i:s', time());
+        $table = new Application_Model_DbTable_TermoAditivo;
+        $table->insert($data['termo_aditivo']);
     }
 
-    public function delete($id)
+        public function selectAll()
     {
-    }
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
 
-    public function update($data, $id)
-    {
+            $select = $db->select()
+                ->from(array('t' => 'termo_aditivo'))
+                ->joinLeft(array('u' => 'usuario'), 't.usuario_id = u.usuario_id', array('u.username'=>'u.username'));
+            $stmt = $select->query();
 
-    }
+            $result = $stmt->fetchAll();
 
-    public function selectAll()
-    {
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     public static function getOptions(){

@@ -7,7 +7,7 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('termoaditivo');
+        $this->setElementsBelongTo('termo_aditivo');
 
         // Setar metodo
         $this->setMethod('post');
@@ -16,7 +16,7 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
         $emt->setLabel('Elemento de Despesa Destinatário:');
         $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#termoaditivo-orcamento_id").val(ui.item.id) }')
+            'function(event,ui) { $("#termo_aditivo-orcamento_id_destino").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 
@@ -27,7 +27,7 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
         ));
 
         //Gerência input type text
-        $this->addElement('textarea', 'descricao', array(
+        $this->addElement('textarea', 'descricao_justificativa', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));
@@ -39,8 +39,23 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'orcamento_id', array(
+        $this->addElement('hidden', 'orcamento_id_destino', array(
             'value'      => ''
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'usuario_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'tipo_termo_aditivo_id', array(
+            'value'      => '3'
         ));
 
     }
