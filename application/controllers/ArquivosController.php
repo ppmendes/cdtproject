@@ -29,13 +29,40 @@ class ArquivosController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
 
-                $data = $form->getValues();
-                if($id){
+                /* Uploading Document File on Server */
+                $upload = new Zend_File_Transfer_Adapter_Http();
+                $upload->addFilter('Rename', '../public/files/arquivos/');
 
+                try {
+                    // upload received file(s)
+                    $upload->receive();
+                } catch (Zend_File_Transfer_Exception $e) {
+                    $e->getMessage();
+                }
+
+
+                /*$solucoesform = $form->getValues();
+
+                if($solucoesform['pdf'] !=  null )
+                {
+                    $filePdf = $upload->getFileName('pdf');
+                    //pdf
+                    $fullFilePathPdf = 'files/solucoes/'.$idFiles.'.pdf';
+                    $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathPdf, 'overwrite' => true));
+
+                    $filterFileRename -> filter($filePdf);
+
+                }*/
+
+                $data = $form->getValues();
+
+
+                if($id){
                     $model->update($data, $id);
                 }else{
                     $model->insert($data);
                 }
+
                 $this->_redirect('/arquivos/');
             }
         }elseif ($id){

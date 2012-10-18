@@ -19,7 +19,7 @@ class Application_Form_PastaArquivos extends Zend_Form
         //sub pasta de:
         $this->addElement('select', 'pasta_arquivo_pae', array(
             'label'      => 'Sub Pasta de:',
-            'multiOptions' => array('raiz'=>'raiz'),
+            'multiOptions' => Application_Model_PastaArquivo::getOptions(),
             'required'   => true
         ));
 

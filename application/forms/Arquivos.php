@@ -28,14 +28,14 @@ class Application_Form_Arquivos extends Zend_Form
 
         //nome do arquivo input type text
 
-        $file = new Zend_Form_Element_File('file');
-        $path="public/files/arquivos/";
+        $file = new Zend_Form_Element_File('nome_arquivo');
+        $path="../public/files/arquivos/";
         $file->setDestination($path)
             ->setLabel('Arquivo:')
             ->setRequired(true)
             ->addValidator('NotEmpty');
 
-        //$this->addElement($file);
+        $this->addElement($file);
 
         /*$this->addElement('file', 'nome_arquivo', array(
             'label'      => 'Arquivo:',
@@ -43,11 +43,11 @@ class Application_Form_Arquivos extends Zend_Form
         ));*/
 
         //arquivo id pai  da tarefa select type
-        $this->addElement('text', 'arquivo_id_pae', array(
+        /*$this->addElement('text', 'arquivo_id_pae', array(
             'label'      => 'Arquivo Pae:',
             //'multiOptions'  => $array_pasta_arquivo,
             'required'   => false
-        ));
+        ));*/
 
         //descriçao do arquivo input type textarea
         $this->addElement('textarea', 'descricao_arquivo', array(
