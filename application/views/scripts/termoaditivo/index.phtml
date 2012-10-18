@@ -54,49 +54,35 @@
     table * *{
         text-align: center;
     }
-    .prorrogar, .remanejar, .alterar {
+    .alterar, .remanejar, .prorrogar {
         float:right;
     }
 </style>
-<button class='prorrogar' onclick='prorrogar()'>Prorrogar</button>
-<button class='remanejar' onclick='remanejar()'>Remanejar</button>
 <button class='alterar' onclick='alterar()'>Alterar</button>
+<button class='remanejar' onclick='remanejar()'>Remanejar</button>
+<button class='prorrogar' onclick='prorrogar()'>Prorrogar</button>
 
 
 <table id='table_id' border='0'>
     <thead>
     <tr>
         <th>Id</th>
-        <th>Instituicao</th>
-        <th>Nome</th>
-        <th>Apelido</th>
-        <th>Data de início</th>
-        <th>Data final</th>
-        <th>Data final real</th>
-        <th>Estado do projeto</th>
-        <th>Porcentagem completa</th>
-        <th>Prioridade</th>
-        <th>Coordenador técnico</th>
+        <th>Data</th>
+        <th>Descrição</th>
+        <th>Usuário</th>
     </tr>
     </thead>
     <tbody>
 
     <?php
-    foreach($this->projetos as $row)
+    foreach($this->termoaditivo as $row)
     {
     //$row = $row->toArray();
-    echo "<tr id='".$row['projeto_id']."'>";
-    echo "<td>" .   $row['projeto_id'] . "</td>";
-    echo "<td>" .   $row['ga.nome_instituicao_gerencia'] . "</td>";
-    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";
-    echo "<td>" .   $row['apelido'] . "</td>";
-    echo "<td >" .  $row['data_inicio'] . "</td>";
-    echo "<td >" .  $row['data_final'] . "</td>";
-    echo "<td >" .  $row['data_final_real'] . "</td>";
-    echo "<td >" .  $row['nome_estado'] . "</td>";
-    echo "<td >" .  $row['percentagem_completo'] . "</td>";
-    echo "<td >" .  $row['nome_prioridade'] . "</td>";
-    echo "<td >" .  $row['ct.sobrenome'] . "</td>";
+    echo "<tr id='".$row['termo_aditivo_id']."'>";
+    echo "<td>" .   $row['termo_aditivo_id'] . "</td>";
+    echo "<td>" .   $row['data_modificacao'] . "</td>";
+    echo "<td>" .   $row['descricao_justificativa'] . "</td>";
+    echo "<td >" .  $row['u.username'] . "</td>";
     echo "</tr>";
     }
     echo "</tbody></table>";
