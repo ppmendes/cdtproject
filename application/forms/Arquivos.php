@@ -1,6 +1,6 @@
 <?php
 /**
- * Created by JetBrains PhpStorm. a
+ * Created by JetBrains PhpStorm.
  * User: Laura
  * Date: 19/09/12
  * Time: 15:30
