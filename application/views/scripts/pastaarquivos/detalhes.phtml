@@ -21,10 +21,11 @@
 
 <?php
 $id = $this->id;
-// comentario
+
 echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
 echo "<button onclick='editar($id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
+// comentario
 ?>
