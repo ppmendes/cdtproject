@@ -56,9 +56,6 @@ class ArquivosController extends Zend_Controller_Action
 
                 exit;
 
-
-
-
                 if($id){
                     $model->update($data, $id);
                 }else{
