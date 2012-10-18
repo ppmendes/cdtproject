@@ -32,8 +32,6 @@ class ArquivosController extends Zend_Controller_Action
                 $data = $form->getValues();
                 Zend_Debug::dump($data, 'Form Data:');
 
-                exit;
-
 
                 /* Uploading Document File on Server */
                 $upload = new Zend_File_Transfer_Adapter_Http();
@@ -46,19 +44,14 @@ class ArquivosController extends Zend_Controller_Action
                     $e->getMessage();
                 }
 
+                $file = $upload->getFileName('nome_arquivo');
+
+                $fullFilePathFile = 'files/arquivos/12345.jpg';
+                $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
+                $filterFileRename -> filter($file);
 
 
-                /*if($data['arquivos']['nome_arquivo'] !=  null )
-                //{
-                    $file = $upload->getFileName('nome_arquivo');
-
-                    $fullFilePathFile = 'files/arquivos/1234.jpg';
-                    $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
-                    $filterFileRename -> filter($file);
-
-                //}*/
-
-
+                exit;
 
                 if($id){
                     $model->update($data, $id);
