@@ -12,18 +12,21 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-        //Nome do projeto input type text
-        $this->addElement('text', 'despesafonte', array(
-            'label'      => 'Elemento de Despesa Fonte:',
-            'required'   => true,
+        $emf = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar1');
+        $emf->setLabel('Elemento de Despesa Fonte:');
+        $emf->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#termo_aditivo-orcamento_id_fonte").val(ui.item.id) }')
         ));
+        $this->addElement($emf);
 
-        //Apelido do projeto input type text
-        $this->addElement('text', 'despesadestinatario', array(
-            'label'      => 'Elemento de Despesa Destinatário:',
-            'required'   => true
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar2');
+        $emt->setLabel('Elemento de Despesa Destinatário:');
+        $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#termo_aditivo-orcamento_id_destino").val(ui.item.id) }')
         ));
-
+        $this->addElement($emt);
         //Coordenador do projeto input type text
         $this->addElement('text', 'valor', array(
             'label'      => 'Valor (R$):',
@@ -42,6 +45,29 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
             'label'    => 'Enviar',
         ));
 
+        //set hidden
+        $this->addElement('hidden', 'orcamento_id_fonte', array(
+            'value'      => ''
+        ));
 
+        //set hidden
+        $this->addElement('hidden', 'orcamento_id_destino', array(
+            'value'      => ''
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'usuario_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'tipo_termo_aditivo_id', array(
+            'value'      => '2'
+        ));
     }
 }
