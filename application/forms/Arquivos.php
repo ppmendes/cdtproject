@@ -13,7 +13,7 @@ class Application_Form_Arquivos extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('arquivos');
+        //$this->setElementsBelongTo('arquivos');
 
         // Setar metodo
         $this->setMethod('post');
@@ -90,11 +90,11 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true,
         ));
         //pasta do arquivo select type
-        $this->addElement('select', 'pasta_arquivo_id', array(
+        /*$this->addElement('select', 'pasta_arquivo_id', array(
             'label'      => 'Pasta:',
             'multiOptions'  => Application_Model_PastaArquivo::getOptions(),
             'required'   => true
-        ));
+        ));*/
 
         //projeto id pai  da tarefa select type
         $this->addElement('select', 'projeto_id', array(
