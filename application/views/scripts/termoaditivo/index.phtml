@@ -36,17 +36,17 @@
 <script>
     function prorrogar()
     {
-        top.location.href = '/../termoaditivo/prorrogar/';
+        top.location.href = '/../termoaditivo/prorrogar/projeto_id/1';
 
     }
     function remanejar()
     {
-        top.location.href = '/../termoaditivo/remanejar/';
+        top.location.href = '/../termoaditivo/remanejar/projeto_id/1';
 
     }
     function alterar()
     {
-        top.location.href = '/../termoaditivo/alterar/';
+        top.location.href = '/../termoaditivo/alterar/projeto_id/1';
 
     }
 </script>
@@ -92,11 +92,12 @@
     }
     else if ($row['tp.nome_modificacao'] == 'Remanejamento')
     {
-        echo "<td> Foram remanejados R$" . $row['valor'] . " da rubrica " . $row['r.descricao'] . " para " . $row['rr.descricao'] . "</td>";
+        echo "<td> Foram remanejados R$" . $row['valor'] . " da rubrica " . $row['r.codigo_rubrica'] . "->" . $row['r.descricao']
+            . " para " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . "</td>";
     }
     else
     {
-        echo "<td> Foi alterado o valor da rubrica " . $row['rr.descricao'] . " para R$" . $row['valor'] . "</td>";
+        echo "<td> Foi alterado o valor da rubrica " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . " para R$" . $row['valor'] . "</td>";
     }
     echo "<td>" .   $row['descricao_justificativa'] . "</td>";
     echo "<td >" .  $row['u.username'] . "</td>";

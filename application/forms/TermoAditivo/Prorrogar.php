@@ -9,14 +9,19 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('termo_aditivo');
 
+        //pegar id do projeto
+        $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
+
         // Setar metodo
         $this->setMethod('post');
 
-        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_anterior');
-        $emtDatePicker1->setLabel('Data de Término: ');
-        $emtDatePicker1->setJQueryParam('dateFormat', 'yy-mm-dd');
-        $this->addElement($emtDatePicker1);
-
+        $data_termino = Application_Model_Projeto::getDataModificacao($id_projeto);
+        $this->addElement('text', 'data', array(
+            'label'      => 'Data Anterior:',
+            'value'      => $data_termino['0']['data_final'],
+            'disabled'         => true,
+            'required'   => false,
+        ));
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('nova_data');
         $emtDatePicker2->setLabel('Nova Data: ');
         $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
@@ -36,7 +41,7 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
 
         //set hidden
         $this->addElement('hidden', 'projeto_id', array(
-            'value'      => '1'
+            'value'      => $id_projeto
         ));
 
         //set hidden
@@ -48,6 +53,12 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         $this->addElement('hidden', 'tipo_termo_aditivo_id', array(
             'value'      => '1'
         ));
+
+        //set hidden
+        $this->addElement('hidden', 'data_anterior', array(
+            'value'      => $data_termino['0']['data_final']
+        ));
+
 
 
     }

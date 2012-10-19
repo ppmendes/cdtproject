@@ -24,7 +24,8 @@ class TermoAditivoController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
-                    $model->insert($data);
+                unset($data['termo_aditivo']['data']);
+                $model->insert($data);
 
                 $this->_redirect('/termoaditivo/');
             }
