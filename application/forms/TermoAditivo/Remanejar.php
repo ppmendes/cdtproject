@@ -7,7 +7,7 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('termoaditivo');
+        $this->setElementsBelongTo('termo_aditivo');
 
         // Setar metodo
         $this->setMethod('post');
@@ -34,7 +34,7 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         ));
 
         //Gerência input type text
-        $this->addElement('textarea', 'descricao', array(
+        $this->addElement('textarea', 'descricao_justificativa', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));
