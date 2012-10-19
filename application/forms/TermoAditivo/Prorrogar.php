@@ -7,25 +7,23 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('termoaditivo');
+        $this->setElementsBelongTo('termo_aditivo');
 
         // Setar metodo
         $this->setMethod('post');
 
-        //Nome do projeto input type text
-        $this->addElement('text', 'data_final', array(
-            'label'      => 'Data de Término:',
-            'required'   => true,
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_anterior');
+        $emtDatePicker1->setLabel('Data de Término: ');
+        $emtDatePicker1->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $this->addElement($emtDatePicker1);
 
-        //Apelido do projeto input type text
-        $this->addElement('text', 'nova_data', array(
-            'label'      => 'Nova Data:',
-            'required'   => true
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('nova_data');
+        $emtDatePicker2->setLabel('Nova Data: ');
+        $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $this->addElement($emtDatePicker2);
 
         //Coordenador do projeto input type text
-        $this->addElement('textarea', 'descricao', array(
+        $this->addElement('textarea', 'descricao_justificativa', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));
@@ -34,6 +32,21 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Enviar',
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'usuario_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'tipo_termo_aditivo_id', array(
+            'value'      => '1'
         ));
 
 

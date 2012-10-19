@@ -19,7 +19,7 @@ class TermoAditivoController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_TermoAditivo_Prorrogar();
         $model = new Application_Model_TermoAditivo;
-        $id = '1' ; //$this->_getParam('projeto_id');
+        //$id = $this->_getParam('projeto_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -28,14 +28,14 @@ class TermoAditivoController extends Zend_Controller_Action
 
                 $this->_redirect('/termoaditivo/');
             }
-        }elseif ($id){
+        }/*elseif ($id){
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
                 $form->setAction('/termoaditivo/prorrogar/projeto_id/' . $id);
                 $form->populate(array("termoaditivo" => $data));
             }
-        }
+        }    */
 
         $this->view->form = $form;
 
