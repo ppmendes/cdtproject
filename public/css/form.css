@@ -37,5 +37,9 @@
     color: #545454;
 }
 
+.zend_form #termo_aditivo-data{
+    color: red;
+}
+
 
 
