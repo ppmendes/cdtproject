@@ -30,7 +30,7 @@ class Application_Model_Arquivo
         $table = new Application_Model_DbTable_Arquivo;
         $where = $table->getAdapter()->quoteInto('arquivo_id = ?',$id);
 
-        $table->update($data['arquivo'], $where);
+        $table->update($data['arquivos'], $where);
     }
 
     public function getLastInsertedId(){

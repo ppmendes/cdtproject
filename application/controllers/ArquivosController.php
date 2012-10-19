@@ -38,6 +38,9 @@ class ArquivosController extends Zend_Controller_Action
                 try {
                     // upload received file(s)
                     $upload->receive();
+                    $tamanho=$upload->getFileSize();
+                    $data['arquivos']['tamanho']=$tamanho;
+
                 } catch (Zend_File_Transfer_Exception $e) {
                     $e->getMessage();
                 }
@@ -51,6 +54,10 @@ class ArquivosController extends Zend_Controller_Action
                 $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
                 $filterFileRename -> filter($file);
 
+                print_r($data);
+                exit;
+
+                //
                 if($id){
                     $model->update($data, $id);
                 }else{

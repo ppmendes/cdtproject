@@ -69,26 +69,19 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true,
         ));
 
-        //data do arquivo input type text
-        $this->addElement('text', 'data_arquivo', array(
-            'label'      => 'Data:',
-            'required'   => true,
-        ));
-        //tamanho do arquivo input type text
-        $this->addElement('text', 'tamanho', array(
-            'label'      => 'Tamanho:',
-            'required'   => true,
-        ));
+
         //versao do arquivo input type text
         $this->addElement('text', 'versao', array(
             'label'      => 'Versão:',
             'required'   => true,
         ));
+
         //icono do arquivo input type text
-        $this->addElement('text', 'icon_arquivo', array(
-            'label'      => 'Icono:',
+        /*$this->addElement('text', 'icon_arquivo', array(
+            'label'      => 'Ícone:',
             'required'   => true,
-        ));
+        ));*/
+
         //pasta do arquivo select type
         /*$this->addElement('select', 'pasta_arquivo_id', array(
             'label'      => 'Pasta:',
@@ -102,10 +95,11 @@ class Application_Form_Arquivos extends Zend_Form
             'multiOptions'  =>Application_Model_Projeto::getOptions(),
             'required'   => true
         ));
+
         //tarefa id pai  da tarefa select type
         $this->addElement('text', 'tarefa_id', array(
             'label'      => 'tarefa:',
-           // 'multiOptions'  =>Application_Model_Projeto::getOptions(),
+            'multiOptions'  =>Application_Model_Projeto::getOptions(),
             'required'   => true
         ));
         //projeto id pai  da tarefa select type
