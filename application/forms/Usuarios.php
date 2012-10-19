@@ -2,7 +2,6 @@
 
 class Application_Form_Usuarios extends Zend_Form
 {
-
     public function init()
     {
         $this->setIsArray('true');
@@ -12,14 +11,12 @@ class Application_Form_Usuarios extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-
         //tipo de usuario  input type radio
         $this->addElement('select','tipo_usuario',array(
             'required' => true,
             'label' => 'Tipo:',
             'multiOptions'=>array('usuario'=>'usuario', 'contato'=>'contato')
         ));
-
 
         //nome do usuario input type text
         $this->addElement('text', 'nome', array(
@@ -163,6 +160,5 @@ class Application_Form_Usuarios extends Zend_Form
             'ignore'   => true,
             'label'    => 'Inserir Usuario',
         ));
-
     }
 }

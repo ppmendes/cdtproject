@@ -7,25 +7,28 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
-        $this->setElementsBelongTo('termoaditivo');
+        $this->setElementsBelongTo('termo_aditivo');
+
+        //pegar id do projeto
+        $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
 
         // Setar metodo
         $this->setMethod('post');
 
-        //Nome do projeto input type text
-        $this->addElement('text', 'data_final', array(
-            'label'      => 'Data de Término:',
-            'required'   => true,
+        $data_termino = Application_Model_Projeto::getDataModificacao($id_projeto);
+        $this->addElement('text', 'data', array(
+            'label'      => 'Data Anterior:',
+            'value'      => $data_termino['0']['data_final'],
+            'disabled'         => true,
+            'required'   => false,
         ));
-
-        //Apelido do projeto input type text
-        $this->addElement('text', 'nova_data', array(
-            'label'      => 'Nova Data:',
-            'required'   => true
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('nova_data');
+        $emtDatePicker2->setLabel('Nova Data: ');
+        $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $this->addElement($emtDatePicker2);
 
         //Coordenador do projeto input type text
-        $this->addElement('textarea', 'descricao', array(
+        $this->addElement('textarea', 'descricao_justificativa', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));
@@ -35,6 +38,27 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
             'ignore'   => true,
             'label'    => 'Enviar',
         ));
+
+        //set hidden
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => $id_projeto
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'usuario_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'tipo_termo_aditivo_id', array(
+            'value'      => '1'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'data_anterior', array(
+            'value'      => $data_termino['0']['data_final']
+        ));
+
 
 
     }

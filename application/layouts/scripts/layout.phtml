@@ -18,13 +18,10 @@
                         ->appendStylesheet('css/jquery-ui-1.8.4.custom.css');
         ?>
         <link rel="shortcut icon" href="<?php echo $this->baseUrl('imagem/favicon.ico'); ?>" />
-        <!-- atualizar depois -->
-        <?php echo $this->headLink(); ?>
-        <?php echo $this->jQuery()
-                        ->setVersion('1.4.2')
-                        ->setUiVersion('1.8.2'); ?>
-		<!-- <script type="text/javascript" src="<?php //echo $this->baseUrl('js/jquery-1.8.1.js'); ?>" ></script> -->
-        <script type="text/javascript" src="<?php //echo $this->baseUrl('js/jquery.dataTables.js'); ?>" ></script>
+
+        <?php echo $this->jQuery(); ?>
+
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.dataTables.js'); ?>" ></script>
 
 	</head>
 <body class="body_main_content" >
