@@ -39,11 +39,6 @@
         top.location.href = '/../arquivos/adicionar/';
 
     }
-    function adicionarPasta()
-    {
-        top.location.href = '/../pastaarquivos/adicionar/';
-
-    }
 </script>
 <style>
     table * *{
@@ -54,16 +49,16 @@
     }
 </style>
 <button class='novoprojeto' onclick='adicionar()'>Novo Arquivo</button>
-<button class='novoprojeto' onclick='adicionarPasta()'>Nova Pasta</button>
+
 
 <table id='table_id' border='1'>
     <thead>
     <tr>
         <th>Nome de Arquivo</th>
-        <th>Descriçao</th>
+        <th>Nome real</th>
         <th>Versões</th>
+        <th>Descriçao</th>
         <th>Tipo de Arquivo</th>
-        <th>Pasta</th>
         <th>Nome da Tarefa</th>
         <th>Responsável</th>
         <th>Tamanho</th>
@@ -79,10 +74,10 @@
 
         echo "<tr id='".$row['a.arquivo_id']."'>";
         echo "<td><a href='/arquivos/detalhes/arquivo_id/{$row['a.arquivo_id']}'>" .$row['a.nome_arquivo']. "</a></td>";
+        echo "<td>" .$row['a.nome_real']. "</td>";
         echo "<td>" .$row['a.versao']. "</td>";
         echo "<td>" .$row['a.descricao_arquivo']. "</td>";
         echo "<td>" .$row['ta.nome_tipo']. "</td>";
-        echo "<td>" .$row['a.nome_arquivo']. "</td>";
         echo "<td>" .$row['t.nome']. "</td>";
         echo "<td>" .$row['u.nome']. "</td>";
         echo "<td>" .$row['a.tamanho']. "</td>";
