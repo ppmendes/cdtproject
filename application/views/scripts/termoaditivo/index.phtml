@@ -67,6 +67,7 @@
     <thead>
     <tr>
         <th>Id</th>
+        <th>Projeto Alterado</th>
         <th>Data</th>
         <th>Tipo de Modificação</th>
         <th>Ação</th>
@@ -82,6 +83,7 @@
     //$row = $row->toArray();
     echo "<tr id='".$row['termo_aditivo_id']."'>";
     echo "<td>" .   $row['termo_aditivo_id'] . "</td>";
+    echo "<td>" .   $row['p.projeto_id'] . " - " . $row['p.nome'] . "</td>";
     echo "<td>" .   $row['data_modificacao'] . "</td>";
     echo "<td>" .   $row['tp.nome_modificacao'] . "</td>";
     if ($row['tp.nome_modificacao'] == 'Prorrogação')

@@ -29,7 +29,9 @@ class Application_Model_TermoAditivo
                 ->joinLeft(array('o' => 'orcamento'), 't.orcamento_id_fonte = o.orcamento_id')
                 ->joinLeft(array('oc' => 'orcamento'), 't.orcamento_id_destino = oc.orcamento_id')
                 ->joinLeft(array('r' => 'rubrica'), 'o.orcamento_id = r.rubrica_id', array('r.descricao'=>'r.descricao'))
-                ->joinLeft(array('rr'=> 'rubrica'), 'oc.orcamento_id=rr.rubrica_id', array('rr.descricao'=>'rr.descricao'));
+                ->joinLeft(array('rr'=> 'rubrica'), 'oc.orcamento_id=rr.rubrica_id', array('rr.descricao'=>'rr.descricao'))
+                ->joinLeft(array('p' => 'projeto'), 't.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id',
+                                                    'p.nome'=>'p.nome'));
 
             $stmt = $select->query();
 
