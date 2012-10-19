@@ -33,15 +33,21 @@ class Application_Model_Arquivo
         $table->update($data['arquivo'], $where);
     }
 
+    public function getLastInsertedId(){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(arquivo_id) FROM arquivo");
+        return (int)$result+1;
+    }
+
     public function selectAll()
     {
        try{
            $db = Zend_Db_Table::getDefaultAdapter();
 
            $select = $db->select()
-               ->from(array('a' => 'arquivo'), array('a.arquivo_id'=>'a.arquivo_id', 'a.nome_arquivo'=>'a.nome_arquivo', 'a.versao'=>'a.versao', 'a.tamanho'=>'a.tamanho', 'a.data_arquivo'=>'a.data_arquivo', 'a.descricao_arquivo'=>'a.descricao_arquivo'))
+               ->from(array('a' => 'arquivo'), array('a.arquivo_id'=>'a.arquivo_id', 'a.nome_arquivo'=>'a.nome_arquivo', 'a.versao'=>'a.versao', 'a.tamanho'=>'a.tamanho', 'a.data_arquivo'=>'a.data_arquivo', 'a.descricao_arquivo'=>'a.descricao_arquivo', 'a.nome_real'=>'a.nome_real'))
                ->where('a.deletado = ?', false)
-               ->joinLeft(array('p' => 'pasta_arquivo'), 'a.pasta_arquivo_id = p.pasta_arquivo_id')
                ->joinLeft(array('t' => 'tarefa'), 'a.tarefa_id = t.tarefa_id', array('t.nome'=>'t.nome'))
                ->joinLeft(array('ta' => 'tipo_arquivo'), 'a.tipo_arquivo_id = ta.tipo_arquivo_id', array('ta.nome_tipo'=>'ta.nome_tipo'))
                ->joinLeft(array('u' => 'usuario'), 'a.dono_arquivo = u.usuario_id', array('u.nome'=>'u.nome'));
