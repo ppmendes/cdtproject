@@ -27,6 +27,7 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
             'function(event,ui) { $("#termo_aditivo-orcamento_id_destino").val(ui.item.id) }')
         ));
         $this->addElement($emt);
+
         //Coordenador do projeto input type text
         $this->addElement('text', 'valor', array(
             'label'      => 'Valor (R$):',
