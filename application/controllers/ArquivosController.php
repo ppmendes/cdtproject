@@ -23,38 +23,50 @@ class ArquivosController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Arquivos();
+        $upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
 
+
                 $data = $form->getValues();
 
-                /* Uploading Document File on Server */
-                $upload = new Zend_File_Transfer_Adapter_Http();
-                $upload->addFilter('Rename', 'files/arquivos/');
+                //verificar e criar pastas
+                $projetoid = $data['arquivos']['projeto_id'];
+                $tarefaid = $data['arquivos']['tarefa_id'];
+                // $pasta retorna a ruta da pasta
+                $pasta=$model->existePasta($projetoid, $tarefaid);
+
+                $upload->addFilter('Rename', $pasta);
 
                 try {
                     // upload received file(s)
                     $upload->receive();
-                    $tamanho=$upload->getFileSize();
-                    $data['arquivos']['tamanho']=$tamanho;
 
                 } catch (Zend_File_Transfer_Exception $e) {
                     $e->getMessage();
                 }
 
+
+                //pegando o formato do arquivo
                 $file = $upload->getFileName('nome_arquivo');
                 $nome_arquivo= $model->getLastInsertedId();
                 $formato = explode(".",$file);
                 $indice = count($formato)-1;
 
-                $fullFilePathFile = 'files/arquivos/'.$nome_arquivo.'.'.$formato[$indice];
+                //renomeando o arquivo
+                $fullFilePathFile = $pasta.'/'.$nome_arquivo.'.'.$formato[$indice];
                 $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
                 $filterFileRename -> filter($file);
 
-                print_r($data);
+                //pegando o tamanho do arquivo e inserindo na variável data
+                $tamanho = $upload->getFileInfo('nome_arquivo');
+                $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+
+
+                print_r($pasta);
                 exit;
 
                 //

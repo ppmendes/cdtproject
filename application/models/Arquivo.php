@@ -11,6 +11,7 @@ class Application_Model_Arquivo
 
     public function insert($data)
     {
+        $data['arquivos']['data_arquivo'] = date('Y-m-d h:i:s', time());
         $table = new Application_Model_DbTable_Arquivo;
         $table->insert($data['arquivos']);
     }
@@ -38,6 +39,31 @@ class Application_Model_Arquivo
         $db = Zend_Db_Table::getDefaultAdapter();
         $result = $db->fetchOne("SELECT max(arquivo_id) FROM arquivo");
         return (int)$result+1;
+    }
+
+    public function existePasta($projetoid, $tarefaid)
+    {
+        $pathprojeto = 'files/arquivos/'.$projetoid;
+        $pathtarefa=$pathprojeto.'/'.$tarefaid;
+
+        if(file_exists($pathprojeto))
+        {
+           // buscar pasta tarefas
+            if(file_exists($pathtarefa))
+            {
+                return $pathtarefa;
+            }else
+            {
+                mkdir($pathtarefa, 0777);
+                return $pathtarefa;
+            }
+
+        }else{
+            // criar pasta projeto
+            mkdir($pathprojeto, 0777);
+            mkdir($pathtarefa, 0777);
+            return $pathtarefa;
+        }
     }
 
     public function selectAll()
