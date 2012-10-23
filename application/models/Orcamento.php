@@ -40,15 +40,17 @@ class Application_Model_Orcamento
 
     }
 
-    public static function getCodigoDescricaoRubricaValorOrcamentoNomeDestino(){
+    public static function getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id){
         try{
             $options = array();
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
                 ->from(array('o' => 'orcamento'), array('o.orcamento_id'=>'o.orcamento_id', 'o.valor_orcamento'=>'o.valor_orcamento', 'r.rubrica_id' => 'r.rubrica_id'))
+                ->where('p.projeto_id = ?' , $id)
                 ->joinInner(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica'=>'r.codigo_rubrica', 'r.descricao'=>'r.descricao'))
-                ->joinInner(array('d' => 'destino'), 'o.destino_id = d.destino_id', array('d.nome_destino'=>'d.nome_destino'));
+                ->joinInner(array('d' => 'destino'), 'o.destino_id = d.destino_id', array('d.nome_destino'=>'d.nome_destino'))
+                ->joinInner(array('p' => 'projeto'), 'o.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id'));
 
             $stmt = $select->query();
             $resultado = $stmt->fetchAll();
