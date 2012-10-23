@@ -43,8 +43,8 @@ class Application_Model_Arquivo
 
     public function existePasta($projetoid, $tarefaid)
     {
-        $pathprojeto = 'files/arquivos/'.$projetoid;
-        $pathtarefa=$pathprojeto.'/'.$tarefaid;
+        $pathprojeto = 'files/arquivos/projeto-'.$projetoid;
+        $pathtarefa=$pathprojeto.'/tarefa-'.$tarefaid;
 
         if(file_exists($pathprojeto))
         {
@@ -60,7 +60,7 @@ class Application_Model_Arquivo
 
         }else{
             // criar pasta projeto
-            mkdir($pathprojeto, 0777);
+            mkdir(''.$pathprojeto, 0777);
             mkdir($pathtarefa, 0777);
             return $pathtarefa;
         }
