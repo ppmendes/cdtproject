@@ -17,6 +17,11 @@
         top.location.href = '/../projetos/adicionar/projeto_id/'+id;
 
     }
+    function termoAditivo(id)
+    {
+        top.location.href = '/../termoaditivo/index/projeto_id/'+id;
+
+    }
 </script>
 
 <?php
@@ -27,4 +32,5 @@ echo "<button onclick='editar($id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
+echo "<button class='termo_aditivo' onclick='termoAditivo($id)'>Termo Aditivo do Projeto</button>";
 ?>

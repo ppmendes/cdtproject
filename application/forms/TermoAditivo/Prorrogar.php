@@ -11,7 +11,7 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
 
         //pegar id do projeto
         $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
-
+        //$id_projeto = $this->_getParam('projeto_id');
         // Setar metodo
         $this->setMethod('post');
 

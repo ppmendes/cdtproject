@@ -34,19 +34,19 @@
     });
 </script>
 <script>
-    function prorrogar()
+    function prorrogar(projeto_id)
     {
-        top.location.href = '/../termoaditivo/prorrogar/projeto_id/1';
+        top.location.href = '/../termoaditivo/prorrogar/projeto_id/'+projeto_id;
 
     }
-    function remanejar()
+    function remanejar(projeto_id)
     {
-        top.location.href = '/../termoaditivo/remanejar/projeto_id/1';
+        top.location.href = '/../termoaditivo/remanejar/projeto_id/'+projeto_id;
 
     }
-    function alterar()
+    function alterar(projeto_id)
     {
-        top.location.href = '/../termoaditivo/alterar/projeto_id/1';
+        top.location.href = '/../termoaditivo/alterar/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -58,10 +58,12 @@
         float:right;
     }
 </style>
-<button class='alterar' onclick='alterar()'>Alterar</button>
-<button class='remanejar' onclick='remanejar()'>Remanejar</button>
-<button class='prorrogar' onclick='prorrogar()'>Prorrogar</button>
-
+<?php
+$projeto_id = $this->id;
+echo "<button class='alterar' onclick='alterar($projeto_id)'>Alterar</button>";
+echo "<button class='remanejar' onclick='remanejar($projeto_id)'>Remanejar</button>";
+echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</button>";
+?>
 
 <table id='table_id' border='0'>
     <thead>

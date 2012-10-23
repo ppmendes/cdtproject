@@ -12,6 +12,8 @@ class TermoAditivoController extends Zend_Controller_Action
     {
 	    $termoAditivoModel = new Application_Model_TermoAditivo();
         $this->view->termoaditivo = $termoAditivoModel->selectAll();
+        $id = $this->_getParam('projeto_id');
+        $this->view->id = $id;
 
     }
 
@@ -19,7 +21,6 @@ class TermoAditivoController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_TermoAditivo_Prorrogar();
         $model = new Application_Model_TermoAditivo;
-        //$id = $this->_getParam('projeto_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
