@@ -11,9 +11,9 @@ class TermoAditivoController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $termoAditivoModel = new Application_Model_TermoAditivo();
-        $this->view->termoaditivo = $termoAditivoModel->selectAll();
         $id = $this->_getParam('projeto_id');
         $this->view->id = $id;
+        $this->view->termoaditivo = $termoAditivoModel->selectAll($id);
 
     }
 
@@ -28,7 +28,7 @@ class TermoAditivoController extends Zend_Controller_Action
                 unset($data['termo_aditivo']['data']);
                 $model->insert($data);
 
-                $this->_redirect('/termoaditivo/');
+                $this->_redirect('/termoaditivo/index/projeto_id/' . $data['termo_aditivo']['projeto_id']);
             }
         }/*elseif ($id){
             $data = $model->find($id)->toArray();
@@ -57,7 +57,7 @@ class TermoAditivoController extends Zend_Controller_Action
                 unset($data['termo_aditivo']['termoAditivoRemanejar2']);
                 $model->insert($data);
 
-                $this->_redirect('/termoaditivo/');
+                $this->_redirect('/termoaditivo/index/projeto_id/' . $data['termo_aditivo']['projeto_id']);
             }
         }/*elseif ($id){
             $data = $model->find($id)->toArray();
@@ -85,7 +85,7 @@ class TermoAditivoController extends Zend_Controller_Action
                 unset($data['termo_aditivo']['termoAditivoAlterar']);
                     $model->insert($data);
 
-                $this->_redirect('/termoaditivo/');
+                $this->_redirect('/termoaditivo/index/projeto_id/' . $data['termo_aditivo']['projeto_id']);
             }
         }/*elseif ($id){
             $data = $model->find($id)->toArray();

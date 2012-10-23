@@ -12,9 +12,11 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
+
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoAlterar');
         $emt->setLabel('Elemento de Despesa Destinatário:');
-        $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino())
+        $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
             'function(event,ui) { $("#termo_aditivo-orcamento_id_destino").val(ui.item.id) }')
         ));
@@ -45,7 +47,7 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
 
         //set hidden
         $this->addElement('hidden', 'projeto_id', array(
-            'value'      => '1'
+            'value'      => $id_projeto
         ));
 
         //set hidden
