@@ -66,6 +66,42 @@ class Application_Model_Arquivo
         }
     }
 
+    public function editarArquivo($pasta,$nome_arquivo,$data)
+    {
+        $upload = new Zend_File_Transfer_Adapter_Http();
+        $upload->addFilter('Rename', $pasta);
+
+        try {
+            // upload received file(s)
+            $upload->receive();
+            //pegando o tamanho do arquivo e inserindo na variável data
+            $tamanho = $upload->getFileInfo('nome_arquivo');
+            $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+            print_r($tamanho);
+            exit;
+
+
+        } catch (Zend_File_Transfer_Exception $e) {
+            $e->getMessage();
+        }
+
+
+        //pegando o formato do arquivo
+        $file = $upload->getFileName('nome_arquivo');
+
+
+        $formato = explode(".",$file);
+        $indice = count($formato)-1;
+
+        //renomeando o arquivo
+        $fullFilePathFile = $pasta.'/'.$nome_arquivo.'.'.$formato[$indice];
+        $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
+        $filterFileRename -> filter($file);
+
+
+
+    }
+
     public function selectAll()
     {
        try{

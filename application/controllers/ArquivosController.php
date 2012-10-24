@@ -23,7 +23,7 @@ class ArquivosController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Arquivos();
-        $upload = new Zend_File_Transfer_Adapter_Http();
+        //$upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
 
@@ -39,7 +39,7 @@ class ArquivosController extends Zend_Controller_Action
                 // $pasta retorna a ruta da pasta
                 $pasta=$model->existePasta($projetoid, $tarefaid);
 
-                $upload->addFilter('Rename', $pasta);
+                /*$upload->addFilter('Rename', $pasta);
 
                 try {
                     // upload received file(s)
@@ -52,7 +52,7 @@ class ArquivosController extends Zend_Controller_Action
 
                 //pegando o formato do arquivo
                 $file = $upload->getFileName('nome_arquivo');
-                $nome_arquivo= $model->getLastInsertedId();
+                //$nome_arquivo= $model->getLastInsertedId();
                 $formato = explode(".",$file);
                 $indice = count($formato)-1;
 
@@ -65,11 +65,15 @@ class ArquivosController extends Zend_Controller_Action
                 $tamanho = $upload->getFileInfo('nome_arquivo');
                 $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
 
-                //
+                /*/
                 if($id){
                     $model->update($data, $id);
+
+                    $model->editarArquivo($pasta,$id,$data);
                 }else{
                     $model->insert($data);
+                    $nome_arquivo= $model->getLastInsertedId();
+                    $model->editarArquivo($pasta,$nome_arquivo,$data);
                 }
 
                 $this->_redirect('/arquivos/');
