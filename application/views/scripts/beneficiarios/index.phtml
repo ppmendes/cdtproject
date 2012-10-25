@@ -57,24 +57,45 @@
     });
 </script>
 <script>
+    var x = 0;
+
     function adicionar()
     {
-        top.location.href = '/../beneficiarios/adicionar/';
+        if(getFiltro() == 0)
+        {
+        top.location.href = '/../beneficiarios/adicionarpf/';
+        }
+        else
+        {
+        top.location.href = '/../beneficiarios/adicionarpj/';
+        }
 
     }
-</script>
 
-<script>
     function funcaoFiltro(valor){
         if(valor == 'cpf' ){
             $('#table_id_pf_wrapper').css('display','block');
             $('#table_id_pj_wrapper').css('display','none');
+            setFiltro(0);
+            alert(getFiltro());
         }
         if(valor == 'cnpj' ){
             $('#table_id_pj_wrapper').css('display','block');
             $('#table_id_pf_wrapper').css('display','none');
+            setFiltro(1);
+            alert(getFiltro());
         }
     }
+
+    function setFiltro(valor){
+        x = valor;
+    }
+
+    function getFiltro()
+    {
+        return x;
+    }
+
 </script>
 
 <style>
@@ -120,7 +141,7 @@
 
         echo "<tr id='".$row['beneficiario_id']."'>";
         echo "<td>" .   $row['beneficiario_id'] . "</td>";
-        echo "<td><a href='/beneficiarios/detalhes/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
+        echo "<td><a href='/beneficiarios/detalhespf/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
         echo "<td>" .   $row['cpf_cnpj'] . "</td>";
         echo "<td >" .  $row['endereco'] . "</td>";
         echo "<td >" .  $row['telefone'] . "</td>";
@@ -157,7 +178,7 @@
 
         echo "<tr id='".$row['beneficiario_id']."'>";
         echo "<td>" .   $row['beneficiario_id'] . "</td>";
-        echo "<td><a href='/beneficiarios/detalhes/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
+        echo "<td><a href='/beneficiarios/detalhespj/beneficiario_id/{$row['beneficiario_id']}'>" . $row['nome'] . "</a></td>";
         echo "<td>" .   $row['cpf_cnpj'] . "</td>";
         echo "<td >" .  $row['endereco'] . "</td>";
         echo "<td >" .  $row['telefone'] . "</td>";

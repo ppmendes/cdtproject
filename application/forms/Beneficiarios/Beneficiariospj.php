@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Beneficiarios extends Zend_Form
+class Application_Form_Beneficiarios_Beneficiariospj extends Zend_Form
 {
 
     public function init()
@@ -13,7 +13,7 @@ class Application_Form_Beneficiarios extends Zend_Form
 
         //Nome input type text
         $this->addElement('text', 'nome', array(
-            'label'      => 'Nome:',
+            'label'      => 'Nomeee:',
             'required'   => true,
         ));
 
