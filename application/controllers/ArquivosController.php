@@ -36,16 +36,18 @@ class ArquivosController extends Zend_Controller_Action
 
 
                     $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-                    $model->verificarMudancasArquivos($data,$id);
+                    $renomeado=$model->verificarMudancasArquivos($data,$id);
+                    $data['arquivos']['nome_arquivo']=$renomeado;
                     $model->update($data, $id);
+                    //$data['arquivos']['nome_arquivo']=$renomeado;
                 }else{
 
                     $tamanho = $upload->getFileInfo('nome_arquivo');
-                    $data['arquivos']['nome_arquivo']=
                     $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-                    $model->insert($data);
                     $nome_arquivo= $model->getLastInsertedId();
-                    $model->editarArquivo($nome_arquivo,$data);
+                    $renomeado=$model->editarArquivo($nome_arquivo,$data);
+                    $data['arquivos']['nome_arquivo']=$renomeado;
+                    $model->insert($data);
                 }
 
                 $this->_redirect('/arquivos/');

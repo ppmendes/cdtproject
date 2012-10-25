@@ -69,7 +69,6 @@ class Application_Model_Arquivo
     public function verificarMudancasArquivos($data,$id)
     {
         $nome=$data['arquivos']['nome_arquivo'];
-        $size=$data['arquivos']['tamanho'];
         $projetoid=$data['arquivos']['projeto_id'];
         $tarefaid=$data['arquivos']['tarefa_id'];
 
@@ -77,49 +76,30 @@ class Application_Model_Arquivo
         $result=$db->fetchRow("select nome_arquivo, tamanho, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
 
 
-        $origen='files/arquivos/projeto-'.$projetoid.'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
-        $destino=$this->existePasta($projetoid,$tarefaid);
-        echo "origem ".$origen." destino ".$destino;
-
-        copy($origen,$destino);
-        exit;
-
-
-
         // mudancas no arquivo
-        if($nome!=$result['nome_arquivo'])
+        if($nome!="")
         {
-            if($size!=$result['tamanho'])
-            {
-                if($projetoid==$result['projeto_id'])
-                {
-                    if($tarefaid!=$result['tarefa_id'])
-                    {
-                        // mover arquivo da pasta tarefa
-                        $origen='files/arquivos/projeto-'.$projetoid.'/tarefa-'.$result['tarefa_id'].'/';
-                        $destino=$this->existePasta($projetoid,$tarefaid);
-                        echo "origem ".$origen." destino ".$destino;
-                        exit;
-                        copy($origen,$destino);
-
-
-                        // se nao existir mais arquivos deletar pasta
-
-                        /*if($this->contarArquivos($origen)!=0)
-                        {
-
-                        }*/
-                            // adicionar o arquivo na nova pasta
-                    }
-                }
-            }
-        }
-        else
-        {
+            $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+            $destino='files/lixeira/'.$result['nome_arquivo'];
+            copy($origen,$destino);
+            unlink($origen);
+            return $this->editarArquivo($id,$data);
 
         }
+        // so muda de pasta projeto ou tarefa
+        elseif(($projetoid!=$result['projeto_id'])||($tarefaid!=$result['tarefa_id']))
+        {
+            // so muda de pasta projeto ou tarefa
+            $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+            $destino=$this->existePasta($projetoid, $tarefaid).'/'.$result['nome_arquivo'];
+            copy($origen,$destino);
+            unlink($origen);
+            return $result['nome_arquivo'];
 
-        //mudancas no endereco
+        }
+        else{
+            return $result['nome_arquivo'];
+        }
 
     }
 
@@ -138,12 +118,14 @@ class Application_Model_Arquivo
 
     public function editarArquivo($nome_arquivo,$data)
     {
+
         $upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
 
         //verificar e criar pastas
         $projetoid = $data['arquivos']['projeto_id'];
         $tarefaid = $data['arquivos']['tarefa_id'];
+        $versao = $data['arquivos']['versao'];
         // $pasta retorna a ruta da pasta
         $pasta=$model->existePasta($projetoid, $tarefaid);
         $upload->addFilter('Rename', $pasta);
@@ -158,17 +140,15 @@ class Application_Model_Arquivo
 
         //pegando o formato do arquivo
         $file = $upload->getFileName('nome_arquivo');
-        //$nome_arquivo= $model->getLastInsertedId();
         $formato = explode(".",$file);
         $indice = count($formato)-1;
 
         //renomeando o arquivo
-        $fullFilePathFile = $pasta.'/'.$nome_arquivo.'.'.$formato[$indice];
+        $renomeado='arquivo_'.$nome_arquivo.'_'.$versao.'.'.$formato[$indice];
+        $fullFilePathFile = $pasta.'/'.$renomeado;
         $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
-
         $filterFileRename -> filter($file);
-        print_r($filterFileRename);
-        exit;
+        return $renomeado;
     }
 
     public function selectAll()
