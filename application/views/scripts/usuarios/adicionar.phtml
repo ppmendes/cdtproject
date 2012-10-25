@@ -1,15 +1,18 @@
 <?php
 $this->form->setAction($this->url());
+$pais = $this->pais;
 echo $this->form;
 ?>
 <script type="text/javascript">
+    carregaEstados(<?php echo $pais; ?>);
+
     function carregaEstados(valor){
         if (valor == 76)
         {
-        $('#usuario-estado-label').css('display','block');
-        $('#usuario-estado-element').css('display','block');
-        $('#usuario-cidade-label').css('display','block');
-        $('#usuario-cidade-element').css('display','block');
+        $('#estado-label').css('display','block');
+        $('#estado-element').css('display','block');
+        $('#cidade-label').css('display','block');
+        $('#cidade-element').css('display','block');
         $('#usuario-cidadetext-label').css('display','none');
         $('#usuario-cidadetext-element').css('display','none');
         $.ajax({
@@ -24,12 +27,12 @@ echo $this->form;
         }
         else
         {
-            carregaCidades(9999999);
+            carregaCidades(99999);
         };
     }
 
     function carregaCidades(valor){
-        if (valor !== 9999999)
+        if (valor !== 99999)
         {
         $.ajax({
             url: '/usuarios/selectcidades/id/'+valor,
@@ -42,10 +45,10 @@ echo $this->form;
         }
         else
         {
-            $('#usuario-estado-label').css('display','none');
-            $('#usuario-estado-element').css('display','none');
-            $('#usuario-cidade-label').css('display','none');
-            $('#usuario-cidade-element').css('display','none');
+            $('#estado-label').css('display','none');
+            $('#estado-element').css('display','none');
+            $('#cidade-label').css('display','none');
+            $('#cidade-element').css('display','none');
             $('#usuario-cidadetext-label').css('display','block');
             $('#usuario-cidadetext-element').css('display','block');
         }

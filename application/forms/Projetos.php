@@ -101,22 +101,22 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //Data de Início (Atual)
-        $this->addElement('text', 'data_inicio', array(
-            'label'      => 'Data de Início:',
-            'required'   => true
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
+        $emtDatePicker1->setLabel('Data de Início: ');
+        $emtDatePicker1->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $this->addElement($emtDatePicker1);
 
         //Data de Final Prevista
-        $this->addElement('text', 'data_final', array(
-            'label'      => 'Data Final:',
-            'required'   => true
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_final');
+        $emtDatePicker2->setLabel('Data Final Prevista: ');
+        $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $this->addElement($emtDatePicker2);
 
         //Data de Final Real
-        $this->addElement('text', 'data_final_real', array(
-            'label'      => 'Data Final Real:',
-            'required'   => true
-        ));
+        $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('data_final_real');
+        $emtDatePicker3->setLabel('Data Final Real: ');
+        $emtDatePicker3->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $this->addElement($emtDatePicker3);
 
 
 

@@ -13,10 +13,10 @@
             $('#estado-element').css('display','block');
             $('#cidade-label').css('display','block');
             $('#cidade-element').css('display','block');
-            $('#instituicao-cidadetext-label').css('display','none');
-            $('#instituicao-cidadetext-element').css('display','none');
+            $('#beneficiario-cidadetext-label').css('display','none');
+            $('#beneficiario-cidadetext-element').css('display','none');
             $.ajax({
-                url: '/instituicoes/selectestados/id/'+valor,
+                url: '/beneficiarios/selectestados/id/'+valor,
                 dataType:'html',
                 type:'GET',
                 success: function(data){
@@ -35,7 +35,7 @@
         if (valor !== 99999)
         {
             $.ajax({
-                url: '/instituicoes/selectcidades/id/'+valor,
+                url: '/beneficiarios/selectcidades/id/'+valor,
                 dataType:'html',
                 type:'GET',
                 success: function(data){
@@ -49,8 +49,8 @@
             $('#estado-element').css('display','none');
             $('#cidade-label').css('display','none');
             $('#cidade-element').css('display','none');
-            $('#instituicao-cidadetext-label').css('display','block');
-            $('#instituicao-cidadetext-element').css('display','block');
+            $('#beneficiario-cidadetext-label').css('display','block');
+            $('#beneficiario-cidadetext-element').css('display','block');
         }
         ;
     }

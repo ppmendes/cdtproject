@@ -126,13 +126,6 @@ class Application_Form_Usuarios extends Zend_Form
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
 
-
-        ?>
-    <script>
-        carregaEstados('76');
-    </script>
-    <?php
-
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
             'id'         => 'cidade',
@@ -162,7 +155,7 @@ class Application_Form_Usuarios extends Zend_Form
         //icono ou imagen input type text
         $this->addElement('file', 'icono', array(
             'label'      => 'Icono:',
-            'required'   => true
+            'required'   => false
         ));
 
         //Descrição input type text

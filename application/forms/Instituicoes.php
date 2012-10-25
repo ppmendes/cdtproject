@@ -73,24 +73,38 @@ class Application_Form_Instituicoes extends Zend_Form
         ));
 
         //pais input type text
+        $options = Application_Model_Pais::getOptions();
         $this->addElement('select', 'pais_id', array(
+            'id'         => 'pais',
             'label'      => 'Pais:',
-            'multiOptions' => Application_Model_Pais::getOptions(),
-            'required'   => true
+            'multiOptions' => $options,
+            'required'   => true,
+            'attribs'    => array('onchange' => 'carregaEstados(this.value)'),
+            'value'     => '76',
         ));
 
         //Estado input type text
         $this->addElement('select', 'estados_id', array(
+            'id'         => 'estado',
             'label'      => 'Estado:',
-            'multiOptions' => Application_Model_Estados::getOptions(),
-            'required'   => true
+            //'multiOptions' => Application_Model_Estados::getOptions(),
+            'required'   => true,
+            'attribs'    => array( 'setRegisterInArrayValidator' => false),
+            'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
 
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
+            'id'         => 'cidade',
             'label'      => 'Cidade:',
-            'multiOptions' => Application_Model_Cidade::getOptions(),
-            'required'   => true
+            //'multiOptions' => Application_Model_Cidade::getOptions(),
+            'required'   => true,
+            'attribs'    => array( 'setRegisterInArrayValidator' => false),
+        ));
+
+        $this->addElement('text', 'cidadetext', array(
+            'label'      => 'Cidade/Estado:',
+            'required'   => false
         ));
 
         //CEP input type textarea

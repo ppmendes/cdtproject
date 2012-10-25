@@ -16,11 +16,12 @@ class BeneficiariosController extends Zend_Controller_Action
 
     }
 
-    public function adicionarAction(){
+    public function adicionarpfAction(){
         $request = $this->getRequest();
-        $form = new Application_Form_Beneficiarios();
+        $form = new Application_Form_Beneficiarios_Beneficiariospf();
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
+        $this->view->pais = 76;
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -38,9 +39,9 @@ class BeneficiariosController extends Zend_Controller_Action
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
-
+            $this->view->pais = $data['pais_id'];
             if(is_array($data)){
-                $form->setAction('/beneficiarios/detalhes/beneficiario_id/' . $id);
+                $form->setAction('/beneficiarios/detalhespf/beneficiario_id/' . $id);
                 $form->populate(array("beneficiario" => $data));
             }
         }
@@ -50,9 +51,45 @@ class BeneficiariosController extends Zend_Controller_Action
 
     }
 
-    public function detalhesAction(){
+    public function adicionarpjAction(){
         $request = $this->getRequest();
-        $detalhes = new Application_Form_Beneficiarios();
+        $form = new Application_Form_Beneficiarios_Beneficiariospj();
+        $model = new Application_Model_Beneficiario();
+        $id = $this->_getParam('beneficiario_id');
+        $this->view->pais = 76;
+
+        if($this->getRequest()->isPost()){
+            if($form->isValid($request->getPost())){
+//                echo "<pre>";
+//                print_r($form->getValues());
+//                echo "</pre>";
+                $data = $form->getValues();
+                if($id){
+                    $model->update($data, $id);
+                }else{
+                    $model->insert($data);
+                }
+
+                $this->_redirect('/beneficiarios/');
+            }
+        }elseif ($id){
+            $data = $model->find($id)->toArray();
+            $this->view->pais = $data['pais_id'];
+
+            if(is_array($data)){
+                $form->setAction('/beneficiarios/detalhespj/beneficiario_id/' . $id);
+                $form->populate(array("beneficiario" => $data));
+            }
+        }
+
+        $this->view->form = $form;
+
+
+    }
+
+    public function detalhespfAction(){
+        $request = $this->getRequest();
+        $detalhes = new Application_Form_Beneficiarios_Beneficiariospf();
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
         $this->view->id = $id;
@@ -61,7 +98,7 @@ class BeneficiariosController extends Zend_Controller_Action
         $data = $model->find($id)->toArray();
 
         if(is_array($data)){
-            $detalhes->setAction('/beneficiarios/detalhes/beneficiario_id/' . $id);
+            $detalhes->setAction('/beneficiarios/detalhespf/beneficiario_id/' . $id);
             $detalhes->populate(array("beneficiario" => $data));
         }
 
@@ -70,9 +107,29 @@ class BeneficiariosController extends Zend_Controller_Action
 
     }
 
-    public function excluirAction(){
+    public function detalhespjAction(){
+        $request = $this->getRequest();
+        $detalhes = new Application_Form_Beneficiarios_Beneficiariospj();
+        $model = new Application_Model_Beneficiario();
+        $id = $this->_getParam('beneficiario_id');
+        $this->view->id = $id;
+
+
+        $data = $model->find($id)->toArray();
+
+        if(is_array($data)){
+            $detalhes->setAction('/beneficiarios/detalhespj/beneficiario_id/' . $id);
+            $detalhes->populate(array("beneficiario" => $data));
+        }
+
+        $this->view->detalhes = $detalhes;
+
+
+    }
+
+    public function excluirpfAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Beneficiarios();
+        $excluir = new Application_Form_Beneficiarios_Beneficiariospf();
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
 
@@ -81,6 +138,53 @@ class BeneficiariosController extends Zend_Controller_Action
 
         $this->view->excluir = $excluir;
 
+    }
+
+    public function excluirpjAction(){
+        //$request = $this->getRequest();
+        $excluir = new Application_Form_Beneficiarios_Beneficiariospj();
+        $model = new Application_Model_Beneficiario();
+        $id = $this->_getParam('beneficiario_id');
+
+        $model->delete($id);
+        $this->_redirect('/beneficiarios/');
+
+        $this->view->excluir = $excluir;
+
+    }
+
+    public function selectestadosAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id', 0)) {
+            $id = (int) $this->_request->getParam('id', 0);
+            $filhos = new Application_Model_DbTable_Estados();
+            $rows = $filhos->fetchAll('pais_id = ' . (int) $id);
+            echo '<option value="">Selecione</option>';
+            foreach ($rows as $row) {
+                echo '<option value="' . $row->estados_id . '">' . $row->estados_nome . '</option>';
+            }
+        } else {
+            echo '<option value="">Selecione</option>';
+        }
+    }
+
+    public function selectcidadesAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id', 0)) {
+            $id = (int) $this->_request->getParam('id', 0);
+            $filhos = new Application_Model_DbTable_Cidade();
+            $rows = $filhos->fetchAll('estados_id = ' . (int) $id);
+            echo '<option value="">Selecione</option>';
+            foreach ($rows as $row) {
+                echo '<option value="' . $row->cidade_id . '">' . $row->cidade_nome . '</option>';
+            }
+        } else {
+            echo '<option value="">Selecione</option>';
+        }
     }
 
 
