@@ -75,7 +75,7 @@ class Application_Model_Arquivo
         $db = Zend_Db_Table::getDefaultAdapter();
         $result=$db->fetchRow("select nome_arquivo, tamanho, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
 
-        // mudancas no arquivo
+        // mudancas no arquivo bb
         if($nome!="")
         {
             $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
