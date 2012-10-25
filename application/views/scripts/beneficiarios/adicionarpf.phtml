@@ -2,3 +2,53 @@
     $this->form->setAction($this->url());
     echo $this->form;
 ?>
+<script type="text/javascript">
+    function carregaEstados(valor){
+        if (valor == 76)
+        {
+            $('#estado-label').css('display','block');
+            $('#estado-element').css('display','block');
+            $('#cidade-label').css('display','block');
+            $('#cidade-element').css('display','block');
+            $('#beneficiario-cidadetext-label').css('display','none');
+            $('#beneficiario-cidadetext-element').css('display','none');
+            $.ajax({
+                url: '/beneficiarios/selectestados/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#estado').html(data);
+                }
+            })
+            carregaCidades('0');
+        }
+        else
+        {
+            carregaCidades(99999);
+        };
+    }
+
+    function carregaCidades(valor){
+        if (valor !== 99999)
+        {
+            $.ajax({
+                url: '/beneficiarios/selectcidades/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#cidade').html(data);
+                }
+            })
+        }
+        else
+        {
+            $('#estado-label').css('display','none');
+            $('#estado-element').css('display','none');
+            $('#cidade-label').css('display','none');
+            $('#cidade-element').css('display','none');
+            $('#beneficiario-cidadetext-label').css('display','block');
+            $('#beneficiario-cidadetext-element').css('display','block');
+        }
+        ;
+    }
+</script>

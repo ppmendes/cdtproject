@@ -94,22 +94,46 @@ class Application_Form_Beneficiarios_Beneficiariospf extends Zend_Form
             'required'   => true,
         ));
 
+        //pais input type text
+        $options = Application_Model_Pais::getOptions();
         $this->addElement('select', 'pais_id', array(
-            'label'      => 'País:',
-            'multiOptions' => Application_Model_Pais::getOptions(),
+            'id'         => 'pais',
+            'label'      => 'Pais:',
+            'multiOptions' => $options,
             'required'   => true,
+            'attribs'    => array('onchange' => 'carregaEstados(this.value)'),
+            'value'     => '76',
         ));
 
+        //Estado input type text
         $this->addElement('select', 'estados_id', array(
+            'id'         => 'estado',
             'label'      => 'Estado:',
-            'multiOptions' => Application_Model_Estados::getOptions(),
+            //'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => true,
+            'attribs'    => array( 'setRegisterInArrayValidator' => false),
+            'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
 
+
+        ?>
+    <script>
+        carregaEstados('76');
+    </script>
+    <?php
+
+        //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
+            'id'         => 'cidade',
             'label'      => 'Cidade:',
-            'multiOptions' => Application_Model_Cidade::getOptions(),
+            //'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => true,
+            'attribs'    => array( 'setRegisterInArrayValidator' => false),
+        ));
+
+        $this->addElement('text', 'cidadetext', array(
+            'label'      => 'Cidade/Estado:',
+            'required'   => false
         ));
 
 

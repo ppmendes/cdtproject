@@ -150,6 +150,40 @@ class BeneficiariosController extends Zend_Controller_Action
 
     }
 
+    public function selectestadosAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id', 0)) {
+            $id = (int) $this->_request->getParam('id', 0);
+            $filhos = new Application_Model_DbTable_Estados();
+            $rows = $filhos->fetchAll('pais_id = ' . (int) $id);
+            echo '<option value="">Selecione</option>';
+            foreach ($rows as $row) {
+                echo '<option value="' . $row->estados_id . '">' . $row->estados_nome . '</option>';
+            }
+        } else {
+            echo '<option value="">Selecione</option>';
+        }
+    }
+
+    public function selectcidadesAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id', 0)) {
+            $id = (int) $this->_request->getParam('id', 0);
+            $filhos = new Application_Model_DbTable_Cidade();
+            $rows = $filhos->fetchAll('estados_id = ' . (int) $id);
+            echo '<option value="">Selecione</option>';
+            foreach ($rows as $row) {
+                echo '<option value="' . $row->cidade_id . '">' . $row->cidade_nome . '</option>';
+            }
+        } else {
+            echo '<option value="">Selecione</option>';
+        }
+    }
+
 
 }
 
