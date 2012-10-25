@@ -39,7 +39,7 @@ class Application_Form_Arquivos extends Zend_Form
 
         $this->addElement('file', 'nome_arquivo', array(
             'label'      => 'Arquivo:',
-            'required'   => true
+            'required'   => false
         ));
 
         //arquivo id pai  da tarefa select type
