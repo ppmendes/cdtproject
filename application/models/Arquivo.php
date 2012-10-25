@@ -66,40 +66,109 @@ class Application_Model_Arquivo
         }
     }
 
-    public function editarArquivo($pasta,$nome_arquivo,$data)
+    public function verificarMudancasArquivos($data,$id)
+    {
+        $nome=$data['arquivos']['nome_arquivo'];
+        $size=$data['arquivos']['tamanho'];
+        $projetoid=$data['arquivos']['projeto_id'];
+        $tarefaid=$data['arquivos']['tarefa_id'];
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result=$db->fetchRow("select nome_arquivo, tamanho, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
+
+
+        $origen='files/arquivos/projeto-'.$projetoid.'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+        $destino=$this->existePasta($projetoid,$tarefaid);
+        echo "origem ".$origen." destino ".$destino;
+
+        copy($origen,$destino);
+        exit;
+
+
+
+        // mudancas no arquivo
+        if($nome!=$result['nome_arquivo'])
+        {
+            if($size!=$result['tamanho'])
+            {
+                if($projetoid==$result['projeto_id'])
+                {
+                    if($tarefaid!=$result['tarefa_id'])
+                    {
+                        // mover arquivo da pasta tarefa
+                        $origen='files/arquivos/projeto-'.$projetoid.'/tarefa-'.$result['tarefa_id'].'/';
+                        $destino=$this->existePasta($projetoid,$tarefaid);
+                        echo "origem ".$origen." destino ".$destino;
+                        exit;
+                        copy($origen,$destino);
+
+
+                        // se nao existir mais arquivos deletar pasta
+
+                        /*if($this->contarArquivos($origen)!=0)
+                        {
+
+                        }*/
+                            // adicionar o arquivo na nova pasta
+                    }
+                }
+            }
+        }
+        else
+        {
+
+        }
+
+        //mudancas no endereco
+
+    }
+
+    public function contarArquivos($path)
+    {
+        $ds  = opendir($path);
+        while (false !== ($nombre_archivo = readdir($ds))) {
+            $archivos[] = $nombre_archivo;
+        }
+        $total_archivos = count($archivos);
+        $total = $total_archivos-2;
+        echo $total;
+    }
+
+
+
+    public function editarArquivo($nome_arquivo,$data)
     {
         $upload = new Zend_File_Transfer_Adapter_Http();
+        $model = new Application_Model_Arquivo;
+
+        //verificar e criar pastas
+        $projetoid = $data['arquivos']['projeto_id'];
+        $tarefaid = $data['arquivos']['tarefa_id'];
+        // $pasta retorna a ruta da pasta
+        $pasta=$model->existePasta($projetoid, $tarefaid);
         $upload->addFilter('Rename', $pasta);
 
         try {
             // upload received file(s)
             $upload->receive();
-            //pegando o tamanho do arquivo e inserindo na variável data
-            $tamanho = $upload->getFileInfo('nome_arquivo');
-            $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-            print_r($tamanho);
-            exit;
-
 
         } catch (Zend_File_Transfer_Exception $e) {
             $e->getMessage();
         }
 
-
         //pegando o formato do arquivo
         $file = $upload->getFileName('nome_arquivo');
-
-
+        //$nome_arquivo= $model->getLastInsertedId();
         $formato = explode(".",$file);
         $indice = count($formato)-1;
 
         //renomeando o arquivo
         $fullFilePathFile = $pasta.'/'.$nome_arquivo.'.'.$formato[$indice];
         $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
+
         $filterFileRename -> filter($file);
-
-
-
+        print_r($filterFileRename);
+        exit;
     }
 
     public function selectAll()
