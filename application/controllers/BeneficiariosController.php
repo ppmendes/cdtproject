@@ -21,6 +21,7 @@ class BeneficiariosController extends Zend_Controller_Action
         $form = new Application_Form_Beneficiarios_Beneficiariospf();
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
+        $this->view->pais = 76;
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -38,7 +39,7 @@ class BeneficiariosController extends Zend_Controller_Action
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
-
+            $this->view->pais = $data['pais_id'];
             if(is_array($data)){
                 $form->setAction('/beneficiarios/detalhespf/beneficiario_id/' . $id);
                 $form->populate(array("beneficiario" => $data));
@@ -55,6 +56,7 @@ class BeneficiariosController extends Zend_Controller_Action
         $form = new Application_Form_Beneficiarios_Beneficiariospj();
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
+        $this->view->pais = 76;
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -72,6 +74,7 @@ class BeneficiariosController extends Zend_Controller_Action
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
+            $this->view->pais = $data['pais_id'];
 
             if(is_array($data)){
                 $form->setAction('/beneficiarios/detalhespj/beneficiario_id/' . $id);

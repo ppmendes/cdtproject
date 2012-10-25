@@ -93,13 +93,6 @@ class Application_Form_Instituicoes extends Zend_Form
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
 
-
-        ?>
-    <script>
-        carregaEstados('76');
-    </script>
-    <?php
-
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
             'id'         => 'cidade',

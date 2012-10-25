@@ -20,6 +20,7 @@ class UsuariosController extends Zend_Controller_Action
         $form = new Application_Form_Usuarios();
         $model = new Application_Model_Usuario;
         $id = $this->_getParam('usuario_id');
+        $this->view->pais = 76;
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -35,6 +36,7 @@ class UsuariosController extends Zend_Controller_Action
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
+            $this->view->pais = $data['pais_id'];
 
             if(is_array($data)){
                 $form->setAction('/usuarios/detalhes/usuario_id/' . $id);

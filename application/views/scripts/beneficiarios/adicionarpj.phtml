@@ -1,8 +1,11 @@
 <?php
     $this->form->setAction($this->url());
+    $pais = $this->pais;
     echo $this->form;
 ?>
 <script type="text/javascript">
+    carregaEstados(<?php echo $pais; ?>);
+
     function carregaEstados(valor){
         if (valor == 76)
         {
