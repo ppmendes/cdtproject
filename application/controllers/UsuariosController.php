@@ -21,6 +21,8 @@ class UsuariosController extends Zend_Controller_Action
         $model = new Application_Model_Usuario;
         $id = $this->_getParam('usuario_id');
         $this->view->pais = 76;
+        $form->getElement("estados_id")->setRegisterInArrayValidator(FALSE);
+        $form->getElement("cidade_id")->setRegisterInArrayValidator(FALSE);
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){

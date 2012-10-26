@@ -7,33 +7,29 @@
 
     carregaEstados(<?php echo $pais; ?>);
 
-
-    function setPais(valor)
-    {
-      x = valor;
-    }
-
     function carregaEstados(valor){
         if (valor == 76)
         {
-            $('#estado-label').css('display','block');
-            $('#estado-element').css('display','block');
-            $('#cidade-label').css('display','block');
-            $('#cidade-element').css('display','block');
+            $('#beneficiario-estados_id-label').css('display','block');
+            $('#beneficiario-estados_id-element').css('display','block');
+            $('#beneficiario-cidade_id-label').css('display','block');
+            $('#beneficiario-cidade_id-element').css('display','block');
             $('#beneficiario-cidadetext-label').css('display','none');
             $('#beneficiario-cidadetext-element').css('display','none');
+            $('#beneficiario-cidadetext').attr('disabled' , 'disabled');
             $.ajax({
                 url: '/beneficiarios/selectestados/id/'+valor,
                 dataType:'html',
                 type:'GET',
                 success: function(data){
-                    $('select#estado').html(data);
+                    $('select#beneficiario-estados_id').html(data);
                 }
             })
             carregaCidades('0');
         }
         else
         {
+            $('#beneficiario-cidadetext').removeAttr('disabled');
             carregaCidades(99999);
         };
     }
@@ -46,16 +42,16 @@
                 dataType:'html',
                 type:'GET',
                 success: function(data){
-                    $('select#cidade').html(data);
+                    $('select#beneficiario-cidade_id').html(data);
                 }
             })
         }
         else
         {
-            $('#estado-label').css('display','none');
-            $('#estado-element').css('display','none');
-            $('#cidade-label').css('display','none');
-            $('#cidade-element').css('display','none');
+            $('#beneficiario-estados_id-label').css('display','none');
+            $('#beneficiario-estados_id-element').css('display','none');
+            $('#beneficiario-cidade_id-label').css('display','none');
+            $('#beneficiario-cidade_id-element').css('display','none');
             $('#beneficiario-cidadetext-label').css('display','block');
             $('#beneficiario-cidadetext-element').css('display','block');
         }

@@ -9,24 +9,26 @@
     function carregaEstados(valor){
         if (valor == 76)
         {
-            $('#estado-label').css('display','block');
-            $('#estado-element').css('display','block');
-            $('#cidade-label').css('display','block');
-            $('#cidade-element').css('display','block');
+            $('#instituicao-estados_id-label').css('display','block');
+            $('#instituicao-estados_id-element').css('display','block');
+            $('#instituicao-cidade_id-label').css('display','block');
+            $('#instituicao-cidade_id-element').css('display','block');
             $('#instituicao-cidadetext-label').css('display','none');
             $('#instituicao-cidadetext-element').css('display','none');
+            $('#instituicao-cidadetext').attr('disabled' , 'disabled');
             $.ajax({
                 url: '/instituicoes/selectestados/id/'+valor,
                 dataType:'html',
                 type:'GET',
                 success: function(data){
-                    $('select#estado').html(data);
+                    $('select#instituicao-estados_id').html(data);
                 }
             })
             carregaCidades('0');
         }
         else
         {
+            $('#instituicao-cidadetext').removeAttr('disabled');
             carregaCidades(99999);
         };
     }
@@ -39,16 +41,16 @@
                 dataType:'html',
                 type:'GET',
                 success: function(data){
-                    $('select#cidade').html(data);
+                    $('select#instituicao-cidade_id').html(data);
                 }
             })
         }
         else
         {
-            $('#estado-label').css('display','none');
-            $('#estado-element').css('display','none');
-            $('#cidade-label').css('display','none');
-            $('#cidade-element').css('display','none');
+            $('#instituicao-estados_id-label').css('display','none');
+            $('#instituicao-estados_id-element').css('display','none');
+            $('#instituicao-cidade_id-label').css('display','none');
+            $('#instituicao-cidade_id-element').css('display','none');
             $('#instituicao-cidadetext-label').css('display','block');
             $('#instituicao-cidadetext-element').css('display','block');
         }
