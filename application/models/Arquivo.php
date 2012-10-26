@@ -41,6 +41,19 @@ class Application_Model_Arquivo
         return (int)$result+1;
     }
 
+    public function recuperarVersao($id)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("Select versao from arquivo where arquivo_id= $id");
+        return $result;
+    }
+
+    public function  incrementaVersao($versao)
+    {
+        $versao = $versao + 0.1;
+        return $versao;
+    }
+
     public function existePasta($projetoid, $tarefaid)
     {
         $pathprojeto = 'files/arquivos/projeto-'.$projetoid;
@@ -68,6 +81,7 @@ class Application_Model_Arquivo
 
     public function verificarMudancasArquivos($data,$id)
     {
+
         $nome=$data['arquivos']['nome_arquivo'];
         $projetoid=$data['arquivos']['projeto_id'];
         $tarefaid=$data['arquivos']['tarefa_id'];
@@ -82,8 +96,9 @@ class Application_Model_Arquivo
             $destino='files/lixeira/'.$result['nome_arquivo'];
             copy($origen,$destino);
             unlink($origen);
-            return $this->editarArquivo($id,$data);
-
+            $data['arquivos']['tamanho']=-1;
+            $data=$this->editarArquivo($id,$data);
+            return $data;
         }
         // so muda de pasta projeto ou tarefa
         elseif(($projetoid!=$result['projeto_id'])||($tarefaid!=$result['tarefa_id']))
@@ -93,11 +108,13 @@ class Application_Model_Arquivo
             $destino=$this->existePasta($projetoid, $tarefaid).'/'.$result['nome_arquivo'];
             copy($origen,$destino);
             unlink($origen);
-            return $result['nome_arquivo'];
+            $data['arquivos']['nome_arquivo']=$result['nome_arquivo'];
+            return $data;
 
         }
         else{
-            return $result['nome_arquivo'];
+            $data['arquivos']['nome_arquivo']=$result['nome_arquivo'];
+            return $data;
         }
 
     }
@@ -119,14 +136,13 @@ class Application_Model_Arquivo
     {
 
         $upload = new Zend_File_Transfer_Adapter_Http();
-        $model = new Application_Model_Arquivo;
 
         //verificar e criar pastas
         $projetoid = $data['arquivos']['projeto_id'];
         $tarefaid = $data['arquivos']['tarefa_id'];
         $versao = $data['arquivos']['versao'];
         // $pasta retorna a ruta da pasta
-        $pasta=$model->existePasta($projetoid, $tarefaid);
+        $pasta=$this->existePasta($projetoid, $tarefaid);
         $upload->addFilter('Rename', $pasta);
 
         try {
@@ -147,7 +163,11 @@ class Application_Model_Arquivo
         $fullFilePathFile = $pasta.'/'.$renomeado;
         $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
         $filterFileRename -> filter($file);
-        return $renomeado;
+
+
+        $data['arquivos']['nome_arquivo']=$renomeado;
+
+        return $data;
     }
 
     public function selectAll()

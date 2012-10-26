@@ -32,18 +32,32 @@ class ArquivosController extends Zend_Controller_Action
                 $data = $form->getValues();
 
                 if($id){
-                    $tamanho = $upload->getFileInfo('nome_arquivo');
-                    $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-                    $renomeado=$model->verificarMudancasArquivos($data,$id);
-                    $data['arquivos']['nome_arquivo']=$renomeado;
+
+                    //recuperamos versao atual desde o banco de dados
+                    $versao = $model->recuperarVersao($id);
+                    //incrementamos a versao dado que sera atualizado e armazenamos no array $data
+                    $data['arquivos']['versao']= $model->incrementaVersao($versao);
+
+                    $data=$model->verificarMudancasArquivos($data,$id);
+                    if($data['arquivos']['tamanho']==-1)
+                        {
+                            $tamanho = $upload->getFileInfo('nome_arquivo');
+                            $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+
+                        }
+
+                    // finalmente atualizamos o banco de dados
                     $model->update($data, $id);
                 }else{
 
+                    //recuperando o tamanho do arquivo
                     $tamanho = $upload->getFileInfo('nome_arquivo');
                     $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+
+                    // no primeiro upload a versao sera sempre 0.1
+                    $data['arquivos']['versao']=0.1;
                     $nome_arquivo= $model->getLastInsertedId();
-                    $renomeado=$model->editarArquivo($nome_arquivo,$data);
-                    $data['arquivos']['nome_arquivo']=$renomeado;
+                    $data=$model->editarArquivo($nome_arquivo,$data);
                     $model->insert($data);
                 }
 

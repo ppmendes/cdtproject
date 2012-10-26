@@ -71,10 +71,10 @@ class Application_Form_Arquivos extends Zend_Form
 
 
         //versao do arquivo input type text
-        $this->addElement('text', 'versao', array(
+        /*$this->addElement('text', 'versao', array(
             'label'      => 'Versão:',
             'required'   => true,
-        ));
+        ));*/
 
         //icono do arquivo input type text
         /*$this->addElement('text', 'icon_arquivo', array(
