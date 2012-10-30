@@ -38,7 +38,7 @@ class Application_Form_Arquivos extends Zend_Form
         //$this->addElement($file);
 
         $this->addElement('file', 'nome_arquivo', array(
-            'label'      => 'Arquivo:',
+            'label'      => 'Enviar Arquivo:',
             'required'   => false
         ));
 
@@ -90,16 +90,26 @@ class Application_Form_Arquivos extends Zend_Form
         ));*/
 
         //projeto id pai  da tarefa select type
-        $this->addElement('select', 'projeto_id', array(
+        /*$this->addElement('select', 'projeto_id', array(
             'label'      => 'Projeto:',
             'multiOptions'  =>Application_Model_Projeto::getOptions(),
             'required'   => true
+        ));*/
+
+        // projeto autocomplete
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Projeto:');
+        $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#arquivos-autoid").val(ui.item.id) }')
         ));
+
+        $this->addElement($emt);
 
         //tarefa id pai  da tarefa select type
         $this->addElement('text', 'tarefa_id', array(
             'label'      => 'tarefa:',
-            'multiOptions'  =>Application_Model_Projeto::getOptions(),
+            'multiOptions'  =>Application_Model_Tarefa::getOptions(),
             'required'   => true
         ));
         //projeto id pai  da tarefa select type
@@ -130,6 +140,12 @@ class Application_Form_Arquivos extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Arquivo',
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'autoid', array(
+            'label'      => '',
+            'value'      => ''
         ));
     }
 }

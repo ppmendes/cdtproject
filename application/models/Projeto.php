@@ -61,11 +61,13 @@ class Application_Model_Projeto
 
     public static function getOptions(){
         try{
+            //$options2 = array();
             $options = array();
             $table = new Application_Model_DbTable_Projeto();
             $resultado = $table->fetchAll();
+
             foreach($resultado as $item){
-                $options[$item['projeto_id']] = $item['nome'];
+                $options[] = array('label' => $item['nome'], 'id' => $item['projeto_id']);
             }
             return $options;
         } catch(Exception $e){

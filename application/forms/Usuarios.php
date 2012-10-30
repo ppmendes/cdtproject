@@ -35,7 +35,7 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true,
             'class'      => 'datePicker'
         ));*/
-        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nacimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
 
@@ -126,7 +126,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));
 
         //Cidade input type text
-        $this->addElement('select', 'cidade_id', array(
+       $this->addElement('select', 'cidade_id', array(
           //  'id'         => 'cidade',
             'label'      => 'Cidade:',
             //'multiOptions' => Application_Model_Cidade::getOptions(),
@@ -153,7 +153,7 @@ class Application_Form_Usuarios extends Zend_Form
 
         //icono ou imagen input type text
         $this->addElement('file', 'icono', array(
-            'label'      => 'Icono:',
+            'label'      => 'Ícone:',
             'required'   => false
         ));
 
