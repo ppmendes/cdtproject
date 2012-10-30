@@ -2,6 +2,13 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+    protected function _initFilter()
+    {
+        $dateFilter = new Zend_Filter_DateFilter();
+        $filterChain = new Zend_Filter();
+        $filterChain->addFilter($dateFilter);
+    }
+
     protected function _initLog()
     {
         $logger = new Zend_Log();
