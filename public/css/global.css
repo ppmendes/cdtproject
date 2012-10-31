@@ -40,3 +40,21 @@ body{
     font-weight: bold;
     text-decoration: none;
 }
+
+.botoes_superiores{
+    overflow: hidden;
+}
+
+/*Abas Jquery Ui*/
+.ui-tabs{
+    position: inherit !important;
+}
+
+.ui-tabs-panel{
+    padding: 0!important;
+}
+
+#tabs ul{
+    background: #FFFFFF!important;
+    border: none;
+}
