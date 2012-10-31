@@ -1,0 +1,95 @@
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function adicionar()
+    {
+        top.location.href = '/../solicitacoes/adicionar/';
+
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novasolicitacao {
+        float:right;
+    }
+</style>
+<button class='novasolicitacao' onclick='adicionar()'>Nova Solicitação</button>
+<table id='table_id' border='0'>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nome</th>
+        <th>Data</th>
+        <th>Projeto</th>
+        <th>Coordenador</th>
+        <th>Tipo</th>
+        <th>Beneficiário</th>
+        <th>Número de itens</th>
+        <th>Valor estimado</th>
+        <th>Local de entrega</th>
+        <th>Resultados Esperados</th>
+        <th>Objetivo</th>
+        <th>Justificativa</th>
+        <th>Observação</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    foreach($this->solicitacoes as $row)
+    {
+        //$row = $row->toArray();
+        echo "<tr id='".$row['solicitacao_id']."'>";
+        echo "<td>" .   $row['solicitacao_id'] . "</td>";
+        echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+        echo "<td>" .   $row['data_solicitacao'] . "</td>";
+        echo "<td>" .   $row['p.nome'] . "</td>";
+        echo "<td >" .  $row['cp.nome'] . "</td>";
+        echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
+        echo "<td >" .  $row['b.nome'] . "</td>";
+        echo "<td >" .  $row['numero_items'] . "</td>";
+        echo "<td >" .  $row['valor_estimado'] . "</td>";
+        echo "<td >" .  $row['local_entrega_solicitacao'] . "</td>";
+        echo "<td >" .  $row['resultados_esperados'] . "</td>";
+        echo "<td >" .  $row['objetivo_solicitacao'] . "</td>";
+        echo "<td >" .  $row['justificativa'] . "</td>";
+        echo "<td >" .  $row['observacao'] . "</td>";
+        echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>

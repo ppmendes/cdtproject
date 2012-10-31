@@ -1,0 +1,30 @@
+<script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente excluir a solicitação?");
+        if (answer) {
+            top.location.href = '/../solicitacoes/excluir/solicitacao_id/'+id;
+        }
+        else {
+            alert("A solicitação não foi excluída!");
+        }
+    }
+</script>
+<script>
+    function editar(id)
+    {
+        top.location.href = '/../solicitacoes/adicionar/solicitacao_id/'+id;
+    }
+</script>
+
+<?php
+$id = $this->id;
+
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='editar($id)'>Editar</button>";
+
+$this->detalhes->setAction($this->url());
+echo $this->detalhes;
+
+?>
