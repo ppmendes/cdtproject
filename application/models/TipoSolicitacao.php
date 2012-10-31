@@ -8,7 +8,20 @@ class Application_Model_TipoSolicitacao
         $tipo_solicitacao = $table->find($id)->current();
         return $tipo_solicitacao;
     }
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_TipoSolicitacao();
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['tipo_solicitacao_id']] = $item['nome_tipo'];
+            }
+            return $options;
+        } catch(Exception $e){
 
+        }
+
+    }
     public function insert($tipo_solicitacao)
     {
 
