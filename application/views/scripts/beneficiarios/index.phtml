@@ -23,27 +23,27 @@
             }
         });
 
-            $('#table_id_pj').dataTable({
-                "sDom": 'R<"H"lfr>t<"F"ip<',
-                "bJQueryUI": true,
-                "sPaginationType": "full_numbers",
-                "oLanguage": {
-                    "sProcessing": "Processando...",
-                    "sLengthMenu": "Mostra _MENU_ Entradas por Página",
-                    "sZeroRecords": "Nada Encontrado",
-                    "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
-                    "sEmptyTable": "Nenhum Dado Disponível na Tabela",
-                    "sLoadingRecords": "Carregando...",
-                    "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
-                    "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
-                    "sSearch": "BUSCA",
-                    "oPaginate": {
-                        "sFirst":    " <<  ",
-                        "sPrevious": " < ",
-                        "sNext":     " > ",
-                        "sLast":     " >> "
-                    }
+        $('#table_id_pj').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
                 }
+            }
             //"bSort": false,
 //            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
 //            "aoColumns": [
@@ -57,41 +57,21 @@
     });
 </script>
 <script>
-    var x = 0;
 
     function adicionar()
     {
-        if(getFiltro() == 0)
-        {
-        top.location.href = '/../beneficiarios/adicionarpf/';
-        }
-        else
-        {
-        top.location.href = '/../beneficiarios/adicionarpj/';
-        }
-
+        top.location.href = '/../beneficiarios/adicionar/';
     }
 
     function funcaoFiltro(valor){
         if(valor == 'cpf' ){
             $('#table_id_pf_wrapper').css('display','block');
             $('#table_id_pj_wrapper').css('display','none');
-            setFiltro(0);
         }
         if(valor == 'cnpj' ){
             $('#table_id_pj_wrapper').css('display','block');
             $('#table_id_pf_wrapper').css('display','none');
-            setFiltro(1);
         }
-    }
-
-    function setFiltro(valor){
-        x = valor;
-    }
-
-    function getFiltro()
-    {
-        return x;
     }
 
 </script>
@@ -153,7 +133,7 @@
         echo "</tr>";
     }
     echo "</tbody></table>";
-?>
+    ?>
 
     <table id='table_id_pj'>
         <thead>
