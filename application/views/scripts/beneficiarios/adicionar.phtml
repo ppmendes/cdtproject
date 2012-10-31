@@ -6,18 +6,18 @@ $id = $this->id;
 echo $this->form;
 ?>
 <script type="text/javascript">
-    var id = <?php echo $id; ?>;
-    var pais = <?php echo $pais; ?>;
-    var tipo = <?php echo $tipo; ?>;
+    var id = '<?php echo $id; ?>';
+    var pais = '<?php echo $pais; ?>';
+    var tipo = '<?php echo $tipo; ?>';
 
     if (id == '')
     {
-        carregaEstados(<?php echo $pais; ?>);
-        tipoBeneficiario(<?php echo $tipo; ?>);
+        carregaEstados(pais);
+        tipoBeneficiario(tipo);
     }
     else
     {
-        if (pais == 76)
+        if (pais == '76')
         {
             $('#beneficiario-cidade_text-label').css('display','none');
             $('#beneficiario-cidade_text-element').css('display','none');
@@ -33,7 +33,7 @@ echo $this->form;
     }
 
     function carregaEstados(valor){
-        if (valor == 76)
+        if (valor == '76')
         {
             $('#beneficiario-estados_id-label').css('display','block');
             $('#beneficiario-estados_id-element').css('display','block');
@@ -55,12 +55,12 @@ echo $this->form;
         else
         {
             $('#beneficiario-cidade_text').removeAttr('disabled');
-            carregaCidades(99999);
+            carregaCidades('99999');
         };
     }
 
     function carregaCidades(valor){
-        if (valor !== 99999)
+        if (valor !== '99999')
         {
             $.ajax({
                 url: '/beneficiarios/selectcidades/id/'+valor,
@@ -85,7 +85,7 @@ echo $this->form;
 
     function tipoBeneficiario(valor){
 
-        if (valor == 2){
+        if (valor == '2'){
 
             $('#beneficiario-cpf_cnpj-label').html('CPF:');
             $('#beneficiario-rg_ie-label').css('display','block');
@@ -106,7 +106,7 @@ echo $this->form;
             $('#beneficiario-area_conhecimento_id').removeAttr('disabled');
         }
 
-        else if (valor == 1) {
+        else if (valor == '1') {
             $('#beneficiario-cpf_cnpj-label').html('CNPJ:');
             $('#beneficiario-rg_ie-label').css('display','none');
             $('#beneficiario-rg_ie-element').css('display','none');

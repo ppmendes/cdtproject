@@ -49,7 +49,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                        ->setUiVersion('1.8')//jQuery UI version, automatically 1.8 = 1.8.latest
                        //->addStylesheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css')//add the css
                        ->uiEnable();//enable ui
-
+        $view->jQuery()->enable()
+            ->setLocalPath('/js/jquery-1.8.1.js')
+            ->setUiLocalPath('/js/jquery-ui-1.8.1.js')
+            ->uiEnable();
     }
 
 }
