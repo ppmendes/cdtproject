@@ -66,5 +66,105 @@ class Application_Model_Usuario
             Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
         }
     }
+
+    public function verificarMudancasArquivos($data,$id)
+    {
+        //$data dados do formulario atual, e o id
+        $nome_icone=$data['usuario']['icone'];
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result=$db->fetchRow("select icone from usuario where usuario_id=$id");
+
+        // mudancas no arquivo bb
+        if($nome_icone!="")
+        {
+            //quer dizer mudaram de imagem
+            //definindo origem
+            $origem='files/usuarios/imagens/'.$result['icone'];
+            //definindo destino
+            $destino='files/lixeira/'.$result['icone'];
+
+            //copiando arquivo a  lixeira
+            copy($origem,$destino);
+            unlink($origem);
+
+            //edita novo nome da imagem e faz upload da imagem
+            $newdata=$this->editarImagem($id,$data);
+            return $newdata;
+        }else{
+            return $data;
+        }
+    }
+
+    public function getLastInsertedId(){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(usuario_id) FROM usuario");
+        return (int)$result+1;
+    }
+
+    public function editarNomeImagem($nomeImagem)
+    {
+        $upload = new Zend_File_Transfer_Adapter_Http();
+
+        $pathimagem = 'files/usuarios/imagens';
+        //Verificando a existencia da ruta
+        if(!file_exists($pathimagem))
+        {
+            mkdir($pathimagem, 0777);
+        }
+        // $pasta retorna a ruta da pasta
+        $upload->addFilter('Rename', $pathimagem);
+
+        //pegando o formato do arquivo
+        $file = $upload->getFileName('icone');
+        $formato = explode(".",$file);
+        $indice = count($formato)-1;
+
+        //renomeando o arquivo
+        $renomeado='usuario_'.$nomeImagem.'.'.$formato[$indice];
+        $fullFilePathFile = $pathimagem.'/'.$renomeado;
+        $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
+        $filterFileRename -> filter($file);
+        return $renomeado;
+    }
+
+    public function editarImagem($nome_imagem,$data)
+    {
+
+        $upload = new Zend_File_Transfer_Adapter_Http();
+
+        $pathimagem = 'files/usuarios/imagens';
+       //Verificando a existencia da ruta
+        if(!file_exists($pathimagem))
+        {
+                mkdir($pathimagem, 0777);
+        }
+        // $pasta retorna a ruta da pasta
+        $upload->addFilter('Rename', $pathimagem);
+
+        //pegando o formato do arquivo
+        $file = $upload->getFileName('icone');
+        $formato = explode(".",$file);
+        $indice = count($formato)-1;
+
+        //renomeando o arquivo
+        $renomeado='usuario_'.$nome_imagem.'.'.$formato[$indice];
+        $fullFilePathFile = $pathimagem.'/'.$renomeado;
+        $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
+        $filterFileRename -> filter($file);
+
+        try {
+            // upload received file(s)
+            $upload->receive();
+
+        } catch (Zend_File_Transfer_Exception $e) {
+            $e->getMessage();
+        }
+
+        $data['usuario']['icone']=$renomeado;
+
+        return $data;
+    }
 }
 

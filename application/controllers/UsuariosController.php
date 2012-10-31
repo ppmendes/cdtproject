@@ -23,6 +23,7 @@ class UsuariosController extends Zend_Controller_Action
         $this->view->pais = 76;
         $form->getElement("estados_id")->setRegisterInArrayValidator(FALSE);
         $form->getElement("cidade_id")->setRegisterInArrayValidator(FALSE);
+        $upload = new Zend_File_Transfer_Adapter_Http();
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -30,8 +31,13 @@ class UsuariosController extends Zend_Controller_Action
                 $data = $form->getValues();
                 if($id){
 
-                    $model->update($data, $id);
+                    //adicionar novo arquivo e tirar o antigo na lixeira
+                    $newdata=$model->verificarMudancasArquivos($data,$id);
+                    // finalmente atualizamos o banco de dados
+                    $model->update($newdata, $id);
                 }else{
+                    $nome_imagem=$model->getLastInsertedId();
+                    $data=$model->editarImagem($nome_imagem,$data);
                     $model->insert($data);
                 }
                 $this->_redirect('/usuarios/');
@@ -114,7 +120,7 @@ class UsuariosController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        if ($this->_request->getParam('id', 0)) {
+         if ($this->_request->getParam('id', 0)) {
             $id = (int) $this->_request->getParam('id', 0);
             $filhos = new Application_Model_DbTable_Cidade();
             $rows = $filhos->fetchAll('estados_id = ' . (int) $id);
@@ -125,6 +131,7 @@ class UsuariosController extends Zend_Controller_Action
         } else {
             echo '<option value="">Selecione</option>';
         }
+
     }
 }
 
