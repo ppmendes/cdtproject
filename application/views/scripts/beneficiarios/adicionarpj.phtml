@@ -1,7 +1,7 @@
 <?php
-    $this->form->setAction($this->url());
-    $pais = $this->pais;
-    echo $this->form;
+$this->form->setAction($this->url());
+$pais = $this->pais;
+echo $this->form;
 ?>
 <script type="text/javascript">
     carregaEstados(<?php echo $pais; ?>);
@@ -13,9 +13,9 @@
             $('#beneficiario-estados_id-element').css('display','block');
             $('#beneficiario-cidade_id-label').css('display','block');
             $('#beneficiario-cidade_id-element').css('display','block');
-            $('#beneficiario-cidadetext-label').css('display','none');
-            $('#beneficiario-cidadetext-element').css('display','none');
-            $('#beneficiario-cidadetext').attr('disabled' , 'disabled');
+            $('#beneficiario-cidade_text-label').css('display','none');
+            $('#beneficiario-cidade_text-element').css('display','none');
+            $('#beneficiario-cidade_text').attr('disabled' , 'disabled');
             $.ajax({
                 url: '/beneficiarios/selectestados/id/'+valor,
                 dataType:'html',
@@ -28,7 +28,7 @@
         }
         else
         {
-            $('#beneficiario-cidadetext').removeAttr('disabled');
+            $('#beneficiario-cidade_text').removeAttr('disabled');
             carregaCidades(99999);
         };
     }
@@ -51,8 +51,8 @@
             $('#beneficiario-estados_id-element').css('display','none');
             $('#beneficiario-cidade_id-label').css('display','none');
             $('#beneficiario-cidade_id-element').css('display','none');
-            $('#beneficiario-cidadetext-label').css('display','block');
-            $('#beneficiario-cidadetext-element').css('display','block');
+            $('#beneficiario-cidade_text-label').css('display','block');
+            $('#beneficiario-cidade_text-element').css('display','block');
         }
         ;
     }
