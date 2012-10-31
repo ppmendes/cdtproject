@@ -11,15 +11,21 @@ class Application_Form_Beneficiarios_Beneficiariospj extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('select', 'tipo_beneficiario_id', array(
+            'label'      => 'Tipo do Beneficiário:',
+            'multiOptions' => Application_Model_TipoBeneficiario::getOptions(),
+            'required'   => true,
+        ));
+
         //Nome input type text
         $this->addElement('text', 'nome', array(
-            'label'      => 'Nomeee:',
+            'label'      => 'Nome:',
             'required'   => true,
         ));
 
         //CPF input type text
         $this->addElement('text', 'cpf_cnpj', array(
-            'label'      => 'CPF:',
+            'label'      => 'CNPJ:',
             'required'   => true,
         ));
 
@@ -29,11 +35,6 @@ class Application_Form_Beneficiarios_Beneficiariospj extends Zend_Form
             'required'   => true,
         ));
 
-        //RG input type text
-        $this->addElement('text', 'rg_ie', array(
-            'label'      => 'RG:',
-            'required'   => true,
-        ));
 
         //Endereço input type text
         $this->addElement('text', 'endereco', array(
@@ -60,37 +61,9 @@ class Application_Form_Beneficiarios_Beneficiariospj extends Zend_Form
             'required'   => true,
         ));
 
-        //NIT/PIS input type text
-        $this->addElement('text', 'nit_pis', array(
-            'label'      => 'NIT/PIS:',
-            'required'   => true,
-        ));
-
-        //Escolaridade input type text
-
-        $this->addElement('select', 'escolaridade_id', array(
-            'label'      => 'Escolaridade:',
-            'multiOptions' => Application_Model_Escolaridade::getOptions(),
-            'required'   => true
-        ));
-
         //E-mail input type text
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
-            'required'   => true,
-        ));
-
-        //Área do conhecimento input type text
-
-        $this->addElement('select', 'area_conhecimento_id', array(
-            'label'      => 'Área do conhecimento::',
-            'multiOptions' => Application_Model_AreaConhecimento::getOptions(),
-            'required'   => true
-        ));
-
-        $this->addElement('select', 'tipo_beneficiario_id', array(
-            'label'      => 'Tipo do Beneficiário:',
-            'multiOptions' => Application_Model_TipoBeneficiario::getOptions(),
             'required'   => true,
         ));
 
@@ -110,20 +83,18 @@ class Application_Form_Beneficiarios_Beneficiariospj extends Zend_Form
             'label'      => 'Estado:',
             //'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
-            //'attribs'    => array( 'setRegisterInArrayValidator' => false),
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
 
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
-           // 'id'         => 'cidade',
+            // 'id'         => 'cidade',
             'label'      => 'Cidade:',
             //'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => false,
-           // 'attribs'    => array( 'setRegisterInArrayValidator' => false),
         ));
 
-        $this->addElement('text', 'cidadetext', array(
+        $this->addElement('text', 'cidade_text', array(
             'label'      => 'Cidade/Estado:',
             'required'   => false
         ));
