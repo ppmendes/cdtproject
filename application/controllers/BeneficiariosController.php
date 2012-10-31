@@ -16,20 +16,27 @@ class BeneficiariosController extends Zend_Controller_Action
 
     }
 
-    public function adicionarpfAction(){
+    public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Beneficiarios_Beneficiariospf();
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
-        $this->view->pais = 76;
         $form->getElement("estados_id")->setRegisterInArrayValidator(FALSE);
         $form->getElement("cidade_id")->setRegisterInArrayValidator(FALSE);
 
+        if (!$id)
+        {
+            $this->view->pais = 76;
+            $this->view->tipo = 1;
+        }
+        else
+        {
+            $this->view->id = $id;
+        }
+
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-//                print_r($form->getValues());
-//                echo "</pre>";
+
                 $data = $form->getValues();
                 if($id){
                     $model->update($data, $id);
@@ -42,6 +49,7 @@ class BeneficiariosController extends Zend_Controller_Action
         }elseif ($id){
             $data = $model->find($id)->toArray();
             $this->view->pais = $data['pais_id'];
+            $this->view->tipo = $data['tipo_beneficiario_id'];
             if(is_array($data)){
                 $form->setAction('/beneficiarios/detalhespf/beneficiario_id/' . $id);
                 $form->populate(array("beneficiario" => $data));
@@ -97,7 +105,6 @@ class BeneficiariosController extends Zend_Controller_Action
         $model = new Application_Model_Beneficiario();
         $id = $this->_getParam('beneficiario_id');
         $this->view->id = $id;
-
 
         $data = $model->find($id)->toArray();
 
