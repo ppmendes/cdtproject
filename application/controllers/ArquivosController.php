@@ -26,7 +26,7 @@ class ArquivosController extends Zend_Controller_Action
         $upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
-
+        //coment
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
