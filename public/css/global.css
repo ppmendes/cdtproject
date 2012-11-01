@@ -1,3 +1,7 @@
+#arquivos-autoid-element {
+    height: 15px;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -39,4 +43,77 @@ body{
     font-size: 11px;
     font-weight: bold;
     text-decoration: none;
+}
+
+.botoes_superiores{
+    overflow: hidden;
+}
+/*Data Table*/
+.dataTables_wrapper{
+    min-height: 400px;
+    position: relative;
+}
+table.dataTable{
+    width:100%;
+}
+
+table.dataTable + div{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+/*Abas Jquery Ui*/
+.ui-tabs{
+    position: inherit !important;
+}
+
+.ui-tabs-panel{
+    padding: 0!important;
+}
+
+#tabs ul{
+    background: #FFFFFF!important;
+    border: none;
+}
+/*Classe de posição*/
+.right{
+    float: right;
+}
+
+/*buton replace*/
+.btn_replace{
+    border: none;
+    background: none;
+    text-indent: -9999px;
+}
+
+.btn_add{
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-indent: -9999px;
+    width: 32px;
+    height: 32px;
+    background-image: url('../imagens/icones/add.png');
+}
+
+.btn_edit{
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-indent: -9999px;
+    width: 32px;
+    height: 32px;
+    background-image: url('../imagens/icones/edit.png');
+}
+
+.btn_delete{
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-indent: -9999px;
+    width: 32px;
+    height: 32px;
+    background-image: url('../imagens/icones/delete.png');
 }

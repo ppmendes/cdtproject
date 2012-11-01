@@ -101,7 +101,7 @@ class Application_Form_Instituicoes extends Zend_Form
             //'attribs'    => array( 'setRegisterInArrayValidator' => false),
         ));
 
-        $this->addElement('text', 'cidadetext', array(
+        $this->addElement('text', 'cidade_text', array(
             'label'      => 'Cidade/Estado:',
             'required'   => false
         ));

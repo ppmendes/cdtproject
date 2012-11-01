@@ -33,7 +33,7 @@ class InstituicoesController extends Zend_Controller_Action
                 }else{
                     $model->insert($data);
                 }
-                //$this->_redirect('/instituicoes/');
+                $this->_redirect('/instituicoes/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();

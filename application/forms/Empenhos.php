@@ -62,12 +62,6 @@ class Application_Form_Empenhos extends Zend_Form
             'required'   => true
         ));
 
-        $this->addElement('select', 'tarefa_id', array(
-            'label'      => 'tarefa_id',
-            'multiOptions' => Application_Model_Tarefa::getOptions(),
-            'required'   => true
-        ));
-
         //input type text
         $this->addElement('text', 'valor_empenho', array(
             'label'      => 'valor_empenho',

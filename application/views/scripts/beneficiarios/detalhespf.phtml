@@ -14,16 +14,16 @@
 <script>
     function editar(id)
     {
-        top.location.href = '/../beneficiarios/adicionarpf/beneficiario_id/'+id;
+        top.location.href = '/../beneficiarios/adicionar/beneficiario_id/'+id;
 
     }
 </script>
 
 <?php
- $id = $this->id;
+$id = $this->id;
 
-echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
-echo "<button onclick='editar($id)'>Editar</button>";
+echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button class=\"right btn_edit\" onclick='editar($id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;

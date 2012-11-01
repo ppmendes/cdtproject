@@ -36,4 +36,26 @@ require_once "UiWidget.php";
 class ZendX_JQuery_Form_Element_DatePicker extends ZendX_JQuery_Form_Element_UiWidget
 {
     public $helper = "datePicker";
+
+    public function __construct($param1){
+        parent::__construct($param1);
+        $this->setJQueryParam('dateFormat', 'dd/mm/yy');
+        $this->setJQueryParam('dayNamesMin', array('D','S','T','Q','Q','S','S'));
+        $this->setJQueryParam('monthNames',
+            array(
+                'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro',
+            )
+        );
+    }
 }

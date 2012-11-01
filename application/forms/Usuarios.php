@@ -35,7 +35,7 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true,
             'class'      => 'datePicker'
         ));*/
-        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nacimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
 
@@ -117,24 +117,22 @@ class Application_Form_Usuarios extends Zend_Form
 
         //Estado input type text
         $this->addElement('select', 'estados_id', array(
-           // 'id'         => 'estado',
+            // 'id'         => 'estado',
             'label'      => 'Estado:',
             //'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
-            //'attribs'    => array( 'setRegisterInArrayValidator' => false),
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
 
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
-          //  'id'         => 'cidade',
+            //  'id'         => 'cidade',
             'label'      => 'Cidade:',
             //'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => false,
-            //'attribs'    => array( 'setRegisterInArrayValidator' => false),
         ));
 
-        $this->addElement('text', 'cidadetext', array(
+        $this->addElement('text', 'cidade_text', array(
             'label'      => 'Cidade/Estado:',
             'required'   => false
         ));
@@ -153,7 +151,7 @@ class Application_Form_Usuarios extends Zend_Form
 
         //icono ou imagen input type text
         $this->addElement('file', 'icono', array(
-            'label'      => 'Icono:',
+            'label'      => 'Icone:',
             'required'   => false
         ));
 
