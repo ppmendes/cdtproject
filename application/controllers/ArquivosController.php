@@ -44,7 +44,10 @@ class ArquivosController extends Zend_Controller_Action
                             $tamanho = $upload->getFileInfo('nome_arquivo');
                             $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
 
+<<<<<<< Updated upstream
                         }
+=======
+>>>>>>> Stashed changes
 
                     // finalmente atualizamos o banco de dados
                     $model->update($data, $id);
