@@ -150,7 +150,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));
 
         //icono ou imagen input type text
-        $this->addElement('file', 'icono', array(
+        $this->addElement('file', 'icone', array(
             'label'      => 'Icone:',
             'required'   => false
         ));

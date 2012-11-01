@@ -34,10 +34,9 @@ class UsuariosController extends Zend_Controller_Action
                     //adicionar novo arquivo e tirar o antigo na lixeira
                     $newdata=$model->verificarMudancasArquivos($data,$id);
                     // finalmente atualizamos o banco de dados
-                    print_r($newdata);
-                    exit;
                     $model->update($newdata, $id);
                 }else{
+
                     $nome_imagem=$model->getLastInsertedId();
                     $data=$model->editarImagem($nome_imagem,$data);
                     $model->insert($data);

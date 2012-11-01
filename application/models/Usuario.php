@@ -143,16 +143,6 @@ class Application_Model_Usuario
         // $pasta retorna a ruta da pasta
         $upload->addFilter('Rename', $pathimagem);
 
-
-
-        try {
-            // upload received file(s)
-            $upload->receive();
-
-        } catch (Zend_File_Transfer_Exception $e) {
-            $e->getMessage();
-        }
-
         //pegando o formato do arquivo
         $file = $upload->getFileName('icone');
         $formato = explode(".",$file);
@@ -163,6 +153,15 @@ class Application_Model_Usuario
         $fullFilePathFile = $pathimagem.'/'.$renomeado;
         $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
         $filterFileRename -> filter($file);
+
+
+        try {
+            // upload received file(s)
+            $upload->receive();
+
+        } catch (Zend_File_Transfer_Exception $e) {
+            $e->getMessage();
+        }
 
         $data['usuario']['icone']=$renomeado;
 
