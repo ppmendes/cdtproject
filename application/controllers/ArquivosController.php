@@ -26,50 +26,35 @@ class ArquivosController extends Zend_Controller_Action
         $upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
-
+        //coment
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-
-
                 $data = $form->getValues();
 
-                //verificar e criar pastas
-                $projetoid = $data['arquivos']['projeto_id'];
-                $tarefaid = $data['arquivos']['tarefa_id'];
-                // $pasta retorna a ruta da pasta
-                $pasta=$model->existePasta($projetoid, $tarefaid);
-
-
-                $upload->addFilter('Rename', $pasta);
-
-                try {
-                    // upload received file(s)
-                    $upload->receive();
-
-                } catch (Zend_File_Transfer_Exception $e) {
-                    $e->getMessage();
-                }
-
-
-                //pegando o formato do arquivo
-                $file = $upload->getFileName('nome_arquivo');
-                $nome_arquivo= $model->getLastInsertedId();
-                $formato = explode(".",$file);
-                $indice = count($formato)-1;
-
-                //renomeando o arquivo
-                $fullFilePathFile = $pasta.'/'.$nome_arquivo.'.'.$formato[$indice];
-                $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
-                $filterFileRename -> filter($file);
-
-                //pegando o tamanho do arquivo e inserindo na variável data
-                $tamanho = $upload->getFileInfo('nome_arquivo');
-                $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-
-                //
                 if($id){
-                    $model->update($data, $id);
-                }else{
+
+                    //recuperamos versao atual desde o banco de dados
+                    $versao = $model->recuperarVersao($id);
+                    //incrementamos a versao dado que sera atualizado e armazenamos no array $data
+                    $data['arquivos']['versao']= $model->incrementaVersao($versao);
+
+                    $data=$model->verificarMudancasArquivos($data,$id);
+                    if($data['arquivos']['tamanho']==-1)
+                        {
+                            $tamanho = $upload->getFileInfo('nome_arquivo');
+                            $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+                             // finalmente atualizamos o banco de dados
+                            $model->update($data, $id);
+                    }else{
+
+                    //recuperando o tamanho do arquivo
+                    $tamanho = $upload->getFileInfo('nome_arquivo');
+                    $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+
+                    // no primeiro upload a versao sera sempre 0.1
+                    $data['arquivos']['versao']=0.1;
+                    $nome_arquivo= $model->getLastInsertedId();
+                    $data=$model->editarArquivo($nome_arquivo,$data);
                     $model->insert($data);
                 }
 
@@ -84,9 +69,10 @@ class ArquivosController extends Zend_Controller_Action
                 $form->populate(array("arquivos" => $data));
             }
         }
-
         $this->view->form = $form;
     }
+    }
+
 
     public function detalhesAction(){
         //$request = $this->getRequest();
