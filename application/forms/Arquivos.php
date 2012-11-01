@@ -26,34 +26,17 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true,
         ));
 
-        //nome do arquivo input type text
-
-        /*$file = new Zend_Form_Element_File('file');
-        $path="public/files/arquivos/";
-        $file->setDestination($path)
-            ->setLabel('Arquivo:')
-            ->setRequired(true)
-            ->addValidator('NotEmpty');*/
-
-        //$this->addElement($file);
-
         $this->addElement('file', 'nome_arquivo', array(
             'label'      => 'Enviar Arquivo:',
             'required'   => false
         ));
-
-        //arquivo id pai  da tarefa select type
-        /*$this->addElement('text', 'arquivo_id_pae', array(
-            'label'      => 'Arquivo Pae:',
-            //'multiOptions'  => $array_pasta_arquivo,
-            'required'   => false
-        ));*/
 
         //descriçao do arquivo input type textarea
         $this->addElement('textarea', 'descricao_arquivo', array(
             'label'      => 'Descrição:',
             'required'   => true
         ));
+
 
         //tipo de arquivo select type
         $this->addElement('select', 'tipo_arquivo_id', array(
@@ -62,39 +45,13 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true
         ));
 
+
         //dono do arquivo input type text
         //item preenchido automaticamnete
         $this->addElement('text', 'dono_arquivo', array(
             'label'      => 'Dono:',
             'required'   => true,
         ));
-
-
-        //versao do arquivo input type text
-        /*$this->addElement('text', 'versao', array(
-            'label'      => 'Versão:',
-            'required'   => true,
-        ));*/
-
-        //icono do arquivo input type text
-        /*$this->addElement('text', 'icon_arquivo', array(
-            'label'      => 'Ícone:',
-            'required'   => true,
-        ));*/
-
-        //pasta do arquivo select type
-        /*$this->addElement('select', 'pasta_arquivo_id', array(
-            'label'      => 'Pasta:',
-            'multiOptions'  => Application_Model_PastaArquivo::getOptions(),
-            'required'   => true
-        ));*/
-
-        //projeto id pai  da tarefa select type
-        /*$this->addElement('select', 'projeto_id', array(
-            'label'      => 'Projeto:',
-            'multiOptions'  =>Application_Model_Projeto::getOptions(),
-            'required'   => true
-        ));*/
 
         // projeto autocomplete
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
@@ -103,7 +60,6 @@ class Application_Form_Arquivos extends Zend_Form
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
             'function(event,ui) { $("#arquivos-autoid").val(ui.item.id) }')
         ));
-
         $this->addElement($emt);
 
         //tarefa id pai  da tarefa select type
@@ -112,29 +68,13 @@ class Application_Form_Arquivos extends Zend_Form
             'multiOptions'  =>Application_Model_Tarefa::getOptions(),
             'required'   => true
         ));
+
         //projeto id pai  da tarefa select type
         $this->addElement('select', 'instituicao_id', array(
             'label'      => 'Instituicao:',
             'multiOptions'  =>Application_Model_Instituicao::getOptions(),
             'required'   => true
         ));
-
-
-
-
-
-        //adicionar fase de desenvolvimento
-        //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
-        //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
-
-        //$fasesDesenvolvimentoArray = array();
-        //foreach ($todasFasesDesenvolvimento AS $row){
-        //    $fasesDesenvolvimentoArray[$row->id] = $row->nome;
-        //}
-
-        /* Parte feita por Daniel */
-
-        /* parte feito por Eduardo */
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
