@@ -14,9 +14,9 @@ echo $this->form;
         $('#usuario-estados_id-element').css('display','block');
         $('#usuario-cidade_id-label').css('display','block');
         $('#usuario-cidade_id-element').css('display','block');
-        $('#usuario-cidadetext-label').css('display','none');
-        $('#usuario-cidadetext-element').css('display','none');
-        $('#usuario-cidadetext').attr('disabled' , 'disabled');
+        $('#usuario-cidade_text-label').css('display','none');
+        $('#usuario-cidade_text-element').css('display','none');
+        $('#usuario-cidade_text').attr('disabled' , 'disabled');
         $.ajax({
             url: '/usuarios/selectestados/id/'+valor,
             dataType:'html',
@@ -29,7 +29,7 @@ echo $this->form;
         }
         else
         {
-            $('#usuario-cidadetext').removeAttr('disabled');
+            $('#usuario-cidade_text').removeAttr('disabled');
             carregaCidades(99999);
         };
     }
@@ -52,8 +52,8 @@ echo $this->form;
             $('#usuario-estados_id-element').css('display','none');
             $('#usuario-cidade_id-label').css('display','none');
             $('#usuario-cidade_id-element').css('display','none');
-            $('#usuario-cidadetext-label').css('display','block');
-            $('#usuario-cidadetext-element').css('display','block');
+            $('#usuario-cidade_text-label').css('display','block');
+            $('#usuario-cidade_text-element').css('display','block');
         }
         ;
     }
