@@ -1,0 +1,130 @@
+<?php
+$this->form->setAction($this->url());
+$pais = $this->pais;
+$tipo = $this->tipo;
+$id = $this->id;
+echo $this->form;
+?>
+<script type="text/javascript">
+    var id = '<?php echo $id; ?>';
+    var pais = '<?php echo $pais; ?>';
+    var tipo = '<?php echo $tipo; ?>';
+
+    if (id == '')
+    {
+        carregaEstados(pais);
+        tipoBeneficiario(tipo);
+    }
+    else
+    {
+        if (pais == '76')
+        {
+            $('#beneficiario-cidade_text-label').css('display','none');
+            $('#beneficiario-cidade_text-element').css('display','none');
+            $('#beneficiario-cidade_text').attr('disabled' , 'disabled');
+        }
+        else
+        {
+            $('#beneficiario-estados_id-label').css('display','none');
+            $('#beneficiario-estados_id-element').css('display','none');
+            $('#beneficiario-cidade_id-label').css('display','none');
+            $('#beneficiario-cidade_id-element').css('display','none');
+        }
+    }
+
+    function carregaEstados(valor){
+        if (valor == '76')
+        {
+            $('#beneficiario-estados_id-label').css('display','block');
+            $('#beneficiario-estados_id-element').css('display','block');
+            $('#beneficiario-cidade_id-label').css('display','block');
+            $('#beneficiario-cidade_id-element').css('display','block');
+            $('#beneficiario-cidade_text-label').css('display','none');
+            $('#beneficiario-cidade_text-element').css('display','none');
+            $('#beneficiario-cidade_text').attr('disabled' , 'disabled');
+            $.ajax({
+                url: '/beneficiarios/selectestados/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#beneficiario-estados_id').html(data);
+                }
+            })
+            carregaCidades('0');
+        }
+        else
+        {
+            $('#beneficiario-cidade_text').removeAttr('disabled');
+            carregaCidades('99999');
+        };
+    }
+
+    function carregaCidades(valor){
+        if (valor !== '99999')
+        {
+            $.ajax({
+                url: '/beneficiarios/selectcidades/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#beneficiario-cidade_id').html(data);
+                }
+            })
+        }
+        else
+        {
+            $('#beneficiario-estados_id-label').css('display','none');
+            $('#beneficiario-estados_id-element').css('display','none');
+            $('#beneficiario-cidade_id-label').css('display','none');
+            $('#beneficiario-cidade_id-element').css('display','none');
+            $('#beneficiario-cidade_text-label').css('display','block');
+            $('#beneficiario-cidade_text-element').css('display','block');
+        }
+        ;
+    }
+
+    function tipoBeneficiario(valor){
+
+        if (valor == '2'){
+
+            $('#beneficiario-cpf_cnpj-label').html('CPF:');
+            $('#beneficiario-rg_ie-label').css('display','block');
+            $('#beneficiario-rg_ie-element').css('display','block');
+            $('#beneficiario-rg_ie').attr('required','true');
+            $('#beneficiario-nit_pis-label').css('display','block');
+            $('#beneficiario-nit_pis-element').css('display','block');
+            $('#beneficiario-nit_pis').attr('required','true');
+            $('#beneficiario-escolaridade_id-label').css('display','block');
+            $('#beneficiario-escolaridade_id-element').css('display','block');
+            $('#beneficiario-escolaridade_id').attr('required','true');
+            $('#beneficiario-area_conhecimento_id-label').css('display','block');
+            $('#beneficiario-area_conhecimento_id-element').css('display','block');
+            $('#beneficiario-area_conhecimento_id').attr('required','true');
+            $('#beneficiario-rg_ie').removeAttr('disabled');
+            $('#beneficiario-nit_pis').removeAttr('disabled');
+            $('#beneficiario-escolaridade_id').removeAttr('disabled');
+            $('#beneficiario-area_conhecimento_id').removeAttr('disabled');
+        }
+
+        else if (valor == '1') {
+            $('#beneficiario-cpf_cnpj-label').html('CNPJ:');
+            $('#beneficiario-rg_ie-label').css('display','none');
+            $('#beneficiario-rg_ie-element').css('display','none');
+            $('#beneficiario-rg_ie').attr('required','false');
+            $('#beneficiario-nit_pis-label').css('display','none');
+            $('#beneficiario-nit_pis-element').css('display','none');
+            $('#beneficiario-nit_pis').attr('required','false');
+            $('#beneficiario-escolaridade_id-label').css('display','none');
+            $('#beneficiario-escolaridade_id-element').css('display','none');
+            $('#beneficiario-escolaridade_id').attr('required','false');
+            $('#beneficiario-area_conhecimento_id-label').css('display','none');
+            $('#beneficiario-area_conhecimento_id-element').css('display','none');
+            $('#beneficiario-area_conhecimento_id').attr('required','false');
+            $('#beneficiario-rg_ie').attr('disabled' , 'disabled');
+            $('#beneficiario-nit_pis').attr('disabled' , 'disabled');
+            $('#beneficiario-escolaridade_id').attr('disabled' , 'disabled');
+            $('#beneficiario-area_conhecimento_id').attr('disabled' , 'disabled');
+
+        }
+    }
+</script>

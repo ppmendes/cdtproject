@@ -12,7 +12,7 @@ class Application_Model_DbTable_Solicitacao extends Zend_Db_Table_Abstract
             'refColumns'        => 'projeto_id'
         ),
         'Application_Model_DbTable_Usuario' => array(
-            'columns'           => 'coordenador_projeto',
+            'columns'           => 'coodenador_projeto',
             'refTableClass'     => 'Application_Model_DbTable_Usuario',
             'refColumns'        => 'usuario_id'
         ),
