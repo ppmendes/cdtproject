@@ -81,9 +81,17 @@ class Application_Form_Usuarios extends Zend_Form
 
         //password input type text
         $this->addElement('password', 'password', array(
-            'label'      => 'Password:',
+            'label'      => 'Senha:',
             'required'   => true
         ));
+
+        $this->addElement('password', 'verifypassword', array(
+            'label'      => 'Confirmar Senha:',
+            'required'   => true,
+            'validators' => array( array('identical',true,array('password')))
+        ));
+
+
         //email input type text
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',

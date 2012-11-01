@@ -29,6 +29,7 @@ class UsuariosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                unset($data['usuario']['verifypassword']);
                 if($id){
 
                     //adicionar novo arquivo e tirar o antigo na lixeira
@@ -36,10 +37,13 @@ class UsuariosController extends Zend_Controller_Action
                     // finalmente atualizamos o banco de dados
                     $model->update($newdata, $id);
                 }else{
-
-                    $nome_imagem=$model->getLastInsertedId();
-                    $data=$model->editarImagem($nome_imagem,$data);
+                    if($data['usuario']['icone']=='')
+                    {
+                        $nome_imagem=$model->getLastInsertedId();
+                        $data=$model->editarImagem($nome_imagem,$data);
+                    }
                     $model->insert($data);
+
                 }
                 $this->_redirect('/usuarios/');
             }

@@ -145,27 +145,29 @@ class Application_Model_Usuario
 
         //pegando o formato do arquivo
         $file = $upload->getFileName('icone');
-        $formato = explode(".",$file);
-        $indice = count($formato)-1;
-
-        //renomeando o arquivo
-        $renomeado='usuario_'.$nome_imagem.'.'.$formato[$indice];
-        $fullFilePathFile = $pathimagem.'/'.$renomeado;
-        $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
-        $filterFileRename -> filter($file);
+        //$file = $data['usuario']['icone'];
 
 
-        try {
-            // upload received file(s)
-            $upload->receive();
+             try {
+                // upload received file(s)
+                $upload->receive();
+                $formato = explode(".",$file);
+                $indice = count($formato)-1;
 
-        } catch (Zend_File_Transfer_Exception $e) {
-            $e->getMessage();
-        }
+                //renomeando o arquivo
+                $renomeado='usuario_'.$nome_imagem.'.'.$formato[$indice];
+                $fullFilePathFile = $pathimagem.'/'.$renomeado;
+                $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
+                $filterFileRename -> filter($file);
 
-        $data['usuario']['icone']=$renomeado;
+                $data['usuario']['icone']=$renomeado;
 
-        return $data;
+            } catch (Zend_File_Transfer_Exception $e) {
+                $e->getMessage();
+            }
+            return $data;
+
+
     }
 }
 
