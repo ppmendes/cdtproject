@@ -35,7 +35,7 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true,
             'class'      => 'datePicker'
         ));*/
-        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nacimento');
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
 
@@ -81,9 +81,17 @@ class Application_Form_Usuarios extends Zend_Form
 
         //password input type text
         $this->addElement('password', 'password', array(
-            'label'      => 'Password:',
+            'label'      => 'Senha:',
             'required'   => true
         ));
+
+        $this->addElement('password', 'verifypassword', array(
+            'label'      => 'Confirmar Senha:',
+            'required'   => true,
+            'validators' => array( array('identical',true,array('password')))
+        ));
+
+
         //email input type text
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
@@ -128,7 +136,7 @@ class Application_Form_Usuarios extends Zend_Form
         $this->addElement('select', 'cidade_id', array(
             //  'id'         => 'cidade',
             'label'      => 'Cidade:',
-            //'multiOptions' => Application_Model_Cidade::getOptions(),
+            'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => false,
         ));
 
@@ -150,7 +158,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));
 
         //icono ou imagen input type text
-        $this->addElement('file', 'icono', array(
+        $this->addElement('file', 'icone', array(
             'label'      => 'Icone:',
             'required'   => false
         ));

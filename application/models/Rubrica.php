@@ -34,7 +34,6 @@ class Application_Model_Rubrica
             foreach($resultado as $item){
                 if(substr_count($item['codigo_rubrica'], '.') == 2)
                 {
-                    $options2[$item['rubrica_id']] = $item['codigo_rubrica']." - ".$item['descricao'];
                     $options[] = array('label' => $item['codigo_rubrica']." - ".$item['descricao'], 'id' => $item['rubrica_id']);
                 }
             }
