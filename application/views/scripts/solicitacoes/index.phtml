@@ -1,6 +1,11 @@
 <script>
+    $(function() {
+        $( "#tabs" ).tabs();
+    });
+</script>
+<script>
     $(document).ready(function() {
-        $('#table_id').dataTable({
+        $('#table_id_todas').dataTable({
             "sDom": 'R<"H"lfr>t<"F"ip<',
             "bJQueryUI": true,
             "sPaginationType": "full_numbers",
@@ -21,15 +26,78 @@
                     "sLast":     " >> "
                 }
             }
-            //"bSort": false,
-//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
-//            "aoColumns": [
-//                { "sType": 'string-case' },
-//                null,
-//                null,
-//                null,
-//                null,
-//            ]
+
+        });
+
+        $('#table_id_aquisicao').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+        });
+
+        $('#table_id_contratacao').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+
+        });
+
+        $('#table_id_passagens').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+
         });
     });
 </script>
@@ -44,31 +112,54 @@
     table * *{
         text-align: center;
     }
-    .novasolicitacao {
+    .passagens {
         float:right;
+        padding: 10px;
+    }
+    .aquisicao {
+        float:left;
+        padding: 10px;
+    }
+    .contratacao {
+        position:absolute;
+        padding: 10px;
+        right: 600px;
     }
 </style>
-<button class='novasolicitacao' onclick='adicionar()'>Nova Solicitação</button>
-<table id='table_id' border='0'>
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Nome</th>
-        <th>Data</th>
-        <th>Projeto</th>
-        <th>Coordenador</th>
-        <th>Tipo</th>
-        <th>Beneficiário</th>
-        <th>Número de itens</th>
-        <th>Valor estimado</th>
-        <th>Local de entrega</th>
-        <th>Resultados Esperados</th>
-        <th>Objetivo</th>
-        <th>Justificativa</th>
-        <th>Observação</th>
-    </tr>
-    </thead>
-    <tbody>
+<div class="botoes_superiores">
+    <button class='passagens' onclick='adicionar()'>Adicionar Passagens e Diárias</button>
+    <button class='contratacao' onclick='adicionar()'>Adicionar Contratação de Serviços de Pessoa Física</button>
+    <button class='aquisicao' onclick='adicionar()'>Adicionar Aquisições de Bens e Serviços de Pessoa Jurídica</button>
+</div>
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Todas</a></li>
+        <li><a href="#tabs-2">Aquisição de Bens e Serviços de Pessoa Jurídica</a></li>
+        <li><a href="#tabs-3">Contratação de Serviços de Pessoa Física</a></li>
+        <li><a href="#tabs-4">Passagens e Diárias</a></li>
+    </ul>
+
+    <div id="tabs-1">
+        <table id='table_id_todas' border='0'>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>NomeTODAS</th>
+                <th>Data</th>
+                <th>Projeto</th>
+                <th>Coordenador</th>
+                <th>Tipo</th>
+                <th>Beneficiário</th>
+                <th>Número de itens</th>
+                <th>Valor estimado</th>
+                <th>Local de entrega</th>
+                <th>Resultados Esperados</th>
+                <th>Objetivo</th>
+                <th>Justificativa</th>
+                <th>Observação</th>
+            </tr>
+            </thead>
+        <tbody>
 
     <?php
     foreach($this->solicitacoes as $row)
@@ -93,3 +184,146 @@
     }
     echo "</tbody></table>";
 ?>
+    </div>
+
+    <div id="tabs-2">
+        <table id='table_id_aquisicao' border='0'>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>NomeA</th>
+                <th>Data</th>
+                <th>Projeto</th>
+                <th>Coordenador</th>
+                <th>Tipo</th>
+                <th>Beneficiário</th>
+                <th>Número de itens</th>
+                <th>Valor estimado</th>
+                <th>Local de entrega</th>
+                <th>Resultados Esperados</th>
+                <th>Objetivo</th>
+                <th>Justificativa</th>
+                <th>Observação</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <?php
+            foreach($this->solicitacoesAquisicao as $row)
+            {
+                //$row = $row->toArray();
+                echo "<tr id='".$row['solicitacao_id']."'>";
+                echo "<td>" .   $row['solicitacao_id'] . "</td>";
+                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+                echo "<td>" .   $row['data_solicitacao'] . "</td>";
+                echo "<td>" .   $row['p.nome'] . "</td>";
+                echo "<td >" .  $row['cp.nome'] . "</td>";
+                echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
+                echo "<td >" .  $row['b.nome'] . "</td>";
+                echo "<td >" .  $row['numero_items'] . "</td>";
+                echo "<td >" .  $row['valor_estimado'] . "</td>";
+                echo "<td >" .  $row['local_entrega_solicitacao'] . "</td>";
+                echo "<td >" .  $row['resultados_esperados'] . "</td>";
+                echo "<td >" .  $row['objetivo_solicitacao'] . "</td>";
+                echo "<td >" .  $row['justificativa'] . "</td>";
+                echo "<td >" .  $row['observacao'] . "</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table>";
+            ?>
+    </div>
+
+    <div id="tabs-3">
+        <table id='table_id_contratacao' border='0'>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>NomeC</th>
+                <th>Data</th>
+                <th>Projeto</th>
+                <th>Coordenador</th>
+                <th>Tipo</th>
+                <th>Beneficiário</th>
+                <th>Número de itens</th>
+                <th>Valor estimado</th>
+                <th>Local de entrega</th>
+                <th>Resultados Esperados</th>
+                <th>Objetivo</th>
+                <th>Justificativa</th>
+                <th>Observação</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <?php
+            foreach($this->solicitacoesContratacao as $row)
+            {
+                //$row = $row->toArray();
+                echo "<tr id='".$row['solicitacao_id']."'>";
+                echo "<td>" .   $row['solicitacao_id'] . "</td>";
+                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+                echo "<td>" .   $row['data_solicitacao'] . "</td>";
+                echo "<td>" .   $row['p.nome'] . "</td>";
+                echo "<td >" .  $row['cp.nome'] . "</td>";
+                echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
+                echo "<td >" .  $row['b.nome'] . "</td>";
+                echo "<td >" .  $row['numero_items'] . "</td>";
+                echo "<td >" .  $row['valor_estimado'] . "</td>";
+                echo "<td >" .  $row['local_entrega_solicitacao'] . "</td>";
+                echo "<td >" .  $row['resultados_esperados'] . "</td>";
+                echo "<td >" .  $row['objetivo_solicitacao'] . "</td>";
+                echo "<td >" .  $row['justificativa'] . "</td>";
+                echo "<td >" .  $row['observacao'] . "</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table>";
+            ?>
+    </div>
+
+    <div id="tabs-4">
+        <table id='table_id_passagens' border='0'>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>NomeP</th>
+                <th>Data</th>
+                <th>Projeto</th>
+                <th>Coordenador</th>
+                <th>Tipo</th>
+                <th>Beneficiário</th>
+                <th>Número de itens</th>
+                <th>Valor estimado</th>
+                <th>Local de entrega</th>
+                <th>Resultados Esperados</th>
+                <th>Objetivo</th>
+                <th>Justificativa</th>
+                <th>Observação</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <?php
+            foreach($this->solicitacoesPassagens as $row)
+            {
+                //$row = $row->toArray();
+                echo "<tr id='".$row['solicitacao_id']."'>";
+                echo "<td>" .   $row['solicitacao_id'] . "</td>";
+                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+                echo "<td>" .   $row['data_solicitacao'] . "</td>";
+                echo "<td>" .   $row['p.nome'] . "</td>";
+                echo "<td >" .  $row['cp.nome'] . "</td>";
+                echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
+                echo "<td >" .  $row['b.nome'] . "</td>";
+                echo "<td >" .  $row['numero_items'] . "</td>";
+                echo "<td >" .  $row['valor_estimado'] . "</td>";
+                echo "<td >" .  $row['local_entrega_solicitacao'] . "</td>";
+                echo "<td >" .  $row['resultados_esperados'] . "</td>";
+                echo "<td >" .  $row['objetivo_solicitacao'] . "</td>";
+                echo "<td >" .  $row['justificativa'] . "</td>";
+                echo "<td >" .  $row['observacao'] . "</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table>";
+            ?>
+    </div>
+</div>

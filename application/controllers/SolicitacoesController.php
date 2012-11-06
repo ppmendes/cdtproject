@@ -12,6 +12,9 @@ class SolicitacoesController extends Zend_Controller_Action
     {
         $solicitacaoModel = new Application_Model_Solicitacao();
         $this->view->solicitacoes = $solicitacaoModel->selectAll();
+        $this->view->solicitacoesAquisicao =  $solicitacaoModel->selectAllAquisicao();
+        $this->view->solicitacoesContratacao = $solicitacaoModel->selectAllContratacao();
+        $this->view->solicitacoesPassagens = $solicitacaoModel->selectAllPassagens();
 
     }
 
