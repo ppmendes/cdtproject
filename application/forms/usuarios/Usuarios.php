@@ -16,7 +16,7 @@ class Application_Form_Usuarios extends Zend_Form
             'required' => true,
             'label' => 'Tipo:',
             'multiOptions'=>array('usuario'=>'usuario', 'contato'=>'contato'),
-            'attribs'    => array('onchange' => 'tipoUsuario(this.value)'),
+            'attribs'    => array('onchange' => 'tipoUsuario(this.value)')
         ));
 
         //nome do usuario input type text
@@ -30,12 +30,7 @@ class Application_Form_Usuarios extends Zend_Form
             'label'      => 'Sobrenome:',
             'required'   => true
         ));
-        //data de nascimento input type text
-        /*$this->addElement('text', 'data_nascimento', array(
-            'label'      => 'Data de Nascimento:',
-            'required'   => true,
-            'class'      => 'datePicker'
-        ));*/
+
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
@@ -126,9 +121,7 @@ class Application_Form_Usuarios extends Zend_Form
 
         //Estado input type text
         $this->addElement('select', 'estados_id', array(
-            // 'id'         => 'estado',
             'label'      => 'Estado:',
-            //'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));

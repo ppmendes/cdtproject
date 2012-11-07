@@ -69,6 +69,7 @@ class Application_Model_Instituicao
             $options = array();
             $table = new Application_Model_DbTable_Instituicao();
             $resultado = $table->fetchAll();
+            //$resultado = $table->fetchRow('select instituicao_id, nome from instituicao where pai_id=33');
             foreach($resultado as $item){
                 $options[$item['instituicao_id']] = $item['nome'];
             }

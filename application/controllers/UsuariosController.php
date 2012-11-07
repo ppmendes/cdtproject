@@ -29,6 +29,7 @@ class UsuariosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
                 if($id){
 
