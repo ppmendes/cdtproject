@@ -71,8 +71,8 @@ echo $this->form;
     }
 
     function tipoUsuario(valor){
-
-        if (valor == 'contato'){
+        valor=$('#usuario-tipo_usuario').is(':checked');
+        if (valor == false){
 
             $('#usuario-username-label').css('display','none');
             $('#usuario-username-element').css('display','none');
@@ -87,7 +87,7 @@ echo $this->form;
             $('#usuario-username').attr('disabled' , 'disabled');
             $('#usuario-password').attr('disabled' , 'disabled');
             $('#usuario-verifypassword').attr('disabled' , 'disabled');
-        }else if(valor=='usuario')
+        }else
         {
             $('#usuario-username-label').css('display','block');
             $('#usuario-username-element').css('display','block');

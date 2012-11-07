@@ -11,13 +11,7 @@ class Application_Form_Usuarios extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-        //tipo de usuario  input type radio
-        $this->addElement('select','tipo_usuario',array(
-            'required' => true,
-            'label' => 'Tipo:',
-            'multiOptions'=>array('usuario'=>'usuario', 'contato'=>'contato'),
-            'attribs'    => array('onchange' => 'tipoUsuario(this.value)'),
-        ));
+
 
         //nome do usuario input type text
         $this->addElement('text', 'nome', array(
@@ -72,6 +66,15 @@ class Application_Form_Usuarios extends Zend_Form
             'label'      => 'Instituição:',
             'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true
+        ));
+
+        //tipo de usuario  input type radio
+        $this->addElement('checkbox','tipo_usuario',array(
+            'required' => false,
+            'label' => 'Usuário do sistema:',
+            'uncheckedValue' => '',
+            'checkedValue' => 'usuario',
+            'attribs' => array('onChange' => 'tipoUsuario(this.value)'),
         ));
 
         //userName input type text
