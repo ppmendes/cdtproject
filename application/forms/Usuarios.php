@@ -72,7 +72,7 @@ class Application_Form_Usuarios extends Zend_Form
         $this->addElement('checkbox','tipo_usuario',array(
             'required' => false,
             'label' => 'Usuário do sistema:',
-            'uncheckedValue' => '',
+            'uncheckedValue' => 'contato',
             'checkedValue' => 'usuario',
             'attribs' => array('onChange' => 'tipoUsuario(this.value)'),
         ));
@@ -86,12 +86,12 @@ class Application_Form_Usuarios extends Zend_Form
         //password input type text
         $this->addElement('password', 'password', array(
             'label'      => 'Senha:',
-            'required'   => true
+            'required'   => false
         ));
 
         $this->addElement('password', 'verifypassword', array(
             'label'      => 'Confirmar Senha:',
-            'required'   => true,
+            'required'   => false,
             'validators' => array( array('identical',true,array('password')))
         ));
 
