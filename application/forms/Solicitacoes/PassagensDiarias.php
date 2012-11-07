@@ -121,6 +121,14 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'required'   => true,
         ));
 
+        $this->addElement('hidden', 'label_banco', array(
+            'description' => 'Dados Bancários',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'interna')),
+            ),
+        ));
+
         $this->addElement('select', 'banco_id', array(
             'label'      => 'Banco:',
             'multiOptions' => Application_Model_Banco::getOptions(),
@@ -159,7 +167,14 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             ),
         ));
 
-        //Projeto input type text
+        $this->addElement('hidden', 'label_passagem', array(
+            'description' => 'Passagem',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'interna')),
+            ),
+        ));
+
         $this->addElement('select', 'tipo_diarias_passagens', array(
             'label'      => 'Emissão do Bilhete da Passagem:',
             'multiOptions' => Application_Model_TipoDiariasPassagens::getOptions(),
@@ -196,6 +211,14 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('text', 'valor_passagens', array(
             'label'      => 'Valor estimado de passagens:',
             'required'   => true,
+        ));
+
+        $this->addElement('hidden', 'label_diaria', array(
+            'description' => 'Diárias',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'interna')),
+            ),
         ));
 
         $this->addElement('text', 'local', array(

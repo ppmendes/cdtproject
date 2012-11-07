@@ -44,6 +44,18 @@
     margin-left: 10px;
     font-size: 20px;
     height: 40px;
+    background-color: #DFDFDF;
+}
+
+.zend_form p#interna {
+    display:block;
+    width: 980px;
+    float: left;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 17px;
+    height: 25px;
     background-color: #ECECEC;
 }
 
