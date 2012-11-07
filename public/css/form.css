@@ -23,6 +23,30 @@
     margin-left: 10px;
 }
 
+.zend_form p{
+    display:block;
+    width: 980px;
+    float: left;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #BDBDBD
+}
+
+.zend_form p#titulo {
+    display:block;
+    width: 980px;
+    float: left;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 20px;
+    height: 40px;
+    background-color: #ECECEC;
+}
+
 .zend_form input, .zend_form select,
 .zend_form textarea{
     width: 300px;

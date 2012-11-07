@@ -102,9 +102,19 @@
     });
 </script>
 <script>
-    function adicionar()
+    function adicionaraquisicao()
     {
-        top.location.href = '/../solicitacoes/adicionar/';
+        top.location.href = '/../solicitacoes/adicionaraquisicao/';
+
+    }
+    function adicionarcontratacao()
+    {
+        top.location.href = '/../solicitacoes/adicionarcontratacao/';
+
+    }
+    function adicionarpassagens()
+    {
+        top.location.href = '/../solicitacoes/adicionarpassagens/';
 
     }
 </script>
@@ -127,9 +137,9 @@
     }
 </style>
 <div class="botoes_superiores">
-    <button class='passagens' onclick='adicionar()'>Adicionar Passagens e Diárias</button>
-    <button class='contratacao' onclick='adicionar()'>Adicionar Contratação de Serviços de Pessoa Física</button>
-    <button class='aquisicao' onclick='adicionar()'>Adicionar Aquisições de Bens e Serviços de Pessoa Jurídica</button>
+    <button class='passagens' onclick='adicionarpassagens()'>Adicionar Passagens e Diárias</button>
+    <button class='contratacao' onclick='adicionarcontratacao()'>Adicionar Contratação de Serviços de Pessoa Física</button>
+    <button class='aquisicao' onclick='adicionaraquisicao()'>Adicionar Aquisições de Bens e Serviços de Pessoa Jurídica</button>
 </div>
 <div id="tabs">
     <ul>

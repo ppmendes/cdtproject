@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Solicitacoes extends Zend_Form
+class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 {
 
     public function init()
