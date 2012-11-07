@@ -11,6 +11,14 @@ class Application_Form_Beneficiarios_Beneficiariospj extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Beneficiários',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         $this->addElement('select', 'tipo_beneficiario_id', array(
             'label'      => 'Tipo do Beneficiário:',
             'multiOptions' => Application_Model_TipoBeneficiario::getOptions(),

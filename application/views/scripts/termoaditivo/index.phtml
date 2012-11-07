@@ -86,13 +86,13 @@ echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</butt
     echo "<tr id='".$row['termo_aditivo_id']."'>";
     echo "<td>" .   $row['termo_aditivo_id'] . "</td>";
     //echo "<td>" .   $row['p.projeto_id'] . " - " . $row['p.nome'] . "</td>";
-    echo "<td>" .   $row['data_modificacao'] . "</td>";
-    echo "<td>" .   $row['tp.nome_modificacao'] . "</td>";
-    if ($row['tp.nome_modificacao'] == 'Prorrogação')
+    echo "<td>" .   $row['data_termo_aditivo'] . "</td>";
+    echo "<td>" .   $row['tp.nome_tipo'] . "</td>";
+    if ($row['tp.nome_tipo'] == 'Prorrogação')
     {
-        echo "<td> Data final alterada de " . $row['data_anterior'] . " para " . $row['nova_data'] . "</td>";
+        echo "<td> Data final alterada de " . $row['data_fim_atual'] . " para " . $row['data_fim_nova'] . "</td>";
     }
-    else if ($row['tp.nome_modificacao'] == 'Remanejamento')
+    else if ($row['tp.nome_tipo'] == 'Remanejamento')
     {
         echo "<td> Foram remanejados R$" . $row['valor'] . " da rubrica " . $row['r.codigo_rubrica'] . "->" . $row['r.descricao']
             . " para " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . "</td>";

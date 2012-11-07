@@ -12,6 +12,14 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Remanejamento do Valor de Rubricas',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
 
         $emf = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar1');

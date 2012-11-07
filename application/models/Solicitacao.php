@@ -30,6 +30,77 @@ class Application_Model_Solicitacao
         }
     }
 
+    public function selectAllAquisicao()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('s' => 'solicitacao'))
+                ->where('s.deletado = ?', false)
+                ->where('s.tipo_solicitacao_id = ?', 1)
+                ->orWhere('s.tipo_solicitacao_id = ?', 4)
+                ->orWhere('s.tipo_solicitacao_id = ?', 5)
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
+                ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectAllContratacao()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('s' => 'solicitacao'))
+                ->where('s.deletado = ?', false)
+                ->where('s.tipo_solicitacao_id = ?', 2)
+                ->orWhere('s.tipo_solicitacao_id = ?', 6)
+                ->orWhere('s.tipo_solicitacao_id = ?', 7)
+                ->orWhere('s.tipo_solicitacao_id = ?', 8)
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
+                ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectAllPassagens()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('s' => 'solicitacao'))
+                ->where('s.deletado = ?', false)
+                ->where('s.tipo_solicitacao_id = ?', 3)
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
+                ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
     public static function getOptions(){
         try{
             $options = array();

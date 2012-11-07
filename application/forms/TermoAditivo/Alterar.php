@@ -12,6 +12,14 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Alteração de uma Rubrica',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
 
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoAlterar');
