@@ -38,7 +38,7 @@ class UsuariosController extends Zend_Controller_Action
                     // finalmente atualizamos o banco de dados
                     $model->update($newdata, $id);
                 }else{
-                    if($data['usuario']['icone']=='')
+                    if($data['usuario']['icone']!="")
                     {
                         $nome_imagem=$model->getLastInsertedId();
                         $data=$model->editarImagem($nome_imagem,$data);
