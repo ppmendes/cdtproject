@@ -205,6 +205,8 @@ class UsuariosController extends Zend_Controller_Action
     }
     public function treeviewAction()
     {
+        $model = new Application_Model_Usuario;
+
         $this->view->treeview;
     }
 }
