@@ -44,7 +44,6 @@ class UsuariosController extends Zend_Controller_Action
                         $data=$model->editarImagem($nome_imagem,$data);
                     }
                     $model->insert($data);
-
                 }
                 $this->_redirect('/usuarios/');
             }

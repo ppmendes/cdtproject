@@ -48,35 +48,19 @@ class Application_Model_Instituicao
 
         return $result;
     }
-/*
-    public function selectAll()
-    {
-        $db = Zend_Db_Table::getDefaultAdapter();
-
-        $select = $db->select()
-            ->from(array('i' => 'instituicao'))
-            ->joinInner(array('pi' => 'projeto_institucao'), 'i.instituicao_id = pi.instituicao_id');
-
-        $stmt = $select->query();
-
-        $result = $stmt->fetchAll();
-
-        return $result;
-    }*/
 
     public static function getOptions(){
         try{
             $options = array();
             $table = new Application_Model_DbTable_Instituicao();
-            $resultado = $table->fetchAll();
-            //$resultado = $table->fetchRow('select instituicao_id, nome from instituicao where pai_id=33');
+            $resultado = $table->fetchAll(null,'nome asc');
+
             foreach($resultado as $item){
-                $options[$item['instituicao_id']] = $item['nome'];
+                $options[] = array('label' => $item['nome'], 'id' => $item['instituicao_id']);
             }
             return $options;
         } catch(Exception $e){
 
         }
-
     }
 }

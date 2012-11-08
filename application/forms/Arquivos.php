@@ -1,11 +1,5 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Laura
- * Date: 19/09/12
- * Time: 15:30
- * To change this template use File | Settings | File Templates.
- */
+
 class Application_Form_Arquivos extends Zend_Form
 {
 

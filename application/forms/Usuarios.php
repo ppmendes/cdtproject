@@ -61,12 +61,21 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true
         ));
 
+        // projeto autocomplete
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Instituição:');
+        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#usuarios-autoid").val(ui.item.id) }')
+        ));
+        $this->addElement($emt);
+
         //instituicao input type text
-        $this->addElement('select', 'instituicao_id', array(
+        /*$this->addElement('select', 'instituicao_id', array(
             'label'      => 'Instituição:',
             'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true
-        ));
+        ));*/
 
         //tipo de usuario  input type radio
         $this->addElement('checkbox','tipo_usuario',array(
@@ -183,6 +192,12 @@ class Application_Form_Usuarios extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Usuario',
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'autoid', array(
+            'label'      => '',
+            'value'      => ''
         ));
     }
 }

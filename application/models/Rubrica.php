@@ -31,15 +31,11 @@ class Application_Model_Rubrica
             $table = new Application_Model_DbTable_Rubrica();
             $where = array('rubrica_id_pai != 1', 'rubrica_id_pai != 2','rubrica_id_pai != 0');
             $resultado = $table->fetchAll($where);
-
             foreach($resultado as $item){
-
                     $options[] = array('label' => $item['codigo_rubrica']." - ".$item['descricao'], 'id' => $item['rubrica_id']);
-
             }
             return $options;
         } catch(Exception $e){
-
         }
 
     }
