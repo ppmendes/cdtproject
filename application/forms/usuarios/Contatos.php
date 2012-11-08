@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Usuarios extends Zend_Form
+class Application_Form_Usuarios_Contatos extends Zend_Form
 {
     public function init()
     {

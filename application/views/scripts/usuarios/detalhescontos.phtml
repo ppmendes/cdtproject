@@ -1,0 +1,30 @@
+<script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente excluir o contato?");
+        if (answer) {
+            top.location.href = '/../usuarios/excluircontatos/usuario_id/'+id;
+        }
+        else {
+            alert("O contato não foi excluído!");
+        }
+    }
+</script>
+<script>
+    function editar(id)
+    {
+        top.location.href = '/../usuarios/adicionarcontatos/usuario_id/'+id;
+
+    }
+</script>
+
+<?php
+$id = $this->id;
+
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='editar($id)'>Editar</button>";
+
+$this->detalhes->setAction($this->url());
+echo $this->detalhes;
+?>
