@@ -29,14 +29,13 @@ class Application_Model_Rubrica
             $options2 = array();
             $options = array();
             $table = new Application_Model_DbTable_Rubrica();
-            $resultado = $table->fetchAll();
+            $where = array('rubrica_id_pai != 1', 'rubrica_id_pai != 2','rubrica_id_pai != 0');
+            $resultado = $table->fetchAll($where);
 
             foreach($resultado as $item){
-                if(substr_count($item['codigo_rubrica'], '.') == 2)
-                {
-                    $options2[$item['rubrica_id']] = $item['codigo_rubrica']." - ".$item['descricao'];
+
                     $options[] = array('label' => $item['codigo_rubrica']." - ".$item['descricao'], 'id' => $item['rubrica_id']);
-                }
+
             }
             return $options;
         } catch(Exception $e){

@@ -3,6 +3,6 @@
 class Application_Model_DbTable_Destino extends Zend_Db_Table_Abstract
 {
 
-    protected $_name = 'destino';
+    protected $_name = 'destinatario';
 
 }
