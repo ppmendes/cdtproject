@@ -30,8 +30,9 @@ class Application_Model_Destino
             $options = array();
             $table = new Application_Model_DbTable_Destino();
             $resultado = $table->fetchAll();
+
             foreach($resultado as $item){
-                $options[$item['destino_id']] = $item['nome_destino'];
+                $options[$item['destinatario_id']] = $item['nome_destinatario'];
             }
             return $options;
         } catch(Exception $e){
