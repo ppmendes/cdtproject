@@ -11,7 +11,12 @@ class Application_Form_Usuarios extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-
+        //tipo de usuario  input type radio
+        $this->addElement('select','tipo_usuario',array(
+            'required' => true,
+            'label' => 'Tipo:',
+            'multiOptions'=>array('usuario'=>'usuario', 'contato'=>'contato')
+        ));
 
         //nome do usuario input type text
         $this->addElement('text', 'nome', array(
@@ -24,12 +29,7 @@ class Application_Form_Usuarios extends Zend_Form
             'label'      => 'Sobrenome:',
             'required'   => true
         ));
-        //data de nascimento input type text
-        /*$this->addElement('text', 'data_nascimento', array(
-            'label'      => 'Data de Nascimento:',
-            'required'   => true,
-            'class'      => 'datePicker'
-        ));*/
+
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
@@ -67,34 +67,6 @@ class Application_Form_Usuarios extends Zend_Form
             'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true
         ));
-
-        //tipo de usuario  input type radio
-        $this->addElement('checkbox','tipo_usuario',array(
-            'required' => false,
-            'label' => 'Usuário do sistema:',
-            'uncheckedValue' => 'contato',
-            'checkedValue' => 'usuario',
-            'attribs' => array('onChange' => 'tipoUsuario(this.value)'),
-        ));
-
-        //userName input type text
-        $this->addElement('text', 'username', array(
-            'label'      => 'Nome de Usuario:',
-            'required'   => false
-        ));
-
-        //password input type text
-        $this->addElement('password', 'password', array(
-            'label'      => 'Senha:',
-            'required'   => false
-        ));
-
-        $this->addElement('password', 'verifypassword', array(
-            'label'      => 'Confirmar Senha:',
-            'required'   => false,
-            'validators' => array( array('identical',true,array('password')))
-        ));
-
 
         //email input type text
         $this->addElement('text', 'email', array(

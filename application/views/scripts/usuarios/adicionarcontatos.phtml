@@ -1,0 +1,59 @@
+<?php
+$this->form->setAction($this->url());
+$pais = $this->pais;
+echo $this->form;
+?>
+<script type="text/javascript">
+    carregaEstados(<?php echo $pais; ?>);
+
+    function carregaEstados(valor){
+        if (valor == 76)
+        {
+            $('#usuario-estados_id-label').css('display','block');
+            $('#usuario-estados_id-element').css('display','block');
+            $('#usuario-cidade_id-label').css('display','block');
+            $('#usuario-cidade_id-element').css('display','block');
+            $('#usuario-cidade_text-label').css('display','none');
+            $('#usuario-cidade_text-element').css('display','none');
+            $('#usuario-cidade_text').attr('disabled' , 'disabled');
+            $.ajax({
+                url: '/usuarios/selectestados/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#usuario-estados_id').html(data);
+                }
+            })
+            carregaCidades('0');
+        }
+        else
+        {
+            $('#usuario-cidade_text').removeAttr('disabled');
+            carregaCidades(99999);
+        };
+    }
+
+    function carregaCidades(valor){
+        if (valor !== 99999)
+        {
+            $.ajax({
+                url: '/usuarios/selectcidades/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#usuario-cidade_id').html(data);
+                }
+            })
+        }
+        else
+        {
+            $('#usuario-estados_id-label').css('display','none');
+            $('#usuario-estados_id-element').css('display','none');
+            $('#usuario-cidade_id-label').css('display','none');
+            $('#usuario-cidade_id-element').css('display','none');
+            $('#usuario-cidade_text-label').css('display','block');
+            $('#usuario-cidade_text-element').css('display','block');
+        }
+        ;
+    }
+</script>

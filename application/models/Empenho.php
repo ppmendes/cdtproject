@@ -31,7 +31,7 @@ class Application_Model_Empenho
             $table = new Application_Model_DbTable_Empenho;
             $empenho = $table->fetchAll();
             foreach($empenho as $item){
-                $options[$item['empenho_id']] = $item['descricao'];
+                $options[$item['empenho_id']] = $item['descricao_historico'];
             }
             return $options;
         } catch(Exception $e){

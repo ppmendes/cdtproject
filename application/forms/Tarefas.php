@@ -96,10 +96,17 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Dono:',
             'required'   => true,
         ));
-        $this->addElement('text', 'data_inicio', array(
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
+        $emtDatePicker->setLabel('Data de Início:');
+        $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
+
+        $this->addElement($emtDatePicker);
+
+        /*$this->addElement('text', 'data_inicio', array(
             'label'      => 'Data de Início:',
             'required'   => true,
-        ));
+        ));*/
+
         $this->addElement('text', 'duracao', array(
             'label'      => 'Duração:',
             'required'   => true,
@@ -113,10 +120,18 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Horas Trabalhadas:',
             'required'   => true,
         ));
-        $this->addElement('text', 'data_final', array(
+
+        /*$this->addElement('text', 'data_final', array(
             'label'      => 'Data Final:',
             'required'   => true,
-        ));
+        ));*/
+
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
+        $emtDatePicker->setLabel('Data Final:');
+        $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
+
+        $this->addElement($emtDatePicker);
+
         $this->addElement('select', 'estado_tarefa_id', array(
             'label'      => 'Estado da tarefa:',
             'multiOptions' => Application_Model_EstadoTarefa::getOptions(),
@@ -134,8 +149,10 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Website Relacionado:',
             'required'   => true,
         ));
-        $this->addElement('select', 'criador', array(
-            'label'      => 'Criador:',
+
+        //usuario logado?
+        $this->addElement('text', 'criador', array(
+            'label'      => 'Responsável:',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true,
         ));
@@ -143,10 +160,19 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Tarefa Dinâmica:',
             'required'   => true,
         ));
-        $this->addElement('text', 'acesso_id', array(
+
+        $this->addElement('select', 'acesso_id', array(
             'label'      => 'Acesso:',
+            'multiOptions' => Application_Model_Acesso::getOptions(),
             'required'   => true,
         ));
+
+
+        /*$this->addElement('text', 'acesso_id', array(
+            'label'      => 'Acesso:',
+            'required'   => true,
+        ));*/
+
         $this->addElement('text', 'tarefa_notificacao', array(
             'label'      => 'Notificação:',
             'required'   => true,
@@ -156,13 +182,23 @@ class Application_Form_Tarefas extends Zend_Form
             'multiOptions' => Application_Model_TipoTarefa::getOptions(),
             'required'   => true,
         ));
-        $this->addElement('select', 'projeto_id', array(
+
+        /*$this->addElement('select', 'projeto_id', array(
             'label'      => 'Projeto:',
             'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true,
+        ));*/
+
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Projeto:');
+        $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id) }')
         ));
+        $this->addElement($emt);
+
         $this->addElement('select', 'instituicao_id', array(
-            'label'      => 'Instituicao:',
+            'label'      => 'Area:',
             'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true,
         ));

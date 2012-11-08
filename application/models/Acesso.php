@@ -23,5 +23,20 @@ class Application_Model_Acesso
     {
 
     }
+
+    public static function getOptions(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Acesso;
+            $resultado = $table->fetchAll();
+            foreach($resultado as $item){
+                $options[$item['acesso_id']] = $item['nome_acesso'];
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
 }
 

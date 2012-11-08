@@ -1,11 +1,23 @@
 <?php
 $this->form->setAction($this->url());
 $pais = $this->pais;
+$tipo = $this->tipo;
+$id = $this->id;
 echo $this->form;
 ?>
 <script type="text/javascript">
 
+    var id = '<?php echo $id; ?>';
+    var pais = '<?php echo $pais; ?>';
+    var tipo = '<?php echo $tipo; ?>';
+
     carregaEstados(<?php echo $pais; ?>);
+
+    if (id == '')
+    {
+        carregaEstados(pais);
+        tipoUsuario(tipo);
+    }
 
     function carregaEstados(valor){
         if (valor == 76)
@@ -14,9 +26,9 @@ echo $this->form;
         $('#usuario-estados_id-element').css('display','block');
         $('#usuario-cidade_id-label').css('display','block');
         $('#usuario-cidade_id-element').css('display','block');
-        $('#usuario-cidadetext-label').css('display','none');
-        $('#usuario-cidadetext-element').css('display','none');
-        $('#usuario-cidadetext').attr('disabled' , 'disabled');
+        $('#usuario-cidade_text-label').css('display','none');
+        $('#usuario-cidade_text-element').css('display','none');
+        $('#usuario-cidade_text').attr('disabled' , 'disabled');
         $.ajax({
             url: '/usuarios/selectestados/id/'+valor,
             dataType:'html',
@@ -29,7 +41,7 @@ echo $this->form;
         }
         else
         {
-            $('#usuario-cidadetext').removeAttr('disabled');
+            $('#usuario-cidade_text').removeAttr('disabled');
             carregaCidades(99999);
         };
     }
@@ -52,9 +64,44 @@ echo $this->form;
             $('#usuario-estados_id-element').css('display','none');
             $('#usuario-cidade_id-label').css('display','none');
             $('#usuario-cidade_id-element').css('display','none');
-            $('#usuario-cidadetext-label').css('display','block');
-            $('#usuario-cidadetext-element').css('display','block');
+            $('#usuario-cidade_text-label').css('display','block');
+            $('#usuario-cidade_text-element').css('display','block');
         }
         ;
+    }
+
+    function tipoUsuario(valor){
+        valor=$('#usuario-tipo_usuario').is(':checked');
+        if (valor == false){
+
+            $('#usuario-username-label').css('display','none');
+            $('#usuario-username-element').css('display','none');
+            $('#usuario-username').attr('required','false');
+            $('#usuario-password-label').css('display','none');
+            $('#usuario-password-element').css('display','none');
+            $('#usuario-password').attr('required','false');
+            $('#usuario-verifypassword-label').css('display','none');
+            $('#usuario-verifypassword-element').css('display','none');
+            $('#usuario-verifypassword').attr('required','false');
+
+            $('#usuario-username').attr('disabled' , 'disabled');
+            $('#usuario-password').attr('disabled' , 'disabled');
+            $('#usuario-verifypassword').attr('disabled' , 'disabled');
+        }else
+        {
+            $('#usuario-username-label').css('display','block');
+            $('#usuario-username-element').css('display','block');
+            $('#usuario-username').attr('required','true');
+            $('#usuario-password-label').css('display','block');
+            $('#usuario-password-element').css('display','block');
+            $('#usuario-password').attr('required','true');
+            $('#usuario-verifypassword-label').css('display','block');
+            $('#usuario-verifypassword-element').css('display','block');
+            $('#usuario-verifypassword').attr('required','true');
+
+            $('#usuario-username').removeAttr('disabled');
+            $('#usuario-password').removeAttr('disabled');
+            $('#usuario-verifypassword').removeAttr('disabled');
+        }
     }
 </script>

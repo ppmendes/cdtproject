@@ -134,8 +134,6 @@ class BeneficiariosController extends Zend_Controller_Action
         }
 
         $this->view->detalhes = $detalhes;
-
-
     }
 
     public function excluirpfAction(){

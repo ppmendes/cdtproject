@@ -11,7 +11,11 @@ class Application_Model_TermoAditivo
 
     public function insert($data)
     {
-        $data['termo_aditivo']['data_modificacao'] = date('Y-m-d H:i:s', time());
+        $data['termo_aditivo']['data_termo_aditivo'] = date('Y-m-d H:i:s', time());
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        exit;
         $table = new Application_Model_DbTable_TermoAditivo;
         $table->insert($data['termo_aditivo']);
     }
@@ -25,10 +29,10 @@ class Application_Model_TermoAditivo
                 ->from(array('t' => 'termo_aditivo'))
                 ->where('p.projeto_id = ?', $id)
                 ->joinLeft(array('u' => 'usuario'), 't.usuario_id = u.usuario_id', array('u.username'=>'u.username'))
-                ->joinLeft(array('tp' => 'tipo_termo_aditivo'), 't.tipo_termo_aditivo_id = tp.tipo_termo_aditivo_id',
-                           array('tp.nome_modificacao'=>'tp.nome_modificacao'))
-                ->joinLeft(array('o' => 'orcamento'), 't.orcamento_id_fonte = o.orcamento_id')
-                ->joinLeft(array('oc' => 'orcamento'), 't.orcamento_id_destino = oc.orcamento_id')
+                ->joinLeft(array('tp' => 'tipo_termo_aditivo'), 't.tipo_termo_aditivo_id = tp.tipo_termo_aditivo',
+                           array('tp.nome_tipo'=>'tp.nome_tipo'))
+                ->joinLeft(array('o' => 'orcamento'), 't.orcamento_origem = o.orcamento_id')
+                ->joinLeft(array('oc' => 'orcamento'), 't.orcamento_destino = oc.orcamento_id')
                 ->joinLeft(array('r' => 'rubrica'), 'o.orcamento_id = r.rubrica_id', array('r.descricao'=>'r.descricao',
                                                     'r.codigo_rubrica'=> 'r.codigo_rubrica'))
                 ->joinLeft(array('rr'=> 'rubrica'), 'oc.orcamento_id=rr.rubrica_id', array('rr.descricao'=>'rr.descricao',

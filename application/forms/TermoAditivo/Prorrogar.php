@@ -15,6 +15,14 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Prorrogação de Vigência de Contrato',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         $data_termino = Application_Model_Projeto::getDataModificacao($id_projeto);
         $this->addElement('text', 'data', array(
             'label'      => 'Data Anterior:',
@@ -22,7 +30,7 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
             'disabled'         => true,
             'required'   => false,
         ));
-        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('nova_data');
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_fim_nova');
         $emtDatePicker2->setLabel('Nova Data: ');
         $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
         $this->addElement($emtDatePicker2);
@@ -55,7 +63,7 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'data_anterior', array(
+        $this->addElement('hidden', 'data_fim_atual', array(
             'value'      => $data_termino['0']['data_final']
         ));
 
