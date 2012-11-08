@@ -60,6 +60,7 @@ class UsuariosController extends Zend_Controller_Action
 
         $this->view->form = $form;
     }
+
     public function adicionarcontatosAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Usuarios_Contatos();
@@ -141,18 +142,6 @@ class UsuariosController extends Zend_Controller_Action
 
         $this->view->detalhes = $detalhes;
     }
-    /*public function atualizar(){
-        //$request = $this->getRequest();
-        $atualizar = new Application_Form_Instituicoes();
-        $model = new Application_Model_Instituicao();
-        $id = $this->_getParam('instituicao_id');
-        $data= $atualizar->getValues();
-
-        $model->atualizar($id,$data);
-        $this->_redirect('/instituicao/');
-
-        $this->view->atualizar = $atualizar;
-    }*/
 
     public function excluirAction(){
         //$request = $this->getRequest();
@@ -166,6 +155,7 @@ class UsuariosController extends Zend_Controller_Action
 
         $this->view->excluir = $excluir;
     }
+
     public function excluircontatosAction(){
         //$request = $this->getRequest();
         $excluir = new Application_Form_Usuarios_Contatos();
@@ -212,6 +202,10 @@ class UsuariosController extends Zend_Controller_Action
             echo '<option value="">Selecione</option>';
         }
 
+    }
+    public function treeviewAction()
+    {
+        $this->view->treeview;
     }
 }
 
