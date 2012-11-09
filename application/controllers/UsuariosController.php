@@ -206,6 +206,9 @@ class UsuariosController extends Zend_Controller_Action
     public function treeviewAction()
     {
         $model = new Application_Model_Usuario;
+        $result=$model->paeFilhos(32);
+        print_r($result[0]['id']." - ".$result[0]['nome']." - ".$result[0]['geracao']);
+        $model->criarTreeview($result);
 
         $this->view->treeview;
     }

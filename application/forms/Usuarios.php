@@ -54,12 +54,7 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true
         ));
 
-        //Perfil de usuario input type text
-        $this->addElement('select', 'perfil_usuario_id', array(
-            'label'      => 'Perfil do Usuario',
-            'multiOptions' => Application_Model_PerfilUsuario::getOptions(),
-            'required'   => true
-        ));
+
 
         // projeto autocomplete
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
@@ -84,6 +79,13 @@ class Application_Form_Usuarios extends Zend_Form
             'uncheckedValue' => 'contato',
             'checkedValue' => 'usuario',
             'attribs' => array('onChange' => 'tipoUsuario(this.value)'),
+        ));
+
+        //Perfil de usuario input type text
+        $this->addElement('select', 'perfil_usuario_id', array(
+            'label'      => 'Perfil do Usuario',
+            'multiOptions' => Application_Model_PerfilUsuario::getOptions(),
+            'required'   => true
         ));
 
         //userName input type text

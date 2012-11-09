@@ -49,8 +49,6 @@ class Application_Model_Usuario
         $table->update($data['usuario'], $where);
     }
 
-
-
     public function selectAll()
     {
         try{
@@ -188,8 +186,29 @@ class Application_Model_Usuario
                 $e->getMessage();
             }
             return $data;
+    }
 
+    public function paeFilhos($id_pai)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result=$db->query("CALL sp_recursive_start($id_pai)");
+        return $result->fetchAll();
+    }
 
+    public function criarTreeview($array)
+    {
+        $nroElementos=count($array);
+        $au='<ul>';
+        $fu='</ul>';
+        $al='<li>';
+        $fl='</li>';
+
+        echo '<ul id="red">';
+        for($i=0;$i<$nroElementos;$i++)
+        {
+
+        }
+        echo $fu;
     }
 }
 
