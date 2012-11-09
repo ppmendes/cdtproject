@@ -59,6 +59,18 @@
     background-color: #ECECEC;
 }
 
+.zend_form p#internasolicitacao {
+    display:block;
+    width: 980px;
+    float: left;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 11px;
+    height: 25px;
+    background-color: #ECECEC;
+}
+
 .zend_form input, .zend_form select,
 .zend_form textarea{
     width: 300px;
@@ -75,6 +87,15 @@
 
 .zend_form #termo_aditivo-data{
     color: red;
+}
+
+.zend_form dd#radiobutton-element{
+    width: 980px;
+    padding-left: 450px;
+}
+
+.zend_form input#radiobutton-4, input#radiobutton-5, input#radiobutton-6 {
+    width: 50px;
 }
 
 
