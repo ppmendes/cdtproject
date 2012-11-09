@@ -11,7 +11,13 @@ class Application_Form_Usuarios extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Usuários Contatos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
 
         //nome do usuario input type text
         $this->addElement('text', 'nome', array(

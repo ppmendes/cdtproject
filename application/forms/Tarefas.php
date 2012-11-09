@@ -17,6 +17,14 @@ class Application_Form_Tarefas extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Tarefas',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
             'label'      => 'Nome da tarefa:',

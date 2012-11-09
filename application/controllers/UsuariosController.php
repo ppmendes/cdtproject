@@ -127,7 +127,7 @@ class UsuariosController extends Zend_Controller_Action
 
     public function detalhescontatosAction(){
         $request = $this->getRequest();
-        $detalhes = new Application_Form_Usuarios_Contatos();
+        $detalhes = new
         $model = new Application_Model_Usuario;
         $id = $this->_getParam('usuario_id');
         $this->view->id = $id;
