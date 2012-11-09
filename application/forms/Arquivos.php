@@ -12,8 +12,6 @@ class Application_Form_Arquivos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-        // array para atributo pasta
-
         //nome real do arquivo input type text
         $this->addElement('text', 'nome_real', array(
             'label'      => 'Nome Real:',
@@ -38,7 +36,6 @@ class Application_Form_Arquivos extends Zend_Form
             'multiOptions'  => Application_Model_TipoArquivo::getOptions(),
             'required'   => true
         ));
-
 
         //dono do arquivo input type text
         //item preenchido automaticamnete
