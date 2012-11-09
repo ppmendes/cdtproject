@@ -12,10 +12,6 @@ class Application_Model_TermoAditivo
     public function insert($data)
     {
         $data['termo_aditivo']['data_termo_aditivo'] = date('Y-m-d H:i:s', time());
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-        exit;
         $table = new Application_Model_DbTable_TermoAditivo;
         $table->insert($data['termo_aditivo']);
     }
