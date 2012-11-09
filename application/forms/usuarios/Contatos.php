@@ -11,11 +11,12 @@ class Application_Form_Usuarios_Contatos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-        //tipo de usuario  input type radio
-        $this->addElement('select','tipo_usuario',array(
-            'required' => true,
-            'label' => 'Tipo:',
-            'multiOptions'=>array('usuario'=>'usuario', 'contato'=>'contato')
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Usuários Contatos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
         ));
 
         //nome do usuario input type text
@@ -29,7 +30,12 @@ class Application_Form_Usuarios_Contatos extends Zend_Form
             'label'      => 'Sobrenome:',
             'required'   => true
         ));
-
+        //data de nascimento input type text
+        /*$this->addElement('text', 'data_nascimento', array(
+            'label'      => 'Data de Nascimento:',
+            'required'   => true,
+            'class'      => 'datePicker'
+        ));*/
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
@@ -54,18 +60,31 @@ class Application_Form_Usuarios_Contatos extends Zend_Form
             'required'   => true
         ));
 
-        //Perfil de usuario input type text
-        $this->addElement('select', 'perfil_usuario_id', array(
-            'label'      => 'Perfil do Usuario',
-            'multiOptions' => Application_Model_PerfilUsuario::getOptions(),
-            'required'   => true
+
+
+        // projeto autocomplete
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Instituição:');
+        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
         ));
+        $this->addElement($emt);
 
         //instituicao input type text
-        $this->addElement('select', 'instituicao_id', array(
+        /*$this->addElement('select', 'instituicao_id', array(
             'label'      => 'Instituição:',
             'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true
+        ));*/
+
+        //tipo de usuario  input type radio
+        $this->addElement('checkbox','tipo_usuario',array(
+            'required' => false,
+            'label' => 'Usuário do sistema:',
+            'uncheckedValue' => 'contato',
+            'checkedValue' => 'usuario',
+            'attribs' => array('onChange' => 'tipoUsuario(this.value)'),
         ));
 
         //email input type text
@@ -103,7 +122,7 @@ class Application_Form_Usuarios_Contatos extends Zend_Form
         $this->addElement('select', 'estados_id', array(
             // 'id'         => 'estado',
             'label'      => 'Estado:',
-            //'multiOptions' => Application_Model_Estados::getOptions(),
+            'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
@@ -155,6 +174,11 @@ class Application_Form_Usuarios_Contatos extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Usuario',
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'instituicao_id', array(
+            'value'      => ''
         ));
     }
 }

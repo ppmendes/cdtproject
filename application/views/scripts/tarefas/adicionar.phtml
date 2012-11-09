@@ -2,3 +2,26 @@
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
+<script>
+    function tarefaDetalhes()
+    {
+        top.location.href = '/../usuarios/adicionar/';
+
+    }
+
+</script>
+
+<script>
+    $(function() {
+        $( "#tabs" ).tabs();
+    });
+</script>
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Detalhes</a></li>
+        <li><a href="#tabs-2">Datas</a></li>
+        <li><a href="#tabs-2">Dependências</a></li>
+        <li><a href="#tabs-2">Recursos Humanos</a></li>
+        <li><a href="#tabs-2">Otros Recursos</a></li>
+    </ul>
+</div>
