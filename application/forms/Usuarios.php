@@ -67,7 +67,7 @@ class Application_Form_Usuarios extends Zend_Form
         $emt->setLabel('Instituição:');
         $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#usuarios-autoid").val(ui.item.id) }')
+            'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 
@@ -148,7 +148,7 @@ class Application_Form_Usuarios extends Zend_Form
         $this->addElement('select', 'estados_id', array(
             // 'id'         => 'estado',
             'label'      => 'Estado:',
-            //'multiOptions' => Application_Model_Estados::getOptions(),
+            'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
@@ -203,8 +203,7 @@ class Application_Form_Usuarios extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'autoid', array(
-            'label'      => '',
+        $this->addElement('hidden', 'instituicao_id', array(
             'value'      => ''
         ));
     }

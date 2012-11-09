@@ -65,13 +65,13 @@
     table * *{
         text-align: center;
     }
-    .novobeneficiario {
+    .novousuario {
         float:right;
     }
 </style>
 
 <div class="botoes_superiores">
-    <button class='novoprojeto' onclick='adicionar()'>Novo Usuario</button>
+    <button class='novousuario' onclick='adicionar()'>Novo Usuario</button>
 </div>
 <div id="tabs">
     <ul>
@@ -121,7 +121,7 @@
 
                 echo "<tr id='".$row['usuario_id']."'>";
                 echo "<td>" .$row['u.sobrenome']. "</td>";
-                echo "<td><a href='/usuarios/detalhes/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
+                echo "<td><a href='/usuarios/detalhescontatos/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
                 echo "<td>" .$row['i.nome']. "</td>";
                 echo "</tr>";
             }

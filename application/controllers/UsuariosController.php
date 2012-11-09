@@ -32,6 +32,7 @@ class UsuariosController extends Zend_Controller_Action
                 $data = $form->getValues();
                 //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
+                unset($data['usuario']['ac']);
                 if($id){
 
                     //adicionar novo arquivo e tirar o antigo na lixeira
