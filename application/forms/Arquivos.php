@@ -12,6 +12,14 @@ class Application_Form_Arquivos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Arquivos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         //nome real do arquivo input type text
         $this->addElement('text', 'nome_real', array(
             'label'      => 'Nome Real:',
