@@ -195,20 +195,55 @@ class Application_Model_Usuario
         return $result->fetchAll();
     }
 
-    public function criarTreeview($array)
+    public function criarTreeview($array,$level)
     {
-        $nroElementos=count($array);
-        $au='<ul>';
-        $fu='</ul>';
-        $al='<li>';
-        $fl='</li>';
 
-        echo '<ul id="red">';
-        for($i=0;$i<$nroElementos;$i++)
+        $nro=count($array);
+        $tem_filho=false;
+        $pai=1;
+        for($i=0;$i<$nro;$i++)
         {
 
+            if($array[$i]['geracao']==$pai)
+            {
+
+                if($tem_filho==false)
+                {
+                    $tem_filho=true;
+                    echo '<ul>';
+                    $level++;
+                }
+                echo '<li>'.$array[$i]['nome'];
+                if(count($array)>0)
+                {
+                    unset($array[0]);
+                    $this->criarTreeview($array,$level);
+                }
+
+
+                echo '</li>';
+
+            }
         }
-        echo $fu;
+        if($tem_filho==true) echo '</ul>';
+    }
+
+    public function retornaPais()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            // ainda resta apresentar historico de login do usuarios
+            $select = $db->select()
+                ->from('instituicao',
+                    array('instituicao_id', 'nome'))
+                ->where('pai_id=?',0);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch(Exception $e){
+            Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
+        }
     }
 }
 
