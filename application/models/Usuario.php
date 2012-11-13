@@ -195,54 +195,44 @@ class Application_Model_Usuario
         return $result->fetchAll();
     }
 
-    public function criarTreeview($array,$level)
+    public function criarTreeview($array)
     {
+        $nroElementos=count($array);
+        $id=1;
+        $nroul=1;
 
-        $nro=count($array);
-        $tem_filho=false;
-        $pai=1;
-        for($i=0;$i<$nro;$i++)
+        echo '<ul>';
+        for($i=0;$i<$nroElementos;$i++)
         {
-
-            if($array[$i]['geracao']==$pai)
+            $novoid=$array[$i]['geracao'];
+            if($novoid>$id)
             {
-
-                if($tem_filho==false)
-                {
-                    $tem_filho=true;
-                    echo '<ul>';
-                    $level++;
-                }
-                echo '<li>'.$array[$i]['nome'];
-                if(count($array)>0)
-                {
-                    unset($array[0]);
-                    $this->criarTreeview($array,$level);
-                }
-
-
-                echo '</li>';
-
+                echo'<ul>';
+                echo'<li>'.$array[$i]['nome'].'</li>';
+                $nroul=$nroul+1;
+                $id=$novoid;
+            }
+            if($novoid==$id)
+            {
+                echo'<li>'.$array[$i]['nome'].'</li>';
+            }
+            if($novoid<$id)
+            {
+                $nroul=$id-$nroul;
+                $this->fecharul($nroul);
+                echo'<li>'.$array[$i]['nome'].'</li>';
+                $id=$novoid;
             }
         }
-        if($tem_filho==true) echo '</ul>';
+        $this->fecharul($nroul);
+
     }
 
-    public function retornaPais()
+    public function fecharul($nro)
     {
-        try{
-            $db = Zend_Db_Table::getDefaultAdapter();
-            // ainda resta apresentar historico de login do usuarios
-            $select = $db->select()
-                ->from('instituicao',
-                    array('instituicao_id', 'nome'))
-                ->where('pai_id=?',0);
-
-            $stmt = $select->query();
-            $result = $stmt->fetchAll();
-            return $result;
-        } catch(Exception $e){
-            Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
+        for($i=0;$i<$nro;$i++)
+        {
+            echo'</ul>';
         }
     }
 }
