@@ -30,12 +30,7 @@ class Application_Form_Usuarios extends Zend_Form
             'label'      => 'Sobrenome:',
             'required'   => true
         ));
-        //data de nascimento input type text
-        /*$this->addElement('text', 'data_nascimento', array(
-            'label'      => 'Data de Nascimento:',
-            'required'   => true,
-            'class'      => 'datePicker'
-        ));*/
+
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
         $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
@@ -54,21 +49,11 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true
         ));
 
-        $decoradores = array(
-            'ViewHelper',
-            'Errors',
-            array('HtmlTag', array('tag' => 'div', 'class' => 'formElement')),
-            array('Label', array('tag' => 'div'))
-        );
-
         //Cargo no trabalho input type text
         $this->addElement('text', 'cargo_trabalho', array(
             'label'      => 'Cargo do Trabalho:',
-            'required'   => true,
-            'setDecorators' => $decoradores
+            'required'   => true
         ));
-
-
 
         // projeto autocomplete
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
@@ -78,13 +63,6 @@ class Application_Form_Usuarios extends Zend_Form
             'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
-
-        //instituicao input type text
-        /*$this->addElement('select', 'instituicao_id', array(
-            'label'      => 'Instituição:',
-            'multiOptions' => Application_Model_Instituicao::getOptions(),
-            'required'   => true
-        ));*/
 
         //tipo de usuario  input type radio
         $this->addElement('checkbox','tipo_usuario',array(

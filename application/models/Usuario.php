@@ -217,10 +217,11 @@ class Application_Model_Usuario
             }
             elseif($novonivel<$nivel)
             {
-                $nivel=$novonivel;
+                $nro=$nivel-$novonivel;
                 echo'</li>';
-                $this->fecharnivel($nivel);
+                $this->fecharnivel($nro);
                 echo'<li>'.$array[$i]['nome'];
+                $nivel=$novonivel;
             }
 
         }
