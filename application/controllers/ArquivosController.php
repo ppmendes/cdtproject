@@ -69,7 +69,6 @@ class ArquivosController extends Zend_Controller_Action
                 $form->populate(array("arquivos" => $data));
             }
         }
-
     }
         $this->view->form = $form;
     }
