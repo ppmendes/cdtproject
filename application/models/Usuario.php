@@ -200,23 +200,27 @@ class Application_Model_Usuario
         $nroElementos=count($array);
         $id=1;
         $nroul=1;
+        $nroli=1;
 
-        echo '<ul>';
-        for($i=0;$i<$nroElementos;$i++)
+        echo '<ul id="red"><li>'.$array[0]['nome'];
+
+        for($i=1;$i<$nroElementos;$i++)
         {
             $novoid=$array[$i]['geracao'];
-            if($novoid>$id)
-            {
-                echo'<ul>';
-                echo'<li>'.$array[$i]['nome'].'</li>';
-                $nroul=$nroul+1;
-                $id=$novoid;
-            }
             if($novoid==$id)
             {
-                echo'<li>'.$array[$i]['nome'].'</li>';
+                echo'</li><li>'.$array[$i]['nome'];
+                $nroli=$nroli-1;
             }
-            if($novoid<$id)
+            elseif($novoid>$id)
+            {
+                echo'<ul>';
+                echo'<li>'.$array[$i]['nome'];
+                $nroul=$nroul+1;
+                $nroli=$nroli+1;
+                $id=$novoid;
+            }
+            elseif($novoid<$id)
             {
                 $nroul=$id-$nroul;
                 $this->fecharul($nroul);
@@ -233,6 +237,24 @@ class Application_Model_Usuario
         for($i=0;$i<$nro;$i++)
         {
             echo'</ul>';
+        }
+    }
+
+    public function retornaPais()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            // ainda resta apresentar historico de login do usuarios
+            $select = $db->select()
+                ->from('instituicao',
+                array('instituicao_id', 'nome'))
+                ->where('pai_id=?',0);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch(Exception $e){
+            Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
         }
     }
 }

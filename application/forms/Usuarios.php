@@ -54,10 +54,18 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => true
         ));
 
+        $decoradores = array(
+            'ViewHelper',
+            'Errors',
+            array('HtmlTag', array('tag' => 'div', 'class' => 'formElement')),
+            array('Label', array('tag' => 'div'))
+        );
+
         //Cargo no trabalho input type text
         $this->addElement('text', 'cargo_trabalho', array(
             'label'      => 'Cargo do Trabalho:',
-            'required'   => true
+            'required'   => true,
+            'setDecorators' => $decoradores
         ));
 
 
