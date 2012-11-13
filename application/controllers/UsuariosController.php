@@ -209,7 +209,7 @@ class UsuariosController extends Zend_Controller_Action
         $model = new Application_Model_Usuario;
         $this->view->tree = $model->retornaPais();
 
-        $result=$model->paeFilhos(32);
+        $result=$model->paeFilhos(74);
         $model->criarTreeview($result);
 
         $this->view->treeview;

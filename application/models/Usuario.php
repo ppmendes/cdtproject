@@ -198,45 +198,42 @@ class Application_Model_Usuario
     public function criarTreeview($array)
     {
         $nroElementos=count($array);
-        $id=1;
-        $nroul=1;
-        $nroli=1;
+        $nivel=1;
 
         echo '<ul id="red"><li>'.$array[0]['nome'];
 
         for($i=1;$i<$nroElementos;$i++)
         {
-            $novoid=$array[$i]['geracao'];
-            if($novoid==$id)
+            $novonivel=$array[$i]['geracao'];
+            if($novonivel==$nivel)
             {
                 echo'</li><li>'.$array[$i]['nome'];
-                $nroli=$nroli-1;
             }
-            elseif($novoid>$id)
+            elseif($novonivel>$nivel)
             {
                 echo'<ul>';
                 echo'<li>'.$array[$i]['nome'];
-                $nroul=$nroul+1;
-                $nroli=$nroli+1;
-                $id=$novoid;
+                $nivel=$novonivel;
             }
-            elseif($novoid<$id)
+            elseif($novonivel<$nivel)
             {
-                $nroul=$id-$nroul;
-                $this->fecharul($nroul);
-                echo'<li>'.$array[$i]['nome'].'</li>';
-                $id=$novoid;
+                $nivel=$novonivel;
+                echo'</li>';
+                $this->fecharnivel($nivel);
+                echo'<li>'.$array[$i]['nome'];
             }
+
         }
-        $this->fecharul($nroul);
+        $this->fecharnivel($nivel);
+
 
     }
 
-    public function fecharul($nro)
+    public function fecharnivel($nivel)
     {
-        for($i=0;$i<$nro;$i++)
+        for($i=0;$i<$nivel;$i++)
         {
-            echo'</ul>';
+            echo'</ul></li>';
         }
     }
 
