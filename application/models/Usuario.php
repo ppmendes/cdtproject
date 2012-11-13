@@ -198,17 +198,42 @@ class Application_Model_Usuario
     public function criarTreeview($array)
     {
         $nroElementos=count($array);
-        $au='<ul>';
-        $fu='</ul>';
-        $al='<li>';
-        $fl='</li>';
+        $id=1;
+        $nroul=1;
 
-        echo '<ul id="red">';
+        echo '<ul>';
         for($i=0;$i<$nroElementos;$i++)
         {
-
+            $novoid=$array[$i]['geracao'];
+            if($novoid>$id)
+            {
+                echo'<ul>';
+                echo'<li>'.$array[$i]['nome'].'</li>';
+                $nroul=$nroul+1;
+                $id=$novoid;
+            }
+            if($novoid==$id)
+            {
+                echo'<li>'.$array[$i]['nome'].'</li>';
+            }
+            if($novoid<$id)
+            {
+                $nroul=$id-$nroul;
+                $this->fecharul($nroul);
+                echo'<li>'.$array[$i]['nome'].'</li>';
+                $id=$novoid;
+            }
         }
-        echo $fu;
+        $this->fecharul($nroul);
+
+    }
+
+    public function fecharul($nro)
+    {
+        for($i=0;$i<$nro;$i++)
+        {
+            echo'</ul>';
+        }
     }
 }
 
