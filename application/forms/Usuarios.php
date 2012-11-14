@@ -19,6 +19,7 @@ class Application_Form_Usuarios extends Zend_Form
             ),
         ));
 
+
         //nome do usuario input type text
         $this->addElement('text', 'nome', array(
             'label'      => 'Nome:',
@@ -63,6 +64,31 @@ class Application_Form_Usuarios extends Zend_Form
             'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
+
+        $this->addDisplayGroup(array('ac'),'display1');
+        $indi = $this->getDisplayGroup('display1');
+
+        $indi->setDecorators(array(
+            'FormElements',
+            array('HtmlTag',array('tag'=>'div','id'=>'instituicao'))
+
+        ));
+
+        $this->addElement('button', 'botaoPesquisa',array(
+            'class'=>'button1',
+            'label'=>'<span>Pesquisar</span>',
+            'escape'=>false,
+            'type'=>'submit',
+        ));
+
+        $this->addDisplayGroup(array('botaoPesquisa'),'display');
+        $individual = $this->getDisplayGroup('display');
+
+        $individual->setDecorators(array(
+            'FormElements',
+            array('HtmlTag',array('tag'=>'div','id'=>'pesquisa'))
+
+        ));
 
         //tipo de usuario  input type radio
         $this->addElement('checkbox','tipo_usuario',array(
