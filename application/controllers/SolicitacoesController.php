@@ -31,6 +31,11 @@ class SolicitacoesController extends Zend_Controller_Action
 //                echo "</pre>";
                 $data = $form->getValues();
                 unset($data['solicitacoes']['data_solicitacao_view']);
+                unset($data['solicitacoes']['local_entrega_solicitacao_view']);
+//                echo "<pre>";
+//                print_r($data);
+//                echo "</pre>";
+//                exit;
                 if($id){
                     $model->update($data, $id);
                 }else{
