@@ -1,4 +1,45 @@
 <?php
 $this->form->setAction($this->url());
+$form = $this->form;
 echo $this->form;
 ?>
+
+<script>
+    var local = '';
+    function tipoLocal(valor){
+        valor=$('#solicitacoes-local').is(':checked');
+        if (valor == false){
+            $('#solicitacoes-local_entrega_solicitacao_view').attr('disabled', 'disabled');
+            $('#solicitacoes-local_entrega_solicitacao_view').attr('value', 'CDT');
+            $('#solicitacoes-local_entrega_solicitacao').attr('value', 'CDT');
+
+        }else
+        {
+            $('#solicitacoes-local_entrega_solicitacao_view').removeAttr('disabled');
+
+        }
+    }
+
+    function setLocal(valor){
+        local = valor;
+        $('#solicitacoes-local_entrega_solicitacao').attr('value', valor);
+    }
+
+    function getLocal() {
+        return local;
+    }
+
+    function getItemId(){
+        return 'nada';
+    }
+
+<!--    function adicionaCampos(valor ) {-->
+<!--        if (valor ==  'mais') {-->
+<!--        --><?php
+//        $formulario = new Application_Form_Solicitacoes_AquisicaoBens;
+//        $formulario->adicionaCampo();
+//        ?>
+<!--        }-->
+    }
+
+</script>
