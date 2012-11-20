@@ -12,17 +12,13 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-        //Nome da solicitação input type text
-        $this->addElement('text', 'solicitacao_nome', array(
-            'label'      => 'Nome da Solicitação:',
-            'required'   => true,
+        $this->addElement('hidden', 'label_projeto', array(
+            'description' => 'Identificação do Projeto',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
         ));
-
-        //Data da solicitação
-        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_solicitacao');
-        $emtDatePicker1->setLabel('Data da solicitação: ');
-        $emtDatePicker1->setJQueryParam('dateFormat', 'yy-mm-dd');
-        $this->addElement($emtDatePicker1);
 
         //Projeto input type text
         $this->addElement('select', 'projeto_id', array(
@@ -36,6 +32,29 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Coordenador do Projeto:',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
+        ));
+
+        $this->addElement('text', 'email', array(
+            'label'      => 'E-mail:',
+            'required'   => true
+        ));
+
+        $this->addElement('text', 'telefone', array(
+            'label'      => 'Telefone:',
+            'required'   => true
+        ));
+
+        $this->addElement('text', 'fax', array(
+            'label'      => 'Fax:',
+            'required'   => false
+        ));
+
+        $this->addElement('hidden', 'label_beneficiario', array(
+            'description' => 'Dados do Contratado',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
         ));
 
         //Tipo de solicitação input type text
