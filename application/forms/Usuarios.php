@@ -11,6 +11,7 @@ class Application_Form_Usuarios extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+
         $this->addElement('hidden', 'label_titulo', array(
             'description' => 'Formulário de Usuários Contatos',
             'ignore' => true,
@@ -18,7 +19,6 @@ class Application_Form_Usuarios extends Zend_Form
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
             ),
         ));
-
 
         //nome do usuario input type text
         $this->addElement('text', 'nome', array(
@@ -65,29 +65,16 @@ class Application_Form_Usuarios extends Zend_Form
         ));
         $this->addElement($emt);
 
-        $this->addDisplayGroup(array('ac'),'display1');
-        $indi = $this->getDisplayGroup('display1');
-
-        $indi->setDecorators(array(
-            'FormElements',
-            array('HtmlTag',array('tag'=>'div','id'=>'instituicao'))
-
+        $this->addElement('button', 'botaoPesquisa', array(
+            'required' => false,
+            'label'     => 'Pesquisar',
         ));
 
-        $this->addElement('button', 'botaoPesquisa',array(
-            'class'=>'button1',
-            'label'=>'<span>Pesquisar</span>',
-            'escape'=>false,
-            'type'=>'submit',
-        ));
-
-        $this->addDisplayGroup(array('botaoPesquisa'),'display');
-        $individual = $this->getDisplayGroup('display');
-
-        $individual->setDecorators(array(
-            'FormElements',
-            array('HtmlTag',array('tag'=>'div','id'=>'pesquisa'))
-
+        $this->addDisplayGroup(array('ac', 'botaoPesquisa'), 'submitButtons', array(
+            'decorators' => array(
+                'FormElements',
+                array('HtmlTag', array('tag' => 'div')),
+            ),
         ));
 
         //tipo de usuario  input type radio

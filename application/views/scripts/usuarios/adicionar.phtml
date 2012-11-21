@@ -5,6 +5,21 @@ $tipo = $this->tipo;
 $id = $this->id;
 echo $this->form;
 ?>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.fancybox').fancybox();
+    });
+
+    $("#usuario-botaoPesquisa").click(function() {
+        $('<a class="fancybox fancybox.iframe" href="usuarios/treeview">pesquisar</a>').fancybox({
+            overlayShow: true
+        }).click();
+    });
+</script>
+
+
 <script type="text/javascript">
 
     var id = '<?php echo $id; ?>';
@@ -112,4 +127,5 @@ echo $this->form;
             $('#usuario-perfil_usuario_id').removeAttr('disabled');
         }
     }
+
 </script>
