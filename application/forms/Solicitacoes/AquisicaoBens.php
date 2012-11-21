@@ -123,11 +123,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         ));
 
         $this->addDisplayGroup(array('label_item','numero_itens','solicitacao_nome', 'preco_unidade', 'valor_estimado'), 'individual');
-        $label = $this->getElement('label_item');
-        $itens = $this->getElement('numero_itens');
-        $desc  = $this->getElement('solicitacao_nome');
-        $preco = $this->getElement('preco_unidade');
-        $valor = $this->getElement('valor_estimado');
 
         $individual = $this->getDisplayGroup('individual');
 
