@@ -206,14 +206,30 @@ class UsuariosController extends Zend_Controller_Action
     }
     public function treeviewAction()
     {
+        $layout = $this->_helper->layout();
+        $layout->setLayout('iframe');
         $model = new Application_Model_Usuario;
+        $id = $this->_getParam('instituicao_id');
+        if($id==null)
+        {
+            $id=32;
+        }
         $this->view->tree = $model->retornaPais();
 
-        $result=$model->paeFilhos(32);
+        $result=$model->paeFilhos($id);
         $model->criarTreeview($result);
 
         $this->view->treeview;
     }
 
+    public function treeAction()
+    {
+        $layout = $this->_helper->layout();
+        $layout->setLayout('iframe');
+        $model = new Application_Model_Usuario();
 
+        //$model->paeFilhos();
+        $model->criarTreeview(32);
+        $this->view->tree;
+    }
 }
