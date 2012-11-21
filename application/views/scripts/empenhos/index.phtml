@@ -1,5 +1,11 @@
 <script>
     $(document).ready(function() {
+        $('#example').dataTable( {
+            "bProcessing": true,
+            "sAjaxSource": '../ajax/sources/arrays.txt'
+        } );
+    } );
+    $(document).ready(function() {
         $('#table_id').dataTable({
             "sDom": 'R<"H"lfr>t<"F"ip<',
             "bJQueryUI": true,
@@ -20,7 +26,9 @@
                     "sNext":     " > ",
                     "sLast":     " >> "
                 }
-            }
+            },
+            "bProcessing": true,
+            "sAjaxSource": 'empenhos/indexajax'
             //"bSort": false,
 //            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
 //            "aoColumns": [

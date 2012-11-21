@@ -12,7 +12,13 @@ class EmpenhosController extends Zend_Controller_Action
     {
 	    $model = new Application_Model_Empenho();
         $this->view->resultado = $model->selectAll();
+        $this->view->resultado = array();
+    }
 
+    public function indexajaxAction(){
+        $model = new Application_Model_Empenho();
+        echo '{"aaData":'.json_encode($model->selectAll()).'}';
+        exit;
     }
 
     public function adicionarAction(){

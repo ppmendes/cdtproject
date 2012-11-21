@@ -49,7 +49,7 @@ class Application_Model_Empenho
 
         $stmt = $select->query();
 
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
         return $result;
     }

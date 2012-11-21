@@ -1,0 +1,36 @@
+<!-- application/layouts/scripts/layout.phtml -->
+<?php echo $this->doctype(); ?>
+<html>
+	<head>
+        <?php echo $this->headMeta(); ?>
+        <base href="http://cdtproject.local/"
+		<meta name="author" content="Labredes" >
+		<meta name="description" content="CDT PROJECT" >
+		<meta name="keywords" content="CDT PROJECT" >
+		<title>CDT Project</title>
+        <?php
+              echo $this->headLink()
+                        ->appendStylesheet('css/global.css')
+                        ->appendStylesheet('css/form.css')
+                        ->appendStylesheet('css/demo_page.css')
+                        ->appendStylesheet('css/demo_table.css')
+                        ->appendStylesheet('css/demo_table_jui.css')
+                        ->appendStylesheet('css/jquery.treeview.css')
+                        ->appendStylesheet('css/jquery-ui-1.8.4.custom.css');
+        ?>
+        <link rel="shortcut icon" href="<?php echo $this->baseUrl('imagem/favicon.ico'); ?>" />
+
+        <?php echo $this->jQuery(); ?>
+
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.dataTables.js'); ?>" ></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/demo.js'); ?>" ></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.cookie.js'); ?>" ></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl('js/jquery.treeview.js'); ?>" ></script>
+
+	</head>
+<body class="body_main_content" >
+
+	<!--	CONTEUDO DO CONTEUDO	-->
+		<?php echo $this->layout()->content ?>				
+
+</body></html>
