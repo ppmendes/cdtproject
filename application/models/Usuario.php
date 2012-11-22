@@ -215,13 +215,13 @@ class Application_Model_Usuario
 
             if($novonivel==$nivel)
             {
-                echo'</li><li><a onClick="retornaId('.$nome.','.$id.')">'.$array[$i]['nome'].'</a>';
+                echo'</li><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
 
             }
             elseif($novonivel>$nivel)
             {
                 echo'<ul>';
-                echo'<li><a onClick="retornaId('.$nome.','.$id.')">'.$array[$i]['nome'].'</a>';
+                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
                 $nivel=$novonivel;
             }
             elseif($novonivel<$nivel)
@@ -229,7 +229,7 @@ class Application_Model_Usuario
                 $nro=$nivel-$novonivel;
                 echo'</li>';
                 $this->fecharnivel($nro);
-                echo'<li><a onClick="retornaId('.$nome.','.$id.')">'.$array[$i]['nome'].'</a>';
+                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
                 $nivel=$novonivel;
             }
 
