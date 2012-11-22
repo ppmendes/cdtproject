@@ -125,7 +125,6 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => false
         ));
 
-
         //Tipo de instituição input type text
         $this->addElement('text', 'tipo', array(
             'label'      => 'Tipo de instituição:',
@@ -138,10 +137,17 @@ class Application_Form_Instituicoes extends Zend_Form
             'required'   => false
         ));
 
-        //pai_id input type text
-        $this->addElement('text', 'pai_id', array(
-            'label'      => 'Instituicao Pai:',
-            'required'   => false
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Instituição Pai:');
+        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#instituicao-instituicao_id").val(ui.item.id) }')
+        ));
+        $this->addElement($emt);
+
+        $this->addElement('button', 'botaoPesquisa', array(
+            'required' => false,
+            'label'     => 'Pesquisar',
         ));
 
         //Denominação input type text
@@ -155,6 +161,11 @@ class Application_Form_Instituicoes extends Zend_Form
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Instituição',
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'instituicao_id', array(
+            'value'      => ''
         ));
 
     }

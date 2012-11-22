@@ -4,6 +4,18 @@
     echo $this->form;
 ?>
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('.fancybox').fancybox();
+    });
+
+    $("#instituicao-botaoPesquisa").click(function() {
+        $('<a class="fancybox fancybox.iframe" href="instituicoes/treeview">pesquisar</a>').fancybox({
+            overlayShow: true
+        }).click();
+    });
+</script>
+
+<script type="text/javascript">
     carregaEstados(<?php echo $pais; ?>);
 
     function carregaEstados(valor){
