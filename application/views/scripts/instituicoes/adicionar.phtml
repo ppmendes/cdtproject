@@ -25,9 +25,9 @@
             $('#instituicao-estados_id-element').css('display','block');
             $('#instituicao-cidade_id-label').css('display','block');
             $('#instituicao-cidade_id-element').css('display','block');
-            $('#instituicao-cidadetext-label').css('display','none');
-            $('#instituicao-cidadetext-element').css('display','none');
-            $('#instituicao-cidadetext').attr('disabled' , 'disabled');
+            $('#instituicao-cidade_text-label').css('display','none');
+            $('#instituicao-cidade_text-element').css('display','none');
+            $('#instituicao-cidade_text').attr('disabled' , 'disabled');
             $.ajax({
                 url: '/instituicoes/selectestados/id/'+valor,
                 dataType:'html',
@@ -40,7 +40,7 @@
         }
         else
         {
-            $('#instituicao-cidadetext').removeAttr('disabled');
+            $('#instituicao-cidade_text').removeAttr('disabled');
             carregaCidades(99999);
         };
     }
@@ -63,8 +63,8 @@
             $('#instituicao-estados_id-element').css('display','none');
             $('#instituicao-cidade_id-label').css('display','none');
             $('#instituicao-cidade_id-element').css('display','none');
-            $('#instituicao-cidadetext-label').css('display','block');
-            $('#instituicao-cidadetext-element').css('display','block');
+            $('#instituicao-cidade_text-label').css('display','block');
+            $('#instituicao-cidade_text-element').css('display','block');
         }
         ;
     }
