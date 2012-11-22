@@ -79,6 +79,14 @@
     $(document).ready(function() {
         $('.fancybox').fancybox();
     });
+
+    function retornaId($nome,$id)
+    {
+        alert($nome);
+        parent.$('usuario-ac').val = $nome;
+        parent.$('usuario-instituicao_id').val = $id;
+        parent.$.fancybox.close();
+    }
 </script>
 
 <div id="tabs">

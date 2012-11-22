@@ -200,19 +200,28 @@ class Application_Model_Usuario
         $nroElementos=count($array);
         $nivel=1;
 
-        echo '<ul id="red"><li>'.$array[0]['nome'];
+        $nome = $array[0]["nome"];
+        $id = $array[0]["id"];
+
+        echo '<ul id="red"><li><a onClick="retornaId('.$nome.','.$id.')">'.$array[0]['nome'].'</a>';
+
 
         for($i=1;$i<$nroElementos;$i++)
         {
             $novonivel=$array[$i]['geracao'];
+
+            $nome = $array[$i]['nome'];
+            $id = $array[$i]['id'];
+
             if($novonivel==$nivel)
             {
-                echo'</li><li>'.$array[$i]['nome'];
+                echo'</li><li><a onClick="retornaId('.$nome.','.$id.')">'.$array[$i]['nome'].'</a>';
+
             }
             elseif($novonivel>$nivel)
             {
                 echo'<ul>';
-                echo'<li>'.$array[$i]['nome'];
+                echo'<li><a onClick="retornaId('.$nome.','.$id.')">'.$array[$i]['nome'].'</a>';
                 $nivel=$novonivel;
             }
             elseif($novonivel<$nivel)
@@ -220,7 +229,7 @@ class Application_Model_Usuario
                 $nro=$nivel-$novonivel;
                 echo'</li>';
                 $this->fecharnivel($nro);
-                echo'<li>'.$array[$i]['nome'];
+                echo'<li><a onClick="retornaId('.$nome.','.$id.')">'.$array[$i]['nome'].'</a>';
                 $nivel=$novonivel;
             }
 
