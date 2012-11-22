@@ -203,7 +203,7 @@ class Application_Model_Usuario
         $nome = $array[0]["nome"];
         $id = $array[0]["id"];
 
-        echo '<ul id="red"><li><a onClick="retornaId('.$nome.','.$id.')">'.$array[0]['nome'].'</a>';
+        echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
 
 
         for($i=1;$i<$nroElementos;$i++)
