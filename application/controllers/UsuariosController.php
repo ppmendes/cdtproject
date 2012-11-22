@@ -221,15 +221,4 @@ class UsuariosController extends Zend_Controller_Action
 
         $this->view->treeview;
     }
-
-    public function treeAction()
-    {
-        $layout = $this->_helper->layout();
-        $layout->setLayout('iframe');
-        $model = new Application_Model_Usuario();
-
-        //$model->paeFilhos();
-        $model->criarTreeview(32);
-        $this->view->tree;
-    }
 }

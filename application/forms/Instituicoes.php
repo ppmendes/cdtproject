@@ -9,7 +9,7 @@ class Application_Form_Instituicoes extends Zend_Form
         //$this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('instituicao');
 
-        // Setar metodo
+        // Setar metodo comentario
         $this->setMethod('post');
 
         $this->addElement('hidden', 'label_titulo', array(
