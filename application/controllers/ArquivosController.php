@@ -104,4 +104,22 @@ class ArquivosController extends Zend_Controller_Action
 
         $this->view->excluir = $excluir;
     }
+
+    public function selecttarefasAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id',0)) {
+            $id = (int) $this->_request->getParam('id',0);
+            $filhos = new Application_Model_DbTable_Tarefa();
+            $rows = $filhos->fetchAll('projeto_id = ' . (int) $id);
+            echo '<option value="">Ninguno</option>';
+            foreach ($rows as $row) {
+                echo '<option value="' . $row->tarefa_id . '">' . $row->nome . '</option>';
+            }
+        } else {
+
+            echo '<option value="">Ninguno</option>';
+        }
+    }
 }

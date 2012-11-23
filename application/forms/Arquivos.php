@@ -57,23 +57,25 @@ class Application_Form_Arquivos extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#arquivos-autoid").val(ui.item.id) }')
-        ));
+            'function(event,ui) { $("#arquivos-autoid").val(ui.item.id) }')))
+            ->setAttribs(array('onchange'=>'atualizarTarefas($("#arquivos-autoid").val())'));
+
         $this->addElement($emt);
 
         //tarefa id pai  da tarefa select type
-        $this->addElement('text', 'tarefa_id', array(
+        $this->addElement('select', 'tarefa_id', array(
             'label'      => 'tarefa:',
-            'multiOptions'  =>Application_Model_Tarefa::getOptions(),
+            //'multiOptions'  =>Application_Model_Tarefa::getOptions1(),
             'required'   => true
         ));
 
-        //projeto id pai  da tarefa select type
-        $this->addElement('select', 'instituicao_id', array(
-            'label'      => 'Instituicao:',
-            'multiOptions'  =>Application_Model_Instituicao::getOptions(),
-            'required'   => true
+        /*$emt = new ZendX_JQuery_Form_Element_AutoComplete('aci');
+        $emt->setLabel('Instituição:');
+        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#arquivos-instituicao_id").val(ui.item.id) }')
         ));
+        $this->addElement($emt);*/
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
@@ -86,5 +88,10 @@ class Application_Form_Arquivos extends Zend_Form
             'label'      => '',
             'value'      => ''
         ));
+
+        //set hidden
+        /*$this->addElement('hidden', 'instituicao_id', array(
+            'value'      => ''
+        ));*/
     }
 }

@@ -135,7 +135,6 @@ class Application_Form_Usuarios extends Zend_Form
 
         //pais input type text
         $this->addElement('select', 'pais_id', array(
-            //'id'         => 'pais',
             'label'      => 'Pais:',
             'multiOptions' => Application_Model_Pais::getOptions(),
             'required'   => true,
@@ -145,7 +144,6 @@ class Application_Form_Usuarios extends Zend_Form
 
         //Estado input type text
         $this->addElement('select', 'estados_id', array(
-            // 'id'         => 'estado',
             'label'      => 'Estado:',
             'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
@@ -154,7 +152,6 @@ class Application_Form_Usuarios extends Zend_Form
 
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
-            //  'id'         => 'cidade',
             'label'      => 'Cidade:',
             'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => false,
