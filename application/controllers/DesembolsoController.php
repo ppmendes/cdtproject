@@ -11,8 +11,15 @@ class DesembolsoController extends Zend_Controller_Action
     public function indexAction()
     {
         $desembolsoModel = new Application_Model_Desembolso();
-        $this->view->desembolsos = $desembolsoModel->selectAll();
+        //$this->view->desembolsos = $desembolsoModel->selectAll();
+        $this->view->desembolsos = array();
+    }
 
+    public function indexajaxAction()
+    {
+        $desembolsoModel = new Application_Model_Desembolso();
+        echo '{"aaData":'.json_encode($desembolsoModel->selectAll()).'}';
+        exit;
     }
 
     public function adicionarAction(){

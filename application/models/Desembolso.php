@@ -54,7 +54,7 @@ class Application_Model_Desembolso
             ->joinLeft(array('e' => 'empenho'), 'd.empenho_id = e.empenho_id',array('e.descricao_historico'=>'e.descricao_historico'));
         $stmt = $select->query();
 
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
         return $result;
     }
