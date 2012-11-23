@@ -42,15 +42,6 @@ class Application_Model_Desembolso
 
         $select = $db->select()
             ->from(array('d' => 'desembolso'))
-            ->where('desembolso_id = ?', 10)
-            ->orWhere('desembolso_id = ?', 11)
-            ->orWhere('desembolso_id = ?', 12)
-            ->orWhere('desembolso_id = ?', 13)
-            ->orWhere('desembolso_id = ?', 14)
-            ->orWhere('desembolso_id = ?', 15)
-            ->orWhere('desembolso_id = ?', 16)
-            ->orWhere('desembolso_id = ?', 17)
-            ->orWhere('desembolso_id = ?', 18)
             ->joinLeft(array('e' => 'empenho'), 'd.empenho_id = e.empenho_id',array('e.descricao_historico'=>'e.descricao_historico'));
         $stmt = $select->query();
 
