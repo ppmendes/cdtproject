@@ -99,60 +99,71 @@
     height: 18px;
 }
 
-.zend_form #solicitacoes-descricao-label, #solicitacoes-produto-label, #solicitacoes-qtde-label,
-#solicitacoes-cronograma_inicio-label, #solicitacoes-cronograma_termino-label{
-    display:block;
-    width: 60px;
-    text-align: center;
-    margin-bottom: 24px;
-    margin-left: 15px;
-    margin-right: 4px;
-    font-size: 12px;
-    height: 20px;
-}
+/*.zend_form #solicitacoes-descricao-label, #solicitacoes-produto-label, #solicitacoes-qtde-label,*/
+/*#solicitacoes-cronograma_inicio-label, #solicitacoes-cronograma_termino-label{*/
+    /*display:block;*/
+    /*width: 60px;*/
+    /*text-align: center;*/
+    /*margin-bottom: 24px;*/
+    /*margin-left: 15px;*/
+    /*margin-right: 4px;*/
+    /*font-size: 12px;*/
+    /*height: 20px;*/
+/*}*/
 
-.zend_form #solicitacoes-qtde-element,
-#solicitacoes-cronograma_inicio-element, #solicitacoes-cronograma_termino-element {
-    display:block;
-    width: 60px;
-    text-align: center;
-    margin-bottom: 24px;
-    margin-left: 8px;
-    margin-right: 15px;
-    font-size: 12px;
-    height: 20px;
-}
+/*.zend_form #solicitacoes-qtde-element,*/
+/*#solicitacoes-cronograma_inicio-element, #solicitacoes-cronograma_termino-element {*/
+    /*display:block;*/
+    /*width: 60px;*/
+    /*text-align: center;*/
+    /*margin-bottom: 24px;*/
+    /*margin-left: 8px;*/
+    /*margin-right: 15px;*/
+    /*font-size: 12px;*/
+    /*height: 20px;*/
+/*}*/
 
-.zend_form #solicitacoes-qtde-label, #solicitacoes-qtde-element, #solicitacoes-qtde{
-    width: 30px;
-}
+/*.zend_form #solicitacoes-qtde-label, #solicitacoes-qtde-element, #solicitacoes-qtde{*/
+    /*width: 30px;*/
+/*}*/
 
-.zend_form #solicitacoes-descricao.campos, #solicitacoes-descricao-element, #solicitacoes-produto.campos , #solicitacoes-produto-element{
+/*.zend_form #solicitacoes-descricao.campos, #solicitacoes-descricao-element, #solicitacoes-produto.campos , #solicitacoes-produto-element{*/
+    /*display:block;*/
+    /*width: 120px;*/
+    /*text-align: left;*/
+    /*margin-bottom: 24px;*/
+    /*margin-left: 4px;*/
+    /*margin-right: 15px;*/
+    /*font-size: 12px;*/
+    /*height: 20px;*/
+/*}*/
+
+/*.zend_form #solicitacoes-descricao.campos, #solicitacoes-descricao-element {*/
+    /*width: 200px;*/
+/*}*/
+
+/*.zend_form textarea.campos, #solicitacoes-solicitacao_nome-element {*/
+    /*display:block;*/
+    /*width: 290px;*/
+    /*text-align: left;*/
+    /*margin-bottom: 18px;*/
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
+    /*font-size: 12px;*/
+    /*height: 18px;*/
+/*}*/
+
+
+.zend_form div#cronograma * {
     display:block;
-    width: 120px;
+    width: 80px;
     text-align: left;
     margin-bottom: 24px;
-    margin-left: 4px;
-    margin-right: 15px;
-    font-size: 12px;
-    height: 20px;
-}
-
-.zend_form #solicitacoes-descricao.campos, #solicitacoes-descricao-element {
-    width: 200px;
-}
-
-.zend_form textarea.campos, #solicitacoes-solicitacao_nome-element {
-    display:block;
-    width: 290px;
-    text-align: left;
-    margin-bottom: 18px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 4px;
     font-size: 12px;
     height: 18px;
 }
-
 .zend_form #solicitacoes-valor_total-label, #solicitacoes-execucao_inicio-label, #solicitacoes-execucao_termino-label,
 #solicitacoes-qtd_parcelas-label , #solicitacoes-valor_parcelas-label , #solicitacoes-data_pagamento-label {
     display:block;

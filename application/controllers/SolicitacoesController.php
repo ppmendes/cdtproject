@@ -65,14 +65,18 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
+            $form->preValidation($_POST);
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-//                print_r($form->getValues());
-//                echo "</pre>";
+
                 $data = $form->getValues();
+                echo "<pre>";
+                print_r($data);
+                echo "</pre>";
+                exit;
                 if($id){
                     $model->update($data, $id);
                 }else{
+
                     $model->insert($data);
                 }
 
