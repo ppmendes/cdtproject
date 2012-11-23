@@ -12,7 +12,7 @@ class Application_Form_Desembolso extends Zend_Form
         $this->setMethod('post');
 
         //Filtro por processo input type text
-        $this->addElement('text', 'desembolso_exec_rel', array(
+        $this->addElement('text', 'desembolso_rel', array(
             'label'      => 'Filtro por processo:',
             'required'   => true,
         ));

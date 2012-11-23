@@ -59,16 +59,16 @@ class DesembolsoController extends Zend_Controller_Action
 
     }
 
-    public function excluirAction(){
+    public function extornarAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Desembolso();
+        $extorno = new Application_Form_Desembolso();
         $model = new Application_Model_Desembolso;
         $id = $this->_getParam('desembolso_id');
 
         $model->delete($id);
         $this->_redirect('/desembolso/');
 
-        $this->view->excluir = $excluir;
+        $this->view->extornar = $extorno;
 
     }
 
