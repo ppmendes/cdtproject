@@ -11,8 +11,15 @@ class DesembolsoController extends Zend_Controller_Action
     public function indexAction()
     {
         $desembolsoModel = new Application_Model_Desembolso();
-        $this->view->desembolsos = $desembolsoModel->selectAll();
+        //$this->view->desembolsos = $desembolsoModel->selectAll();
+        $this->view->desembolsos = array();
+    }
 
+    public function indexajaxAction()
+    {
+        $desembolsoModel = new Application_Model_Desembolso();
+        echo '{"aaData":'.json_encode($desembolsoModel->selectAll()).'}';
+        exit;
     }
 
     public function adicionarAction(){
@@ -59,16 +66,16 @@ class DesembolsoController extends Zend_Controller_Action
 
     }
 
-    public function excluirAction(){
+    public function extornarAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Desembolso();
+        $extorno = new Application_Form_Desembolso();
         $model = new Application_Model_Desembolso;
         $id = $this->_getParam('desembolso_id');
 
         $model->delete($id);
         $this->_redirect('/desembolso/');
 
-        $this->view->excluir = $excluir;
+        $this->view->extornar = $extorno;
 
     }
 

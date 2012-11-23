@@ -41,12 +41,11 @@ class Application_Model_Desembolso
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $select = $db->select()
-            ->from(array('d' => 'desembolso')) ;
-            //->where(' = ?', false);
-            //->joinLeft(array('ga' => 'instituicao'), 'p.gerencia = ga.instituicao_id',array('ga.instituicao_id'=>'ga.instituicao_id','ga.nome'=>'ga.nome'));
+            ->from(array('d' => 'desembolso'))
+            ->joinLeft(array('e' => 'empenho'), 'd.empenho_id = e.empenho_id',array('e.descricao_historico'=>'e.descricao_historico'));
         $stmt = $select->query();
 
-        $result = $stmt->fetchAll();
+        $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
 
         return $result;
     }
