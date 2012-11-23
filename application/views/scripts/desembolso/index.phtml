@@ -57,12 +57,12 @@
     <tr>
         <th>Id</th>
         <th>Desembolso_Rel</th>
-        <th>Empenho</th>
         <th>Código do Documento Hábil</th>
         <th>Data do Documento</th>
         <th>Ordem Bancária</th>
         <th>Data do Pagamento</th>
         <th>Valor</th>
+        <th>Empenho</th>
         <th>Extornado</th>
     </tr>
     </thead>
@@ -75,16 +75,13 @@
         echo "<tr id='".$row['desembolso_id']."'>";
         echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
         echo "<td>" .   $row['desembolso_rel'] . "</td>";
-        echo "<td>" . $row['e.descricao_historico'] . "</td>";
+        echo "<td>" .   $row['e.descricao_historico'] . "</td>";
         echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
         echo "<td >" .  $row['data_documento_habil'] . "</td>";
         echo "<td >" .  $row['order_dinheiro'] . "</td>";
         echo "<td >" .  $row['data_pagamento'] . "</td>";
         echo "<td >" .  $row['valor_desembolso'] . "</td>";
-        if($row['extornado']==1)
-        echo "<td >" .  "Sim" . "</td>";
-        else
-        echo "<td >" .  "Não" . "</td>";
+        echo "<td >" .  $row['extornado'] . "</td>";
         echo "</tr>";
     }
     echo "</tbody></table>";
