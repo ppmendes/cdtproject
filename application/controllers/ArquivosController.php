@@ -38,6 +38,7 @@ class ArquivosController extends Zend_Controller_Action
                 }
 
 
+
                 if($id){//update
                     //recuperamos versao atual desde o banco de dados
                     $versao = $model->recuperarVersao($id);
@@ -116,7 +117,6 @@ class ArquivosController extends Zend_Controller_Action
 
         if ($this->_request->getParam('id',0)) {
             $id = (int) $this->_request->getParam('id',0);
-
             $filhos = new Application_Model_DbTable_Tarefa();
             $rows = $filhos->fetchAll('projeto_id = ' . (int) $id);
 

@@ -57,16 +57,16 @@ class Application_Form_Arquivos extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#arquivos-projeto_id").val(ui.item.id) }')))
-            ->setAttribs(array('onchange'=>'atualizarTarefas($("#arquivos-projeto_id").val())'));
+            'function(event,ui) { $("#arquivos-projeto_id").val(ui.item.id); atualizarTarefas(ui.item.id)  }')));
 
         $this->addElement($emt);
 
         //tarefa id pai  da tarefa select type
         $this->addElement('select', 'tarefa_id', array(
             'label'      => 'tarefa:',
-            'multiOptions'  =>Application_Model_Tarefa::getOptions1(),
+            'multiOptions'  => Application_Model_Tarefa::getOptions1(),
             'required'   => false,
+            'value' => 0
         ));
 
         // Add the submit button
