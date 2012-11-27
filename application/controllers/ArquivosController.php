@@ -30,6 +30,7 @@ class ArquivosController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
+                unset($data['arquivos']['ac']);
 
                 unset($data['arquivos']['ac']);
 
@@ -55,6 +56,7 @@ class ArquivosController extends Zend_Controller_Action
 
                     // no primeiro upload a versao sera sempre 0.1
                     $data['arquivos']['versao']=0.1;
+
                     $nome_arquivo= $model->getLastInsertedId();
                     $data=$model->editarArquivo($nome_arquivo,$data);
 
@@ -72,7 +74,6 @@ class ArquivosController extends Zend_Controller_Action
         }
         $this->view->form = $form;
     }
-
 
     public function detalhesAction(){
         //$request = $this->getRequest();
