@@ -57,7 +57,7 @@ class Application_Form_Arquivos extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#arquivos-autoid").val(ui.item.id) }')))
+            'function(event,ui) { $("#arquivos-projeto_id").val(ui.item.id) }')))
             ->setAttribs(array('onchange'=>'atualizarTarefas($("#arquivos-autoid").val())'));
 
         $this->addElement($emt);
@@ -85,7 +85,7 @@ class Application_Form_Arquivos extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'autoid', array(
+        $this->addElement('hidden', 'projeto_id', array(
             'label'      => '',
             'value'      => ''
         ));
