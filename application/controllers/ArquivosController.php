@@ -114,9 +114,9 @@ class ArquivosController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        if ($this->_request->getParam('id')) {
-            $id = (int) $this->_request->getParam('id');
-            echo $id;
+        if ($this->_request->getParam('id',0)) {
+            $id = (int) $this->_request->getParam('id',0);
+
             $filhos = new Application_Model_DbTable_Tarefa();
             $rows = $filhos->fetchAll('projeto_id = ' . (int) $id);
 

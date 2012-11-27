@@ -78,7 +78,6 @@ class Application_Form_Arquivos extends Zend_Form
         //set hidden
         $this->addElement('hidden', 'projeto_id', array(
             'label'      => '',
-            'value'      => ''
         ));
 
         //set hidden

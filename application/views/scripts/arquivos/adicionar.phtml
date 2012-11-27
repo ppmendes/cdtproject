@@ -2,7 +2,7 @@
 
     function atualizarTarefas(valor) {
 
-        if(valor !== 0){
+            alert(valor);
             $.ajax({
                 url: '/arquivos/selecttarefas/id/'+valor,
                 dataType:'html',
@@ -11,7 +11,7 @@
                     $('select#arquivos-tarefa_id').html(data);
                 }
             })
-        }
+
     }
 
 </script>
