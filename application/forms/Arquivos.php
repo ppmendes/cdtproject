@@ -66,7 +66,8 @@ class Application_Form_Arquivos extends Zend_Form
         $this->addElement('select', 'tarefa_id', array(
             'label'      => 'tarefa:',
             //'multiOptions'  =>Application_Model_Tarefa::getOptions1(),
-            'required'   => true
+            'required'   => false,
+            'value'=>'0',
         ));
 
         /*$emt = new ZendX_JQuery_Form_Element_AutoComplete('aci');
