@@ -9,7 +9,7 @@ class Application_Form_Arquivos extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('arquivos');
 
-        // Setar metodo
+        // Setar metodo xxx
         $this->setMethod('post');
 
         $this->addElement('hidden', 'label_titulo', array(

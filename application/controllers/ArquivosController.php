@@ -26,27 +26,29 @@ class ArquivosController extends Zend_Controller_Action
         $upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
-        //coment
+
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
 
-                if($id){
+                unset($data['arquivos']['ac']);
 
+                if($id){//update
                     //recuperamos versao atual desde o banco de dados
                     $versao = $model->recuperarVersao($id);
                     //incrementamos a versao dado que sera atualizado e armazenamos no array $data
                     $data['arquivos']['versao']= $model->incrementaVersao($versao);
 
                     $data=$model->verificarMudancasArquivos($data,$id);
-                    if($data['arquivos']['tamanho']==-1)
-                        {
-                            $tamanho = $upload->getFileInfo('nome_arquivo');
-                            $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-                             // finalmente atualizamos o banco de dados
-                            $model->update($data, $id);
-                    }else{
-
+                    // verificando que o arquivo foi modificado
+                    if($data['arquivos']['tamanho']==-1){
+                        $tamanho = $upload->getFileInfo('nome_arquivo');
+                        $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
+                        // finalmente atualizamos o banco de dados
+                        $model->update($data, $id);
+                    }
+                }
+                else{//insert
                     //recuperando o tamanho do arquivo
                     $tamanho = $upload->getFileInfo('nome_arquivo');
                     $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
@@ -55,21 +57,19 @@ class ArquivosController extends Zend_Controller_Action
                     $data['arquivos']['versao']=0.1;
                     $nome_arquivo= $model->getLastInsertedId();
                     $data=$model->editarArquivo($nome_arquivo,$data);
+
                     $model->insert($data);
                 }
-
                 $this->_redirect('/arquivos/');
             }
-        }elseif ($id){
-            $data = $model->find($id)->toArray();
-
-            if(is_array($data)){
-
-                $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
-                $form->populate(array("arquivos" => $data));
+            elseif ($id){
+                $data = $model->find($id)->toArray();
+                if(is_array($data)){
+                    $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
+                   $form->populate(array("arquivos" => $data));
+                }
             }
         }
-    }
         $this->view->form = $form;
     }
 
