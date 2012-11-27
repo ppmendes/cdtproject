@@ -30,9 +30,13 @@ class ArquivosController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
-                unset($data['arquivos']['ac']);
 
                 unset($data['arquivos']['ac']);
+                if($data['arquivos']['tarefa_id']=="")
+                {
+                    unset($data['arquivos']['tarefa_id']);
+                }
+
 
                 if($id){//update
                     //recuperamos versao atual desde o banco de dados
@@ -56,8 +60,8 @@ class ArquivosController extends Zend_Controller_Action
 
                     // no primeiro upload a versao sera sempre 0.1
                     $data['arquivos']['versao']=0.1;
-
                     $nome_arquivo= $model->getLastInsertedId();
+
                     $data=$model->editarArquivo($nome_arquivo,$data);
 
                     $model->insert($data);
@@ -110,11 +114,13 @@ class ArquivosController extends Zend_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        if ($this->_request->getParam('id',0)) {
-            $id = (int) $this->_request->getParam('id',0);
+        if ($this->_request->getParam('id')) {
+            $id = (int) $this->_request->getParam('id');
+            echo $id;
             $filhos = new Application_Model_DbTable_Tarefa();
             $rows = $filhos->fetchAll('projeto_id = ' . (int) $id);
-            echo '<option value="">Ninguno</option>';
+
+            echo '<option value="">Nenhum</option>';
             foreach ($rows as $row) {
                 echo '<option value="' . $row->tarefa_id . '">' . $row->nome . '</option>';
             }

@@ -140,6 +140,7 @@ class Application_Model_Arquivo
         //verificar e criar pastas
         $projetoid = $data['arquivos']['projeto_id'];
         $tarefaid = $data['arquivos']['tarefa_id'];
+
         $versao = $data['arquivos']['versao'];
         // $pasta retorna a ruta da pasta
         $pasta=$this->existePasta($projetoid, $tarefaid);

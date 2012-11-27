@@ -75,6 +75,7 @@ class Application_Model_Tarefa
     }
 
     public static function getOptions1(){
+
         try{
             $options = array();
             $table = new Application_Model_DbTable_Tarefa();

@@ -1,5 +1,7 @@
 <script type="text/javascript">
+
     function atualizarTarefas(valor) {
+
         if(valor !== 0){
             $.ajax({
                 url: '/arquivos/selecttarefas/id/'+valor,
@@ -11,10 +13,10 @@
             })
         }
     }
+
 </script>
 
 <?php
-//nmjjjj
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
