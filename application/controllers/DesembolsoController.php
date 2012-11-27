@@ -18,7 +18,11 @@ class DesembolsoController extends Zend_Controller_Action
     public function indexajaxAction()
     {
         $desembolsoModel = new Application_Model_Desembolso();
-        echo '{"aaData":'.json_encode($desembolsoModel->selectAll()).'}';
+        $array_desembolso = $desembolsoModel->selectAll();
+        foreach($array_desembolso as &$item){
+        $item[0]="<a href='/desembolso/detalhes/desembolso_id/{$item[0]}'>$item[0]</a>";
+        }
+        echo '{"aaData":'.json_encode($array_desembolso).'}';
         exit;
     }
 
