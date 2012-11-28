@@ -65,14 +65,14 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
+
             $form->preValidation($_POST);
+
+
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
-                echo "<pre>";
-                print_r($data);
-                echo "</pre>";
-                exit;
+
                 if($id){
                     $model->update($data, $id);
                 }else{
@@ -81,6 +81,8 @@ class SolicitacoesController extends Zend_Controller_Action
                 }
 
                 $this->_redirect('/solicitacoes/');
+
+
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();

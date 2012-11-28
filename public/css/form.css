@@ -88,88 +88,84 @@
 
 .zend_form .campos, #solicitacoes-numero_itens-label, #solicitacoes-numero_itens-element, #solicitacoes-solicitacao_nome-label,
 #solicitacoes-preco_unidade-label, #solicitacoes-preco_unidade-element, #solicitacoes-valor_estimado-label,
-#solicitacoes-valor_estimado-element{
+#solicitacoes-valor_estimado-element, #solicitacoes-solicitacao_nome-element{
     display:block;
     width: 65px;
     text-align: center;
     margin-bottom: 18px;
-    margin-left: 12px;
-    margin-right: 10px;
-    font-size: 12px;
-    height: 18px;
-}
-
-/*.zend_form #solicitacoes-descricao-label, #solicitacoes-produto-label, #solicitacoes-qtde-label,*/
-/*#solicitacoes-cronograma_inicio-label, #solicitacoes-cronograma_termino-label{*/
-    /*display:block;*/
-    /*width: 60px;*/
-    /*text-align: center;*/
-    /*margin-bottom: 24px;*/
-    /*margin-left: 15px;*/
-    /*margin-right: 4px;*/
-    /*font-size: 12px;*/
-    /*height: 20px;*/
-/*}*/
-
-/*.zend_form #solicitacoes-qtde-element,*/
-/*#solicitacoes-cronograma_inicio-element, #solicitacoes-cronograma_termino-element {*/
-    /*display:block;*/
-    /*width: 60px;*/
-    /*text-align: center;*/
-    /*margin-bottom: 24px;*/
-    /*margin-left: 8px;*/
-    /*margin-right: 15px;*/
-    /*font-size: 12px;*/
-    /*height: 20px;*/
-/*}*/
-
-/*.zend_form #solicitacoes-qtde-label, #solicitacoes-qtde-element, #solicitacoes-qtde{*/
-    /*width: 30px;*/
-/*}*/
-
-/*.zend_form #solicitacoes-descricao.campos, #solicitacoes-descricao-element, #solicitacoes-produto.campos , #solicitacoes-produto-element{*/
-    /*display:block;*/
-    /*width: 120px;*/
-    /*text-align: left;*/
-    /*margin-bottom: 24px;*/
-    /*margin-left: 4px;*/
-    /*margin-right: 15px;*/
-    /*font-size: 12px;*/
-    /*height: 20px;*/
-/*}*/
-
-/*.zend_form #solicitacoes-descricao.campos, #solicitacoes-descricao-element {*/
-    /*width: 200px;*/
-/*}*/
-
-/*.zend_form textarea.campos, #solicitacoes-solicitacao_nome-element {*/
-    /*display:block;*/
-    /*width: 290px;*/
-    /*text-align: left;*/
-    /*margin-bottom: 18px;*/
-    /*margin-left: 10px;*/
-    /*margin-right: 10px;*/
-    /*font-size: 12px;*/
-    /*height: 18px;*/
-/*}*/
-
-
-.zend_form div#cronograma * {
-    display:block;
-    width: 80px;
-    text-align: left;
-    margin-bottom: 24px;
-    margin-left: 10px;
+    margin-left: 4px;
     margin-right: 4px;
     font-size: 12px;
     height: 18px;
 }
+
+.zend_form div#descricao dd#solicitacoes-solicitacao_nome-element, dd#solicitacoes-solicitacao_nome-element textarea#solicitacoes-solicitacao_nome.campos {
+    width:375px;
+}
+
+
+.zend_form div#cronograma dt {
+    display:block;
+    width: 75px;
+    text-align: center;
+    margin-bottom: 18px;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 12px;
+    height: 72px;
+}
+
+.zend_form div#cronograma dd {
+    display:block;
+    width: 75px;
+    text-align: left;
+    margin-bottom: 18px;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 12px;
+    height: 72px;
+}
+
+.zend_form div#cronograma .campos, div#cronograma .campos_maior, div#cronograma .campos_menor {
+    display:block;
+    width: 75px;
+    text-align: left;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 12px;
+    height: 20px;
+}
+
+.zend_form div#cronograma dd#solicitacoes-qtde-element, dd#solicitacoes-qtde-element input#solicitacoes-qtde.campos{
+    width: 60px;
+}
+
+.zend_form div#cronograma dd#solicitacoes-descricao-element, dd#solicitacoes-descricao-element input#solicitacoes-descricao.campos,
+div#cronograma dd#solicitacoes-produto-element, dd#solicitacoes-produto-element input#solicitacoes-produto.campos{
+    width:140px;
+}
+
+.zend_form div#cronograma dt#solicitacoes-cronograma_inicio-label, div#cronograma dt#solicitacoes-cronograma_termino-label ,
+div#cronograma dd#solicitacoes-cronograma_inicio-element, dd#solicitacoes-cronograma_inicio-element input#solicitacoes-cronograma_inicio.campos,
+div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-cronograma_termino-element input#solicitacoes-cronograma_termino.campos {
+    width: 75px;
+}
+
+.zend_form div#cronograma dd.maior, div#cronograma .campos_maior {
+    width: 140px;
+}
+
+.zend_form div#cronograma dd.menor, div#cronograma .campos_menor {
+    width:60px;
+}
+
 .zend_form #solicitacoes-valor_total-label, #solicitacoes-execucao_inicio-label, #solicitacoes-execucao_termino-label,
 #solicitacoes-qtd_parcelas-label , #solicitacoes-valor_parcelas-label , #solicitacoes-data_pagamento-label {
     display:block;
     width: 60px;
     text-align: left;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     margin-left: 10px;
     margin-right: 4px;
     font-size: 12px;
@@ -180,7 +176,7 @@
     display:block;
     width: 75px;
     text-align: left;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
     margin-left: 4px;
     margin-right: 10px;
     font-size: 12px;
