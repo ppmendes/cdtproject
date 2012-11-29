@@ -30,8 +30,6 @@ class UsuariosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
-                print_r($data);
-                exit;
 
                 //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
@@ -98,7 +96,7 @@ class UsuariosController extends Zend_Controller_Action
                 }
                 $this->_redirect('/usuarios/');
             }
-        }elseif ($id){
+        }elseif  ($id){
             $data = $model->find($id)->toArray();
             $this->view->pais = $data['pais_id'];
 

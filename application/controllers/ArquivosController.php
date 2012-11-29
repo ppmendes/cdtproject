@@ -126,7 +126,7 @@ class ArquivosController extends Zend_Controller_Action
             }
         } else {
 
-            echo '<option value="">Ninguno</option>';
+            echo '<option value="">Nenhum</option>';
         }
     }
 }

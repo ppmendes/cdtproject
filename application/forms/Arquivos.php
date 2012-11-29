@@ -45,7 +45,6 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true
         ));
 
-        //dono do arquivo input type text
         //item preenchido automaticamnete
         $this->addElement('text', 'dono_arquivo', array(
             'label'      => 'Dono:',
@@ -66,7 +65,6 @@ class Application_Form_Arquivos extends Zend_Form
             'label'      => 'tarefa:',
             'multiOptions'  => Application_Model_Tarefa::getOptions1(),
             'required'   => false,
-            'value' => 0
         ));
 
         // Add the submit button
