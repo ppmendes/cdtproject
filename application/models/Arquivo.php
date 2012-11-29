@@ -18,12 +18,41 @@ class Application_Model_Arquivo
 
     public function delete($id)
     {
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "arquivo";
+       $db=$db1 = Zend_Db_Table::getDefaultAdapter();
+        /*$table = "arquivo";
         $deletado = true;
         $where = $db->quoteInto('arquivo_id = ?', $id);
         $data = array('deletado' => $deletado);
         $db->update($table, $data, $where);
+        */
+
+        //deletando fisicamente o arquivo
+        $result=$db1->fetchRow("select nome_arquivo, tamanho, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
+        //obtendo o endereco do aqrquivo
+        if($result['tarefa_id']){//
+            $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+
+        }
+        else{//caso nao tenha tarefa
+            $origen='files/arquivos/projeto-'.$result['projeto_id'].'/'.$result['nome_arquivo'];
+        }
+        $destino='files/lixeira/'.$result['nome_arquivo'];
+        copy($origen,$destino);
+
+        $this->apagarDiretorio($origen);
+        //unlink($origen);
+
+    }
+    function apagarDiretorio($dir)
+    {
+        if(is_dir($dir)) // verifica se realmente é uma pasta
+        {
+
+        }
+        else{
+
+        }
+
     }
 
     public function update($data,$id)
@@ -57,25 +86,39 @@ class Application_Model_Arquivo
     public function existePasta($projetoid, $tarefaid)
     {
         $pathprojeto = 'files/arquivos/projeto-'.$projetoid;
+
         $pathtarefa=$pathprojeto.'/tarefa-'.$tarefaid;
 
         if(file_exists($pathprojeto))
         {
-           // buscar pasta tarefas
-            if(file_exists($pathtarefa))
+            if($tarefaid)
             {
-                return $pathtarefa;
-            }else
-            {
-                mkdir($pathtarefa, 0777);
-                return $pathtarefa;
+                if(file_exists($pathtarefa))
+                {
+                    return $pathtarefa;
+                }else
+                {
+                    mkdir($pathtarefa, 0777);
+                    return $pathtarefa;
+                }
             }
+            else{
+                return $pathprojeto;
+            }
+           // buscar pasta tarefas
 
         }else{
             // criar pasta projeto
             mkdir(''.$pathprojeto, 0777);
-            mkdir($pathtarefa, 0777);
-            return $pathtarefa;
+            if($tarefaid)
+            {
+                mkdir($pathtarefa, 0777);
+                return $pathtarefa;
+            }
+            else{
+                return $pathprojeto;
+            }
+
         }
     }
 
@@ -137,12 +180,16 @@ class Application_Model_Arquivo
 
         $upload = new Zend_File_Transfer_Adapter_Http();
 
-        //verificar e criar pastas
+        //variaveis para criar o nome do arquivo
         $projetoid = $data['arquivos']['projeto_id'];
         $tarefaid = $data['arquivos']['tarefa_id'];
-
         $versao = $data['arquivos']['versao'];
-        // $pasta retorna a ruta da pasta
+        //verificar se tem tarefa
+        if(!$tarefaid)
+        {
+            unset($data['arquivos']['tarefa_id']);
+        }
+        //criar as pastas
         $pasta=$this->existePasta($projetoid, $tarefaid);
         $upload->addFilter('Rename', $pasta);
 

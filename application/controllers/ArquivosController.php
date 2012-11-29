@@ -17,7 +17,7 @@ class ArquivosController extends Zend_Controller_Action
     public function indexAction()
     {
         $arquivoModel = new Application_Model_Arquivo;
-        $this->view->arquivo = $arquivoModel->selectAll();
+        $this->view->arquivos = $arquivoModel->selectAll();
     }
 
     public function adicionarAction(){
@@ -30,14 +30,7 @@ class ArquivosController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
-
                 unset($data['arquivos']['ac']);
-                if($data['arquivos']['tarefa_id']=="")
-                {
-                    unset($data['arquivos']['tarefa_id']);
-                }
-
-
 
                 if($id){//update
                     //recuperamos versao atual desde o banco de dados
@@ -69,12 +62,13 @@ class ArquivosController extends Zend_Controller_Action
                 }
                 $this->_redirect('/arquivos/');
             }
-            elseif ($id){
-                $data = $model->find($id)->toArray();
-                if(is_array($data)){
-                    $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
-                   $form->populate(array("arquivos" => $data));
-                }
+        }
+        elseif ($id){
+            $data = $model->find($id)->toArray();
+            if(is_array($data)){
+                $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
+                $form->populate(array("arquivos" => $data));
+
             }
         }
         $this->view->form = $form;
