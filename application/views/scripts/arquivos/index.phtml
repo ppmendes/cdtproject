@@ -39,7 +39,6 @@
         top.location.href = '/../arquivos/adicionar/';
 
     }
-
 </script>
 <style>
     table * *{
@@ -52,14 +51,14 @@
 <button class='novoprojeto' onclick='adicionar()'>Novo Arquivo</button>
 
 
-<table id='table_id' border='1'>
+<table id='table_id' border='0'>
     <thead>
     <tr>
         <th>Nome de Arquivo</th>
         <th>Descriçao</th>
         <th>Versões</th>
         <th>Tipo de Arquivo</th>
-        <th>Pasta</th>
+        <th>Download</th>
         <th>Nome da Tarefa</th>
         <th>Responsável</th>
         <th>Tamanho</th>
@@ -69,20 +68,37 @@
     <tbody>
 
 <?php
+    $array=$this->arquivo;
+    $nro=count($array);
 
-    foreach($this->arquivo as $row) // "$this->usuarios" nome da variável definida no controller
+    for($i=0;$i<$nro;$i++)
     {
+        $arquivoId= $array[$i]['a.arquivo_id'];
+        $projetoId= $array[$i]['a.projeto_id'];
+        $tarefa=$array[$i]['t.tarefa_id'];
 
-        echo "<tr id='".$row['a.arquivo_id']."'>";
-        echo "<td><a href='/arquivos/detalhes/arquivo_id/{$row['a.arquivo_id']}'>" .$row['a.nome_arquivo']. "</a></td>";
-        echo "<td>" .$row['a.descricao_arquivo']. "</td>";
-        echo "<td>" .$row['a.versao']. "</td>";
-        echo "<td>" .$row['ta.nome_tipo']. "</td>";
-        echo "<td>" .$row['a.nome_arquivo']. "</td>";
-        echo "<td>" .$row['t.nome']. "</td>";
-        echo "<td>" .$row['u.nome']. "</td>";
-        echo "<td>" .$row['a.tamanho']. "</td>";
-        echo "<td>" .$row['a.data_arquivo']. "</td>";
+        // fazer o caminho para cada link
+        if($tarefa)
+        {
+            // existe tarefa, então o caminho é
+            $ruta = 'files/arquivos/projeto-'.$projetoId.'/tarefa-'.$arquivoId.'/'.$array[$i]['a.nome_arquivo'];
+        }else
+        {
+            // ruta para projeto so
+            $ruta = 'files/arquivos/projeto-'.$projetoId.'/'.$array[$i]['a.nome_arquivo'];
+        }
+
+        // criamos a tabela com os registros
+        echo "<tr id='".$array[$i]['a.arquivo_id']."'>";
+        echo "<td><a href='/arquivos/detalhes/arquivo_id/{$array[$i]['a.arquivo_id']}'>" .$array[$i]['a.nome_arquivo']. "</a></td>";
+        echo "<td>" .$array[$i]['a.descricao_arquivo']. "</td>";
+        echo "<td>" .$array[$i]['a.versao']. "</td>";
+        echo "<td>" .$array[$i]['ta.nome_tipo']. "</td>";
+        echo "<td><a href='".$ruta."' >" .$array[$i]['a.nome_arquivo']. "</a></td>";
+        echo "<td>" .$array[$i]['t.nome']. "</td>";
+        echo "<td>" .$array[$i]['u.nome']. "</td>";
+        echo "<td>" .$array[$i]['a.tamanho']. "</td>";
+        echo "<td>" .$array[$i]['a.data_arquivo']. "</td>";
         echo "</tr>";
     }
     echo "</tbody></table>";
