@@ -50,7 +50,7 @@ class Application_Model_Arquivo
 
         }
         else{
-
+            unlink($dir);
         }
 
     }
