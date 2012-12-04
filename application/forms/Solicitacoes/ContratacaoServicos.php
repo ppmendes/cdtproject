@@ -536,24 +536,24 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     var margem = 0;
     function adicionaCampo(){
         num++;
-        $('#cronograma').append("<dt id='solicitacoes-descricao-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label for='solicitacoes-descricao_2'" +
-                "class='required'>Descricao:</label></dt>");
+        $('#cronograma').append("<dt id='solicitacoes-descricao-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
+                "for='solicitacoes-descricao_" + num + "' class='required'>Descricao:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-descricao-element'><input type='text' name='solicitacoes[descricao_"+
                 num + "]' id='solicitacoes-descricao' value='' class='campos'></dd>");
-        $('#cronograma').append('<dt id="solicitacoes-produto-label"><label for="solicitacoes-produto_2" class="required">' +
-                'Produto:</label></dt>');
+        $('#cronograma').append("<dt id='solicitacoes-produto-label'><label for='solicitacoes-produto_" + num + "' class='required'>" +
+                "Produto:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-produto-element'><input type='text' name='solicitacoes[produto_"+ num +
                 "]' id='solicitacoes-produto' value='' class='campos'></dd>");
-        $('#cronograma').append('<dt id="solicitacoes-qtde-label"><label for="solicitacoes-qtde_2" class="required">' +
-                'Qtde:</label></dt>');
+        $('#cronograma').append("<dt id='solicitacoes-qtde-label'><label for='solicitacoes-qtde_" + num + "' class='required'>" +
+                "Qtde:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-qtde-element'><input type='text' name='solicitacoes[qtde_"+ num + "]' " +
                 "id='solicitacoes-qtde' value='' class='campos'></dd>");
-        $('#cronograma').append('<dt id="solicitacoes-cronograma_inicio-label"><label for="solicitacoes-cronograma_inicio_2" ' +
-                'class="required">Início do Cronograma:</label></dt>');
+        $('#cronograma').append("<dt id='solicitacoes-cronograma_inicio-label'><label for='solicitacoes-cronograma_inicio_" + num + "' " +
+                "class='required'>Início do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-cronograma_inicio-element'><input type='text' " +
                 "name='solicitacoes[cronograma_inicio_"+ num + "]' id='solicitacoes-cronograma_inicio' value='' class='campos'></dd>");
-        $('#cronograma').append('<dt id="solicitacoes-cronograma_termino-label"><label for="solicitacoes-cronograma_termino_2" ' +
-                'class="required">Fim do Cronograma:</label></dt>');
+        $('#cronograma').append("<dt id='solicitacoes-cronograma_termino-label'><label for='solicitacoes-cronograma_termino_" + num + "' " +
+                "class='required'>Fim do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-cronograma_termino-element'><input type='text' " +
                 "name='solicitacoes[cronograma_termino_"+ num + "]' id='solicitacoes-cronograma_termino' value='' class='campos'></dd>");
 
@@ -603,28 +603,28 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     function adicionaCampo2(){
         //var x = "' + margem * (num-1) + 'px'>
         num2++;
-        $('#pagamento').append("<dt id='solicitacoes-valor_total-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label for='solicitacoes-valor_total'" +
-                "class='required'>Valor Total do Serviço:</label></dt>");
+        $('#pagamento').append("<dt id='solicitacoes-valor_total-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
+                "for='solicitacoes-valor_total_" + num2 + "' class='required'>Valor Total do Serviço:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-valor_total-element'><input type='text' name='solicitacoes[valor_total_" + num2 + "]' " +
                 "id='solicitacoes-valor_total' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append('<dt id="solicitacoes-execucao_inicio-label"><label for="solicitacoes-execucao_inicio" class="required">' +
-                'Início:</label></dt>');
+        $('#pagamento').append("<dt id='solicitacoes-execucao_inicio-label'><label for='solicitacoes-execucao_inicio_" + num2 +
+                "' class='required'>Início:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-execucao_inicio-element'><input type='text' name='solicitacoes[execucao_inicio_" + num2 + "]' " +
                 "id='solicitacoes-execucao_inicio' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append('<dt id="solicitacoes-execucao_termino-label"><label for="solicitacoes-execucao_termino" class="required">' +
-                'Término:</label></dt>');
+        $('#pagamento').append("<dt id='solicitacoes-execucao_termino-label'><label for='solicitacoes-execucao_termino_" + num2 + "' " +
+                "class='required'>Término:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-execucao_termino-element'><input type='text' name='solicitacoes[execucao_termino_"+ num2 + "]' " +
                 "id='solicitacoes-execucao_termino' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append('<dt id="solicitacoes-qtd_parcelas-label"><label for="solicitacoes-qtd_parcelas" ' +
-                'class="required">Qtde de Parcelas:</label></dt>');
+        $('#pagamento').append("<dt id='solicitacoes-qtd_parcelas-label'><label for='solicitacoes-qtd_parcelas_" + num2 + "' " +
+                "class='required'>Qtde de Parcelas:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-qtd_parcelas-element'><input type='text' " +
                 "name='solicitacoes[qtd_parcelas_" + num2 + "]' id='solicitacoes-qtd_parcelas' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append('<dt id="solicitacoes-valor_parcelas-label"><label for="solicitacoes-valor_parcelas" ' +
-                'class="required">Valor das Parcelas:</label></dt>');
+        $('#pagamento').append("<dt id='solicitacoes-valor_parcelas-label'><label for='solicitacoes-valor_parcelas_" + num2 + "' " +
+                "class='required'>Valor das Parcelas:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-valor_parcelas-element'><input type='text' " +
                 "name='solicitacoes[valor_parcelas_"+ num2 + "]' id='solicitacoes-valor_parcelas' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append('<dt id="solicitacoes-data_pagamento-label"><label for="solicitacoes-data_pagamento" ' +
-                'class="required">Data(s) Pagamento:</label></dt>');
+        $('#pagamento').append("<dt id='solicitacoes-data_pagamento-label'><label for='solicitacoes-data_pagamento_" + num2 + "' " +
+                "class='required'>Data(s) Pagamento:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-data_pagamento-element'><input type='text' " +
                 "name='solicitacoes[data_pagamento_"+ num2 + "]' id='solicitacoes-data_pagamento' value='' class='pagamento_campos'></dd>");
 

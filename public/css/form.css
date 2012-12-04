@@ -75,33 +75,33 @@
     width: 980px;
 }
 
-.zend_form div#descricao p.campos {
-    display:block;
-    width: 40px;
-    text-align: center;
-    margin-bottom: 18px;
-    margin-left: 0px;
-    font-size: 12px;
-    height: 70px;
-    background-color: #ECECEC;
-}
+/*.zend_form div#descricao p.campos {*/
+    /*display:block;*/
+    /*width: 40px;*/
+    /*text-align: center;*/
+    /*margin-bottom: 18px;*/
+    /*margin-left: 0px;*/
+    /*font-size: 12px;*/
+    /*height: 70px;*/
+    /*background-color: #ECECEC;*/
+/*}*/
 
 .zend_form div#descricao dt, div#descricao dd{
     display:block;
-    width: 65px;
+    width: 70px;
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 4px;
     margin-left: 4px;
     margin-right: 4px;
     font-size: 12px;
-    height: 70px;
+    height: 85px;
 }
 
 .zend_form div#descricao .campos, div#descricao .campos_maior {
     display:block;
-    width: 65px;
+    width: 70px;
     text-align: left;
-    margin-bottom: 18px;
+    margin-bottom: 4px;
     margin-left: 4px;
     margin-right: 4px;
     font-size: 12px;
@@ -109,11 +109,11 @@
 }
 
 .zend_form div#descricao dd#solicitacoes-solicitacao_nome-element, dd#solicitacoes-solicitacao_nome-element textarea#solicitacoes-solicitacao_nome.campos {
-    width:375px;
+    width:415px;
 }
 
 .zend_form div#descricao dd.maior, div#descricao .campos_maior {
-    width:375px;
+    width:415px;
 }
 
 
