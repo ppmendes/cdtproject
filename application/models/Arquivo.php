@@ -12,6 +12,7 @@ class Application_Model_Arquivo
     public function insert($data)
     {
         $data['arquivos']['data_arquivo'] = date('Y-m-d h:i:s', time());
+        unset($data['arquivos']['nomeProjeto']);
         $table = new Application_Model_DbTable_Arquivo;
         $table->insert($data['arquivos']);
     }
@@ -19,15 +20,15 @@ class Application_Model_Arquivo
     public function delete($id)
     {
        $db=$db1 = Zend_Db_Table::getDefaultAdapter();
-        /*$table = "arquivo";
+        $table = "arquivo";
         $deletado = true;
         $where = $db->quoteInto('arquivo_id = ?', $id);
         $data = array('deletado' => $deletado);
         $db->update($table, $data, $where);
-        */
+
 
         //deletando fisicamente o arquivo
-        $result=$db1->fetchRow("select nome_arquivo, tamanho, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
+        $result=$db1->fetchRow("select nome_arquivo, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
         //obtendo o endereco do aqrquivo
         if($result['tarefa_id']){//
             $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
@@ -38,28 +39,41 @@ class Application_Model_Arquivo
         }
         $destino='files/lixeira/'.$result['nome_arquivo'];
         copy($origen,$destino);
-
-        $this->apagarDiretorio($origen);
-        //unlink($origen);
+        $this->eliminarPasta('files/arquivos',$origen);
 
     }
-    function apagarDiretorio($dir)
+
+    function eliminarPasta($pasta, $nome)
     {
-        if(is_dir($dir)) // verifica se realmente é uma pasta
+        foreach(glob($pasta . "/*") as $arquivo_pasta)
         {
+            //echo $archivos_carpeta;
 
-        }
-        else{
-            unlink($dir);
+            if (is_dir($arquivo_pasta))
+            {
+                //echo'entro dir';
+                $this->eliminarPasta($arquivo_pasta, $nome);
+                $nro=$this->contarArquivos($arquivo_pasta);
+                //echo $nro;
+                if($nro===0)
+                {
+                    //echo 'borrando archivo';
+                    rmdir($arquivo_pasta);
+                }
+            }
+            elseif($arquivo_pasta==$nome)
+            {
+                //echo'entro unlink......';
+                unlink($arquivo_pasta);
+            }
         }
 
     }
-
     public function update($data,$id)
     {
         $table = new Application_Model_DbTable_Arquivo;
         $where = $table->getAdapter()->quoteInto('arquivo_id = ?',$id);
-
+        unset($data['arquivos']['nomeProjeto']);
         $table->update($data['arquivos'], $where);
     }
 
@@ -170,7 +184,7 @@ class Application_Model_Arquivo
         }
         $total_archivos = count($archivos);
         $total = $total_archivos-2;
-        echo $total;
+        return $total;
     }
 
 
