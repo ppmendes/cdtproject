@@ -75,23 +75,32 @@
     width: 980px;
 }
 
-.zend_form p#item {
+.zend_form div#descricao p.campos {
     display:block;
     width: 40px;
     text-align: center;
     margin-bottom: 18px;
     margin-left: 0px;
     font-size: 12px;
-    height: 18px;
+    height: 70px;
     background-color: #ECECEC;
 }
 
-.zend_form .campos, #solicitacoes-numero_itens-label, #solicitacoes-numero_itens-element, #solicitacoes-solicitacao_nome-label,
-#solicitacoes-preco_unidade-label, #solicitacoes-preco_unidade-element, #solicitacoes-valor_estimado-label,
-#solicitacoes-valor_estimado-element, #solicitacoes-solicitacao_nome-element{
+.zend_form div#descricao dt, div#descricao dd{
     display:block;
     width: 65px;
     text-align: center;
+    margin-bottom: 18px;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-size: 12px;
+    height: 70px;
+}
+
+.zend_form div#descricao .campos, div#descricao .campos_maior {
+    display:block;
+    width: 65px;
+    text-align: left;
     margin-bottom: 18px;
     margin-left: 4px;
     margin-right: 4px;
@@ -100,6 +109,10 @@
 }
 
 .zend_form div#descricao dd#solicitacoes-solicitacao_nome-element, dd#solicitacoes-solicitacao_nome-element textarea#solicitacoes-solicitacao_nome.campos {
+    width:375px;
+}
+
+.zend_form div#descricao dd.maior, div#descricao .campos_maior {
     width:375px;
 }
 
@@ -160,50 +173,37 @@ div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-crono
     width:60px;
 }
 
-.zend_form #solicitacoes-valor_total-label, #solicitacoes-execucao_inicio-label, #solicitacoes-execucao_termino-label,
-#solicitacoes-qtd_parcelas-label , #solicitacoes-valor_parcelas-label , #solicitacoes-data_pagamento-label {
+.zend_form div#pagamento dt{
     display:block;
-    width: 60px;
+    width: 70px;
     text-align: left;
     margin-bottom: 18px;
     margin-left: 10px;
     margin-right: 4px;
     font-size: 12px;
-    height: 18px;
+    height: 70px;
 }
 
-.zend_form .pagamento_campos {
+.zend_form div#pagamento dd{
     display:block;
-    width: 75px;
+    width: 70px;
     text-align: left;
     margin-bottom: 18px;
     margin-left: 4px;
     margin-right: 10px;
     font-size: 12px;
-    height: 18px;
+    height: 70px;
 }
-.zend_form #solicitacoes-valor_total-element, #solicitacoes-execucao_inicio-element, #solicitacoes-execucao_termino-element,
-#solicitacoes-qtd_parcelas-element , #solicitacoes-valor_parcelas-element, #solicitacoes-data_pagamento-element {
+
+.zend_form div#pagamento .pagamento_campos{
     display:block;
-    width: 75px;
+    width: 70px;
     text-align: left;
-    margin-bottom: 24px;
+    margin-bottom: 4px;
     margin-left: 4px;
     margin-right: 10px;
     font-size: 12px;
-    height: 26px;
-}
-
-.zend_form  #solicitacoes-execucao_inicio-label {
-    width:35px;
-}
-
-.zend_form #solicitacoes-valor_total-label {
-    width:60px;
-}
-
-.zend_form #solicitacoes-data_pagamento-label {
-    width:70px;
+    height: 18px;
 }
 
 .zend_form input, .zend_form select,

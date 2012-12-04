@@ -8,7 +8,6 @@ echo $this->form;
     var local = '';
     function tipoLocal(valor){
         valor=$('#solicitacoes-local').is(':checked');
-        alert(valor);
         if (valor == false){
             $('#solicitacoes-local_entrega_solicitacao_view').attr('disabled', 'disabled');
             $('#solicitacoes-local_entrega_solicitacao_view').attr('value', 'CDT');

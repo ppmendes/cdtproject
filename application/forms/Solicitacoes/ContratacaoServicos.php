@@ -363,32 +363,15 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
 
     public function preValidation(array $data) {
 
-//        // array_filter callback
-//        function findFields($field) {
-//            // return field names that include 'newName'
-//            if (strpos($field, 'newName') !== false) {
-//                return $field;
-//            }
-//        }
-//
-//        // Search $data for dynamically added fields using findFields callback
-//        $newFields = array_filter(array_keys($data), 'findFields');
-//
-//        foreach ($newFields as $fieldName) {
-//            // strip the id number off of the field name and use it to set new order
-//            $order = ltrim($fieldName, 'newName') + 2;
-//            $this->addNewField($fieldName, $data[$fieldName], $order);
-//        }
-//    }
-        echo "<script>recuperaNum()</script>";
-        echo "<script>recuperaNum2()</script>";
         $dados = $_POST;
         $num = $dados['solicitacoes']['hidden_teste'];
         $num2= $dados['solicitacoes']['hidden_teste2'];
+        echo "<script>recuperaNum()</script>";
+        echo "<script>recuperaNum2()</script>";
         $order = 31;
         $order2= 111;
 
-        for ( $i = 2; $i<=$num ; $i++) {
+        for ( $i = 2; $i<=$num ; ++$i) {
         $name1 = "descricao_". $i;
         $name2 = "produto_". $i;
         $name3 = "qtde_". $i;
@@ -399,7 +382,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $order = $order + 5;
         }
 
-        for ( $j=2; $j<=$num2 ; $j++) {
+        for ( $j=2; $j<=$num2 ; ++$j) {
         $name1 = "valor_total_". $j;
         $name2 = "execucao_inicio_". $j;
         $name3 = "execucao_termino_". $j;
@@ -483,7 +466,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Valor Total do Serviço:',
             'value'          => $value1,
-            'class'          => 'campos',
+            'class'          => 'pagamento_campos',
             'order'          => $order2
         ));
 
@@ -493,7 +476,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Início:',
             'value'          => $value2,
-            'class'          => 'campos',
+            'class'          => 'pagamento_campos',
             'order'          => $order2
         ));
 
@@ -503,7 +486,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Término:',
             'value'          => $value3,
-            'class'          => 'campos',
+            'class'          => 'pagamento_campos',
             'order'          => $order2
         ));
 
@@ -513,7 +496,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Qtde de Parcelas:',
             'value'          => $value4,
-            'class'          => 'campos',
+            'class'          => 'pagamento_campos',
             'order'          => $order2
         ));
 
@@ -523,7 +506,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Valor das Parcelas',
             'value'          => $value5,
-            'class'          => 'campos',
+            'class'          => 'pagamento_campos',
             'order'          => $order2
         ));
 
@@ -533,7 +516,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Data(s) Pagamento',
             'value'          => $value6,
-            'class'          => 'campos',
+            'class'          => 'pagamento_campos',
             'order'          => $order2
         ));
 
@@ -549,10 +532,10 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
 ?>
 
     <script>
-    var num = 2;
+    var num = 1;
     var margem = 0;
     function adicionaCampo(){
-        //var x = "' + margem * (num-1) + 'px'>
+        num++;
         $('#cronograma').append("<dt id='solicitacoes-descricao-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label for='solicitacoes-descricao_2'" +
                 "class='required'>Descricao:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-descricao-element'><input type='text' name='solicitacoes[descricao_"+
@@ -576,11 +559,10 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
 
         $('#solicitacoes-hidden_teste').attr('value', num);
 
-        num++;
     }
 
     function removeCampo(){
-        if (num > 2) {
+        if (num > 1) {
             $('#cronograma dd:last-child').remove();
             $('#cronograma dt:last-child').remove();
             $('#cronograma dd:last-child').remove();
@@ -599,7 +581,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     }
 
     function recuperaNum(){
-        num = 2;
+        num = 1;
         $('#solicitacoes-hidden_teste').attr('value', num);
     }
 
@@ -611,15 +593,16 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     function getNum(){
         $('#solicitacoes-hidden_teste').attr('value', num);
         return num;
-
     }
+
 </script>
 
 <script>
-    var num2 = 2;
+    var num2 = 1;
     var margem = 0;
     function adicionaCampo2(){
         //var x = "' + margem * (num-1) + 'px'>
+        num2++;
         $('#pagamento').append("<dt id='solicitacoes-valor_total-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label for='solicitacoes-valor_total'" +
                 "class='required'>Valor Total do Serviço:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-valor_total-element'><input type='text' name='solicitacoes[valor_total_" + num2 + "]' " +
@@ -646,12 +629,12 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
                 "name='solicitacoes[data_pagamento_"+ num2 + "]' id='solicitacoes-data_pagamento' value='' class='pagamento_campos'></dd>");
 
         $('#solicitacoes-hidden_teste2').attr('value', num2);
-        num2++;
+
 
     }
 
     function removeCampo2(){
-        if (num2 > 2) {
+        if (num2 > 1) {
             $('#pagamento dd:last-child').remove();
             $('#pagamento dt:last-child').remove();
             $('#pagamento dd:last-child').remove();
@@ -672,7 +655,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     }
 
     function recuperaNum2(){
-        num2 = 2;
+        num2 = 1;
         $('#solicitacoes-hidden_teste2').attr('value', num2);
     }
 
@@ -684,7 +667,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     function getNum2(){
         $('#solicitacoes-hidden_teste2').attr('value', num2);
         return num2;
-
     }
+
 </script>
 

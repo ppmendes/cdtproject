@@ -25,10 +25,14 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
+            $form->preValidation($_POST);
+
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-//                print_r($form->getValues());
-//                echo "</pre>";
+                echo "<pre>";
+                print_r($form->getValues());
+                echo "</pre>";
+                exit;
+
                 $data = $form->getValues();
                 unset($data['solicitacoes']['data_solicitacao_view']);
                 unset($data['solicitacoes']['local_entrega_solicitacao_view']);
