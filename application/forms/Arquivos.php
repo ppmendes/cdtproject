@@ -52,7 +52,7 @@ class Application_Form_Arquivos extends Zend_Form
         ));
 
         // projeto autocomplete
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('nomeProjeto');
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
