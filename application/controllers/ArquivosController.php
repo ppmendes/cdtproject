@@ -30,6 +30,7 @@ class ArquivosController extends Zend_Controller_Action
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
+
                 $data = $form->getValues();
                 unset($data['arquivos']['ac']);
 
@@ -38,14 +39,8 @@ class ArquivosController extends Zend_Controller_Action
                     $versao = $model->recuperarVersao($id);
                     //incrementamos a versao dado que sera atualizado e armazenamos no array $data
                     $data['arquivos']['versao']= $model->incrementaVersao($versao);
-                    //inserindo o nome do projeto
-                    $id_projeto=$data['arquivos']['projeto_id'];
-                    $db = Zend_Db_Table::getDefaultAdapter();
-                    $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
-
 
                     $data=$model->verificarMudancasArquivos($data,$id);
-                    $data['arquivos']['nomeProjeto']=$nome_projeto['nome'];
 
                     // verificando que o arquivo foi modificado
                     if($data['arquivos']['tamanho']==-1){
@@ -76,6 +71,12 @@ class ArquivosController extends Zend_Controller_Action
             $data = $model->find($id)->toArray();
                if(is_array($data)){
                     $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
+
+                   $id_projeto = $data['projeto_id'];
+                   $db = Zend_Db_Table::getDefaultAdapter();
+                   $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+                   $data['nomeProjeto']=$nome_projeto['nome'];
+
                    $form->populate(array("arquivos" => $data));
                 }
             }
