@@ -10,19 +10,28 @@ class DesembolsoController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $desembolsoModel = new Application_Model_Desembolso();
+        //$desembolsoModel = new Application_Model_Desembolso();
         //$this->view->desembolsos = $desembolsoModel->selectAll();
-        $this->view->desembolsos = array();
+        //$this->view->desembolsos = array();
+        $model = new Application_Model_Desembolso();
+        $this->view->resultado = $model->selectAll();
+        $this->view->resultado = array();
     }
 
     public function indexajaxAction()
     {
-        $desembolsoModel = new Application_Model_Desembolso();
-        $array_desembolso = $desembolsoModel->selectAll();
-        foreach($array_desembolso as &$item){
-        $item[0]="<a href='/desembolso/detalhes/desembolso_id/{$item[0]}'>$item[0]</a>";
-        }
-        echo '{"aaData":'.json_encode($array_desembolso).'}';
+//        $desembolsoModel = new Application_Model_Desembolso();
+//        $array_desembolso = $desembolsoModel->selectAll();
+//
+//        foreach($array_desembolso as &$item){
+//        $item[0]="<a href='/desembolso/detalhes/desembolso_id/{$item[0]}'>$item[0]</a>";
+//
+//        //$item[7]="<a href='/empenhos/detalhes/empenho_id/{$item[7]}'>$item[7]</a>";
+//        }
+//        echo '{"aaData":'.json_encode($array_desembolso).'}';
+//        exit;
+        $model = new Application_Model_Desembolso();
+        echo '{"aaData":'.json_encode($model->selectAll()).'}';
         exit;
     }
 

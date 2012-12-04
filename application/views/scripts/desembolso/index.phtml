@@ -69,13 +69,13 @@
     <tbody>
 
     <?php
-    foreach($this->desembolsos as $row)
+    foreach($this->resultado as $row)
     {
         //$row = $row->toArray();
         echo "<tr id='".$row['desembolso_id']."'>";
         echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
         echo "<td>" .   $row['desembolso_rel'] . "</td>";
-        echo "<td>" .   $row['e.descricao_historico'] . "</td>";
+        echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
         echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
         echo "<td >" .  $row['data_documento_habil'] . "</td>";
         echo "<td >" .  $row['order_dinheiro'] . "</td>";
