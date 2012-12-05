@@ -80,6 +80,7 @@ echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</butt
     <tbody>
 
     <?php
+    $filter = new Zend_Filter_DateFilter();
     foreach($this->termoaditivo as $row)
     {
     //$row = $row->toArray();
@@ -90,7 +91,7 @@ echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</butt
     echo "<td>" .   $row['tp.nome_tipo'] . "</td>";
     if ($row['tp.nome_tipo'] == 'Prorrogação')
     {
-        echo "<td> Data final alterada de " . $row['data_fim_atual'] . " para " . $row['data_fim_nova'] . "</td>";
+        echo "<td> Data final alterada de " . $filter->filter($row['data_fim_atual']) . " para " . $filter->filter($row['data_fim_nova']) . "</td>";
     }
     else if ($row['tp.nome_tipo'] == 'Remanejamento')
     {

@@ -68,6 +68,7 @@
     <tbody>
 
 <?php
+    $filter = new Zend_Filter_DateFilter();
     $array=$this->arquivos;
     $nro=count($array);
 
@@ -98,7 +99,7 @@
         echo "<td>" .$array[$i]['t.nome']. "</td>";
         echo "<td>" .$array[$i]['u.nome']. "</td>";
         echo "<td>" .$array[$i]['a.tamanho']. "</td>";
-        echo "<td>" .$array[$i]['a.data_arquivo']. "</td>";
+        echo "<td>" .$filter->filter($array[$i]['a.data_arquivo']). "</td>";
         echo "</tr>";
     }
     echo "</tbody></table>";
