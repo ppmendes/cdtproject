@@ -163,10 +163,11 @@ class Application_Model_Arquivo
         elseif(($projetoid!=$result['projeto_id'])||($tarefaid!=$result['tarefa_id']))
         {
             // so muda de pasta projeto ou tarefa
-            $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+            /*$origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
             $destino=$this->existePasta($projetoid, $tarefaid).'/'.$result['nome_arquivo'];
             copy($origen,$destino);
-            unlink($origen);
+            unlink($origen);*/
+            $this->deletadoFisico($id);
             $data['arquivos']['nome_arquivo']=$result['nome_arquivo'];
             return $data;
 
