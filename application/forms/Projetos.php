@@ -95,8 +95,8 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         //justificacao
-        $this->addElement('text', 'justificacao', array(
-            'label'      => 'Justificação:',
+        $this->addElement('text', 'justificativa', array(
+            'label'      => 'Justificativa:',
             'required'   => true
         ));
 

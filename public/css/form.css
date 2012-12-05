@@ -1,5 +1,5 @@
 .zend_form{
-    width: 1020px;
+    width: 80%;
     margin: 10px auto;
     overflow: hidden;
     background-color: #ECECEC;
@@ -8,7 +8,7 @@
 }
 
 .zend_form dt{
-    width: 490px;
+    width: 40%;
     float: left;
     text-align: right;
     margin-bottom: 10px;
@@ -16,7 +16,7 @@
 }
 
 .zend_form dd{
-    width: 490px;
+    width: 50%;
     float: left;
     text-align: left;
     margin-bottom: 10px;
@@ -208,7 +208,7 @@ div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-crono
 
 .zend_form input, .zend_form select,
 .zend_form textarea{
-    width: 300px;
+    width: 100%;
     border: solid 1px #CCCCCC;
 }
 

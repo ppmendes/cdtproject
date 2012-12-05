@@ -76,8 +76,8 @@ class Application_Model_Desembolso
 
             $desembolso_id = $row[7];
             $empenho_id = $row[8];
-            unset($row[7]);
-            unset($row[8]);
+            //unset($row[7]);
+            //unset($row[8]);
                 $row[0] = '<a href="/desembolso/detalhes/desembolso_id/'.$desembolso_id.'">'.$row[0].'</a>';
                 $row[2] = '<a href="/empenhos/detalhes/empenho_id/'.$empenho_id.'">'.$row[2].'</a>';
 

@@ -50,7 +50,7 @@
         float:right;
     }
 </style>
-<button class='novodesembolso' onclick='adicionar()'>Novo Desembolso</button>
+<button class='novodesembolso btn_add' onclick='adicionar()'>Novo Desembolso</button>
 
 <table id='table_id' border='0'>
     <thead>
@@ -69,20 +69,20 @@
     <tbody>
 
     <?php
-    foreach($this->resultado as $row)
-    {
-        //$row = $row->toArray();
-        echo "<tr id='".$row['desembolso_id']."'>";
-        echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
-        echo "<td>" .   $row['desembolso_rel'] . "</td>";
-        echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
-        echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
-        echo "<td >" .  $row['data_documento_habil'] . "</td>";
-        echo "<td >" .  $row['order_dinheiro'] . "</td>";
-        echo "<td >" .  $row['data_pagamento'] . "</td>";
-        echo "<td >" .  $row['valor_desembolso'] . "</td>";
-        echo "<td >" .  $row['extornado'] . "</td>";
-        echo "</tr>";
-    }
+//    foreach($this->resultado as $row)
+//    {
+//        //$row = $row->toArray();
+//        echo "<tr id='".$row['desembolso_id']."'>";
+//        echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
+//        echo "<td>" .   $row['desembolso_rel'] . "</td>";
+//        echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
+//        echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
+//        echo "<td >" .  $row['data_documento_habil'] . "</td>";
+//        echo "<td >" .  $row['order_dinheiro'] . "</td>";
+//        echo "<td >" .  $row['data_pagamento'] . "</td>";
+//        echo "<td >" .  $row['valor_desembolso'] . "</td>";
+//        echo "<td >" .  $row['extornado'] . "</td>";
+//        echo "</tr>";
+//    }
     echo "</tbody></table>";
 ?>

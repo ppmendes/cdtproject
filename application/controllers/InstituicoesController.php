@@ -27,6 +27,8 @@ class InstituicoesController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                //remover campo ac (auto complete) do array de dados
+                unset($data['instituicao']['ac']);
                 if($id){
                     //$this->view->pais =
                     $model->update($data, $id);
