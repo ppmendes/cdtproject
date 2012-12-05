@@ -184,13 +184,13 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         //Data da solicitação
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_saida');
         $emtDatePicker1->setLabel('Data de Ida: ');
-        $emtDatePicker1->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $emtDatePicker1->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker1);
 
         //Data da solicitação
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_volta');
         $emtDatePicker2->setLabel('Data de Volta: ');
-        $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $emtDatePicker2->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker2);
 
         $this->addElement('text', 'hora_saida', array(

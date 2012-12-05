@@ -172,13 +172,14 @@
         <tbody>
 
     <?php
+    $filter = new Zend_Filter_DateFilter();
     foreach($this->solicitacoes as $row)
     {
         //$row = $row->toArray();
         echo "<tr id='".$row['solicitacao_id']."'>";
         echo "<td>" .   $row['solicitacao_id'] . "</td>";
         echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
-        echo "<td>" .   $row['data_solicitacao'] . "</td>";
+        echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
         echo "<td>" .   $row['p.nome'] . "</td>";
         echo "<td >" .  $row['cp.nome'] . "</td>";
         echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
@@ -225,7 +226,7 @@
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
                 echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
-                echo "<td>" .   $row['data_solicitacao'] . "</td>";
+                echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
                 echo "<td>" .   $row['p.nome'] . "</td>";
                 echo "<td >" .  $row['cp.nome'] . "</td>";
                 echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
@@ -272,7 +273,7 @@
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
                 echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
-                echo "<td>" .   $row['data_solicitacao'] . "</td>";
+                echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
                 echo "<td>" .   $row['p.nome'] . "</td>";
                 echo "<td >" .  $row['cp.nome'] . "</td>";
                 echo "<td >" .  $row['ts.nome_tipo'] . "</td>";
@@ -319,7 +320,7 @@
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
                 echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
-                echo "<td>" .   $row['data_solicitacao'] . "</td>";
+                echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
                 echo "<td>" .   $row['p.nome'] . "</td>";
                 echo "<td >" .  $row['cp.nome'] . "</td>";
                 echo "<td >" .  $row['ts.nome_tipo'] . "</td>";

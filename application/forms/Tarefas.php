@@ -106,7 +106,7 @@ class Application_Form_Tarefas extends Zend_Form
         ));
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
         $emtDatePicker->setLabel('Data de Início:');
-        $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $emtDatePicker->setFilters(array('DateFilter'));
 
         $this->addElement($emtDatePicker);
 
@@ -136,7 +136,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
         $emtDatePicker->setLabel('Data Final:');
-        $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $emtDatePicker->setFilters(array('DateFilter'));
 
         $this->addElement($emtDatePicker);
 

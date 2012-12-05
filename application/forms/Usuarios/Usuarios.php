@@ -34,7 +34,7 @@ class Application_Form_Usuarios extends Zend_Form
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_nascimento');
         $emtDatePicker->setLabel('Data de Nascimento: ');
-        $emtDatePicker->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $emtDatePicker->setFilters(array('DateFilter'));
 
         $this->addElement($emtDatePicker);
 
