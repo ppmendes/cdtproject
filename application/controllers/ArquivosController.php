@@ -48,8 +48,9 @@ class ArquivosController extends Zend_Controller_Action
                         $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
 
                         // finalmente atualizamos o banco de dados
-                        $model->update($data, $id);
+
                     }
+                    $model->update($data, $id);
                 }
                 else{//insert
                     //recuperando o tamanho do arquivo
@@ -61,7 +62,7 @@ class ArquivosController extends Zend_Controller_Action
                     $nome_arquivo= $model->getLastInsertedId();
 
                     $data=$model->editarArquivo($nome_arquivo,$data);
-
+                    //jajaja
                     $model->insert($data);
                 }
                 $this->_redirect('/arquivos/');
