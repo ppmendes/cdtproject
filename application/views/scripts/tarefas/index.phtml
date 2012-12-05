@@ -65,6 +65,7 @@
     <tbody>
 
     <?php
+    $filter = new Zend_Filter_DateFilter();
     foreach($this->tarefas as $row)
     {
         //$row = $row->toArray();
@@ -74,7 +75,7 @@
         echo "<td>" .   $row['pr.nome'] . "</td>";
         echo "<td><a href='/tarefas/detalhes/tarefa_id/{$row['tarefa_id']}'>" . $row['nome'] . "</a></td>";
         echo "<td>" .   $row['us.username'] . "</td>";
-        echo "<td>" .   $row['data_inicio'] . "</td>";
+        echo "<td>" .   $filter->filter($row['data_inicio']) . "</td>";
         echo "<td >" .  $row['duracao'] . "</td>";
         echo "</tr>";
     }
