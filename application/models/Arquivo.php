@@ -187,8 +187,6 @@ class Application_Model_Arquivo
         return $total;
     }
 
-
-
     public function editarArquivo($nome_arquivo,$data)
     {
 
