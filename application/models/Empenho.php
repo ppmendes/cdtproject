@@ -43,6 +43,8 @@ class Application_Model_Empenho
     public function selectAll()
     {
         $db = Zend_Db_Table::getDefaultAdapter();
+        $datefilter = new Zend_Filter_DateFilter();
+        $decimalfilter = new Zend_Filter_DecimalFilter();
 
         $colunas = array(
             0 => 'e.descricao_historico',
@@ -76,6 +78,15 @@ class Application_Model_Empenho
             $tipo_beneficiario_id = $row[12];
             unset($row[11]);
             unset($row[12]);
+
+            //formatando data
+            $row[1] = $datefilter->filter($row[1]);
+            $row[6] = $datefilter->filter($row[6]);
+            $row[7] = $datefilter->filter($row[7]);
+
+            //formatando decimal
+            $row[4] = $decimalfilter->filter($row[4]);
+
             if($tipo_beneficiario_id == 1){
                 $row[2] = '<a href="beneficiarios/detalhespf/beneficiario_id/'.$beneficiario_id.'">'.$row[2].'</a>';
             } else{

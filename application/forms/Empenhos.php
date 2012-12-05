@@ -28,78 +28,75 @@ class Application_Form_Empenhos extends Zend_Form
 
         //input type text
         $this->addElement('text', 'descricao', array(
-            'label'      => 'descricao',
+            'label'      => 'Descrição: ',
             'required'   => true,
         ));
 
         //input type text
         $this->addElement('text', 'processo_administrativo', array(
-            'label'      => 'processo_administrativo',
+            'label'      => 'Processo Administrativo: ',
             'required'   => true,
         ));
 
         //input type text
         $this->addElement('text', 'historico', array(
-            'label'      => 'historico',
+            'label'      => 'Histórico: ',
             'required'   => true,
         ));
 
-        //input type text
-        $this->addElement('text', 'data', array(
-            'label'      => 'data',
-            'required'   => true,
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data');
+        $emtDatePicker1->setLabel('Data: ');
+        $emtDatePicker1->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker1);
 
         $this->addElement('select', 'beneficiario_id', array(
-            'label'      => 'beneficiario_id',
+            'label'      => 'Beneficiário: ',
             'multiOptions' => Application_Model_Beneficiario::getOptions(),
             'required'   => true
         ));
 
         $this->addElement('select', 'projeto_id', array(
-            'label'      => 'projeto_id',
+            'label'      => 'Projeto: ',
             'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true
         ));
 
         //input type text
         $this->addElement('text', 'valor_empenho', array(
-            'label'      => 'valor_empenho',
+            'label'      => 'Valor: ',
             'required'   => true,
         ));
 
         //input type text
         $this->addElement('text', 'numero_parcelas', array(
-            'label'      => 'numero_parcelas',
+            'label'      => 'Número de Parcelas: ',
             'required'   => true,
         ));
 
-        //input type text
-        $this->addElement('text', 'data_inicio_bolsa', array(
-            'label'      => 'data_inicio_bolsa',
-            'required'   => true,
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_inicio_bolsa');
+        $emtDatePicker2->setLabel('Data de Início da Bolsa: ');
+        $emtDatePicker2->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker2);
 
-        //input type text
-        $this->addElement('text', 'data_fim_bolsa', array(
-            'label'      => 'data_fim_bolsa',
-            'required'   => true,
-        ));
+        $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('data_fim_bolsa');
+        $emtDatePicker3->setLabel('Data do Fim da Bolsa: ');
+        $emtDatePicker3->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker3);
 
         $this->addElement('select', 'orcamento_id', array(
-            'label'      => 'orcamento_id',
+            'label'      => 'Orçamento: ',
             'multiOptions' => Application_Model_Orcamento::getOptions(),
             'required'   => true
         ));
 
         $this->addElement('select', 'usuario_id', array(
-            'label'      => 'usuario_id',
+            'label'      => 'Usuário: ',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
 
         $this->addElement('select', 'pre_empenho_id', array(
-            'label'      => 'pre_empenho_id',
+            'label'      => 'Pré Empenho: ',
             'multiOptions' => Application_Model_PreEmpenho::getOptions(),
             'required'   => true
         ));

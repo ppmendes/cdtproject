@@ -5,8 +5,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initFilter()
     {
         $dateFilter = new Zend_Filter_DateFilter();
+        $decimalFilter = new Zend_Filter_DecimalFilter();
         $filterChain = new Zend_Filter();
         $filterChain->addFilter($dateFilter);
+        $filterChain->addFilter($decimalFilter);
     }
     protected function _initTranslator()
     {
