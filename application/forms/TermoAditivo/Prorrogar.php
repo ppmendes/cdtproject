@@ -32,7 +32,7 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         ));
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_fim_nova');
         $emtDatePicker2->setLabel('Nova Data: ');
-        $emtDatePicker2->setJQueryParam('dateFormat', 'yy-mm-dd');
+        $emtDatePicker2->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker2);
 
         //Coordenador do projeto input type text

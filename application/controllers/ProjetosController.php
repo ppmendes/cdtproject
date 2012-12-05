@@ -21,11 +21,10 @@ class ProjetosController extends Zend_Controller_Action
         $model = new Application_Model_Projeto;
         $id = $this->_getParam('projeto_id');
 
+
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-//                print_r($form->getValues());
-//                echo "</pre>";
+
                 $data = $form->getValues();
                 if($id){
                     $model->update($data, $id);

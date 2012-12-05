@@ -15,7 +15,12 @@ class Zend_Filter_DateFilter implements Zend_Filter_Interface
     {
         // perform some transformation upon $value to arrive on $valueFiltered
         if($value != null && $value != '0000-00-00 00:00:00' && $value != '0000-00-00'){
-                return date('d/m/Y',strtotime($value));
+                if(strpos($value,'/') !== false){
+                    $data_array = explode('/',$value);
+                    return $data_array[2].'-'.$data_array[1].'-'.$data_array[0];
+                }else{
+                    return date('d/m/Y',strtotime($value));
+                }
         }else{
             return null;
         }
