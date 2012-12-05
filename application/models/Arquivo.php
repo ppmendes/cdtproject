@@ -146,13 +146,15 @@ class Application_Model_Arquivo
         $db = Zend_Db_Table::getDefaultAdapter();
         $result=$db->fetchRow("select nome_arquivo, tamanho, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
 
-        // mudancas no arquivo bb
+        // mudancas no arquivo
         if($nome!="")
         {
-            $origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+            /*$origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
             $destino='files/lixeira/'.$result['nome_arquivo'];
             copy($origen,$destino);
-            unlink($origen);
+            unlink($origen);*/
+            $this->deletadoFisico($id);
+
             $data['arquivos']['tamanho']=-1;
             $data=$this->editarArquivo($id,$data);
             return $data;
@@ -174,6 +176,23 @@ class Application_Model_Arquivo
             return $data;
         }
 
+    }
+
+    public function deletadoFisico($id)
+    {
+        $db= Zend_Db_Table::getDefaultAdapter();
+        $result=$db->fetchRow("select nome_arquivo, projeto_id, tarefa_id from arquivo where arquivo_id=$id");
+        //obtendo o endereco do aqrquivo
+        if($result['tarefa_id']){//
+            $origem='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+        }
+        else{//se não tiver tarefa
+            $origem='files/arquivos/projeto-'.$result['projeto_id'].'/'.$result['nome_arquivo'];
+        }
+        //obtendo o enderco da lixeira
+        $destino='files/lixeira/'.$result['nome_arquivo'];
+        copy($origem,$destino);
+        $this->eliminarPasta('files/arquivos',$origem);
     }
 
     public function contarArquivos($path)
@@ -228,7 +247,6 @@ class Application_Model_Arquivo
         $data['arquivos']['nome_arquivo']=$renomeado;
 
         return $data;
-        //jajajaja
     }
 
     public function selectAll()
