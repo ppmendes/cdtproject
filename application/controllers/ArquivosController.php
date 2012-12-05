@@ -67,7 +67,7 @@ class ArquivosController extends Zend_Controller_Action
                 }
                 $this->_redirect('/arquivos/');
             }
-        }
+        }//jaja
         elseif ($id){
             $data = $model->find($id)->toArray();
                if(is_array($data)){
