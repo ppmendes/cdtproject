@@ -115,7 +115,7 @@ class UsuariosController extends Zend_Controller_Action
         $model = new Application_Model_Usuario;
         $id = $this->_getParam('usuario_id');
         $this->view->id = $id;
-
+        //jajaja
 
         $data = $model->find($id)->toArray();
 

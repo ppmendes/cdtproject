@@ -187,8 +187,6 @@ class Application_Model_Arquivo
         return $total;
     }
 
-
-
     public function editarArquivo($nome_arquivo,$data)
     {
 
@@ -230,6 +228,7 @@ class Application_Model_Arquivo
         $data['arquivos']['nome_arquivo']=$renomeado;
 
         return $data;
+        //jajajaja
     }
 
     public function selectAll()
@@ -250,6 +249,7 @@ class Application_Model_Arquivo
 
        }catch(Exception $e){
            echo $e->getMessage();
+           //fsd
        }
     }
 
