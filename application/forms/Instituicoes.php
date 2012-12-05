@@ -141,7 +141,7 @@ class Application_Form_Instituicoes extends Zend_Form
         $emt->setLabel('Instituição Pai:');
         $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#instituicao-instituicao_id").val(ui.item.id) }')
+            'function(event,ui) { $("#instituicao-pai_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 
@@ -164,7 +164,7 @@ class Application_Form_Instituicoes extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'instituicao_id', array(
+        $this->addElement('hidden', 'pai_id', array(
             'value'      => ''
         ));
 

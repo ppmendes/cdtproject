@@ -76,7 +76,6 @@ class Application_Model_Usuario
             $select = $db->select()
                 ->from(array('u'=>'usuario'))
                 ->where('u.deletado=?',false)
-                ->where('u.tipo_usuario = ?', "contato")
                 ->joinLeft(array('i'=>'instituicao'),'u.instituicao_id = i.instituicao_id',array('u.usuario_id'=>'u.usuario_id','u.sobrenome'=>'u.sobrenome','u.nome'=>'u.nome','i.nome'=>'i.nome'));
 
             $stmt = $select->query();

@@ -108,8 +108,8 @@
         <table id='table_id_contato'>
             <thead>
             <tr>
-                <th>Contato</th>
-                <th>Nome contato</th>
+                <th>Nome</th>
+                <th>Sobrenome</th>
                 <th>Instituição</th>
             </tr>
             </thead>
@@ -120,8 +120,8 @@
             {
 
                 echo "<tr id='".$row['usuario_id']."'>";
-                echo "<td>" .$row['u.sobrenome']. "</td>";
                 echo "<td><a href='/usuarios/detalhescontatos/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
+                echo "<td>" .$row['u.sobrenome']. "</td>";
                 echo "<td>" .$row['i.nome']. "</td>";
                 echo "</tr>";
             }
