@@ -149,11 +149,12 @@ class Application_Model_Arquivo
         // mudancas no arquivo
         if($nome!="")
         {
-            /*$origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+
+
+            $origem=$this->existePasta($result['projeto_id'],$result['tarefa_id']).'/'.$result['nome_arquivo'];
             $destino='files/lixeira/'.$result['nome_arquivo'];
-            copy($origen,$destino);
-            unlink($origen);*/
-            $this->deletadoFisico($id);
+            copy($origem,$destino);
+            $this->eliminarPasta('files/arquivos',$origem);//unlink($origem);
 
             $data['arquivos']['tamanho']=-1;
             $data=$this->editarArquivo($id,$data);
@@ -162,12 +163,17 @@ class Application_Model_Arquivo
         // so muda de pasta projeto ou tarefa
         elseif(($projetoid!=$result['projeto_id'])||($tarefaid!=$result['tarefa_id']))
         {
-            // so muda de pasta projeto ou tarefa
-            /*$origen='files/arquivos/projeto-'.$result['projeto_id'].'/tarefa-'.$result['tarefa_id'].'/'.$result['nome_arquivo'];
+
+            $origem=$this->existePasta($result['projeto_id'],$result['tarefa_id']).'/'.$result['nome_arquivo'];
             $destino=$this->existePasta($projetoid, $tarefaid).'/'.$result['nome_arquivo'];
-            copy($origen,$destino);
-            unlink($origen);*/
-            $this->deletadoFisico($id);
+
+            copy($origem,$destino);
+            $this->eliminarPasta('files/arquivos',$origem);//unlink($origem);
+
+            // so muda de pasta projeto ou tarefa
+
+
+            //$this->deletadoFisico($id);
             $data['arquivos']['nome_arquivo']=$result['nome_arquivo'];
             return $data;
 
