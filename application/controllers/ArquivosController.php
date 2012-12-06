@@ -36,6 +36,7 @@ class ArquivosController extends Zend_Controller_Action
                 unset($data['arquivos']['ac']);
 
                 if($id){//update
+
                     //recuperamos versao atual desde o banco de dados
                     $versao = $model->recuperarVersao($id);
                     //incrementamos a versao dado que sera atualizado e armazenamos no array $data
