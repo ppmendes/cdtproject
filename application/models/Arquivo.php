@@ -149,15 +149,21 @@ class Application_Model_Arquivo
         // mudancas no arquivo
         if($nome!="")
         {
+            //recuperamos versao atual desde o banco de dados
+            $versao = $this->recuperarVersao($id);
+            //incrementamos a versao dado que sera atualizado e armazenamos no array $data
+            $data['arquivos']['versao']= $this->incrementaVersao($versao);
+
 
 
             $origem=$this->existePasta($result['projeto_id'],$result['tarefa_id']).'/'.$result['nome_arquivo'];
             $destino='files/lixeira/'.$result['nome_arquivo'];
+
             copy($origem,$destino);
-            $this->eliminarPasta('files/arquivos',$origem);//unlink($origem);
 
             $data['arquivos']['tamanho']=-1;
             $data=$this->editarArquivo($id,$data);
+            $this->eliminarPasta('files/arquivos',$origem);//unlink($origem);
             return $data;
         }
         // so muda de pasta projeto ou tarefa
@@ -247,11 +253,14 @@ class Application_Model_Arquivo
         //renomeando o arquivo
         $renomeado='arquivo_'.$nome_arquivo.'_'.$versao.'.'.$formato[$indice];
         $fullFilePathFile = $pasta.'/'.$renomeado;
+
         $filterFileRename = new Zend_Filter_File_Rename(array('target' => $fullFilePathFile, 'overwrite' => true));
         $filterFileRename -> filter($file);
 
 
         $data['arquivos']['nome_arquivo']=$renomeado;
+
+
 
         return $data;
     }

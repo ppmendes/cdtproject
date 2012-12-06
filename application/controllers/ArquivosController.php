@@ -34,13 +34,10 @@ class ArquivosController extends Zend_Controller_Action
 
                 $data = $form->getValues();
                 unset($data['arquivos']['ac']);
+                unset($data['arquivos']['nomeProjeto']);
 
                 if($id){//update
 
-                    //recuperamos versao atual desde o banco de dados
-                    $versao = $model->recuperarVersao($id);
-                    //incrementamos a versao dado que sera atualizado e armazenamos no array $data
-                    $data['arquivos']['versao']= $model->incrementaVersao($versao);
 
                     $data=$model->verificarMudancasArquivos($data,$id);
 
@@ -49,6 +46,7 @@ class ArquivosController extends Zend_Controller_Action
                         $tamanho = $upload->getFileInfo('nome_arquivo');
                         $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
                     }
+
                     $model->update($data, $id);
                 }
                 else{//insert
@@ -61,12 +59,11 @@ class ArquivosController extends Zend_Controller_Action
                     $nome_arquivo= $model->getLastInsertedId();
 
                     $data=$model->editarArquivo($nome_arquivo,$data);
-                    //jajaja
                     $model->insert($data);
                 }
                 $this->_redirect('/arquivos/');
             }
-        }//jaja
+        }
         elseif ($id){
             $data = $model->find($id)->toArray();
                if(is_array($data)){
