@@ -3,8 +3,15 @@
 class Application_Form_Arquivos extends Zend_Form
 {
 
-    public function init()
-    {
+    private $id_projeto;
+
+    public function setIdProjeto($id_projeto_controller){
+        $this->id_projeto = $id_projeto_controller;
+    }
+
+    public function init(){}
+
+    public function startform(){
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('arquivos');
@@ -63,7 +70,7 @@ class Application_Form_Arquivos extends Zend_Form
         //tarefa id pai  da tarefa select type
         $this->addElement('select', 'tarefa_id', array(
             'label'      => 'tarefa:',
-            'multiOptions'  => Application_Model_Tarefa::getOptions1(),
+            'multiOptions'  => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
         ));
 
@@ -78,9 +85,12 @@ class Application_Form_Arquivos extends Zend_Form
             'label'      => '',
         ));
 
+
+
         //set hidden
         /*$this->addElement('hidden', 'instituicao_id', array(
             'value'      => ''
         ));*/
+
     }
 }
