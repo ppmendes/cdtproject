@@ -74,16 +74,32 @@ class Application_Model_Tarefa
 
     }
 
-    public static function getOptions1(){
+    public static function getOptions1($id_projeto_form = null){
 
         try{
-            $options = array();
-            $table = new Application_Model_DbTable_Tarefa();
-            $resultado = $table->fetchAll();
-            foreach($resultado as $item){
-                $options[$item['tarefa_id']] = $item['nome'];
+            if($id_projeto_form == null)
+            {
+                $options = array();
+                $table = new Application_Model_DbTable_Tarefa();
+                $resultado = $table->fetchAll();
+                foreach($resultado as $item){
+                    $options[$item['tarefa_id']] = $item['nome'];
+                }
+                return $options;
             }
-            return $options;
+            else
+            {
+                $options = array();
+
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where projeto_id = $id_projeto_form");
+
+
+                foreach($resultado as $item){
+                    $options[$item['tarefa_id']] = $item['nome'];
+                }
+                return $options;
+            }
         } catch(Exception $e){
 
         }

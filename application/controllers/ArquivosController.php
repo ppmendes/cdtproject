@@ -21,12 +21,13 @@ class ArquivosController extends Zend_Controller_Action
     }
 
     public function adicionarAction(){
+
         $request = $this->getRequest();
         $form = new Application_Form_Arquivos();
+        $form->startform();
         $upload = new Zend_File_Transfer_Adapter_Http();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
-
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -46,9 +47,6 @@ class ArquivosController extends Zend_Controller_Action
                     if($data['arquivos']['tamanho']==-1){
                         $tamanho = $upload->getFileInfo('nome_arquivo');
                         $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
-
-                        // finalmente atualizamos o banco de dados
-
                     }
                     $model->update($data, $id);
                 }
@@ -71,14 +69,21 @@ class ArquivosController extends Zend_Controller_Action
         elseif ($id){
             $data = $model->find($id)->toArray();
                if(is_array($data)){
-                    $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
 
                    $id_projeto = $data['projeto_id'];
+
+                   $form->setAction('/arquivos/detalhes/arquivo_id/' . $id);
+                   $form->setIdProjeto($id_projeto);
+                   $form->startform();
+
+
+
                    $db = Zend_Db_Table::getDefaultAdapter();
                    $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
                    $data['nomeProjeto']=$nome_projeto['nome'];
-
                    $form->populate(array("arquivos" => $data));
+
+
                 }
             }
 
@@ -88,6 +93,7 @@ class ArquivosController extends Zend_Controller_Action
     public function detalhesAction(){
         //$request = $this->getRequest();
         $detalhes = new Application_Form_Arquivos();
+        $detalhes->startform();
         $model = new Application_Model_Arquivo;
         $id = $this->_getParam('arquivo_id');
         $this->view->id = $id;
@@ -136,7 +142,7 @@ class ArquivosController extends Zend_Controller_Action
             }
         } else {
 
-            echo '<option value="">Ninguno</option>';
+            echo '<option value="">Nenhum</option>';
         }
     }
 }
