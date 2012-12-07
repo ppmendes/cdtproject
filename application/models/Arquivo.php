@@ -71,7 +71,7 @@ class Application_Model_Arquivo
     }
     public function update($data,$id)
     {
-        $table = new Application_Model_DbTable_Arquivo;
+       $table = new Application_Model_DbTable_Arquivo;
         $where = $table->getAdapter()->quoteInto('arquivo_id = ?',$id);
         unset($data['arquivos']['nomeProjeto']);
         $table->update($data['arquivos'], $where);
@@ -155,10 +155,8 @@ class Application_Model_Arquivo
             $data['arquivos']['versao']= $this->incrementaVersao($versao);
 
 
-
             $origem=$this->existePasta($result['projeto_id'],$result['tarefa_id']).'/'.$result['nome_arquivo'];
             $destino='files/lixeira/'.$result['nome_arquivo'];
-
             copy($origem,$destino);
 
             $data['arquivos']['tamanho']=-1;
@@ -169,17 +167,15 @@ class Application_Model_Arquivo
         // so muda de pasta projeto ou tarefa
         elseif(($projetoid!=$result['projeto_id'])||($tarefaid!=$result['tarefa_id']))
         {
-
+            // so muda de pasta projeto ou tarefa
             $origem=$this->existePasta($result['projeto_id'],$result['tarefa_id']).'/'.$result['nome_arquivo'];
             $destino=$this->existePasta($projetoid, $tarefaid).'/'.$result['nome_arquivo'];
 
             copy($origem,$destino);
             $this->eliminarPasta('files/arquivos',$origem);//unlink($origem);
 
-            // so muda de pasta projeto ou tarefa
-
-
             //$this->deletadoFisico($id);
+            $data['arquivos']['tamanho']=$result['tamanho'];
             $data['arquivos']['nome_arquivo']=$result['nome_arquivo'];
             return $data;
 

@@ -38,7 +38,6 @@ class ArquivosController extends Zend_Controller_Action
 
                 if($id){//update
 
-
                     $data=$model->verificarMudancasArquivos($data,$id);
 
                     // verificando que o arquivo foi modificado
@@ -46,8 +45,12 @@ class ArquivosController extends Zend_Controller_Action
                         $tamanho = $upload->getFileInfo('nome_arquivo');
                         $data['arquivos']['tamanho']=$tamanho['nome_arquivo']['size'];
                     }
-
+                    //verificando que nao tenha tarefa
+                    if($data['arquivos']['tarefa_id']==''){
+                        $data['arquivos']['tarefa_id']=null;
+                    }
                     $model->update($data, $id);
+
                 }
                 else{//insert
                     //recuperando o tamanho do arquivo
@@ -74,17 +77,12 @@ class ArquivosController extends Zend_Controller_Action
                    $form->setIdProjeto($id_projeto);
                    $form->startform();
 
-
-
                    $db = Zend_Db_Table::getDefaultAdapter();
                    $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
                    $data['nomeProjeto']=$nome_projeto['nome'];
                    $form->populate(array("arquivos" => $data));
-
-
                 }
             }
-
         $this->view->form = $form;
     }
 
@@ -96,13 +94,11 @@ class ArquivosController extends Zend_Controller_Action
         $id = $this->_getParam('arquivo_id');
         $this->view->id = $id;
 
-
         $data = $model->find($id)->toArray();
         $id_projeto = $data['projeto_id'];
         $db = Zend_Db_Table::getDefaultAdapter();
         $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
         $data['nomeProjeto']=$nome_projeto['nome'];
-
 
         if(is_array($data)){
             $detalhes->setAction('/arquivos/detalhes/arquivo_id/' . $id);
