@@ -26,6 +26,8 @@ class CronogramafinanceiroController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                unset($data['cronograma_financeiro']['nomeProjeto']);
+
                 if($id){
                     $model->update($data, $id);
                 }else{
@@ -38,7 +40,7 @@ class CronogramafinanceiroController extends Zend_Controller_Action
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                $form->setAction('/cronogramafinanceiro/detalhes/projeto_id/' . $id);
+                $form->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id);
                 $form->populate(array("cronograma_financeiro" => $data));
             }
         }
@@ -52,18 +54,15 @@ class CronogramafinanceiroController extends Zend_Controller_Action
         $request = $this->getRequest();
         $detalhes = new Application_Form_Cronogramafinanceiro();
         $model = new Application_Model_CronogramaFinanceiro();
-        $id = $this->_getParam('projeto_id');
+        $id = $this->_getParam('cronograma_financeiro_id');
         $this->view->id = $id;
 
 
         $data = $model->find($id)->toArray();
 
-//        foreach($data as &$item){
-//            $item = utf8_decode($item);
-//        }
 
         if(is_array($data)){
-            $detalhes->setAction('/cronogramafinanceiro/detalhes/projeto_id/' . $id);
+            $detalhes->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id);
             $detalhes->populate(array("cronograma_financeiro" => $data));
         }
 

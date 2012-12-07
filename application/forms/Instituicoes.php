@@ -93,7 +93,7 @@ class Application_Form_Instituicoes extends Zend_Form
         $this->addElement('select', 'estados_id', array(
             //'id'         => 'estado',
             'label'      => 'Estado:',
-            //'multiOptions' => Application_Model_Estados::getOptions(),
+            'multiOptions' => Application_Model_Estados::getOptions(),
             'required'   => false,
             //'attribs'    => array( 'setRegisterInArrayValidator' => false),
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
@@ -103,7 +103,7 @@ class Application_Form_Instituicoes extends Zend_Form
         $this->addElement('select', 'cidade_id', array(
            // 'id'         => 'cidade',
             'label'      => 'Cidade:',
-            //'multiOptions' => Application_Model_Cidade::getOptions(),
+            'multiOptions' => Application_Model_Cidade::getOptions(),
             'required'   => false,
             //'attribs'    => array( 'setRegisterInArrayValidator' => false),
         ));

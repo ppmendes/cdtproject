@@ -53,11 +53,11 @@
     <thead>
     <tr>
         <th>Id</th>
-<!--        <th>Instituicao</th>-->
-<!--        <th>Nome</th>-->
-<!--        <th>Apelido</th>-->
-<!--        <th>Data de início</th>-->
-<!--        <th>Data final</th>-->
+        <th>Projeto</th>
+        <th>Valor</th>
+        <th>Data</th>
+        <th>Tipo</th>
+        <th>Fatura</th>
 <!--        <th>Data final real</th>-->
 <!--        <th>Estado do projeto</th>-->
 <!--        <th>Porcentagem completa</th>-->
@@ -73,7 +73,14 @@
     {
     //$row = $row->toArray();
     echo "<tr id='".$row['cronograma_financeiro_id']."'>";
-    echo "<td>" .   $row['cronograma_financeiro_id'] . "</td>";
+    echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}'>"
+        .$row['cronograma_financeiro_id']. "</a></td>";
+    echo "<td>" .   $row['p.nome'] . "</td>";
+    echo "<td>" .   $row['valor_aplicado_a_rubrica'] . "</td>";
+    echo "<td>" .   $row['data_previa'] . "</td>";
+    echo "<td>" .   $row['tipo'] . "</td>";
+    echo "<td>" .   $row['numero_fatura_pf'] . "</td>";
+
 //    echo "<td>" .   $row['ga.nome_instituicao_gerencia'] . "</td>";
 //    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";
 //    echo "<td>" .   $row['apelido'] . "</td>";
