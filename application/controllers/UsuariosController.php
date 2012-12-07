@@ -38,13 +38,29 @@ class UsuariosController extends Zend_Controller_Action
 
                     //adicionar novo arquivo e tirar o antigo na lixeira
                     $newdata=$model->verificarMudancasArquivos($data,$id);
+
+                    //quando a opção contato for selecionada
+                    if($data['usuario']['tipo_usuario']=='contato')
+                    {
+                        unset($data['usuario']['perfil_usuario_id']);
+                        unset($data['usuario']['username']);
+                        unset($data['usuario']['password']);
+                    }
+
                     // finalmente atualizamos o banco de dados
                     $model->update($newdata, $id);
                 }else{
+
                     if($data['usuario']['icone']!="")
                     {
                         $nome_imagem=$model->getLastInsertedId();
                         $data=$model->editarImagem($nome_imagem,$data);
+                    }
+                    if($data['usuario']['tipo_usuario']=='contato')
+                    {
+                        unset($data['usuario']['perfil_usuario_id']);
+                        unset($data['usuario']['username']);
+                        unset($data['usuario']['password']);
                     }
                     $model->insert($data);
                 }
