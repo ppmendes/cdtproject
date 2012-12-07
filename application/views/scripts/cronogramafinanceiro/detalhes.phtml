@@ -1,0 +1,30 @@
+<script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    function confirmarExclusao(id)
+    {
+        var answer = confirm("Deseja realmente excluir o cronograma?");
+        if (answer) {
+            top.location.href = '/../cronogramafinanceiro/excluir/projeto_id/'+id;
+        }
+        else {
+            alert("O cronograma não foi excluído!");
+        }
+    }
+</script>
+<script>
+    function editar(id)
+    {
+        top.location.href = '/../cronogramafinanceiro/adicionar/projeto_id/'+id;
+
+    }
+</script>
+
+<?php
+ $id = $this->id;
+
+echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button class=\"right btn_edit\" onclick='editar($id)'>Editar</button>";
+
+$this->detalhes->setAction($this->url());
+echo $this->detalhes;
+?>
