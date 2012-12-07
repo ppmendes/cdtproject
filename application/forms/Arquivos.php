@@ -85,12 +85,5 @@ class Application_Form_Arquivos extends Zend_Form
             'label'      => '',
         ));
 
-
-
-        //set hidden
-        /*$this->addElement('hidden', 'instituicao_id', array(
-            'value'      => ''
-        ));*/
-
     }
 }
