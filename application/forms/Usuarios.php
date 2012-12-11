@@ -70,13 +70,6 @@ class Application_Form_Usuarios extends Zend_Form
             'label'     => 'Pesquisar',
         ));
 
-        $this->addDisplayGroup(array('ac', 'botaoPesquisa'), 'submitButtons', array(
-            'decorators' => array(
-                'FormElements',
-                array('HtmlTag', array('tag' => 'div')),
-            ),
-        ));
-
         //tipo de usuario  input type radio
         $this->addElement('checkbox','tipo_usuario',array(
             'required' => false,

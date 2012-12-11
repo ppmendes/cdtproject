@@ -10,12 +10,11 @@ echo $this->form;
 <script type="text/javascript">
     $(document).ready(function() {
         $('.fancybox').fancybox();
-    });
-
-    $("#usuario-botaoPesquisa").click(function() {
-        $('<a class="fancybox fancybox.iframe" href="usuarios/treeview">pesquisar</a>').fancybox({
-            overlayShow: true
-        }).click();
+        $("#usuario-botaoPesquisa").click(function() {
+            $('<a class="fancybox fancybox.iframe" href="usuarios/treeview">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
     });
 </script>
 

@@ -82,6 +82,28 @@ class TarefasController extends Zend_Controller_Action
 
     }
 
+    public function treeviewAction()
+    {
+        $layout = $this->_helper->layout();
+        $layout->setLayout('iframe');
+        $model = new Application_Model_Tarefa;
+        $id = $this->_getParam('tarefa_id');
+        if($id==null)
+        {
+            $id=2;
+        }
 
+        // mostra as instituições pais
+        $this->view->tree = $model->retornaTarefa();
+
+        // retorna array do procedure
+        $result=$model->paeFilhos($id);
+
+        // cria o treeview
+        $model->criarTreeview($result);
+
+        // plota o treeview
+        $this->view->treeview;
+    }
 }
 

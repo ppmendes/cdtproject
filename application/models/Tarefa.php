@@ -74,6 +74,22 @@ class Application_Model_Tarefa
 
     }
 
+    public static function getOptions2(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Tarefa();
+            $resultado = $table->fetchAll();
+
+            foreach($resultado as $item){
+                $options[] = array('label' => $item['nome'], 'id' => $item['tarefa_id']);
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public static function getOptions1($id_projeto_form = null){
 
         try{
@@ -108,6 +124,81 @@ class Application_Model_Tarefa
 
         }
 
+    }
+
+    public function retornaTarefa()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            // ainda resta apresentar historico de login do usuarios
+            $select = $db->select()
+                ->from('tarefa',
+                array('tarefa_id', 'nome'))
+                ->where('tarefa_id_pai=?',0);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch(Exception $e){
+            Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
+        }
+    }
+
+    public function paeFilhos($id_pai)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result=$db->query("CALL tarefas_start($id_pai)");
+        return $result->fetchAll();
+    }
+
+    public function criarTreeview($array)
+    {
+        $nroElementos=count($array);
+        $nivel=1;
+
+        $nome = $array[0]["nome"];
+        $id = $array[0]["id"];
+
+        echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
+
+
+        for($i=1;$i<$nroElementos;$i++)
+        {
+            $novonivel=$array[$i]['geracao'];
+
+            $nome = $array[$i]['nome'];
+            $id = $array[$i]['id'];
+
+            if($novonivel==$nivel)
+            {
+                echo'</li><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+
+            }
+            elseif($novonivel>$nivel)
+            {
+                echo'<ul>';
+                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                $nivel=$novonivel;
+            }
+            elseif($novonivel<$nivel)
+            {
+                $nro=$nivel-$novonivel;
+                echo'</li>';
+                $this->fecharnivel($nro);
+                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                $nivel=$novonivel;
+            }
+
+        }
+        $this->fecharnivel($nivel);
+    }
+
+    public function fecharnivel($nivel)
+    {
+        for($i=0;$i<$nivel;$i++)
+        {
+            echo'</ul></li>';
+        }
     }
 }
 

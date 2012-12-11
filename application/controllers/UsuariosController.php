@@ -62,6 +62,7 @@ class UsuariosController extends Zend_Controller_Action
                         unset($data['usuario']['username']);
                         unset($data['usuario']['password']);
                     }
+
                     $model->insert($data);
                 }
                 $this->_redirect('/usuarios/');
@@ -222,6 +223,7 @@ class UsuariosController extends Zend_Controller_Action
         }
 
     }
+
     public function treeviewAction()
     {
         $layout = $this->_helper->layout();
@@ -232,9 +234,12 @@ class UsuariosController extends Zend_Controller_Action
         {
             $id=32;
         }
+        // mostra as instituições pais
         $this->view->tree = $model->retornaPais();
 
+        // retorna array do procedure
         $result=$model->paeFilhos($id);
+        // cria o treeview
         $model->criarTreeview($result);
 
         $this->view->treeview;

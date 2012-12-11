@@ -14,6 +14,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->setIsArray('true');
         $this->setElementsBelongTo('tarefas');
 
+
         // Setar metodo
         $this->setMethod('post');
 
@@ -30,22 +31,6 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Nome da tarefa:',
             'required'   => true,
         ));
-
-//        // array para atributo situação
-//        $array_situacao_tarefa = array(
-//            1 => 'Ativa',
-//            2 => 'Inativo(a)',
-//        );
-//
-//        //situação da tarefa select type
-//        $this->addElement('select', 'situacao', array(
-//            'label'      => 'Situação:',
-//            'multiOptions'  => $array_situacao_tarefa,
-//            'required'   => true
-//        ));
-
-        // array para prioridade da tarefas
-
 
         //prioridade da tarefa select type
         $this->addElement('select', 'prioridade_id', array(
@@ -91,9 +76,17 @@ class Application_Form_Tarefas extends Zend_Form
 //            'required'   => true
 //        ));
 
-        $this->addElement('text', 'tarefa_id_pai', array(
-            'label'      => 'Tarefa ID Pai:',
-            'required'   => true,
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('acTarefas');
+        $emt->setLabel('Tarefa Superior:');
+        $emt->setJQueryParam('data', Application_Model_Tarefa::getOptions2())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#tarefas-tarefa_id_pai").val(ui.item.id) }')
+        ));
+        $this->addElement($emt);
+
+        $this->addElement('button', 'botaoPesquisa', array(
+            'required' => false,
+            'label'     => 'Pesquisar',
         ));
 
         $this->addElement('text', 'milestone', array(
@@ -210,23 +203,22 @@ class Application_Form_Tarefas extends Zend_Form
             'multiOptions' => Application_Model_Instituicao::getOptions(),
             'required'   => true,
         ));
-        //adicionar fase de desenvolvimento
-        //$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
-        //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
 
-        //$fasesDesenvolvimentoArray = array();
-        //foreach ($todasFasesDesenvolvimento AS $row){
-        //    $fasesDesenvolvimentoArray[$row->id] = $row->nome;
-        //}
-
-        /* Parte feita por Daniel */
-
-        /* parte feito por Eduardo */
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Tarefa',
+        ));
+
+        //set hidden projeto
+        $this->addElement('hidden', 'autoid', array(
+            'value'      => ''
+        ));
+
+        //set hidden projeto
+        $this->addElement('hidden', 'tarefa_id_pai', array(
+            'value'      => ''
         ));
     }
 }

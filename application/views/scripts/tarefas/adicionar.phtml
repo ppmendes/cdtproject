@@ -1,11 +1,36 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.fancybox').fancybox();
+
+        $("#tarefas-botaoPesquisa").click(function() {
+            $('<a class="fancybox fancybox.iframe" href="tarefas/treeview">Selecionar</a>').fancybox({
+                overlayShow: true
+            }).click();
+    });
+
+
+    });
+</script>
+
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Detalhes</a></li>
+        <li><a href="#tabs-2">Datas</a></li>
+        <li><a href="#tabs-3">Dependências</a></li>
+        <li><a href="#tabs-4">Recursos Humanos</a></li>
+        <li><a href="#tabs-5">Otros Recursos</a></li>
+    </ul>
+</div>
+
 <?php
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
+
 <script>
     function tarefaDetalhes()
     {
-        top.location.href = '/../usuarios/adicionar/';
+        top.location.href = '/../tarefas/adicionar/';
 
     }
 
@@ -17,12 +42,4 @@ echo $this->form;
     });
 </script>
 
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">Detalhes</a></li>
-        <li><a href="#tabs-2">Datas</a></li>
-        <li><a href="#tabs-2">Dependências</a></li>
-        <li><a href="#tabs-2">Recursos Humanos</a></li>
-        <li><a href="#tabs-2">Otros Recursos</a></li>
-    </ul>
-</div>
+
