@@ -34,9 +34,9 @@
     });
 </script>
 <script>
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = '/../cronogramafinanceiro/adicionar/';
+        top.location.href = '/../cronogramafinanceiro/adicionar/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -48,7 +48,10 @@
         float:right;
     }
 </style>
-    <button class='novaparcela btn_add' onclick='adicionar()'>Nova Parcela</button>
+<?php
+    $projeto_id = $this->id;
+    echo "<button class='novaparcela btn_add' onclick='adicionar($projeto_id)'>Nova Parcela</button>";
+?>
 <table id='table_id' border='0'>
     <thead>
     <tr>

@@ -9,15 +9,17 @@ class Application_Form_Cronogramafinanceiro extends Zend_Form
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('cronograma_financeiro');
 
+        $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
+
         $this->setMethod('post');
 
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('nomeProjeto');
-        $emt->setLabel('Projeto:');
-        $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#cronograma_financeiro-projeto_id").val(ui.item.id) }')
+        $nomeProjeto = Application_Model_Projeto::getNome($id_projeto);
+        $this->addElement('text', 'nomeProjeto', array(
+            'label'      => 'Projeto:',
+            'value'      => $nomeProjeto['0']['nome'],
+            'disabled'         => true,
+            'required'   => false,
         ));
-        $this->addElement($emt);
 
         $this->addElement('text', 'valor_aplicado_a_rubrica', array(
             'label'      => 'Valor Aplicado à Rubrica:',
@@ -30,9 +32,16 @@ class Application_Form_Cronogramafinanceiro extends Zend_Form
 
         $this->addElement($emtDatePicker);
 
-        $this->addElement('text', 'tipo', array(
+        $array_tipo_pagamento = array(
+            1 => 'Fatura',
+            2 => 'PF',
+        );
+
+        $this->addElement('select', 'tipo', array(
             'label'      => 'Tipo:',
-            'required'   => true
+            'multiOptions'  => $array_tipo_pagamento,
+            'required'   => true ,
+            'attribs' => array('onChange' => 'tipoPagamento(this.value)'),
         ));
 
         $this->addElement('text', 'numero_fatura_pf', array(
@@ -50,6 +59,7 @@ class Application_Form_Cronogramafinanceiro extends Zend_Form
         //set hidden
         $this->addElement('hidden', 'projeto_id', array(
             'label'      => '',
+            'value'      => $id_projeto,
         ));
 
 

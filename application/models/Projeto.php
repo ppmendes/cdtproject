@@ -96,5 +96,26 @@ class Application_Model_Projeto
         }
 
     }
+
+    public static function getNome($id)
+    {
+        try
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('p' => 'projeto'),
+                        array('p.nome'))
+                ->where('p.projeto_id = ?', $id);
+            $stmt = $select->query();
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 }
 
