@@ -58,10 +58,6 @@ class ProjetosController extends Zend_Controller_Action
 
         $data = $model->find($id)->toArray();
 
-//        foreach($data as &$item){
-//            $item = utf8_decode($item);
-//        }
-
         if(is_array($data)){
             $detalhes->setAction('/projetos/detalhes/projeto_id/' . $id);
             $detalhes->populate(array("projetos" => $data));

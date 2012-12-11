@@ -5,15 +5,15 @@ class Application_Model_CronogramaFinanceiro
 
     public function find($id){
         //DB TABLE
-        $table = new Application_Model_CronogramaFinanceiro();
+        $table = new Application_Model_DBTable_CronogramaFinanceiro();
         $cronograma_financeiro = $table->find($id)->current();
         return $cronograma_financeiro;
     }
 
     public function insert($data)
     {
-        $table = new Application_Model_DbTable_Projeto;
-        $table->insert($data['projetos']);
+        $table = new Application_Model_DbTable_CronogramaFinanceiro();
+        $table->insert($data['cronograma_financeiro']);
     }
 
     public function delete($id)
@@ -43,9 +43,10 @@ class Application_Model_CronogramaFinanceiro
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
-                ->from(array('c' => 'cronograma_financeiro'));
+                ->from(array('c' => 'cronograma_financeiro'))
 //                ->where('p.deletado = ?', false)
-//                ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
+             ->joinLeft(array('p' => 'projeto'), 'c.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id',
+             'p.nome'=>'p.nome'));
 //                ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
 //                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
 //                ->joinLeft(array('ga' => 'instituicao_gerencia'), 'p.instituicao_gerencia_id = ga.instituicao_gerencia_id',array(
