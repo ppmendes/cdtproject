@@ -103,20 +103,28 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement($emtDatePicker);
 
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
+        $emtDatePicker->setLabel('Data Final:');
+        $emtDatePicker->setFilters(array('DateFilter'));
+
+        $this->addElement($emtDatePicker);
+
         /*$this->addElement('text', 'data_inicio', array(
             'label'      => 'Data de Início:',
             'required'   => true,
         ));*/
 
-        $this->addElement('text', 'duracao', array(
-            'label'      => 'Duração:',
-            'required'   => true,
-        ));
         $this->addElement('select', 'tipo_duracao_id', array(
             'label'      => 'Tipo de Duração:',
             'multiOptions' => Application_Model_TipoDuracao::getOptions(),
             'required'   => true,
         ));
+
+        $this->addElement('text', 'duracao', array(
+            'label'      => 'Duração:',
+            'required'   => true,
+        ));
+
         $this->addElement('text', 'horas_trabalhadas', array(
             'label'      => 'Horas Trabalhadas:',
             'required'   => true,
@@ -126,12 +134,6 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Data Final:',
             'required'   => true,
         ));*/
-
-        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
-        $emtDatePicker->setLabel('Data Final:');
-        $emtDatePicker->setFilters(array('DateFilter'));
-
-        $this->addElement($emtDatePicker);
 
         $this->addElement('select', 'estado_tarefa_id', array(
             'label'      => 'Estado da tarefa:',
