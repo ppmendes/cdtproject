@@ -2,3 +2,18 @@
     $this->form->setAction($this->url());
     echo $this->form;
 ?>
+<script type="text/javascript">
+    function tipoPagamento(valor)
+    {
+        if (valor == 1)
+        {
+            $('#cronograma_financeiro-numero_fatura_pf-label').html('Número da Fatura:');
+        }
+        if (valor == 2)
+        {
+            $('#cronograma_financeiro-numero_fatura_pf-label').html('Número PF:');
+        }
+    }
+
+
+</script>

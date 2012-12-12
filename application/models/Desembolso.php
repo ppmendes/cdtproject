@@ -54,15 +54,17 @@ class Application_Model_Desembolso
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $colunas = array(
-            0 => 'd.desembolso_rel',
-            1 => 'd.codigo_documento_habil',
-            2 => 'd.data_documento_habil',
-            3 => 'd.order_dinheiro',
-            4 => 'd.data_pagamento',
-            5 => 'd.valor_desembolso',
-            6 => 'd.extornado',
-            7 => 'd.desembolso_id',
-            8 => 'd.empenho_id',
+            0 => 'd.desembolso_id',
+            1 => 'd.desembolso_rel',
+            2 => 'd.codigo_documento_habil',
+            3 => 'd.data_documento_habil',
+            4 => 'd.order_dinheiro',
+            5 => 'd.data_pagamento',
+            6 => 'd.valor_desembolso',
+            7 => 'd.empenho_id',
+            8 => 'd.extornado',
+            9 => 'd.desembolso_id',
+            10 => 'd.empenho_id',
         );
 
         $select = $db->select()
@@ -73,14 +75,18 @@ class Application_Model_Desembolso
         $stmt = $select->query();
 
         while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
-
-            $desembolso_id = $row[7];
-            $empenho_id = $row[8];
-            //unset($row[7]);
-            //unset($row[8]);
+            $extornado = $row[8];
+            $desembolso_id = $row[9];
+            $empenho_id = $row[10];
+            unset($row[10]);
+            unset($row[9]);
                 $row[0] = '<a href="/desembolso/detalhes/desembolso_id/'.$desembolso_id.'">'.$row[0].'</a>';
-                $row[2] = '<a href="/empenhos/detalhes/empenho_id/'.$empenho_id.'">'.$row[2].'</a>';
-
+                $row[7] = '<a href="/empenhos/detalhes/empenho_id/'.$empenho_id.'">'.$row[7].'</a>';
+            if($extornado == 1){
+                $row[8] = 'Sim';
+            } else{
+                $row[8] = 'Não';
+            }
 
             $data[] = $row;
         }

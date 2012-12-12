@@ -11,7 +11,10 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $cronogramaFinanceiroModel = new Application_Model_CronogramaFinanceiro();
-        $this->view->cronogramaFinanceiro = $cronogramaFinanceiroModel->selectAll();
+        $id = $this->_getParam('projeto_id');
+        $this->view->cronogramaFinanceiro = $cronogramaFinanceiroModel->selectAll($id);
+        $this->view->id = $id;
+
 
     }
 
@@ -19,7 +22,7 @@ class CronogramafinanceiroController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_Cronogramafinanceiro();
         $model = new Application_Model_CronogramaFinanceiro();
-        $id = $this->_getParam('projeto_id');
+        $id = $this->_getParam('cronograma_id');
 
 
         if($this->getRequest()->isPost()){
@@ -28,13 +31,14 @@ class CronogramafinanceiroController extends Zend_Controller_Action
                 $data = $form->getValues();
                 unset($data['cronograma_financeiro']['nomeProjeto']);
 
+
                 if($id){
                     $model->update($data, $id);
                 }else{
                     $model->insert($data);
                 }
 
-                $this->_redirect('/cronogramafinanceiro/');
+                $this->_redirect('/cronogramafinanceiro/index/projeto_id/'.$data['cronograma_financeiro']['projeto_id']);
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();

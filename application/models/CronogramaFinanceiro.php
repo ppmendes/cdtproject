@@ -31,23 +31,23 @@ class Application_Model_CronogramaFinanceiro
     public function update($data, $id)
     {
 
-        $table = new Application_Model_DbTable_Projeto;
+        $table = new Application_Model_DbTable_CronogramaFinanceiro();
         $where = $table->getAdapter()->quoteInto('projeto_id = ?',$id);
 
-        $table->update($data['projetos'],$where);
+        $table->update($data['cronograma_financeiro'],$where);
     }
 
-    public function selectAll()
+    public function selectAll($id)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
                 ->from(array('c' => 'cronograma_financeiro'))
-//                ->where('p.deletado = ?', false)
+                ->where('p.projeto_id = ?', $id)
              ->joinLeft(array('p' => 'projeto'), 'c.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id',
              'p.nome'=>'p.nome'));
-//                ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
+               //->joinLeft(array('d' => 'desembolso'), 'c.prioridade_id = pr.prioridade_id');
 //                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
 //                ->joinLeft(array('ga' => 'instituicao_gerencia'), 'p.instituicao_gerencia_id = ga.instituicao_gerencia_id',array(
 //                'ga.instituicao_gerencia_id'=>'ga.instituicao_gerencia_id','ga.nome_instituicao_gerencia'=>'ga.nome_instituicao_gerencia'));
