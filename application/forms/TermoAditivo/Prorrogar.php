@@ -36,7 +36,7 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
         $this->addElement($emtDatePicker2);
 
         //Coordenador do projeto input type text
-        $this->addElement('textarea', 'descricao_justificativa', array(
+        $this->addElement('textarea', 'termo_aditivo_descricao', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));

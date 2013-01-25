@@ -26,7 +26,7 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         $emf->setLabel('Elemento de Despesa Fonte:');
         $emf->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#termo_aditivo-orcamento_id_fonte").val(ui.item.id) }')
+            'function(event,ui) { $("#termo_aditivo-orcamento_origem").val(ui.item.id) }')
         ));
         $this->addElement($emf);
 
@@ -34,18 +34,18 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         $emt->setLabel('Elemento de Despesa Destinatário:');
         $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#termo_aditivo-orcamento_id_destino").val(ui.item.id) }')
+            'function(event,ui) { $("#termo_aditivo-orcamento_destino").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 
         //Coordenador do projeto input type text
-        $this->addElement('text', 'valor', array(
+        $this->addElement('text', 'valor_termino_aditivo', array(
             'label'      => 'Valor (R$):',
             'required'   => true
         ));
 
         //Gerência input type text
-        $this->addElement('textarea', 'descricao_justificativa', array(
+        $this->addElement('textarea', 'terrmo_aditivo_descricao', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));
@@ -57,12 +57,12 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'orcamento_id_fonte', array(
+        $this->addElement('hidden', 'orcamento_origem', array(
             'value'      => ''
         ));
 
         //set hidden
-        $this->addElement('hidden', 'orcamento_id_destino', array(
+        $this->addElement('hidden', 'orcamento_destino', array(
             'value'      => ''
         ));
 

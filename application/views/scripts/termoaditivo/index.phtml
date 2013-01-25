@@ -95,14 +95,14 @@ echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</butt
     }
     else if ($row['tp.nome_tipo'] == 'Remanejamento')
     {
-        echo "<td> Foram remanejados R$" . $row['valor'] . " da rubrica " . $row['r.codigo_rubrica'] . "->" . $row['r.descricao']
+        echo "<td> Foram remanejados R$" . $row['valor_termino_aditivo'] . " da rubrica " . $row['r.codigo_rubrica'] . "->" . $row['r.descricao']
             . " para " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . "</td>";
     }
     else
     {
-        echo "<td> Foi alterado o valor da rubrica " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . " para R$" . $row['valor'] . "</td>";
+        echo "<td> Foi alterado o valor da rubrica " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . " para R$" . $row['valor_termino_aditivo'] . "</td>";
     }
-    echo "<td>" .   $row['descricao_justificativa'] . "</td>";
+    echo "<td>" .   $row['termo_aditivo_descricao'] . "</td>";
     echo "<td >" .  $row['u.username'] . "</td>";
     echo "</tr>";
     }
