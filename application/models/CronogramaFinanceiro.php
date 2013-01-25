@@ -19,12 +19,13 @@ class Application_Model_CronogramaFinanceiro
     public function delete($id)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "projeto";
-        $deletado = true;
-        $where = $db->quoteInto('projeto_id = ?', $id);
-        $data = array('deletado' => $deletado);
+        $table = "cronograma_financeiro";
+        //$deletado = true;
+        $where = $db->quoteInto('cronograma_financeiro_id = ?', $id);
+        //$data = array('deletado' => $deletado);
 
-        $db->update($table, $data, $where);
+        //$db->update($table, $data, $where);
+        $db->delete($table, $where);
 
     }
 
@@ -33,7 +34,7 @@ class Application_Model_CronogramaFinanceiro
 
         $table = new Application_Model_DbTable_CronogramaFinanceiro();
         $where = $table->getAdapter()->quoteInto('projeto_id = ?',$id);
-
+        echo "<script>alert('chegou no update')</script>";
         $table->update($data['cronograma_financeiro'],$where);
     }
 

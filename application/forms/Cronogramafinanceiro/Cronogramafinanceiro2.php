@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Cronogramafinanceiro extends Zend_Form
+class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_Form
 {
 
     public function init()
@@ -41,8 +41,11 @@ class Application_Form_Cronogramafinanceiro extends Zend_Form
             'label'      => 'Tipo:',
             'multiOptions'  => $array_tipo_pagamento,
             'required'   => true ,
+            'value'   => 2,
             'attribs' => array('onChange' => 'tipoPagamento(this.value)'),
         ));
+
+        echo "<script>chamaTipoPagamento(2)</script>";
 
         $this->addElement('text', 'numero_fatura_pf', array(
             'label'      => 'Número da Fatura:',
