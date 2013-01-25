@@ -5,10 +5,22 @@
 <script type="text/javascript">
     function chamaTipoPagamento(valor)
     {
-        tipoPagamento(valor);
+        tipoPagamento2(valor);
     }
 
     function tipoPagamento(valor)
+    {
+        if (valor == 1)
+        {
+            $('#cronograma_financeiro-numero_fatura_pf-label').html('Número da Fatura:');
+        }
+        if (valor == 2)
+        {
+            $('#cronograma_financeiro-numero_fatura_pf-label').html('Número PF:');
+        }
+    }
+
+    function tipoPagamento2(valor)
     {
         if (valor == 1)
         {

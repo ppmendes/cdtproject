@@ -5,7 +5,7 @@ class Application_Model_CronogramaFinanceiro
 
     public function find($id){
         //DB TABLE
-        $table = new Application_Model_DBTable_CronogramaFinanceiro();
+        $table = new Application_Model_DbTable_CronogramaFinanceiro();
         $cronograma_financeiro = $table->find($id)->current();
         return $cronograma_financeiro;
     }
@@ -31,11 +31,10 @@ class Application_Model_CronogramaFinanceiro
 
     public function update($data, $id)
     {
-
-        $table = new Application_Model_DbTable_CronogramaFinanceiro();
-        $where = $table->getAdapter()->quoteInto('projeto_id = ?',$id);
-        echo "<script>alert('chegou no update')</script>";
-        $table->update($data['cronograma_financeiro'],$where);
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "cronograma_financeiro";
+        $where = $db->quoteInto('cronograma_financeiro_id = ?', $id);
+        $db->update($table, $data['cronograma_financeiro'],$where);
     }
 
     public function selectAll($id)

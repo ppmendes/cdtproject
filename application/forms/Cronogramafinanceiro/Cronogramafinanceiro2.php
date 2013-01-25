@@ -48,7 +48,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
         echo "<script>chamaTipoPagamento(2)</script>";
 
         $this->addElement('text', 'numero_fatura_pf', array(
-            'label'      => 'Número da Fatura:',
+            'label'      => 'Número PF:',
             'required'   => true
         ));
 

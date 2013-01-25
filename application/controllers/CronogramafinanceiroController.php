@@ -21,22 +21,15 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
-        $form2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
         $model = new Application_Model_CronogramaFinanceiro();
         $id = $this->_getParam('cronograma_financeiro_id');
-        echo "<script>alert($id)</script>";
         $pid= $this->_getParam('projeto_id');
 
 
         if($this->getRequest()->isPost()){
-            echo "<script>alert('e post')</script>";
             if($form->isValid($request->getPost())){
-                echo "<script>alert('e valido')</script>";
-
                 $data = $form->getValues();
                 unset($data['cronograma_financeiro']['nomeProjeto']);
-                //echo "<script>alert($data)</script>";
-
 
                 if($id){
                     $model->update($data, $id);
@@ -58,13 +51,15 @@ class CronogramafinanceiroController extends Zend_Controller_Action
 
                 }
                 else if($data['tipo']== 2){
-                $form2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
-                $form2->populate(array("cronograma_financeiro" => $data));
-                $this->view->form = $form2;
+                    $form2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
+                    $form2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                    $form2->populate(array("cronograma_financeiro" => $data));
+                    $this->view->form = $form2;
                 }
             }
         }
         else {
+            echo "<script>alert('else')</script>";
             $this->view->form = $form;
 
         }
