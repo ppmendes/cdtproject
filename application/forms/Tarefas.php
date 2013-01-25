@@ -114,16 +114,26 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));*/
 
-        $this->addElement('select', 'tipo_duracao_id', array(
-            'label'      => 'Tipo de Duração:',
-            'multiOptions' => Application_Model_TipoDuracao::getOptions(),
-            'required'   => true,
-        ));
-
         $this->addElement('text', 'duracao', array(
             'label'      => 'Duração:',
             'required'   => true,
         ));
+        $this->addElement('select', 'tipo_duracao_id', array(
+            //'label'      => 'Tipo de Duração:',
+            'multiOptions' => Application_Model_TipoDuracao::getOptions(),
+            'required'   => true,
+        ));
+
+        $this->addElement('button', 'botaoDuracao', array(
+            'required' => false,
+            'label'     => 'Duração',
+        ));
+        $this->addElement('button', 'botaoDataEncerramento', array(
+            'required' => false,
+            'label'     => 'Data de Encerramento',
+        ));
+
+
 
         $this->addElement('text', 'horas_trabalhadas', array(
             'label'      => 'Horas Trabalhadas:',
