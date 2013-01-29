@@ -1,46 +1,7 @@
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.fancybox').fancybox();
-
-        $("#tarefas-botaoPesquisa").click(function() {
-            $('<a class="fancybox fancybox.iframe" href="tarefas/treeview">Selecionar</a>').fancybox({
-                overlayShow: true
-            }).click();
-    });
-
-
-    });
-</script>
-
-<div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">Detalhes</a></li>
-        <li><a href="#tabs-2">Datas</a></li>
-        <li><a href="#tabs-3">Dependências</a></li>
-        <li><a href="#tabs-4">Recursos Humanos</a></li>
-        <li><a href="#tabs-5">Otros Recursos</a></li>
-    </ul>
-</div>
-
 <?php
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
-
-<script>
-    function tarefaDetalhes()
-    {
-        top.location.href = '/../tarefas/adicionar/';
-
-    }
-
-</script>
-
-<script>
-    $(function() {
-        $( "#tabs" ).tabs();
-    });
-</script>
 
 <script>
     function calcularDias(d_inicio, d_final, t_duracao)

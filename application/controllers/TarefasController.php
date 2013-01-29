@@ -25,9 +25,13 @@ class TarefasController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
 //                echo "<pre>";
-//                print_r($form->getValues());
+                //print_r($form->getValues());
+                //exit;
 //                echo "</pre>";
                 $data = $form->getValues();
+                print_r($data);
+                exit;
+
                 if($id){
                     $model->update($data, $id);
                 }else{
@@ -49,7 +53,6 @@ class TarefasController extends Zend_Controller_Action
                 $form->populate(array("tarefas" => $data));
             }
         }
-
         $this->view->form = $form;
 
 
@@ -88,28 +91,6 @@ class TarefasController extends Zend_Controller_Action
 
     }
 
-    public function treeviewAction()
-    {
-        $layout = $this->_helper->layout();
-        $layout->setLayout('iframe');
-        $model = new Application_Model_Tarefa;
-        $id = $this->_getParam('tarefa_id');
-        if($id==null)
-        {
-            $id=2;
-        }
 
-        // mostra as instituições pais
-        $this->view->tree = $model->retornaTarefa();
-
-        // retorna array do procedure
-        $result=$model->paeFilhos($id);
-
-        // cria o treeview
-        $model->criarTreeview($result);
-
-        // plota o treeview
-        $this->view->treeview;
-    }
 }
 
