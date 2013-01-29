@@ -11,6 +11,10 @@ class Application_Model_TermoAditivo
 
     public function insert($data)
     {
+        $str = $data['termo_aditivo']['valor_termino_aditivo'];
+        $var = str_replace(".", "", $str);
+        $var2 = str_replace(",", ".",$var);
+        $data['termo_aditivo']['valor_termino_aditivo'] = $var2;
         $data['termo_aditivo']['data_termo_aditivo'] = date('Y-m-d H:i:s', time());
         $table = new Application_Model_DbTable_TermoAditivo;
         $table->insert($data['termo_aditivo']);
@@ -47,6 +51,15 @@ class Application_Model_TermoAditivo
     }
 
     public static function getOptions(){
+    }
+
+    public function banco($str)
+    {
+        $var = str_replace(".", "", $str);
+        $var2= str_replace(",", ".",$var);
+
+        return $var2;
+
     }
 }
 

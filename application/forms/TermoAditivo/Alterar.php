@@ -33,8 +33,11 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
         //Coordenador do projeto input type text
         $this->addElement('text', 'valor_termino_aditivo', array(
             'label'      => 'Valor (R$):',
-            'required'   => true
+            'required'   => true,
+            'attribs'    => array('maxLength' => 13),
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
+       // echo "<script> mascara(); </script>";
 
         //Gerência input type text
         $this->addElement('textarea', 'termo_aditivo_descricao', array(
@@ -70,3 +73,6 @@ class Application_Form_TermoAditivo_Alterar extends Zend_Form
 
     }
 }
+
+
+
