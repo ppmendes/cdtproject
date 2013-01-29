@@ -9,11 +9,22 @@
 class Application_Form_Tarefas extends Zend_Form
 {
 
-    public function init()
+    private $data_inicio;
+    private $data_final;
+    private $tipo_duraco;
+
+    public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
+    {
+        $this->data_inicio=$dat_inic_controller;
+        $this->data_final=$dat_fin_controller;
+        $this->tipo_duraco=$tipo_duracao_controller;
+    }
+
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setElementsBelongTo('tarefas');
-
+        $this->setAttrib('enctype', 'multipart/form-data');
 
         // Setar metodo
         $this->setMethod('post');
@@ -119,7 +130,7 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
         $this->addElement('select', 'tipo_duracao_id', array(
-            //'label'      => 'Tipo de Duração:',
+            'label'      => 'Tipo de Duração:',
             'multiOptions' => Application_Model_TipoDuracao::getOptions(),
             'required'   => true,
         ));
@@ -127,7 +138,9 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('button', 'botaoDuracao', array(
             'required' => false,
             'label'     => 'Duração',
+            'attribs' => array('onClick' => 'calcularDias($this->data_inicio, $this->data_final, $this->tipo_duraco)'),
         ));
+
         $this->addElement('button', 'botaoDataEncerramento', array(
             'required' => false,
             'label'     => 'Data de Encerramento',

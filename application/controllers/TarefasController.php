@@ -18,6 +18,7 @@ class TarefasController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Tarefas();
+        $form->startform();
         $model = new Application_Model_Tarefa();
         $id = $this->_getParam('tarefa_id');
 
@@ -39,7 +40,12 @@ class TarefasController extends Zend_Controller_Action
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
+                $data_inicio=$data['tarefas']['data_inicio'];
+                $data_final=$data['tarefas']['data_final'];
+                $tipo_duracao=$data['tarefas']['tipo_duracao_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
+                $form->setDatas($data_inicio, $data_final, $tipo_duracao);
+                $form->startform();
                 $form->populate(array("tarefas" => $data));
             }
         }
