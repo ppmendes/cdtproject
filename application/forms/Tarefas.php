@@ -38,7 +38,7 @@ class Application_Form_Tarefas extends Zend_Form
         ));
 
         $this->addElement('hidden', 'label_projeto', array(
-            'description' => 'Detalhes',
+            'description' => 'Detalhess',
             'ignore' => true,
             'order'          => 1,
             'decorators' => array(
