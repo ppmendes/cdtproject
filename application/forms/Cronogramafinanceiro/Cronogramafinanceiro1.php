@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form_Cronogramafinanceiro extends Zend_Form
+class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_Form
 {
 
     public function init()

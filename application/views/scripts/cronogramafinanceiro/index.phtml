@@ -39,6 +39,23 @@
         top.location.href = '/../cronogramafinanceiro/adicionar/projeto_id/'+projeto_id;
 
     }
+
+    function editar(id, pid)
+    {
+        top.location.href = '/../cronogramafinanceiro/adicionar/cronograma_financeiro_id/'+id+'/projeto_id/'+pid;
+    }
+
+    function confirmarExclusao(id, pid)
+    {
+        var answer = confirm("Deseja realmente excluir o cronograma?");
+        if (answer) {
+            top.location.href = '/../cronogramafinanceiro/excluir/cronograma_financeiro_id/'+id+'/projeto_id/'+pid;
+        }
+        else {
+            alert("O cronograma não foi excluído!");
+        }
+    }
+
 </script>
 <style>
     table * *{
@@ -56,11 +73,12 @@
     <thead>
     <tr>
         <th>Id</th>
-        <th>Projeto</th>
         <th>Valor</th>
         <th>Data</th>
         <th>Tipo</th>
         <th>Fatura</th>
+        <th>Editar</th>
+        <th>Excluir</th>
 <!--        <th>Data final real</th>-->
 <!--        <th>Estado do projeto</th>-->
 <!--        <th>Porcentagem completa</th>-->
@@ -76,13 +94,17 @@
     {
     //$row = $row->toArray();
     echo "<tr id='".$row['cronograma_financeiro_id']."'>";
-    echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}'>"
+    echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}/projeto_id/{$projeto_id}'>"
         .$row['cronograma_financeiro_id']. "</a></td>";
-    echo "<td>" .   $row['p.nome'] . "</td>";
     echo "<td>" .   $row['valor_aplicado_a_rubrica'] . "</td>";
     echo "<td>" .   $row['data_previa'] . "</td>";
     echo "<td>" .   $row['tipo'] . "</td>";
     echo "<td>" .   $row['numero_fatura_pf'] . "</td>";
+//    echo "<td><a class='\right btn_edit\' href='/cronogramafinanceiro/adicionar/projeto_id/".$projeto_id."/cronograma_financeiro_id/"
+//    ."{$row['cronograma_financeiro_id']}'>aa</a></td>";
+//    echo "<td><a class='\right btn_delete\' href='/cronogramafinanceiro/excluir/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}'>bb</a></td>";
+    echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Editar</button>";
+    echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Editar</button>";
 
 //    echo "<td>" .   $row['ga.nome_instituicao_gerencia'] . "</td>";
 //    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";

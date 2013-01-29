@@ -1,10 +1,10 @@
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
-    function confirmarExclusao(id)
+    function confirmarExclusao(id, pid)
     {
         var answer = confirm("Deseja realmente excluir o cronograma?");
         if (answer) {
-            top.location.href = '/../cronogramafinanceiro/excluir/cronograma_financeiro_id/'+id;
+            top.location.href = '/../cronogramafinanceiro/excluir/cronograma_financeiro_id/'+id+'/projeto_id/'+pid;
         }
         else {
             alert("O cronograma não foi excluído!");
@@ -12,18 +12,19 @@
     }
 </script>
 <script>
-    function editar(id)
+    function editar(id, pid)
     {
-        top.location.href = '/../cronogramafinanceiro/adicionar/cronograma_financeiro_id/'+id;
+        top.location.href = '/../cronogramafinanceiro/adicionar/cronograma_financeiro_id/'+id+'/projeto_id/'+pid;
 
     }
 </script>
 
 <?php
  $id = $this->id;
+$pid = $this->pid;
 
-echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id)'>Excluir</button>";
-echo "<button class=\"right btn_edit\" onclick='editar($id)'>Editar</button>";
+echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id, $pid)'>Excluir</button>";
+echo "<button class=\"right btn_edit\" onclick='editar($id, $pid)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
