@@ -28,6 +28,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+
         $this->addElement('hidden', 'label_projeto', array(
             'description' => 'Identificação do Projeto',
             'ignore' => true,
@@ -71,6 +72,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'   => false,
             'order'          => 6,
         ));
+
 
         $this->addElement('hidden', 'label_beneficiario', array(
             'description' => 'Dados do Contratado',

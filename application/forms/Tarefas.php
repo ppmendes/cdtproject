@@ -13,6 +13,7 @@ class Application_Form_Tarefas extends Zend_Form
     private $data_final;
     private $tipo_duraco;
 
+
     public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
     {
         $this->data_inicio=$dat_inic_controller;
@@ -37,18 +38,16 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-        $this->addElement('hidden', 'label_projeto', array(
-            'description' => 'Detalhess',
-            'ignore' => true,
-            'order'          => 1,
-            'decorators' => array(
-                array('Description', array('escape'=>false)),
-            ),
-        ));
-
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
             'label'      => 'Nome da tarefa:',
+            'required'   => true,
+        ));
+
+        //progresso da tarefa select type
+        $this->addElement('select', 'estado_tarefa_id', array(
+            'label'      => 'Situação da tarefa:',
+            'multiOptions' => Application_Model_EstadoTarefa::getOptions(),
             'required'   => true,
         ));
 
@@ -91,32 +90,57 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true
         ));
 
-//        $this->addElement('checkbox', 'marco_arquivo', array(
-//            'label'      => 'Marco:',
-//            'required'   => true
-//        ));
 
-        /*$emt = new ZendX_JQuery_Form_Element_AutoComplete('acTarefas');
-        $emt->setLabel('Tarefa Superior:');
-        $emt->setJQueryParam('data', Application_Model_Tarefa::getOptions2())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-tarefa_id_pai").val(ui.item.id) }')
-        ));
-        $this->addElement($emt);*/
 
-        $this->addElement('button', 'botaoPesquisa', array(
-            'required' => false,
-            'label'     => 'Pesquisar',
+    /***************************** LABEL DETALHES *********************************/
+        $this->addElement('hidden', 'label_projeto', array(
+            'description' => 'Detalhes',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
         ));
 
-        $this->addElement('text', 'milestone', array(
-            'label'      => 'Milestone:',
+        $this->addElement('select', 'tipo_tarefa_id', array(
+            'label'      => 'Tipo de tarefa:',
+            'multiOptions' => Application_Model_TipoTarefa::getOptions(),
             'required'   => true,
         ));
+
+        $this->addElement('select', 'acesso_id', array(
+            'label'      => 'Acesso:',
+            'multiOptions' => Application_Model_Acesso::getOptions(),
+            'required'   => true,
+        ));
+
         $this->addElement('text', 'dono', array(
-            'label'      => 'Dono:',
+            'label'      => 'Responsável da tarefa:',
             'required'   => true,
         ));
+
+        $this->addElement('text', 'website_relacionado', array(
+            'label'      => 'Website Relacionado:',
+            'required'   => true,
+        ));
+
+        $this->addElement('text', 'orcamento_tarefa', array(
+            'label'      => 'Orçamento da Tarefa:',
+            'required'   => true,
+        ));
+
+        $this->addElement('textarea', 'descricao', array(
+            'label'      => 'Descrição:',
+            'required'   => true,
+        ));
+    /******************************** LABEL DATAS **************************************/
+        $this->addElement('hidden', 'label_datas', array(
+            'description' => 'Datas',
+            'ignore' => true,
+            'decorators' => array(
+            array('Description', array('escape'=>false)),
+            ),
+        ));
+
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
         $emtDatePicker->setLabel('Data de Início:');
         $emtDatePicker->setFilters(array('DateFilter'));
@@ -129,19 +153,52 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement($emtDatePicker);
 
-        /*$this->addElement('text', 'data_inicio', array(
-            'label'      => 'Data de Início:',
+        $this->addElement('select', 'tipo_duracao_id', array(
+            'label'      => 'Tipo de Duração:',
+            'multiOptions' => Application_Model_TipoDuracao::getOptions(),
             'required'   => true,
-        ));*/
+        ));
 
         $this->addElement('text', 'duracao', array(
             'label'      => 'Duração:',
             'required'   => true,
         ));
-        $this->addElement('select', 'tipo_duracao_id', array(
-            'label'      => 'Tipo de Duração:',
-            'multiOptions' => Application_Model_TipoDuracao::getOptions(),
+
+        $this->addElement('text', 'horas_trabalhadas', array(
+            'label'      => 'Horas Trabalhadas:',
             'required'   => true,
+        ));
+
+        $array_horas_trabalhadas = array(
+            1 => '06',
+            2 => '07',
+            3 => '08',
+            4 => '09',
+            5 => '10',
+            6 => '11',
+            7 => '12',
+            8 => '13',
+            9 => '14',
+            10 => '15',
+            11 => '16',
+            12 => '17',
+            13 => '18',
+            14 => '19',
+            15 => '20',
+            16 => '21',
+            17 => '22',
+        );
+
+        $this->addElement('select', 'hora_inicio', array(
+            'label'      => 'Hora inicio:',
+            'multiOptions'  => $array_horas_trabalhadas,
+            'required'   => true
+        ));
+
+        $this->addElement('select', 'hora_fim', array(
+            'label'      => 'Hora fim:',
+            'multiOptions'  => $array_horas_trabalhadas,
+            'required'   => true
         ));
 
         $this->addElement('button', 'botaoDuracao', array(
@@ -154,34 +211,32 @@ class Application_Form_Tarefas extends Zend_Form
             'required' => false,
             'label'     => 'Data de Encerramento',
         ));
+        /******************************** LABEL DEPENDENCIAS **************************************/
+        $this->addElement('hidden', 'dependencias', array(
+            'description' => 'Dependencias',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
+        ));
 
-
-
-        $this->addElement('text', 'horas_trabalhadas', array(
-            'label'      => 'Horas Trabalhadas:',
+        $this->addElement('checkbox', 'tarefa_dinamica', array(
+            'label'      => 'Tarefa Dinâmica:',
             'required'   => true,
         ));
 
-        /*$this->addElement('text', 'data_final', array(
-            'label'      => 'Data Final:',
-            'required'   => true,
-        ));*/
 
-        $this->addElement('select', 'estado_tarefa_id', array(
-            'label'      => 'Estado da tarefa:',
-            'multiOptions' => Application_Model_EstadoTarefa::getOptions(),
-            'required'   => true,
+        /******************************** LABEL RECURSOS HUMANOS **************************************/
+        $this->addElement('hidden', 'recursos_humanos', array(
+            'description' => 'Recursos Humanos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
         ));
-        $this->addElement('text', 'descricao', array(
-            'label'      => 'Descrição:',
-            'required'   => true,
-        ));
-        $this->addElement('text', 'orcamento_tarefa', array(
-            'label'      => 'Orçamento da Tarefa:',
-            'required'   => true,
-        ));
-        $this->addElement('text', 'website_relacionado', array(
-            'label'      => 'Website Relacionado:',
+
+        $this->addElement('text', 'milestone', array(
+            'label'      => 'Milestone:',
             'required'   => true,
         ));
 
@@ -191,16 +246,17 @@ class Application_Form_Tarefas extends Zend_Form
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true,
         ));
-        $this->addElement('text', 'tarefa_dinamica', array(
-            'label'      => 'Tarefa Dinâmica:',
-            'required'   => true,
+
+        /******************************** LABEL OUTROS RECURSOS **************************************/
+        $this->addElement('hidden', 'outros', array(
+            'description' => 'Outros Recursos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
         ));
 
-        $this->addElement('select', 'acesso_id', array(
-            'label'      => 'Acesso:',
-            'multiOptions' => Application_Model_Acesso::getOptions(),
-            'required'   => true,
-        ));
+
 
 
         /*$this->addElement('text', 'acesso_id', array(
@@ -212,11 +268,7 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Notificação:',
             'required'   => true,
         ));
-        $this->addElement('select', 'tipo_tarefa_id', array(
-            'label'      => 'Tipo de tarefa:',
-            'multiOptions' => Application_Model_TipoTarefa::getOptions(),
-            'required'   => true,
-        ));
+
 
         /*$this->addElement('select', 'projeto_id', array(
             'label'      => 'Projeto:',
