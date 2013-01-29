@@ -53,6 +53,7 @@ class TermoaditivoController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
+
                 unset($data['termo_aditivo']['termoAditivoRemanejar1']);
                 unset($data['termo_aditivo']['termoAditivoRemanejar2']);
                 $model->insert($data);
@@ -82,7 +83,10 @@ class TermoaditivoController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                 $data = $form->getValues();
+
+
                 unset($data['termo_aditivo']['termoAditivoAlterar']);
+
                     $model->insert($data);
 
                 $this->_redirect('/termoaditivo/index/projeto_id/' . $data['termo_aditivo']['projeto_id']);
@@ -100,7 +104,6 @@ class TermoaditivoController extends Zend_Controller_Action
 
 
     }
-
 
 }
 

@@ -45,7 +45,7 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
         ));
 
         //Gerência input type text
-        $this->addElement('textarea', 'terrmo_aditivo_descricao', array(
+        $this->addElement('textarea', 'termo_aditivo_descricao', array(
             'label'      => 'Motivo/Descrição:',
             'required'   => true
         ));

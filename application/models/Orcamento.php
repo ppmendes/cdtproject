@@ -49,7 +49,7 @@ class Application_Model_Orcamento
                 ->from(array('o' => 'orcamento'), array('o.orcamento_id'=>'o.orcamento_id', 'o.valor_orcamento'=>'o.valor_orcamento', 'r.rubrica_id' => 'r.rubrica_id'))
                 ->where('p.projeto_id = ?' , $id)
                 ->joinInner(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica'=>'r.codigo_rubrica', 'r.descricao'=>'r.descricao'))
-                ->joinInner(array('d' => 'destino'), 'o.destino_id = d.destino_id', array('d.nome_destino'=>'d.nome_destino'))
+                ->joinInner(array('d' => 'destinatario'), 'o.destinatario_id = d.destinatario_id', array('d.nome_destinatario'=>'d.nome_destinatario'))
                 ->joinInner(array('p' => 'projeto'), 'o.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id'));
 
             $stmt = $select->query();
@@ -60,7 +60,7 @@ class Application_Model_Orcamento
                 //{
                   //  $options2[$item['rubrica_id']] = $item['codigo_rubrica']." - ".$item['descricao'];
                     $options[] = array('label' => $item['r.codigo_rubrica']." -> ".$item['r.descricao'] ." (" .
-                                                  $item['d.nome_destino'] . ") (R$" . $item['o.valor_orcamento'] .")" ,
+                                                  $item['d.nome_destinatario'] . ") (R$" . $item['o.valor_orcamento'] .")" ,
                                                   'id' => $item['o.orcamento_id']);
                 }
 
