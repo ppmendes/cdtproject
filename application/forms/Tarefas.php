@@ -37,6 +37,15 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
+        $this->addElement('hidden', 'label_projeto', array(
+            'description' => 'Detalhes',
+            'ignore' => true,
+            'order'          => 1,
+            'decorators' => array(
+                array('Description', array('escape'=>false)),
+            ),
+        ));
+
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
             'label'      => 'Nome da tarefa:',
@@ -87,13 +96,13 @@ class Application_Form_Tarefas extends Zend_Form
 //            'required'   => true
 //        ));
 
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('acTarefas');
+        /*$emt = new ZendX_JQuery_Form_Element_AutoComplete('acTarefas');
         $emt->setLabel('Tarefa Superior:');
         $emt->setJQueryParam('data', Application_Model_Tarefa::getOptions2())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
             'function(event,ui) { $("#tarefas-tarefa_id_pai").val(ui.item.id) }')
         ));
-        $this->addElement($emt);
+        $this->addElement($emt);*/
 
         $this->addElement('button', 'botaoPesquisa', array(
             'required' => false,
