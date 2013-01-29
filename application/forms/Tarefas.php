@@ -224,6 +224,26 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Tarefa Dinâmica:',
             'required'   => true,
         ));
+        $this->addElement('multiselect', 'todas_tarefas', array(
+            'label'      => 'Todas as Tarefas:',
+            'multiOptions' => Application_Model_Tarefa::getOptions(),
+            'required'   => false,
+        ));
+        $this->addElement('button', 'botao_Adicionar_Tarefa', array(
+            'required' => false,
+            'label'     => '>',
+        ));
+
+        $this->addElement('button', 'botao_Deletar_Tarefa', array(
+            'required' => false,
+            'label'     => '<',
+        ));
+
+        $this->addElement('multiselect', 'dependencia_tarefa', array(
+            'label'      => 'Dependencias das Tarefas:',
+            'required'   => false,
+        ));
+
 
 
         /******************************** LABEL RECURSOS HUMANOS **************************************/
@@ -235,15 +255,35 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-        $this->addElement('text', 'milestone', array(
-            'label'      => 'Milestone:',
-            'required'   => true,
+        $this->addElement('multiselect', 'recusrsos_humanos', array(
+            'label'      => 'Recursos Humanos:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
+            'required'   => false,
+        ));
+        $this->addElement('button', 'botaoAdicionarRH', array(
+            'required' => false,
+            'label'     => '>',
+        ));
+        $this->addElement('select', 'percentagem_trabalho', array(
+            'label'      => 'Porcentagem Completa:',
+            'multiOptions'  => $array_progresso_tarefa,
+            'required'   => true
+        ));
+        $this->addElement('button', 'botaoDeletarRH', array(
+            'required' => false,
+            'label'     => '<',
         ));
 
-        //usuario logado?
-        $this->addElement('text', 'criador', array(
-            'label'      => 'Responsável:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
+        $this->addElement('multiselect', 'asociado_tarefa', array(
+            'label'      => 'Asociado a Tarefa:',
+            'required'   => false,
+        ));
+        $this->addElement('textarea', 'comentario_email', array(
+            'label'      => 'Comentários Adicionais do E-mail:',
+            'required'   => false,
+        ));
+        $this->addElement('checkbox', 'notificar_email', array(
+            'label'      => 'Notificar associados da tarefa por e-mail:',
             'required'   => true,
         ));
 
@@ -258,7 +298,17 @@ class Application_Form_Tarefas extends Zend_Form
 
 
 
+        $this->addElement('text', 'milestone', array(
+            'label'      => 'Milestone:',
+            'required'   => true,
+        ));
 
+        //usuario logado?
+        $this->addElement('text', 'criador', array(
+            'label'      => 'Responsável:',
+            'multiOptions' => Application_Model_Usuario::getOptions(),
+            'required'   => true,
+        ));
         /*$this->addElement('text', 'acesso_id', array(
             'label'      => 'Acesso:',
             'required'   => true,
