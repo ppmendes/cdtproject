@@ -2,6 +2,25 @@
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
+<script type="text/javascript">
+
+    function atualizarTarefas(valor) {
+
+        if(valor!=0){
+            $.ajax({
+                url: '/tarefas/selecttarefas/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#tarefas-todas_tarefas').html(data);
+                }
+            })
+        }
+
+
+    }
+
+</script>
 
 <script>
     function calcularDias(d_inicio, d_final, t_duracao)

@@ -45,7 +45,7 @@ class Application_Form_Tarefas extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id)}')
+            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id); atualizarTarefas(ui.item.id)}')
         ));
         $this->addElement($emt);
 
@@ -238,7 +238,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
             'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
-            'required'   => false,
+            'required'   => true,
         ));
         $this->addElement('button', 'botao_Adicionar_Tarefa', array(
             'required' => false,
@@ -266,7 +266,7 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-        $this->addElement('multiselect', 'recusrsos_humanos', array(
+        $this->addElement('multiselect', 'recursos_humanos', array(
             'label'      => 'Recursos Humanos:',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => false,
