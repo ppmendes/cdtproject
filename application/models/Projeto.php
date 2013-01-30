@@ -61,7 +61,6 @@ class Application_Model_Projeto
 
     public static function getOptions(){
         try{
-            //$options2 = array();
             $options = array();
             $table = new Application_Model_DbTable_Projeto();
             $resultado = $table->fetchAll(null,'nome asc');

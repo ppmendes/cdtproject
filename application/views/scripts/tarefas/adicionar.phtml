@@ -20,13 +20,46 @@ echo $this->form;
 
     }
 
-</script>
+    function atualizarUsuarios(valor) {
 
-<script>
-    function calcularDias(d_inicio, d_final, t_duracao)
-    {
-        alert('alert mundo');
+        if(valor!=0){
+            $.ajax({
+                url: '/tarefas/selectusuarios/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#tarefas-recursos_humanos').html(data);
+                }
+            })
+        }
+
+
     }
+
+    function calcularDias()
+    {
+
+    }
+
+    $(function($){
+
+        // no id #enviar assim que clicar vai executar um função
+        $('#tarefas-botaoDuracao').click(function(){
+
+            /* veja que eu criei variaveis para guardar os item
+            * e sómente precisei usar a função val() para
+            * retornar o valor dos campo para a varivel
+            */
+
+            var inicio = $('#tarefas-data_inicio').val();
+            var final = $('#tarefas-data_final').val();
+
+            // só parar testar coloco as variveis em um alert só para testar mesmo
+            alert(inicio + " " + final);
+            alert($('#tarefas-data_final').val());
+        });
+
+    });
 </script>
 
 

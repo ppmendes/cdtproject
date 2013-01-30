@@ -26,6 +26,10 @@
     {
         top.location.href = '/../cronogramafinanceiro/index/projeto_id/'+id;
     }
+    function tarefasProjeto(id)
+    {
+        top.location.href= '/../tarefas/index/projeto_id/'+id;
+    }
 </script>
 
 <?php
@@ -38,4 +42,5 @@ $this->detalhes->setAction($this->url());
 echo $this->detalhes;
 echo "<button class='termo_aditivo' onclick='termoAditivo($id)'>Termo Aditivo do Projeto</button>";
 echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'>Cronograma Financeiro</button>";
+echo "<button class='' onclick='tarefasProjeto($id)'>Tarefas</button>";
 ?>

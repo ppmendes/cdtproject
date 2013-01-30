@@ -25,6 +25,41 @@ class Application_Model_Usuario
 
     }
 
+    public static function getOptions1($id_projeto_form = null){
+        try{
+            if($id_projeto_form == null)
+            {
+                $options = array(''=>'nenhum');
+                $table = new Application_Model_DbTable_Usuario();
+                $resultado = $table->fetchAll();
+
+
+                foreach($resultado as $item){
+
+                    $options[$item['usuario_id']] = $item['nome'];
+                }
+                return $options;
+            }
+            else
+            {
+                $options = array(''=>'nenhum');
+
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form");
+
+
+                foreach($resultado as $item){
+
+                    $options[$item['usuario_id']] = $item['nome'];
+                }
+                return $options;
+            }
+        } catch(Exception $e){
+
+        }
+
+    }
+
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Usuario;

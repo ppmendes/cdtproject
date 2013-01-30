@@ -18,13 +18,13 @@ class Application_Form_Tarefas extends Zend_Form
         $this->id_projeto = $id_projeto_controller;
     }
 
-    /*public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
+    public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
     {
         $this->data_inicio=$dat_inic_controller;
         $this->data_final=$dat_fin_controller;
         $this->tipo_duraco=$tipo_duracao_controller;
     }
-    */
+
     public function startform()
     {
         $this->setIsArray('true');
@@ -45,7 +45,7 @@ class Application_Form_Tarefas extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id); atualizarTarefas(ui.item.id)}')
+            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id)}')
         ));
         $this->addElement($emt);
 
@@ -153,7 +153,7 @@ class Application_Form_Tarefas extends Zend_Form
         ));
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
-        $emtDatePicker->setLabel('Data de Início:');
+        $emtDatePicker->setLabel('Data Início:');
         $emtDatePicker->setFilters(array('DateFilter'));
 
         $this->addElement($emtDatePicker);
@@ -163,6 +163,9 @@ class Application_Form_Tarefas extends Zend_Form
         $emtDatePicker->setFilters(array('DateFilter'));
 
         $this->addElement($emtDatePicker);
+
+        var_dump($emtDatePicker);
+
 
         $this->addElement('select', 'tipo_duracao_id', array(
             'label'      => 'Tipo de Duração:',
@@ -215,7 +218,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('button', 'botaoDuracao', array(
             'required' => false,
             'label'     => 'Duração',
-            'attribs' => array('onClick' => 'calcularDias($this->data_inicio, $this->data_final, $this->tipo_duraco)'),
+            'attribs' => array('onClick' => 'calcularDias()'),
         ));
 
         $this->addElement('button', 'botaoDataEncerramento', array(
@@ -268,18 +271,21 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('multiselect', 'recursos_humanos', array(
             'label'      => 'Recursos Humanos:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
+            'multiOptions' => Application_Model_Usuario::getOptions1(),
             'required'   => false,
         ));
+
         $this->addElement('button', 'botaoAdicionarRH', array(
             'required' => false,
             'label'     => '>',
         ));
+
         $this->addElement('select', 'percentagem_trabalho', array(
             'label'      => 'Porcentagem Completa:',
             'multiOptions'  => $array_progresso_tarefa,
             'required'   => true
         ));
+
         $this->addElement('button', 'botaoDeletarRH', array(
             'required' => false,
             'label'     => '<',
@@ -289,10 +295,12 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Asociado a Tarefa:',
             'required'   => false,
         ));
+
         $this->addElement('textarea', 'comentario_email', array(
             'label'      => 'Comentários Adicionais do E-mail:',
             'required'   => false,
         ));
+
         $this->addElement('checkbox', 'notificar_email', array(
             'label'      => 'Notificar associados da tarefa por e-mail:',
             'required'   => true,

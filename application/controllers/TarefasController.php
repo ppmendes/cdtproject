@@ -29,12 +29,10 @@ class TarefasController extends Zend_Controller_Action
                 //exit;
 //                echo "</pre>";
                 $data = $form->getValues();
-                print_r($data);
-                exit;
 
-                if($id){
+                if($id){ //update
                     $model->update($data, $id);
-                }else{
+                }else{ //insert
                     $model->insert($data);
                 }
 
@@ -47,16 +45,17 @@ class TarefasController extends Zend_Controller_Action
                 $data_inicio=$data['tarefas']['data_inicio'];
                 $data_final=$data['tarefas']['data_final'];
                 $tipo_duracao=$data['tarefas']['tipo_duracao_id'];
+                $projeto_id_controller=$data['tarefas']['projeto_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
                 $form->setDatas($data_inicio, $data_final, $tipo_duracao);
+                $form->setIdProjeto($projeto_id_controller);
                 $form->startform();
                 $form->populate(array("tarefas" => $data));
             }
         }
         $this->view->form = $form;
-
-
     }
+
     public function selecttarefasAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
@@ -66,9 +65,27 @@ class TarefasController extends Zend_Controller_Action
             $filhos = new Application_Model_DbTable_Tarefa();
             $rows = $filhos->fetchAll('projeto_id = ' . (int) $id);
 
-            echo '<option value="">Nenhum</option>';
             foreach ($rows as $row) {
                 echo '<option value="' . $row->tarefa_id . '">' . $row->nome . '</option>';
+            }
+        } else {
+
+            echo '<option value="">Nenhum</option>';
+        }
+    }
+
+    public function selectusuariosAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id',0)) {
+            $id = (int) $this->_request->getParam('id',0);
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $rows = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id");
+
+            foreach ($rows as $row) {
+                echo '<option value="' . $row['usuario_id'] . '">' . $row['nome'] . '</option>';
             }
         } else {
 
@@ -92,8 +109,6 @@ class TarefasController extends Zend_Controller_Action
         }
 
         $this->view->detalhes = $detalhes;
-
-
     }
 
     public function excluirAction(){
@@ -106,8 +121,9 @@ class TarefasController extends Zend_Controller_Action
         $this->_redirect('/tarefas/');
 
         $this->view->excluir = $excluir;
-
     }
+
+
 
 
 }
