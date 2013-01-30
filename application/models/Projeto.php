@@ -64,7 +64,7 @@ class Application_Model_Projeto
             //$options2 = array();
             $options = array();
             $table = new Application_Model_DbTable_Projeto();
-            $resultado = $table->fetchAll();
+            $resultado = $table->fetchAll(null,'nome asc');
 
             foreach($resultado as $item){
                 $options[] = array('label' => $item['nome'], 'id' => $item['projeto_id']);

@@ -9,18 +9,22 @@
 class Application_Form_Tarefas extends Zend_Form
 {
 
+    private $id_projeto;
     private $data_inicio;
     private $data_final;
     private $tipo_duraco;
 
+    public function setIdProjeto($id_projeto_controller){
+        $this->id_projeto = $id_projeto_controller;
+    }
 
-    public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
+    /*public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
     {
         $this->data_inicio=$dat_inic_controller;
         $this->data_final=$dat_fin_controller;
         $this->tipo_duraco=$tipo_duracao_controller;
     }
-
+    */
     public function startform()
     {
         $this->setIsArray('true');
@@ -37,6 +41,13 @@ class Application_Form_Tarefas extends Zend_Form
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
             ),
         ));
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Projeto:');
+        $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id)}')
+        ));
+        $this->addElement($emt);
 
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
@@ -226,7 +237,7 @@ class Application_Form_Tarefas extends Zend_Form
         ));
         $this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
-            'multiOptions' => Application_Model_Tarefa::getOptions(),
+            'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
         ));
         $this->addElement('button', 'botao_Adicionar_Tarefa', array(
@@ -320,19 +331,13 @@ class Application_Form_Tarefas extends Zend_Form
         ));
 
 
-        /*$this->addElement('select', 'projeto_id', array(
+        /*$this->addElement('text', 'projeto_id', array(
             'label'      => 'Projeto:',
             'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true,
         ));*/
 
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
-        $emt->setLabel('Projeto:');
-        $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id) }')
-        ));
-        $this->addElement($emt);
+
 
         $this->addElement('select', 'instituicao_id', array(
             'label'      => 'Area:',
