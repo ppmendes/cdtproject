@@ -20,6 +20,20 @@ class Application_Model_TermoAditivo
         $table->insert($data['termo_aditivo']);
     }
 
+    public function atualizaData($nova_data, $id)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $table = "projeto";
+            $where = $db->quoteInto('projeto_id = ?', $id);
+            $coluna = array('data_final' => $nova_data);
+            $db->update($table, $coluna, $where);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+
+    }
+
         public function selectAll($id)
     {
         try{
@@ -33,9 +47,9 @@ class Application_Model_TermoAditivo
                            array('tp.nome_tipo'=>'tp.nome_tipo'))
                 ->joinLeft(array('o' => 'orcamento'), 't.orcamento_origem = o.orcamento_id')
                 ->joinLeft(array('oc' => 'orcamento'), 't.orcamento_destino = oc.orcamento_id')
-                ->joinLeft(array('r' => 'rubrica'), 'o.orcamento_id = r.rubrica_id', array('r.descricao'=>'r.descricao',
+                ->joinLeft(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.descricao'=>'r.descricao',
                                                     'r.codigo_rubrica'=> 'r.codigo_rubrica'))
-                ->joinLeft(array('rr'=> 'rubrica'), 'oc.orcamento_id=rr.rubrica_id', array('rr.descricao'=>'rr.descricao',
+                ->joinLeft(array('rr'=> 'rubrica'), 'oc.rubrica_id=rr.rubrica_id', array('rr.descricao'=>'rr.descricao',
                                                     'rr.codigo_rubrica'=> 'rr.codigo_rubrica'))
                 ->joinLeft(array('p' => 'projeto'), 't.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id',
                                                     'p.nome'=>'p.nome'));

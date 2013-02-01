@@ -81,6 +81,7 @@ echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</butt
 
     <?php
     $filter = new Zend_Filter_DateFilter();
+    $decimalfilter = new Zend_Filter_DecimalFilter();
     foreach($this->termoaditivo as $row)
     {
     //$row = $row->toArray();
@@ -95,7 +96,7 @@ echo "<button class='prorrogar' onclick='prorrogar($projeto_id)'>Prorrogar</butt
     }
     else if ($row['tp.nome_tipo'] == 'Remanejamento')
     {
-        echo "<td> Foram remanejados R$" . $row['valor_termino_aditivo'] . " da rubrica " . $row['r.codigo_rubrica'] . "->" . $row['r.descricao']
+        echo "<td> Foram remanejados R$" . $decimalfilter->filter($row['valor_termino_aditivo']) . " da rubrica " . $row['r.codigo_rubrica'] . "->" . $row['r.descricao']
             . " para " . $row['rr.codigo_rubrica'] . "->" . $row['rr.descricao'] . "</td>";
     }
     else
