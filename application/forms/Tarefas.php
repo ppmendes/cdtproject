@@ -178,47 +178,41 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-        $this->addElement('text', 'horas_trabalhadas', array(
-            'label'      => 'Horas Trabalhadas:',
-            'required'   => true,
-        ));
-
         $array_horas_trabalhadas = array(
-            1 => '06',
-            2 => '07',
-            3 => '08',
-            4 => '09',
-            5 => '10',
-            6 => '11',
-            7 => '12',
-            8 => '13',
-            9 => '14',
-            10 => '15',
-            11 => '16',
-            12 => '17',
-            13 => '18',
-            14 => '19',
-            15 => '20',
-            16 => '21',
-            17 => '22',
+            1 => '1',
+            2 => '2',
+            3 => '3',
+            4 => '4',
+            5 => '5',
+            6 => '6',
+            7 => '7',
+            8 => '8',
+
+        );
+        $array_minutos_trabalhadas = array(
+            1 => '00',
+            2 => '15',
+            3 => '30',
+            4 => '45',
         );
 
-        $this->addElement('select', 'hora_inicio', array(
-            'label'      => 'Hora inicio:',
+        $this->addElement('select', 'horas_trabalho', array(
+            'label'      => 'Horas Diárias de Atividade:',
             'multiOptions'  => $array_horas_trabalhadas,
+            'value'=>8,
             'required'   => true
         ));
 
-        $this->addElement('select', 'hora_fim', array(
-            'label'      => 'Hora fim:',
-            'multiOptions'  => $array_horas_trabalhadas,
-            'required'   => true
+        $this->addElement('select', 'minutos_trabalho', array(
+            'label'      => 'Minutos:',
+            'multiOptions'  => $array_minutos_trabalhadas,
+            'value'=>1,
+            'required'   => true,
         ));
 
         $this->addElement('button', 'botaoDuracao', array(
             'required' => false,
             'label'     => 'Duração',
-            'attribs' => array('onClick' => 'calcularDias()'),
         ));
 
         $this->addElement('button', 'botaoDataEncerramento', array(
