@@ -63,25 +63,33 @@ echo $this->form;
             //alert(data1);
 
             //procurando numero de dias sabados y domingos
-            if(dias_Total<7)
-            {
-                alert(dias_Total);
-                for (i=0; i<=dias_Total; i++)
+            //if(dias_Total<7)
+            //{
+                for (i=0; i<dias_Total; i++)
                 {
-                    if((dia_inicio==0)||(dia_inicio==6))
-                    {dias=dias-1; }
+                    if(dia_inicio==0)
+                    {dias=dias-1;}
+                    else
+                    {
+                        if(dia_inicio==6)
+                        {
+                            dias=dias-1;
+                            dia_inicio=-1;
+                        }
+                    }
                     dia_inicio=dia_inicio+1;
-
                 }
-
-            }
+            /*}
             else
             {
-                alert(dias_Total);
-            }
+               var nro_sabados=Math.floor((dias_Total+dia_inicio)/6);
+               var nro_domingos= Math.floor((dias_Total+dia_inicio)/7);
+               dias=dias_Total-(nro_sabados+nro_domingos);
+            }*/
 
             //var dia_inicio
-            alert(dias);
+            alert("dias totales:: "+dias_Total);
+            alert("dias habiles:: "+dias);
 
 
 
