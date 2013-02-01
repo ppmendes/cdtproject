@@ -27,6 +27,7 @@ class TermoaditivoController extends Zend_Controller_Action
                 $data = $form->getValues();
                 unset($data['termo_aditivo']['data']);
                 $model->insert($data);
+                $model->atualizaData($data['termo_aditivo']['data_fim_nova'], $data['termo_aditivo']['projeto_id']);
 
                 $this->_redirect('/termoaditivo/index/projeto_id/' . $data['termo_aditivo']['projeto_id']);
             }
