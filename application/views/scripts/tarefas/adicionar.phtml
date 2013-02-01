@@ -50,13 +50,41 @@ echo $this->form;
             * e sómente precisei usar a função val() para
             * retornar o valor dos campo para a varivel
             */
+           //var f =new getUTCDate();
+            var inicio = $('#tarefas-data_inicio').val().split("/");
+            var data1 = new Date(inicio[2], parseFloat(inicio[1])-1, parseFloat(inicio[0]));
+            var final = $('#tarefas-data_final').val().split("/");
+            var data2 = new Date(final[2], parseFloat(final[1])-1, parseFloat(final[0]));
 
-            var inicio = $('#tarefas-data_inicio').val();
-            var final = $('#tarefas-data_final').val();
+            var fin = data2.getTime() - data1.getTime();
+            var dias = Math.floor(fin / (1000 * 60 * 60 * 24))+1;
+            var dias_Total=dias;
+            var dia_inicio= data1.getDay();
+            //alert(data1);
 
-            // só ssparar testar coloco as variveis em um alert só para testar mesmo
-            alert(inicio + " " + final);
-            alert($('#tarefas-data_final').val());
+            //procurando numero de dias sabados y domingos
+            if(dias_Total<7)
+            {
+                alert(dias_Total);
+                for (i=0; i<=dias_Total; i++)
+                {
+                    if((dia_inicio==0)||(dia_inicio==6))
+                    {dias=dias-1; }
+                    dia_inicio=dia_inicio+1;
+
+                }
+
+            }
+            else
+            {
+                alert(dias_Total);
+            }
+
+            //var dia_inicio
+            alert(dias);
+
+
+
         });
 
     });

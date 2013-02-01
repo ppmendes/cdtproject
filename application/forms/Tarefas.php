@@ -164,7 +164,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement($emtDatePicker);
 
-        var_dump($emtDatePicker);
+        //var_dump($emtDatePicker);
 
 
         $this->addElement('select', 'tipo_duracao_id', array(
