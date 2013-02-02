@@ -188,7 +188,7 @@ class Application_Form_Tarefas extends Zend_Form
             7 => '7',
             8 => '8',
 
-        );
+        );//
         $array_minutos_trabalhadas = array(
             1 => '00',
             2 => '15',

@@ -93,10 +93,10 @@ echo $this->form;
             switch ($('#tarefas-tipo_duracao_id').val()) {
                 case '1'://horas
                     //alert($('#tarefas-minutos_trabalho').val());
-                    var horas=$('#tarefas-horas_trabalho').val()+ ($('#tarefas-minutos_trabalho').val()-1)/4;
+                    var horas=parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4;
+                    $('#tarefas-duracao').val(dias_entre_datas()*horas);
 
-                    alert(dias_entre_datas()*horas);
-
+                    //alert(dias_entre_datas()*horas);
                     break
                 case '2'://dias
                         var x=dias_entre_datas();
