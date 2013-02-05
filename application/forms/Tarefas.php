@@ -159,22 +159,26 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement($emtDatePicker);
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
-        $emtDatePicker->setLabel('Data Final:');
+        $emtDatePicker->setLabel('Data Término:');
         $emtDatePicker->setFilters(array('DateFilter'));
 
         $this->addElement($emtDatePicker);
 
         //var_dump($emtDatePicker);
 
+        $array_tipo_duracao = array(
+            1 => 'Horas',
+            2 => 'Dias',
+        );//
 
         $this->addElement('select', 'tipo_duracao_id', array(
             'label'      => 'Tipo de Duração:',
-            'multiOptions' => Application_Model_TipoDuracao::getOptions(),
+            'multiOptions' => $array_tipo_duracao,
             'required'   => true,
         ));
 
         $this->addElement('text', 'duracao', array(
-            'label'      => 'Duração:',
+            'label'      => 'Duração Esperada:',
             'required'   => true,
         ));
 
