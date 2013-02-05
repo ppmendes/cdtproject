@@ -2,6 +2,7 @@
 
 class Application_Model_CronogramaFinanceiro
 {
+    private $total;
 
     public function find($id){
         //DB TABLE
@@ -12,6 +13,9 @@ class Application_Model_CronogramaFinanceiro
 
     public function insert($data)
     {
+        unset($data['cronograma_financeiro']['nomeProjeto']);
+        unset($data['cronograma_financeiro']['saldo']);
+        unset($data['cronograma_financeiro']['orcamento']);
         $table = new Application_Model_DbTable_CronogramaFinanceiro();
         $table->insert($data['cronograma_financeiro']);
     }
@@ -31,6 +35,9 @@ class Application_Model_CronogramaFinanceiro
 
     public function update($data, $id)
     {
+        unset($data['cronograma_financeiro']['nomeProjeto']);
+        unset($data['cronograma_financeiro']['saldo']);
+        unset($data['cronograma_financeiro']['orcamento']);
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "cronograma_financeiro";
         $where = $db->quoteInto('cronograma_financeiro_id = ?', $id);
@@ -96,6 +103,16 @@ class Application_Model_CronogramaFinanceiro
         catch(Exception $e){
             echo $e->getMessage();
         }
-}
+    }
+
+        public function calculaTotal($cronogramaFinanceiro)
+        {
+            $total = 0;
+            for($i=0 ; $i<sizeOf($cronogramaFinanceiro) ; $i++)
+            {
+                $total = $total + ($cronogramaFinanceiro[$i]['valor_aplicado_a_rubrica']);
+            }
+        return $total;
+        }
 }
 

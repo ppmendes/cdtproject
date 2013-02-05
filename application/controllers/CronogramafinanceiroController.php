@@ -12,40 +12,52 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     {
 	    $cronogramaFinanceiroModel = new Application_Model_CronogramaFinanceiro();
         $id = $this->_getParam('projeto_id');
-        $this->view->cronogramaFinanceiro = $cronogramaFinanceiroModel->selectAll($id);
+        $cronogramaFinanceiro = $cronogramaFinanceiroModel->selectAll($id);
+        $this->view->cronogramaFinanceiro = $cronogramaFinanceiro;
+        //$this->form->array = $cronogramaFinanceiro;
         $this->view->id = $id;
 
 
     }
 
     public function adicionarAction(){
+
+        $id = $this->_getParam('cronograma_financeiro_id');
+        $pid= $this->_getParam('projeto_id');
         $request = $this->getRequest();
         $form = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
         $model = new Application_Model_CronogramaFinanceiro();
-        $id = $this->_getParam('cronograma_financeiro_id');
-        $pid= $this->_getParam('projeto_id');
+        $cronogramaFinanceiro = $model->selectAll($pid);
+        $totalParcelas = $model->calculaTotal($cronogramaFinanceiro);
+        $form->setValorParcelas($totalParcelas);
+        $form->setProjetoId($pid);
+        $form->startform();
 
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                $data = $form->getValues();
-                unset($data['cronograma_financeiro']['nomeProjeto']);
 
-                if($id){
-                    $model->update($data, $id);
-                }else{
-                    $model->insert($data);
-                }
+                $data = $form->getValues();
+
+                    if($id){
+                        $model->update($data, $id);
+                    }else{
+                        $model->insert($data);
+                    }
 
                 $this->_redirect('/cronogramafinanceiro/index/projeto_id/'.$data['cronograma_financeiro']['projeto_id']);
+
             }
             $this->view->form = $form;
         }elseif ($id){
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                if($data['tipo']== 1){
+                if($data['tipo'] == 1){
                 $form->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                $form->setValorParcelas($totalParcelas);
+                $form->setProjetoId($pid);
+                $form->startform();
                 $form->populate(array("cronograma_financeiro" => $data));
                 $this->view->form = $form;
 
@@ -59,7 +71,9 @@ class CronogramafinanceiroController extends Zend_Controller_Action
             }
         }
         else {
-            echo "<script>alert('else')</script>";
+            $form->setValorParcelas($totalParcelas);
+            $form->setProjetoId($pid);
+            $form->startform();
             $this->view->form = $form;
 
         }
@@ -69,6 +83,7 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     public function detalhesAction(){
         $request = $this->getRequest();
         $detalhes = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
+        $detalhes->startform();
         $detalhes2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
         $model = new Application_Model_CronogramaFinanceiro();
         $id = $this->_getParam('cronograma_financeiro_id');
@@ -83,6 +98,7 @@ class CronogramafinanceiroController extends Zend_Controller_Action
         if(is_array($data)){
             if($data['tipo']== 1){
                 $detalhes->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                $detalhes->startform();
                 $detalhes->populate(array("cronograma_financeiro" => $data));
                 $this->view->detalhes = $detalhes;
             }
@@ -99,6 +115,7 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     public function excluirAction(){
         //$request = $this->getRequest();
         $excluir = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
+        $excluir->startform();
         $model = new Application_Model_CronogramaFinanceiro();
         $id = $this->_getParam('cronograma_financeiro_id');
         $pid = $this->_getParam('projeto_id');

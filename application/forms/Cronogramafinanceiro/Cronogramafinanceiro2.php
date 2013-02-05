@@ -21,8 +21,16 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
             'required'   => false,
         ));
 
+        $orcamento = Application_Model_Projeto::getValorOrcamento($id_projeto);
+        $this->addElement('text', 'saldo', array(
+            'label'     => 'Saldo Atual do Projeto:',
+            'value'     => $orcamento['0']['orcamento'],
+            'disabled'  => true,
+            'required'  => false,
+        ));
+
         $this->addElement('text', 'valor_aplicado_a_rubrica', array(
-            'label'      => 'Valor Aplicado à Rubrica:',
+            'label'      => 'Valor estimado da parcela:',
             'required'   => true
         ));
 
