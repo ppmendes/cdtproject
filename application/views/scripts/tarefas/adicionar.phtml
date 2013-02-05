@@ -85,6 +85,30 @@ echo $this->form;
 
     }
 
+
+    function calcular_dias_total(dia_inicio,nro_dias)
+    {
+        for (i=0; i<nro_dias; i++)
+        {
+            if(dia_inicio==0)
+            {
+                nro_dias=nro_dias+1;
+                i=i-1;
+            }
+            else
+            {
+                if(dia_inicio==6)
+                {
+                    nro_dias=nro_dias+1;
+                    dia_inicio=-1;
+                    i=i-1;
+                }
+            }
+            dia_inicio=dia_inicio+1;
+        }
+        return nro_dias;
+    }
+
     $(function($){
 
         // no id #enviar assim que clicar vai executar um função
@@ -111,7 +135,54 @@ echo $this->form;
             }
         });
 
+        $('#tarefas-botaoDataEncerramento').click(function(){
+
+            switch ($('#tarefas-tipo_duracao_id').val()) {
+                case '1'://horas
+
+                    //alert($('#tarefas-minutos_trabalho').val());
+                    var horas=parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4;
+                    $('#tarefas-duracao').val(dias_entre_datas()*horas);
+                    //
+                    //alert(dias_entre_datas()*horas);
+                    break
+                default ://dias
+                    var inicio = $('#tarefas-data_inicio').val().split("/");
+                    var data1 = new Date(inicio[2], parseFloat(inicio[1])-1, parseFloat(inicio[0]));
+                    var nro_dias_habiles=parseFloat($('#tarefas-duracao').val());
+                    var dia_inicio= data1.getDay();
+
+                    if(nro_dias_habiles<5)
+                    {
+                        nro_dias=calcular_dias_total(dia_inicio,nro_dias_habiles)-1;
+                    }
+                    else
+                    {
+                        var nro_dias_semana=Math.floor(nro_dias_habiles/5)*7;
+                        nro_dias=nro_dias_semana+calcular_dias_total(dia_inicio,nro_dias_habiles%5);
+                    }
+
+                    //alert(nro_dias);
+                    var fdata1=data1.getTime();
+
+                    var fecha_final=fdata1+(1000*60*60*24*nro_dias);
+                    data1.setTime(fecha_final);
+                    alert(data1);
+
+
+
+                    //alert(calcular_data_encerramento(data1,nro_dias));
+
+
+                }
+        });
+
+
     });
+
+
+
+
 </script>
 
 
