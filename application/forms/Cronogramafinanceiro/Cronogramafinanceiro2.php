@@ -3,7 +3,20 @@
 class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_Form
 {
 
-    public function init()
+    private $valorParcelas;
+    private $id_projeto;
+
+    public function setValorParcelas($valor){
+        $this->valorParcelas = $valor;
+    }
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
+    public function init() {}
+
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
@@ -21,9 +34,10 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
             'required'   => false,
         ));
 
-        $orcamento = Application_Model_Projeto::getValorOrcamento($id_projeto);
+        $orcamento = Application_Model_Projeto::getValorOrcamento($this->id_projeto);
+        $valorLimite = $orcamento['0']['orcamento'] - $this->valorParcelas;
         $this->addElement('text', 'saldo', array(
-            'label'     => 'Saldo Atual do Projeto:',
+            'label'     => 'Saldo Atual:',
             'value'     => $orcamento['0']['orcamento'],
             'disabled'  => true,
             'required'  => false,
@@ -31,8 +45,12 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
 
         $this->addElement('text', 'valor_aplicado_a_rubrica', array(
             'label'      => 'Valor estimado da parcela:',
-            'required'   => true
+            'required'   => true,
+            'attribs'    => array('maxLength' => 13),
         ));
+
+        $elemento = $this->getElement('valor_aplicado_a_rubrica');
+        $elemento->addValidator(new Zend_Validate_Between(array('min' => 0, 'max' => $valorLimite)));
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_previa');
         $emtDatePicker->setLabel('Data Prévia: ');
@@ -70,7 +88,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
         //set hidden
         $this->addElement('hidden', 'projeto_id', array(
             'label'      => '',
-            'value'      => $id_projeto,
+            'value'      => $valorLimite,
         ));
 
 

@@ -13,6 +13,10 @@ class Application_Model_CronogramaFinanceiro
 
     public function insert($data)
     {
+        $str = $data['cronograma_financeiro']['valor_aplicado_a_rubrica'];
+        $var = str_replace(".", "", $str);
+        $var2 = str_replace(",", ".",$var);
+        $data['cronograma_financeiro']['valor_aplicado_a_rubrica'] = $var2;
         unset($data['cronograma_financeiro']['nomeProjeto']);
         unset($data['cronograma_financeiro']['saldo']);
         unset($data['cronograma_financeiro']['orcamento']);

@@ -36,6 +36,9 @@ class Application_Form_Beneficiarios_Beneficiariospf extends Zend_Form
         $this->addElement('text', 'cpf_cnpj', array(
             'label'      => 'CPF:',
             'required'   => true,
+//            'attribs'    => array('maxLength' => 12),
+//            'onkeyup' => "this.value=mask(this.value, '##########-##')",
+
         ));
 
         //Telefone input type text
