@@ -65,6 +65,9 @@ class CronogramafinanceiroController extends Zend_Controller_Action
                 else if($data['tipo']== 2){
                     $form2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
                     $form2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                    $form2->setValorParcelas($totalParcelas);
+                    $form2->setProjetoId($pid);
+                    $form2->startform();
                     $form2->populate(array("cronograma_financeiro" => $data));
                     $this->view->form = $form2;
                 }
@@ -81,13 +84,17 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     }
 
     public function detalhesAction(){
+
         $request = $this->getRequest();
-        $detalhes = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
-        $detalhes->startform();
-        $detalhes2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
-        $model = new Application_Model_CronogramaFinanceiro();
         $id = $this->_getParam('cronograma_financeiro_id');
         $pid= $this->_getParam('projeto_id');
+        $detalhes = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
+        //$detalhes->startform();
+        $detalhes2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
+        //$detalhes2->startform();
+        $model = new Application_Model_CronogramaFinanceiro();
+        $cronogramaFinanceiro = $model->selectAll($pid);
+        $totalParcelas = $model->calculaTotal($cronogramaFinanceiro);
         $this->view->id = $id;
         $this->view->pid= $pid;
 
@@ -98,12 +105,17 @@ class CronogramafinanceiroController extends Zend_Controller_Action
         if(is_array($data)){
             if($data['tipo']== 1){
                 $detalhes->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                $detalhes->setValorParcelas($totalParcelas);
+                $detalhes->setProjetoId($pid);
                 $detalhes->startform();
                 $detalhes->populate(array("cronograma_financeiro" => $data));
                 $this->view->detalhes = $detalhes;
             }
             else if($data['tipo']== 2){
                 $detalhes2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                $detalhes2->setValorParcelas($totalParcelas);
+                $detalhes2->setProjetoId($pid);
+                $detalhes2->startform();
                 $detalhes2->populate(array("cronograma_financeiro" => $data));
                 $this->view->detalhes = $detalhes2;
             }

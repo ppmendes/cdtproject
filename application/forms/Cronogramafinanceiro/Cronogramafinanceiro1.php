@@ -25,31 +25,38 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
 
         $this->setMethod('post');
 
+
         $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'nomeProjeto', array(
             'label'      => 'Projeto:',
             'value'      => $nomeProjeto['0']['nome'],
-            'disabled'         => true,
+            'readonly'         => true,
             'required'   => false,
         ));
 
         $orcamento = Application_Model_Projeto::getValorOrcamento($this->id_projeto);
-        $valorLimite = $orcamento['0']['orcamento'] - $this->valorParcelas;
+        $valorLimite = number_format($orcamento['0']['orcamento'] - $this->valorParcelas, 2);
+
+
         $this->addElement('text', 'saldo', array(
             'label'     => 'Saldo Atual:',
             'value'     => $valorLimite,
-            'disabled'  => true,
+            'readonly'  => true,
             'required'  => false,
+//            'attribs'    => array('maxLength' => 13),
+//            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
         //$valorSaldo = Application_Model_CronogramaFinanceiro::calculaTotal()
         $this->addElement('text', 'valor_aplicado_a_rubrica', array(
             'label'      => 'Valor estimado da parcela:',
             'required'   => true,
+            'attribs'    => array('maxLength' => 13),
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
         $elemento = $this->getElement('valor_aplicado_a_rubrica');
-        $elemento->addValidator(new Zend_Validate_Between(array('min' => 0, 'max' => $valorLimite)));
+        $elemento->addValidator(new Zend_Validate_Between2(array('min' => 0, 'max' => $valorLimite)));
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_previa');
         $emtDatePicker->setLabel('Data Prévia: ');
@@ -92,6 +99,6 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
             'value'      => $valorLimite,
         ));
 
-
     }
 }
+
