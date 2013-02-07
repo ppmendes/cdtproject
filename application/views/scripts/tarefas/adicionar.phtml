@@ -181,12 +181,17 @@ echo $this->form;
         });
 
         $('#tarefas-botao_Adicionar_Tarefa').click(function(){
+
             $('#tarefas-todas_tarefas option:selected').clone().appendTo($('#tarefas-dependencia_tarefa'));
+            $('#tarefas-todas_tarefas option:selected').remove();
         });
 
         $('#tarefas-botao_Deletar_Tarefa').click(function(){
+            $('#tarefas-dependencia_tarefa option:selected').clone().appendTo($('#tarefas-todas_tarefas'));
             $('#tarefas-dependencia_tarefa option:selected').remove();
+
         });
+
     });
 
 
