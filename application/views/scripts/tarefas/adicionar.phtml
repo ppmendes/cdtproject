@@ -180,7 +180,13 @@ echo $this->form;
                 }
         });
 
+        $('#tarefas-botao_Adicionar_Tarefa').click(function(){
+            $('#tarefas-todas_tarefas option:selected').clone().appendTo($('#tarefas-dependencia_tarefa'));
+        });
 
+        $('#tarefas-botao_Deletar_Tarefa').click(function(){
+            $('#tarefas-dependencia_tarefa option:selected').remove();
+        });
     });
 
 
