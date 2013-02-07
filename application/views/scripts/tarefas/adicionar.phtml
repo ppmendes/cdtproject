@@ -110,6 +110,15 @@ echo $this->form;
         }
         return nro_dias;
     }
+    function formato(data)
+    {
+        var cadena="";
+        mes=(data.getMonth()+1).toString();
+        if(mes.length==1)
+        {   mes="0"+ mes; }
+        cadena=data.getDate()+'/'+mes+'/'+data.getFullYear();
+        return cadena;
+    }
 
     $(function($){
 
@@ -141,10 +150,14 @@ echo $this->form;
 
             switch ($('#tarefas-tipo_duracao_id').val()) {
                 case '1'://horas
+                    var duracao=parseFloat($('#tarefas-duracao').val())/(parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4);
+                    alert(duracao+'redond::'+  Math.ceil(duracao) );
 
-                    //alert($('#tarefas-minutos_trabalho').val());
-                    var horas=parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4;
-                    $('#tarefas-duracao').val(dias_entre_datas()*horas);
+                    var inicio = $('#tarefas-data_inicio').val().split("/");
+                    var data1 = new Date(inicio[2], parseFloat(inicio[1])-1, parseFloat(inicio[0]));
+                    data1.setDate(data1.getDate() +  Math.ceil(duracao)-1);
+
+                    $('#tarefas-data_final').val(formato(data1));
 
                     break
                 default ://dias
@@ -163,10 +176,8 @@ echo $this->form;
                         nro_dias=nro_dias_semana+calcular_dias_total(dia_inicio,nro_dias_habiles%5);
                     }
                     data1.setDate(data1.getDate() + nro_dias-1);
-                    formato=data1.getDate()+'/'+(data1.getMonth()+1)+'/'+data1.getFullYear();
 
-                    $('#tarefas-data_final').val(formato);
-
+                    $('#tarefas-data_final').val(formato(data1));
 
                 }
         });
