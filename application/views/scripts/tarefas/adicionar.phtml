@@ -183,16 +183,30 @@ echo $this->form;
                 }
         });
 
+        // TAREFAS DEPENDENTES
         $('#tarefas-botao_Adicionar_Tarefa').click(function(){
-
-            $('#tarefas-todas_tarefas option:selected').clone().appendTo($('#tarefas-dependencia_tarefa'));
+            $('#tarefas-todas_tarefas option:selected').clone().prependTo($('#tarefas-dependencia_tarefa'));
             $('#tarefas-todas_tarefas option:selected').remove();
         });
 
         $('#tarefas-botao_Deletar_Tarefa').click(function(){
-            $('#tarefas-dependencia_tarefa option:selected').clone().appendTo($('#tarefas-todas_tarefas'));
+            $('#tarefas-dependencia_tarefa option:selected').clone().prependTo($('#tarefas-todas_tarefas'));
             $('#tarefas-dependencia_tarefa option:selected').remove();
+        });
 
+        // USUÁRIOS ASSOCIADOS A TAREFAS
+        $('#tarefas-botaoAdicionarRH').click(function(){
+            /*var uno = $('#tarefas-recursos_humanos option:selected').label;
+            var dos = $('#tarefas-percentagem_trabalho option:selected').label;
+            var tres= uno+' '+dos;*/
+
+            $('#tarefas-recursos_humanos option:selected').clone().prependTo($('#tarefas-asociado_tarefa'));
+            $('#tarefas-recursos_humanos option:selected').remove();
+        });
+
+        $('#tarefas-botaoDeletarRH').click(function(){
+            $('#tarefas-asociado_tarefa option:selected').clone().prependTo($('#tarefas-recursos_humanos'));
+            $('#tarefas-asociado_tarefa option:selected').remove();
         });
 
     });
