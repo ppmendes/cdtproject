@@ -139,13 +139,23 @@ class SolicitacoesController extends Zend_Controller_Action
 
     public function detalhesAction(){
         $request = $this->getRequest();
-        $detalhes = new Application_Form_Solicitacoes();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
         $this->view->id = $id;
 
-
         $data = $model->find($id)->toArray();
+
+        if($data['tipo_solicitacao_id'] == 1 || $data['tipo_solicitacao_id'] == 4 || $data['tipo_solicitacao_id'] == 5)
+        {
+        $detalhes = new Application_Form_Solicitacoes_AquisicaoBens();
+        }else if ($data['tipo_solicitacao_id'] == 2 || $data['tipo_solicitacao_id'] == 6 ||
+                  $data['tipo_solicitacao_id'] == 7 || $data['tipo_solicitacao_id'] == 8)
+        {
+        $detalhes = new Application_Form__Solicitacoes_ContratacaoServicos();
+        }else
+        {
+        $detalhes = new Application_Form__Solicitacoes_PassagensDiarias();
+        }
 
         if(is_array($data)){
             $detalhes->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);

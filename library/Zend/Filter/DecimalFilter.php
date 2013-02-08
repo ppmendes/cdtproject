@@ -15,10 +15,11 @@ class Zend_Filter_DecimalFilter implements Zend_Filter_Interface
     {
         // perform some transformation upon $value to arrive on $valueFiltered
         if($value != null && $value != 0 ){
-                if(strpos($value,'.') !== false){
-                    return str_replace('.',',',$value);
-                }else{
+                if(strpos($value,',') !== false){
+                    $value = str_replace('.','',$value);
                     return str_replace(',','.',$value);
+                }else{
+                    return number_format($value,2,",", ".");
                 }
         }else{
             return null;

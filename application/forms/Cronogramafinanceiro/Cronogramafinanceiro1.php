@@ -57,6 +57,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
 
         $elemento = $this->getElement('valor_aplicado_a_rubrica');
         $elemento->addValidator(new Zend_Validate_Between2(array('min' => 0, 'max' => $valorLimite)));
+        //$elemento->setFilters(array('DecimalFilter'));
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_previa');
         $emtDatePicker->setLabel('Data Prévia: ');
