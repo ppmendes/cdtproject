@@ -33,6 +33,7 @@ class TarefasController extends Zend_Controller_Action
                 if($id){ //update
                     $model->update($data, $id);
                 }else{ //insert
+                    print_r($data);
                     $model->insert($data);
                 }
 
@@ -42,13 +43,10 @@ class TarefasController extends Zend_Controller_Action
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                $data_inicio=$data['tarefas']['data_inicio'];
-                $data_final=$data['tarefas']['data_final'];
-                $tipo_duracao=$data['tarefas']['tipo_duracao_id'];
-                $projeto_id_controller=$data['tarefas']['projeto_id'];
+
+                //$projeto_id_controller=$data['tarefas']['projeto_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
-                $form->setDatas($data_inicio, $data_final, $tipo_duracao);
-                $form->setIdProjeto($projeto_id_controller);
+                //$form->setIdProjeto($projeto_id_controller);
                 $form->startform();
                 $form->populate(array("tarefas" => $data));
             }
@@ -96,6 +94,7 @@ class TarefasController extends Zend_Controller_Action
     public function detalhesAction(){
         $request = $this->getRequest();
         $detalhes = new Application_Form_Tarefas();
+        $detalhes->startform();
         $model = new Application_Model_Tarefa();
         $id = $this->_getParam('tarefa_id');
         $this->view->id = $id;
@@ -123,8 +122,26 @@ class TarefasController extends Zend_Controller_Action
         $this->view->excluir = $excluir;
     }
 
+    public function treeviewAction()
+    {
+        $layout = $this->_helper->layout();
+        $layout->setLayout('iframe');
+        $model = new Application_Model_Tarefa();
+        $id = $this->_getParam('instituicao_id');
+        if($id==null)
+        {
+            $id=32;
+        }
+        // mostra as instituições pais
+        $this->view->tree = $model->retornaPais();
 
+        // retorna array do procedure
+        $result=$model->paeFilhos($id);
+        // cria o treeview
+        $model->criarTreeview($result);
 
+        $this->view->treeview;
+    }
 
 }
 

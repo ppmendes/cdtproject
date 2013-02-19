@@ -4,6 +4,15 @@ echo $this->form;
 ?>
 <script type="text/javascript">
 
+    $(document).ready(function() {
+        $('.fancybox').fancybox();
+        $("#tarefas-botaoPesquisa").click(function() {
+            $('<a class="fancybox fancybox.iframe" href="tarefas/treeview">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
+    });
+
     function atualizarTarefas(valor) {
 
         if(valor!=0){
@@ -137,8 +146,7 @@ echo $this->form;
                     //alert(dias_entre_datas()*horas);
                     break
                 case '2'://dias
-                        var x=dias_entre_datas();
-                    alert(x);
+                    $('#tarefas-duracao').val(dias_entre_datas());
                     break
 
 

@@ -10,19 +10,10 @@ class Application_Form_Tarefas extends Zend_Form
 {
 
     private $id_projeto;
-    private $data_inicio;
-    private $data_final;
-    private $tipo_duraco;
+
 
     public function setIdProjeto($id_projeto_controller){
         $this->id_projeto = $id_projeto_controller;
-    }
-
-    public function setDatas($dat_inic_controller,$dat_fin_controller,$tipo_duracao_controller)
-    {
-        $this->data_inicio=$dat_inic_controller;
-        $this->data_final=$dat_fin_controller;
-        $this->tipo_duraco=$tipo_duracao_controller;
     }
 
     public function startform()
@@ -175,6 +166,7 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Tipo de Duração:',
             'multiOptions' => $array_tipo_duracao,
             'required'   => true,
+            'value' => 2,
         ));
 
         $this->addElement('text', 'duracao', array(
@@ -313,16 +305,9 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-
-
-        $this->addElement('text', 'milestone', array(
-            'label'      => 'Milestone:',
-            'required'   => true,
-        ));
-
         //usuario logado?
         $this->addElement('text', 'criador', array(
-            'label'      => 'Responsável:',
+            'label'      => 'Criador:',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true,
         ));
@@ -336,21 +321,18 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-
-        /*$this->addElement('text', 'projeto_id', array(
-            'label'      => 'Projeto:',
-            'multiOptions' => Application_Model_Projeto::getOptions(),
-            'required'   => true,
-        ));*/
-
-
-
-        $this->addElement('select', 'instituicao_id', array(
-            'label'      => 'Area:',
-            'multiOptions' => Application_Model_Instituicao::getOptions(),
-            'required'   => true,
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('aca');
+        $emt->setLabel('Area:');
+        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
         ));
+        $this->addElement($emt);
 
+        $this->addElement('button', 'botaoPesquisa', array(
+            'required' => false,
+            'label'     => 'Pesquisar',
+        ));
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
@@ -363,8 +345,7 @@ class Application_Form_Tarefas extends Zend_Form
             'value'      => ''
         ));
 
-        //set hidden projeto
-        $this->addElement('hidden', 'tarefa_id_pai', array(
+        $this->addElement('hidden', 'instituicao_id', array(
             'value'      => ''
         ));
     }
