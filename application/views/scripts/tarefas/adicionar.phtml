@@ -199,6 +199,7 @@ echo $this->form;
            // alert($('#tarefas-recursos_humanos option:selected').val() + $('#tarefas-percentagem_trabalho option:selected').val());
             var recursos_humanos=$('#tarefas-recursos_humanos option:selected').clone();
             recursos_humanos.html(recursos_humanos.html()+' ['+$('#tarefas-percentagem_trabalho option:selected').html()+'%]');
+            //recursos_humanos.html(recursos_humanos.html()+' ['+$('#tarefas-percentagem_trabalho option:selected').html()+'%]');
             recursos_humanos.prependTo($('#tarefas-asociado_tarefa'));
             $('#tarefas-recursos_humanos option:selected').remove();
         });
