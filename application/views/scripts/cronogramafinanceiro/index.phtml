@@ -89,14 +89,17 @@
     <tbody>
 
     <?php
+
     $filter = new Zend_Filter_DateFilter();
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+
     foreach($this->cronogramaFinanceiro as $row)
     {
     //$row = $row->toArray();
     echo "<tr id='".$row['cronograma_financeiro_id']."'>";
     echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}/projeto_id/{$projeto_id}'>"
         .$row['cronograma_financeiro_id']. "</a></td>";
-    echo "<td>" .   $row['valor_aplicado_a_rubrica'] . "</td>";
+    echo "<td>" .   $decimalfilter->filter($row['valor_aplicado_a_rubrica']) . "</td>";
     echo "<td>" .   $row['data_previa'] . "</td>";
     echo "<td>" .   $row['tipo'] . "</td>";
     echo "<td>" .   $row['numero_fatura_pf'] . "</td>";

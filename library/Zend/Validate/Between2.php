@@ -213,7 +213,13 @@ class Zend_Validate_Between2 extends Zend_Validate_Abstract
         $temp = str_replace(".", "", $this->_min);
         $minimo = str_replace(",", ".",$temp);
 
-        $maximo = str_replace(",", ".",$this->_max);
+        var_dump($this->_max);
+
+        $maximo = str_replace(",", "", $this->_max);
+
+        var_dump($minimo);
+        var_dump($maximo);
+        var_dump($value);
 
         if ($this->_inclusive) {
             if ($minimo > $value || $value > $maximo) {
