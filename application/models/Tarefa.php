@@ -147,7 +147,7 @@ class Application_Model_Tarefa
     public function paeFilhos($id_pai)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $result=$db->query("CALL tarefas_start($id_pai)");
+        $result=$db->query("CALL sp_recursive_start($id_pai)");
         return $result->fetchAll();
     }
 
@@ -198,6 +198,24 @@ class Application_Model_Tarefa
         for($i=0;$i<$nivel;$i++)
         {
             echo'</ul></li>';
+        }
+    }
+
+    public function retornaPais()
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            // ainda resta apresentar historico de login do usuarios
+            $select = $db->select()
+                ->from('instituicao',
+                array('instituicao_id', 'nome'))
+                ->where('pai_id=?',0);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch(Exception $e){
+            Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
         }
     }
 }

@@ -82,8 +82,8 @@
 
     function retornaId(nome,id)
     {
-        parent.$('#tarefas-acTarefas').val(nome);
-        parent.$('#tarefas-tarefa_id_pai').val(id);
+        parent.$('#tarefas-aca').val(nome);
+        parent.$('#tarefas-instituicao_id').val(id);
         parent.$.fancybox.close();
     }
 </script>
@@ -102,8 +102,8 @@
 
             foreach($this->tree as $row) // "$this->usuarios" nome da variável definida no controller
             {
-                echo "<tr id='".$row['tarefa_id']."'>";
-                echo "<td><a href='/tarefas/treeview/tarefa_id/{$row['tarefa_id']}'>" .$row['nome']. "</a></td>";
+                echo "<tr id='".$row['instituicao_id']."'>";
+                echo "<td><a href='/tarefas/treeview/instituicao_id/{$row['instituicao_id']}'>" .$row['nome']. "</a></td>";
                 echo "</tr>";
             }
             ?>

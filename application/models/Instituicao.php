@@ -62,6 +62,7 @@ class Application_Model_Instituicao
         } catch(Exception $e){
 
         }
+
     }
 
     public function retornaPais()
