@@ -231,7 +231,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
             'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
-            'required'   => true,
+            'required'   => false,
         ));
         $this->addElement('button', 'botao_Adicionar_Tarefa', array(
             'required' => false,
