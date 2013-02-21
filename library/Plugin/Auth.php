@@ -1,6 +1,6 @@
 <?php
 class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
-    public function preDispatch($request){
+    public function preDispatch(Zend_Controller_Request_Abstract $request){
         /* Verifica se o usuário não está logado */
         if(!Zend_Auth::getInstance()->hasIdentity()){
             $request->setControllerName('index');
