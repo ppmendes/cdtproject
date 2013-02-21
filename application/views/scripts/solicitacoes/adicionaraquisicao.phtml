@@ -33,4 +33,24 @@ echo $this->form;
         return 'nada';
     }
 
+    function calcularTotal(index)
+    {
+        //var quantidade = $('#solicitacoes').getElementsByName('solicitacoes[numero_itens_'+index+']');
+        var ind1 = 4*(index-1)+1;
+        var ind2 = 4*(index-1)+3;
+        var ind3 = 4*(index-1)+4;
+
+        var numItens = $('div#descricao dd').eq(ind1-1);
+        var x = numItens.children('input').val();
+        var quantidade = parseFloat(x);
+        var precoUnitario = $('div#descricao dd').eq(ind2-1);
+        var y = precoUnitario.children('input').val();
+        var valor = parseFloat(y);
+        var total = quantidade * valor;
+        //$('#solicitacoes-valor_estimado').nth(2).attr('value', total);
+        var valorEstimado = $('div#descricao dd').eq(ind3-1);
+        valorEstimado.children('input').attr('value', total);
+
+    }
+
 </script>
