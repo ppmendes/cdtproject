@@ -193,13 +193,13 @@ echo $this->form;
 
         // TAREFAS DEPENDENTES
         $('#tarefas-botao_Adicionar_Tarefa').click(function(){
-            $('#tarefas-todas_tarefas option:selected').clone().prependTo($('#tarefas-dependencia_tarefa'));
-            $('#tarefas-todas_tarefas option:selected').remove();
+            $('#tarefas-depe option:selected').clone().prependTo($('#tarefas-dependencia_tarefa'));
+            $('#tarefas-depe option:selected').remove();
         });
 
         $('#tarefas-botao_Deletar_Tarefa').click(function(){
-            $('#tarefas-dependencia_tarefa option:selected').clone().prependTo($('#tarefas-todas_tarefas'));
-            $('#tarefas-dependencia_tarefa option:selected').remove();
+            $('#tarefas-depe2 option:selected').clone().prependTo($('#tarefas-depe'));
+            $('#tarefas-depe2 option:selected').remove();
         });
 
         // USUÁRIOS ASSOCIADOS A TAREFAS

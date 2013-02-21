@@ -33,7 +33,8 @@ class TarefasController extends Zend_Controller_Action
                 if($id){ //update
                     $model->update($data, $id);
                 }else{ //insert
-                    print_r($data);
+
+                    var_dump($data);
                     exit;
                     $model->insert($data);
                 }

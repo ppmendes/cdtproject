@@ -228,27 +228,39 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Tarefa Dinâmica:',
             'required'   => true,
         ));
-        $this->addElement('multiselect', 'todas_tarefas', array(
+
+        /*$this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
             'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
-        ));
+        ));*/
+
+        $multi = new Zend_Form_Element_Multiselect('depe');
+        $multi->setMultiOptions(Application_Model_Tarefa::getOptions1($this->id_projeto))
+            ->setLabel('Dependencias')
+            ->addValidator('InArray',true,array(array_keys(Application_Model_Tarefa::getOptions1($this->id_projeto))));
+
+        $this->addElement($multi);
+
         $this->addElement('button', 'botao_Adicionar_Tarefa', array(
             'required' => false,
-            'label'     => '>',
+            'label'     => '>>',
         ));
 
         $this->addElement('button', 'botao_Deletar_Tarefa', array(
             'required' => false,
-            'label'     => '<',
+            'label'     => '<<',
         ));
 
-        $this->addElement('multiselect', 'dependencia_tarefa', array(
+        $this->addElement('multiselect', 'dependencia_tarefa[]', array(
             'label'      => 'Dependencias das Tarefas:',
             'required'   => false,
         ));
 
+        /*$multi2 = new Zend_Form_Element_Multiselect('depe2');
+        $multi2->setLabel('Dependencias 2');
 
+        $this->addElement($multi2);*/
 
         /******************************** LABEL RECURSOS HUMANOS **************************************/
         $this->addElement('hidden', 'recursos_humanos', array(
@@ -311,10 +323,6 @@ class Application_Form_Tarefas extends Zend_Form
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true,
         ));
-        /*$this->addElement('text', 'acesso_id', array(
-            'label'      => 'Acesso:',
-            'required'   => true,
-        ));*/
 
         $this->addElement('text', 'tarefa_notificacao', array(
             'label'      => 'Notificação:',
