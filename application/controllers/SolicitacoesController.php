@@ -28,22 +28,35 @@ class SolicitacoesController extends Zend_Controller_Action
             $form->preValidation($_POST);
 
             if($form->isValid($request->getPost())){
-                echo "<pre>";
-                print_r($form->getValues());
-                echo "</pre>";
-                exit;
 
                 $data = $form->getValues();
                 unset($data['solicitacoes']['data_solicitacao_view']);
                 unset($data['solicitacoes']['local_entrega_solicitacao_view']);
-//                echo "<pre>";
-//                print_r($data);
-//                echo "</pre>";
-//                exit;
+                unset($data['solicitacoes']['local']);
+                unset($data['solicitacoes']['hidden_teste']);
+                $data['solicitacoes']['projeto_id'] = 1;
+
+                $numero_itens = $model->concatenaCampos("numero_itens_", $data);
+                $solicitacao_nome = $model->concatenaCampos("solicitacao_nome_", $data);
+                $preco_unidade = $model->concatenaCampos("preco_unidade_", $data);
+                $valor_estimado = $model->concatenaCampos("valor_estimado_", $data);
+
+                for ($i=2 ; $i<11 ; $i++)
+                {
+                    if (array_key_exists("numero_itens_" . $i, $data['solicitacoes']) == 1)
+                    {
+                        unset($data['solicitacoes']['numero_itens_' . $i]);
+                        unset($data['solicitacoes']['solicitacao_nome_' . $i]);
+                        unset($data['solicitacoes']['preco_unidade_' . $i]);
+                        unset($data['solicitacoes']['valor_estimado_' . $i]);
+                    }
+                }
+
+
                 if($id){
                     $model->update($data, $id);
                 }else{
-                    $model->insert($data);
+                    $model->insert($data, $numero_itens, $solicitacao_nome, $preco_unidade, $valor_estimado);
                 }
 
                 $this->_redirect('/solicitacoes/');

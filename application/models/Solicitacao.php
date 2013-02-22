@@ -116,9 +116,16 @@ class Application_Model_Solicitacao
 
     }
 
-    public function insert($data)
+    public function insert($data, $numero_itens, $solicitacao_nome, $preco_unidade, $valor_estimado)
     {
         $table = new Application_Model_DbTable_Solicitacao();
+
+        $data['solicitacoes']['numero_itens'] = $data['solicitacoes']['numero_itens'] . $numero_itens;
+        $data['solicitacoes']['solicitacao_nome'] = $data['solicitacoes']['solicitacao_nome'] . $solicitacao_nome;
+        $data['solicitacoes']['preco_unidade'] = $data['solicitacoes']['preco_unidade'] . $preco_unidade;
+        $data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
+
+
         $table->insert($data['solicitacoes']);
     }
 
@@ -140,5 +147,22 @@ class Application_Model_Solicitacao
         $where = $table->getAdapter()->quoteInto('solicitacao_id = ?',$id);
 
         $table->update($data['solicitacoes'],$where);
+    }
+
+    public function concatenaCampos($campo, $data)
+    {
+        $result = "";
+        for ($index=2 ; $index<11 ; $index++)
+        {
+            if (array_key_exists($campo . $index, $data['solicitacoes']) == 1)
+            {
+                //Obter os 4 valores dos campos dinamicos em Aquisição de Bens
+                $var = $data['solicitacoes'][$campo . $index];
+
+                //Concatena as strings de forma a inserir as informacoes em apenas um campo no banco
+                $result = $result . ";" . $var;
+            }
+        }
+        return $result;
     }
 }
