@@ -43,7 +43,7 @@ class Application_Model_Beneficiario
         $select = $db->select()
             ->from(array('b' => 'beneficiario'))
             ->where('b.deletado = ?', false)
-            ->where('b.tipo_beneficiario_id = ?', 2)
+            ->where('b.tipo_beneficiario_id = ?', 1)
             ->joinLeft(array('ba' => 'banco'), 'b.banco_id = ba.banco_id',array('ba.banco_id'=>'ba.banco_id','ba.nome_banco'=>'ba.nome_banco'))
             ->joinLeft(array('es' => 'escolaridade'), 'b.escolaridade_id = es.escolaridade_id',array('es.escolaridade_id'=>'es.escolaridade_id','es.nome_escolaridade'=>'es.nome_escolaridade'));
 
@@ -61,7 +61,7 @@ class Application_Model_Beneficiario
         $select = $db->select()
             ->from(array('b' => 'beneficiario'))
             ->where('b.deletado = ?', false)
-            ->where('b.tipo_beneficiario_id = ?', 1)
+            ->where('b.tipo_beneficiario_id = ?', 2)
             ->joinLeft(array('ba' => 'banco'), 'b.banco_id = ba.banco_id',array('ba.banco_id'=>'ba.banco_id','ba.nome_banco'=>'ba.nome_banco'))
             ->joinLeft(array('es' => 'escolaridade'), 'b.escolaridade_id = es.escolaridade_id',array('es.escolaridade_id'=>'es.escolaridade_id','es.nome_escolaridade'=>'es.nome_escolaridade'));
 

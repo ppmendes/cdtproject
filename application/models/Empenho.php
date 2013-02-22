@@ -87,7 +87,7 @@ class Application_Model_Empenho
             //formatando decimal
             $row[4] = $decimalfilter->filter($row[4]);
 
-            if($tipo_beneficiario_id == 1){
+            if($tipo_beneficiario_id == 2){
                 $row[2] = '<a href="beneficiarios/detalhespf/beneficiario_id/'.$beneficiario_id.'">'.$row[2].'</a>';
             } else{
                 $row[2] = '<a href="beneficiarios/detalhespj/beneficiario_id/'.$beneficiario_id.'">'.$row[2].'</a>';
