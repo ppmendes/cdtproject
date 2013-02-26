@@ -29,6 +29,8 @@ class TarefasController extends Zend_Controller_Action
                 //exit;
 //                echo "</pre>";
                 $data = $form->getValues();
+                print_r($data);
+                exit;
 
                 if($id){ //update
                     $model->update($data, $id);

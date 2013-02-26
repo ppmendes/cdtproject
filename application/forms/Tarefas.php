@@ -115,9 +115,11 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-        $this->addElement('text', 'dono', array(
+        $this->addElement('select', 'dono', array(
             'label'      => 'Responsável da tarefa:',
             'required'   => true,
+            'multiOptions'=>Application_Model_Usuario::getOptions1($this->id_projeto)
+
         ));
 
         $this->addElement('text', 'website_relacionado', array(
@@ -229,20 +231,14 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-        /*$this->addElement('multiselect', 'todas_tarefas', array(
+        $this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
             'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
-        ));*/
+            'size'=>10,
+        ));
 
-        $multi = new Zend_Form_Element_Multiselect('depe');
-        $multi->setMultiOptions(Application_Model_Tarefa::getOptions1($this->id_projeto))
-            ->setLabel('Dependencias')
-            ->addValidator('InArray',true,array(array_keys(Application_Model_Tarefa::getOptions1($this->id_projeto))));
-
-        $this->addElement($multi);
-
-        $this->addElement('button', 'botao_Adicionar_Tarefa', array(
+       $this->addElement('button', 'botao_Adicionar_Tarefa', array(
             'required' => false,
             'label'     => '>>',
         ));
@@ -252,22 +248,20 @@ class Application_Form_Tarefas extends Zend_Form
             'label'     => '<<',
         ));
 
-        $this->addElement('multiselect', 'dependencia_tarefa[]', array(
+        $this->addElement('multiselect', 'dependencia_tarefa', array(
             'label'      => 'Dependencias das Tarefas:',
             'required'   => false,
+            'size'=>10,
+            'RegisterInArrayValidator'=>false,
+
         ));
 
-        /*$multi2 = new Zend_Form_Element_Multiselect('depe2');
-        $multi2->setLabel('Dependencias 2');
-
-        $this->addElement($multi2);*/
-
         /******************************** LABEL RECURSOS HUMANOS **************************************/
-        $this->addElement('hidden', 'recursos_humanos', array(
-            'description' => 'Recursos Humanos',
-            'ignore' => true,
-            'decorators' => array(
-                array('Description', array('escape'=>false)),
+        $this->addElement('hidden', 'recursos_humano', array(
+        'description' => 'Recursos Humanos',
+        'ignore' => true,
+        'decorators' => array(
+            array('Description', array('escape'=>false)),
             ),
         ));
 
@@ -296,6 +290,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('multiselect', 'asociado_tarefa', array(
             'label'      => 'Asociado a Tarefa:',
             'required'   => false,
+            'RegisterInArrayValidator'=>false,
         ));
 
         $this->addElement('textarea', 'comentario_email', array(
