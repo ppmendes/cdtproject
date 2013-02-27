@@ -11,7 +11,6 @@ class Application_Form_Tarefas extends Zend_Form
 
     private $id_projeto;
 
-
     public function setIdProjeto($id_projeto_controller){
         $this->id_projeto = $id_projeto_controller;
     }
@@ -273,7 +272,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('button', 'botaoAdicionarRH', array(
             'required' => false,
-            'label'     => '>',
+            'label'     => '>>',
         ));
 
         $this->addElement('select', 'percentagem_trabalho', array(
@@ -284,7 +283,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('button', 'botaoDeletarRH', array(
             'required' => false,
-            'label'     => '<',
+            'label'     => '<<',
         ));
 
         $this->addElement('multiselect', 'asociado_tarefa', array(
@@ -313,11 +312,6 @@ class Application_Form_Tarefas extends Zend_Form
         ));
 
         //usuario logado?
-        $this->addElement('text', 'criador', array(
-            'label'      => 'Criador:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true,
-        ));
 
         $this->addElement('text', 'tarefa_notificacao', array(
             'label'      => 'Notificação:',
@@ -328,7 +322,7 @@ class Application_Form_Tarefas extends Zend_Form
         $emt->setLabel('Area:');
         $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
+            'function(event,ui) { $("#tarefas-instituicao_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 

@@ -24,20 +24,19 @@ class TarefasController extends Zend_Controller_Action
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-                //print_r($form->getValues());
-                //exit;
-//                echo "</pre>";
+
+                //$usuario obtem dados do usuário logado
+                $usuario = Zend_Auth::getInstance()->getStorage()->read();
+
                 $data = $form->getValues();
-                print_r($data);
+                $data['tarefas']['criador_id']=$usuario->usuario_id;
+
+                var_dump($data['tarefas']['asociado_tarefa']);
                 exit;
 
                 if($id){ //update
                     $model->update($data, $id);
                 }else{ //insert
-
-                    var_dump($data);
-                    exit;
                     $model->insert($data);
                 }
 
@@ -47,11 +46,15 @@ class TarefasController extends Zend_Controller_Action
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-
-                //$projeto_id_controller=$data['tarefas']['projeto_id'];
+                $id_projeto = $data['projeto_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
-                //$form->setIdProjeto($projeto_id_controller);
+                $form->setIdProjeto($id_projeto);
                 $form->startform();
+
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+                $data['ac']=$nome_projeto['nome'];
+
                 $form->populate(array("tarefas" => $data));
             }
         }
@@ -105,6 +108,12 @@ class TarefasController extends Zend_Controller_Action
 
 
         $data = $model->find($id)->toArray();
+
+        //recupera o id projeto e joga o nome do projeto no formulario
+        $id_projeto=$data['projeto_id'];
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+        $data['ac']=$nome_projeto['nome'];
 
         if(is_array($data)){
             $detalhes->setAction('/tarefas/detalhes/tarefa_id/' . $id);
