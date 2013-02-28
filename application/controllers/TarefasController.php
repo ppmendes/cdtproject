@@ -35,22 +35,29 @@ class TarefasController extends Zend_Controller_Action
                 $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
 
                 $rhAsociado=$data['tarefas']['asociado_tarefa'];
-                $rhAsociado=$data['tarefas']['percentagem_trabalho'];
+                //$rhAsociado=$data['tarefas']['percentagem_trabalho'];
+
+                unset($data['tarefas']['ac'],$data['tarefas']['todas_tarefas'],$data['tarefas']['dependencia_tarefa']);
 
 
                 if($id){ //update
                     //$model->update($data, $id);
-                    $modeltarefadepen->update($tarefaDependencia, $id);
+                    //$modeltarefadepen->update($tarefaDependencia, $id);
 
                 }else{ //insert
 
-                   // $model->insert($data);
-                    for($i=0;$i <= $tarefaDependencia.count(); $i++)
+                    // insert na tabela tarefas_dependentes;
+                    //determinado o ide da tarefa
+                    $idtarefa= $model->getLastInsertedId();
+                    for($i=0;$i < count($tarefaDependencia); $i++)
                     {
-                        //
-                        $modeltarefadepen->insert();
-                    }
+                        $datatd['tarefa_id']=$idtarefa;
+                        $datatd['tarefa_dependente']=$tarefaDependencia[$i];
+                        $modeltarefadepen->insert($datatd);
 
+
+                    }
+                    exit;
                 }
 
                 $this->_redirect('/tarefas/');

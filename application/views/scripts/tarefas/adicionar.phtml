@@ -140,8 +140,8 @@ echo $this->form;
 
             switch ($('#tarefas-tipo_duracao_id').val()) {
                 case '1'://horas
-                    //alert($('#tarefas-minutos_trabalho').val());
-                    var horas=parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4;
+
+                    var horas=parseFloat($('#tarefas-horas_trabalhadas').val());
                     $('#tarefas-duracao').val(dias_entre_datas()*horas);
                     //
                     //alert(dias_entre_datas()*horas);
@@ -160,7 +160,7 @@ echo $this->form;
 
             switch ($('#tarefas-tipo_duracao_id').val()) {
                 case '1'://horas
-                    var duracao=parseFloat($('#tarefas-duracao').val())/(parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4);
+                    var duracao=parseFloat($('#tarefas-duracao').val())/parseFloat($('#tarefas-horas_trabalhadas').val());
                     alert(duracao+'redond::'+  Math.ceil(duracao) );
 
                     var inicio = $('#tarefas-data_inicio').val().split("/");

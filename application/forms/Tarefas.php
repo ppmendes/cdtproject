@@ -187,26 +187,15 @@ class Application_Form_Tarefas extends Zend_Form
             8 => '8',
 
         );//
-        $array_minutos_trabalhadas = array(
-            1 => '00',
-            2 => '15',
-            3 => '30',
-            4 => '45',
-        );
 
-        $this->addElement('select', 'horas_trabalho', array(
+
+        $this->addElement('select', 'horas_trabalhadas', array(
             'label'      => 'Horas Diárias de Atividade:',
             'multiOptions'  => $array_horas_trabalhadas,
             'value'=>8,
             'required'   => true
         ));
 
-        $this->addElement('select', 'minutos_trabalho', array(
-            'label'      => 'Minutos:',
-            'multiOptions'  => $array_minutos_trabalhadas,
-            'value'=>1,
-            'required'   => true,
-        ));
 
         $this->addElement('button', 'botaoDuracao', array(
             'required' => false,

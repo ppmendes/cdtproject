@@ -12,8 +12,6 @@ class Application_Model_TarefasDependentes
     public function insert($data)
     {
         $table = new Application_Model_DbTable_TarefasDependentes();
-        print_r($data);
-        exit();
         $table->insert($data);
     }
 
