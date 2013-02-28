@@ -252,6 +252,7 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Dependencias das Tarefas:',
             'required'   => false,
             'size'=>10,
+            'multioptions'=>array(),
             'RegisterInArrayValidator'=>false,
 
         ));
@@ -312,14 +313,7 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-        //usuario logado?
-        $this->addElement('text', 'criador', array(
-            'label'      => 'Criador:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true,
-        ));
-
-        $this->addElement('text', 'tarefa_notificacao', array(
+       $this->addElement('text', 'tarefa_notificacao', array(
             'label'      => 'Notificação:',
             'required'   => true,
         ));

@@ -212,6 +212,7 @@ echo $this->form;
                         var usuario=$(this).clone();
                         options[i]= $(this).text()+' ['+$('#tarefas-percentagem_trabalho option:selected').html()+'%]';
                         usuario.html(options[i]);
+                        usuario.val(usuario.val()+'|'+$('#tarefas-percentagem_trabalho option:selected').html());
                        usuario.prependTo($('#tarefas-asociado_tarefa'));
 
                     });

@@ -20,6 +20,8 @@ class TarefasController extends Zend_Controller_Action
         $form = new Application_Form_Tarefas();
         $form->startform();
         $model = new Application_Model_Tarefa();
+        $modeltarefadepen=new Application_Model_TarefasDependentes();
+
         $id = $this->_getParam('tarefa_id');
 
         if($this->getRequest()->isPost()){
@@ -29,16 +31,25 @@ class TarefasController extends Zend_Controller_Action
                 //exit;
 //                echo "</pre>";
                 $data = $form->getValues();
-                print_r($data);
-                exit;
+
+                $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
+
+                $rhAsociado=$data['tarefas']['asociado_tarefa'];
+                $rhAsociado=$data['tarefas']['percentagem_trabalho'];
+
 
                 if($id){ //update
-                    $model->update($data, $id);
+                    //$model->update($data, $id);
+                    $modeltarefadepen->update($tarefaDependencia, $id);
+
                 }else{ //insert
 
-                    var_dump($data);
-                    exit;
-                    $model->insert($data);
+                   // $model->insert($data);
+                    for(0;5;)
+                    {
+                        $modeltarefadepen->insert();
+                    }
+
                 }
 
                 $this->_redirect('/tarefas/');
