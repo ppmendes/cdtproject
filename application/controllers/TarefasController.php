@@ -45,7 +45,7 @@ class TarefasController extends Zend_Controller_Action
                 }else{ //insert
 
                    // $model->insert($data);
-                    for(0;5;)
+                    for($i=0;$i <= $tarefaDependencia.count(); $i++)
                     {
                         $modeltarefadepen->insert();
                     }
