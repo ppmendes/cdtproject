@@ -11,7 +11,6 @@ class Application_Model_Tarefa
 
     public function insert($data)
     {
-
         $table = new Application_Model_DbTable_Tarefa;
         $table->insert($data['tarefas']);
     }
