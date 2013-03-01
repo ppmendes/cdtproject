@@ -32,20 +32,22 @@ class TarefasController extends Zend_Controller_Action
 //                echo "</pre>";
                 $data = $form->getValues();
 
-                $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
+                $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+                $data['tarefas']['criador']=$usuario_logado->usuario_id;
 
+                $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
                 $rhAsociado=$data['tarefas']['asociado_tarefa'];
                 //$rhAsociado=$data['tarefas']['percentagem_trabalho'];
 
                 unset($data['tarefas']['ac'],$data['tarefas']['todas_tarefas'],$data['tarefas']['dependencia_tarefa']);
-
+                unset($data['tarefas']['recursos_humanos'],$data['tarefas']['percentagem_trabalho'],$data['tarefas']['asociado_tarefa']);
+                unset($data['tarefas']['comentario_email'],$data['tarefas']['aca']);
 
                 if($id){ //update
                     //$model->update($data, $id);
                     //$modeltarefadepen->update($tarefaDependencia, $id);
 
                 }else{ //insert
-
                     // insert na tabela tarefas_dependentes;
                     //determinado o ide da tarefa
                     $idtarefa= $model->getLastInsertedId();
@@ -54,10 +56,9 @@ class TarefasController extends Zend_Controller_Action
                         $datatd['tarefa_id']=$idtarefa;
                         $datatd['tarefa_dependente']=$tarefaDependencia[$i];
                         $modeltarefadepen->insert($datatd);
-
-
                     }
-                    exit;
+                    $model->insert($data);
+
                 }
 
                 $this->_redirect('/tarefas/');
