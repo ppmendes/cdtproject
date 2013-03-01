@@ -116,7 +116,7 @@ class Application_Model_Solicitacao
 
     }
 
-    public function insert($data, $numero_itens, $solicitacao_nome, $preco_unidade, $valor_estimado)
+    public function insertAquisicao($data, $numero_itens, $solicitacao_nome, $preco_unidade, $valor_estimado)
     {
         $table = new Application_Model_DbTable_Solicitacao();
 
@@ -124,6 +124,28 @@ class Application_Model_Solicitacao
         $data['solicitacoes']['solicitacao_nome'] = $data['solicitacoes']['solicitacao_nome'] . $solicitacao_nome;
         $data['solicitacoes']['preco_unidade'] = $data['solicitacoes']['preco_unidade'] . $preco_unidade;
         $data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
+
+
+        $table->insert($data['solicitacoes']);
+    }
+
+    public function insertContratacao($data, $descricao, $produto, $qtde, $cronograma_inicio,$cronograma_termino, $valor_total,
+                $execucao_inicio, $execucao_termino, $qtd_parcelas, $valor_parcelas, $data_pagamento)
+    {
+        $table = new Application_Model_DbTable_Solicitacao();
+
+        $data['solicitacoes']['$descricao'] = $data['solicitacoes']['numero_itens'] . $descricao;
+        $data['solicitacoes']['$produto'] = $data['solicitacoes']['solicitacao_nome'] . $produto;
+        $data['solicitacoes']['$qtde'] = $data['solicitacoes']['preco_unidade'] . $qtde;
+        $data['solicitacoes']['$cronograma_inicio'] = $data['solicitacoes']['valor_estimado'] . $cronograma_inicio;
+        $data['solicitacoes']['$cronograma_termino'] = $data['solicitacoes']['numero_itens'] . $cronograma_termino;
+        $data['solicitacoes']['$valor_total'] = $data['solicitacoes']['numero_itens'] . $valor_total;
+        $data['solicitacoes']['$execucao_inicio'] = $data['solicitacoes']['numero_itens'] . $execucao_inicio;
+        $data['solicitacoes']['$execucao_termino'] = $data['solicitacoes']['numero_itens'] . $execucao_termino;
+        $data['solicitacoes']['$qtd_parcelas'] = $data['solicitacoes']['numero_itens'] . $qtd_parcelas;
+        $data['solicitacoes']['$valor_parcelas'] = $data['solicitacoes']['numero_itens'] . $valor_parcelas;
+        $data['solicitacoes']['$data_pagamento'] = $data['solicitacoes']['numero_itens'] . $data_pagamento;
+
 
 
         $table->insert($data['solicitacoes']);
@@ -160,7 +182,7 @@ class Application_Model_Solicitacao
                 $var = $data['solicitacoes'][$campo . $index];
 
                 //Concatena as strings de forma a inserir as informacoes em apenas um campo no banco
-                $result = $result . ";" . $var;
+                $result = $result . "|" . $var;
             }
         }
         return $result;

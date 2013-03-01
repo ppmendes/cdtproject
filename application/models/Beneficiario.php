@@ -75,10 +75,10 @@ class Application_Model_Beneficiario
     public static function getOptions(){
         try{
             $options = array();
-            $table = new Application_Model_DbTable_Beneficiario;
-            $resultado = $table->fetchAll();
+            $table = new Application_Model_DbTable_Beneficiario();
+            $resultado = $table->fetchAll('tipo_beneficiario_id = 1 && deletado = 0');
             foreach($resultado as $item){
-                $options[$item['beneficiario_id']] = $item['nome'];
+                $options[] = array('label' => $item['nome'], 'id' => $item['beneficiario_id']);
             }
             return $options;
         } catch(Exception $e){
@@ -86,5 +86,21 @@ class Application_Model_Beneficiario
         }
 
     }
+
+    public static function getOptionsPj(){
+        try{
+            $options = array();
+            $table = new Application_Model_DbTable_Beneficiario();
+            $resultado = $table->fetchAll('tipo_beneficiario_id = 2');
+            foreach($resultado as $item){
+                $options[] = array('label' => $item['nome'], 'id' => $item['beneficiario_id']);
+            }
+            return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
 }
 

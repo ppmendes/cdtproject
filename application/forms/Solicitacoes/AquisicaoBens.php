@@ -11,7 +11,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         array()
     );
 
-    public function init()
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
@@ -69,7 +69,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
             'required'   => true,
-            'order'          => 6
+            'order'          => 6,
         ));
 
         $this->addElement('text', 'telefone_coordenador', array(
@@ -339,6 +339,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
 
         $individual = $this->getDisplayGroup('individual');
+        var_dump($individual);
 
         $individual->addElements(array ($this->getElement($name1), $this->getElement($name2),
             $this->getElement($name3), $this->getElement($name4)));

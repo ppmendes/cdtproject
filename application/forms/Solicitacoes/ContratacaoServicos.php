@@ -61,13 +61,13 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 4,
         ));
 
-        $this->addElement('text', 'telefone', array(
+        $this->addElement('text', 'telefone_coordenador', array(
             'label'      => 'Telefone:',
             'required'   => true,
             'order'          => 5,
         ));
 
-        $this->addElement('text', 'fax', array(
+        $this->addElement('text', 'fax_coordenador', array(
             'label'      => 'Fax:',
             'required'   => false,
             'order'          => 6,
@@ -83,61 +83,69 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             ),
         ));
 
-        //Beneficiário input type text
-        $this->addElement('select', 'beneficiario_id', array(
-            'label'      => 'Beneficiário:',
-            'multiOptions' => Application_Model_Beneficiario::getOptions(),
-            'required'   => true,
-            'order'          => 8,
+
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Beneficiario:');
+        $emt->setOrder(8);
+        $emt->setRequired(true);
+        $emt->setJQueryParam('data', Application_Model_Beneficiario::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#solicitacoes-beneficiario_id").val(ui.item.id); preencher();}')
         ));
+        $this->addElement($emt);
 
         //CPF input type text
         $this->addElement('text', 'cpf_cnpj', array(
             'label'      => 'CPF:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 9,
+            'ignore'         => true,
         ));
 
         //RG input type text
         $this->addElement('text', 'rg_ie', array(
             'label'      => 'RG:',
             'required'   => false,
+            'readonly'   => true,
             'order'          => 10,
+            'ignore'         => true,
         ));
 
         //RG input type text
         $this->addElement('text', 'pis_inss', array(
             'label'      => 'PIS ou INSS:',
             'required'   => false,
+            'readonly'   => true,
             'order'          => 11,
+            'ignore'         => true,
         ));
 
         //RG input type text
-        $this->addElement('text', 'endereco', array(
+        $this->addElement('text', 'endereco_contratado', array(
             'label'      => 'Endereço:',
             'required'   => false,
+            'readonly'   => true,
             'order'          => 12,
+            'ignore'         => true,
         ));
 
         //Telefone input type text
-        $this->addElement('text', 'telefone', array(
+        $this->addElement('text', 'telefone_contratado', array(
             'label'      => 'Telefone:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 13,
-        ));
-
-        //celular input type text
-        $this->addElement('text', 'celular', array(
-            'label'      => 'Telefone:',
-            'required'   => true,
-            'order'          => 14,
+            'ignore'         => true,
         ));
 
         //E-mail input type text
-        $this->addElement('text', 'email2', array(
+        $this->addElement('text', 'email_contratado', array(
             'label'      => 'E-mail:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 15,
+            'ignore'         => true,
         ));
 
         $this->addElement('hidden', 'label_banco', array(
@@ -153,20 +161,26 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Banco:',
             'order'          => 17,
             'multiOptions' => Application_Model_Banco::getOptions(),
-            'required'   => true
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
         ));
         //Agencia input type text
         $this->addElement('text', 'agencia_banco', array(
             'label'      => 'Agência:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 18,
+            'ignore'         => true,
         ));
 
         //Conta input type text
         $this->addElement('text', 'conta_bancaria', array(
             'label'      => 'Conta:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 19,
+            'ignore'         => true,
         ));
 
         $this->addElement('hidden', 'label_plano_trabalho', array(
@@ -178,7 +192,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             ),
         ));
 
-        $this->addElement('textarea', 'objeto', array(
+        $this->addElement('textarea', 'objeto_servico', array(
             'label'      => 'Objeto do Serviço:',
             'required'   => true,
             'order'          => 21,
@@ -213,7 +227,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'qtde', array(
+        $this->addElement('text', 'numero_itens', array(
             'label'      => 'Qtde:',
             'required'   => true,
             'order'          => 26,
@@ -358,6 +372,11 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('hidden', 'hidden_teste2', array(
             'value'      => '' ,
             'order'          => 204,
+        ));
+
+        $this->addElement('hidden', 'beneficiario_id', array(
+            'value'      => '',
+            'order'      => 205,
         ));
 
 
@@ -669,6 +688,29 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     function getNum2(){
         $('#solicitacoes-hidden_teste2').attr('value', num2);
         return num2;
+    }
+
+
+    function preencher()
+    {
+        var valor = 'id=' + $('#solicitacoes-beneficiario_id').val();
+        $.ajax({
+            url: '/solicitacoes/preenchebeneficiario/',
+            dataType:'json',
+            data: valor,
+            success: function(data){
+            $('#solicitacoes-cpf_cnpj').val(data.cpf_cnpj);
+            $('#solicitacoes-rg_ie').val(data.rg_ie);
+            $('#solicitacoes-pis_inss').val(data.nit_pis);
+            $('#solicitacoes-endereco_contratado').val(data.endereco);
+            $('#solicitacoes-telefone_contratado').val(data.telefone);
+            $('#solicitacoes-email_contratado').val(data.email);
+            $('#solicitacoes-banco_id').val(data.banco_id);
+            $('#solicitacoes-agencia_banco').val(data.agencia_banco);
+            $('#solicitacoes-conta_bancaria').val(data.conta_bancaria);
+
+            }
+        })
     }
 
 </script>

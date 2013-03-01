@@ -26,6 +26,11 @@ class Application_Model_DbTable_Beneficiario extends Zend_Db_Table_Abstract
             'refTableClass'     => 'Application_Model_DbTable_Banco',
             'refColumns'        => 'banco_id'
         ),
+        'Application_Model_DbTable_TipoBeneficiario' => array(
+            'columns'           => 'tipo_beneficiario_id',
+            'refTableClass'     => 'Application_Model_DbTable_TipoBeneficiario',
+            'refColumns'        => 'tipo_beneficiario_id'
+        ),
         'Application_Model_DbTable_Escolaridade' => array(
             'columns'           => 'escolaridade_id',
             'refTableClass'     => 'Application_Model_DbTable_Escolaridade',
