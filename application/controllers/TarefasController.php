@@ -86,9 +86,11 @@ class TarefasController extends Zend_Controller_Action
 
                 $id_projeto = $data['projeto_id'];
                 $id_instituicao=$data['instituicao_id'];
+                $id_tarefa=$data['tarefa_id'];
                 //$projeto_id_controller=$data['tarefas']['projeto_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
                 $form->setIdProjeto($id_projeto);
+                $form->setIdTarefa($id_tarefa);
                 //$form->setIdProjeto($projeto_id_controller);
                 $form->startform();
 
@@ -152,6 +154,8 @@ class TarefasController extends Zend_Controller_Action
         $data = $model->find($id)->toArray();
         $id_projeto=$data['projeto_id'];
         $id_instituicao=$data['instituicao_id'];
+        $id_tarefa=$data['tarefa_id'];
+        $detalhes->setIdTarefa($id_tarefa);
         $db = Zend_Db_Table::getDefaultAdapter();
         $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
         $nome_instituicao=$db->fetchRow("select nome from instituicao where instituicao_id=$id_instituicao");
