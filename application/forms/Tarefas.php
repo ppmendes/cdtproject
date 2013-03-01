@@ -315,7 +315,7 @@ class Application_Form_Tarefas extends Zend_Form
             'label'     => 'Pesquisar',
         ));
 
-        // Add the submit buttonhgghfj
+        // Add the submit button90
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Tarefa',
