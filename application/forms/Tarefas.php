@@ -36,7 +36,7 @@ class Application_Form_Tarefas extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id)}')
+            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id)}')
         ));
         $this->addElement($emt);
 
@@ -197,6 +197,7 @@ class Application_Form_Tarefas extends Zend_Form
         ));
 
 
+
         $this->addElement('button', 'botaoDuracao', array(
             'required' => false,
             'label'     => 'Duração',
@@ -288,7 +289,7 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => false,
         ));
 
-        $this->addElement('checkbox', 'tarefa_notificacao', array(
+        $this->addElement('checkbox', 'notificar_email', array(
             'label'      => 'Notificar associados da tarefa por e-mail:',
             'required'   => true,
         ));
@@ -302,11 +303,16 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
+       $this->addElement('text', 'tarefa_notificacao', array(
+            'label'      => 'Notificação:',
+            'required'   => true,
+        ));
+
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('aca');
         $emt->setLabel('Area:');
         $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-instituicao_id").val(ui.item.id) }')
+            'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 
@@ -322,7 +328,7 @@ class Application_Form_Tarefas extends Zend_Form
         ));
 
         //set hidden projeto
-        $this->addElement('hidden', 'projeto_id', array(
+        $this->addElement('hidden', 'autoid', array(
             'value'      => ''
         ));
 
