@@ -11,7 +11,7 @@ class Application_Model_Tarefa
 
     public function insert($data)
     {
-        print_r($data);
+
         $table = new Application_Model_DbTable_Tarefa;
         $table->insert($data['tarefas']);
     }
@@ -40,7 +40,7 @@ class Application_Model_Tarefa
 
         $db = Zend_Db_Table::getDefaultAdapter();
         $result = $db->fetchOne("SELECT max(tarefa_id) FROM tarefa");
-        return (int)$result+1;
+        return (int)$result;
     }
 
     public function selectAll()

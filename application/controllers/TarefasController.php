@@ -21,8 +21,10 @@ class TarefasController extends Zend_Controller_Action
         $form->startform();
         $model = new Application_Model_Tarefa();
         $modeltarefadepen=new Application_Model_TarefasDependentes();
+        $modelusuarios=new Application_Model_UsuariosAssociadosTarefa();
 
         $id = $this->_getParam('tarefa_id');
+
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -30,14 +32,14 @@ class TarefasController extends Zend_Controller_Action
                 //print_r($form->getValues());
                 //exit;
 //                echo "</pre>";
+
                 $data = $form->getValues();
 
                 $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
                 $data['tarefas']['criador']=$usuario_logado->usuario_id;
 
                 $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
-                $rhAsociado=$data['tarefas']['asociado_tarefa'];
-                //$rhAsociado=$data['tarefas']['percentagem_trabalho'];
+                $rhAssociados=$data['tarefas']['asociado_tarefa'];
 
                 unset($data['tarefas']['ac'],$data['tarefas']['todas_tarefas'],$data['tarefas']['dependencia_tarefa']);
                 unset($data['tarefas']['recursos_humanos'],$data['tarefas']['percentagem_trabalho'],$data['tarefas']['asociado_tarefa']);
@@ -48,6 +50,10 @@ class TarefasController extends Zend_Controller_Action
                     //$modeltarefadepen->update($tarefaDependencia, $id);
 
                 }else{ //insert
+
+                    //insert na tabela tarefa
+                    $model->insert($data);
+
                     // insert na tabela tarefas_dependentes;
                     //determinado o ide da tarefa
                     $idtarefa= $model->getLastInsertedId();
@@ -57,7 +63,17 @@ class TarefasController extends Zend_Controller_Action
                         $datatd['tarefa_dependente']=$tarefaDependencia[$i];
                         $modeltarefadepen->insert($datatd);
                     }
-                    $model->insert($data);
+
+                    //insert tabela usuarios associados
+                    for($i=0;$i<count($rhAssociados); $i++)
+                    {
+                        $datarh['tarefa_id']=$idtarefa;
+                        $dataexplode=explode('|',$rhAssociados[$i]);
+                        $datarh['usuario_id']=$dataexplode[0];
+                        $datarh['porcentagem']=$dataexplode[1];
+                        $modelusuarios->insert($datarh);
+
+                    }
 
                 }
 
@@ -68,10 +84,16 @@ class TarefasController extends Zend_Controller_Action
 
             if(is_array($data)){
 
+                $id_projeto = $data['projeto_id'];
                 //$projeto_id_controller=$data['tarefas']['projeto_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
+                $form->setIdProjeto($id_projeto);
                 //$form->setIdProjeto($projeto_id_controller);
                 $form->startform();
+
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+                $data['ac']=$nome_projeto['nome'];
                 $form->populate(array("tarefas" => $data));
             }
         }
@@ -125,6 +147,10 @@ class TarefasController extends Zend_Controller_Action
 
 
         $data = $model->find($id)->toArray();
+        $id_projeto=$data['projeto_id'];
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+        $data['ac']=$nome_projeto['nome'];
 
         if(is_array($data)){
             $detalhes->setAction('/tarefas/detalhes/tarefa_id/' . $id);
