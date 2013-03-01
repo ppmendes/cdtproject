@@ -94,7 +94,7 @@ class Application_Form_Tarefas extends Zend_Form
 
 
 
-    /***************************** LABEL DETALHES *********************************/
+    /***************************** LABEL DETALHES **00*******************************/
         $this->addElement('hidden', 'label_projeto', array(
             'description' => 'Detalhes',
             'ignore' => true,
