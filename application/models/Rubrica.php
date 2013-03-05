@@ -26,6 +26,9 @@ class Application_Model_Rubrica
 
     public static function getOptions(){
         try{
+
+
+
             $options2 = array();
             $options = array();
             $table = new Application_Model_DbTable_Rubrica();

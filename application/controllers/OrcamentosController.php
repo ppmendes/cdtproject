@@ -17,27 +17,26 @@ class OrcamentosController extends Zend_Controller_Action
 
     public function adicionarAction(){
 
-
-        //$request = $this->getRequest();
-
         $form = new Application_Form_Orcamentos();
-        $this->view->form = $form;
-        //$model = new Application_Model_Projeto;
-        //$id = $this->_getParam('orcamento_id');
+        //$model = new Application_Model_Orcamento();
+        $id = $this->_getParam('orcamento_id');
+        $request = $this->getRequest();
 
-        /*if($this->getRequest()->isPost()){
+        if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
                   //echo "<pre>";
                   //print_r($form->getValues());
                   //echo "</pre>";
-                $data = $form->getValues();
-                if($id){
+                //$data = $form->getValues();
+                //var_dump($data);
+                echo 'tsa';
+                /*if($id){
                     $model->update($data, $id);
                 }else{
                     $model->insert($data);
                 }
 
-                $this->_redirect('/orcamentos/');
+                $this->_redirect('/orcamentos/');*/
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
@@ -46,9 +45,9 @@ class OrcamentosController extends Zend_Controller_Action
                 $form->setAction('/orcamentos/detalhes/orcamento_id/' . $id);
                 $form->populate(array("orcamentos" => $data));
             }
-        }*/
+        }
 
-       //$this->view->form = $form;
+        $this->view->form = $form;
     }
 
     public function detalhesAction(){
@@ -69,6 +68,136 @@ class OrcamentosController extends Zend_Controller_Action
         $this->view->detalhes = $detalhes;
 
 
+    }
+
+    public function combogridrubricaAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'rubrica_id';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'rubrica_id_pai != 1 and rubrica_id_pai != 2 and rubrica_id_pai != 0 and (codigo_rubrica like ? or descricao like ? )';//, 'codigo_rubrica like '.$searchTerm);
+
+        $select = $dbAdapter->select()->from('rubrica',array('count(*) as count'))->where($where,$searchTerm);
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+        $select = $dbAdapter->select()->from('rubrica',array('rubrica_id','descricao','codigo_rubrica'))->where($where,$searchTerm)
+        ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from('rubrica',array('rubrica_id','descricao','codigo_rubrica'))->where($where,$searchTerm)
+            ->order(array("$sidx $sord"));
+        }
+
+        try{
+        $rows = $dbAdapter->fetchAll($select);
+
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
+
+    public function combogridprojetoAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'projeto_id';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'nome like ? or apelido like ?';
+
+        $select = $dbAdapter->select()->from('projeto',array('count(*) as count'))->where($where,$searchTerm);
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from('projeto',array('projeto_id','nome','apelido'))->where($where,$searchTerm)
+                ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from('projeto',array('projeto_id','nome','apelido'))->where($where,$searchTerm)
+                ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
     }
 
     public function excluirAction(){

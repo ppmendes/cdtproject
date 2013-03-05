@@ -20,14 +20,17 @@ class Application_Form_Orcamentos extends Zend_Form
 
         //descricao, finalidade, valor,  destinatário
 
-        //Código - Natureza da Despesa
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('label_codigo_natureza_despesa');
-        $emt->setLabel('Código - Natureza da Despesa:');
-        $emt->setJQueryParam('data', Application_Model_Rubrica::getOptions())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-                             'function(event,ui) { $("#orcamento-id_codigo_natureza_despesa").val(ui.item.id) }')
-            ));
-        $this->addElement($emt);
+        //Projeto
+        $this->addElement('text', 'projeto', array(
+            'label'      => 'Projeto:',
+            'required'   => true,
+        ));
+
+        //Código - Natureza da Despesa - Rubrica
+        $this->addElement('text', 'rubrica', array(
+            'label'      => 'Rúbrica (Código - Descrição):',
+            'required'   => true,
+        ));
 
         //descrição
         $this->addElement('text', 'descricao', array(
@@ -37,7 +40,7 @@ class Application_Form_Orcamentos extends Zend_Form
 
 
         //finalidade
-        $this->addElement('textarea', 'finalidade', array(
+        $this->addElement('text', 'finalidade', array(
             'label'      => 'Finalidade:',
             'required'   => true,
         ));
@@ -64,7 +67,12 @@ class Application_Form_Orcamentos extends Zend_Form
         ));
 
         //set hidden
-        $this->addElement('hidden', 'id_codigo_natureza_despesa', array(
+        $this->addElement('hidden', 'rubrica_id', array(
+            'value'      => ''
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'projeto_id', array(
             'value'      => ''
         ));
     }
