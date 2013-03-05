@@ -284,6 +284,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('multiselect', 'asociado_tarefa', array(
             'label'      => 'Asociado a Tarefa:',
             'required'   => false,
+            'multiOptions' => Application_Model_UsuariosAssociadosTarefa::getOptions($this->id_tarefa),
             'RegisterInArrayValidator'=>false,
         ));
 
