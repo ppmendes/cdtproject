@@ -11,7 +11,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         array()
     );
 
-    public function init()
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
@@ -64,19 +64,21 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'order'          => 5
         ));
 
+
+
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
             'required'   => true,
-            'order'          => 6
+            'order'          => 6,
         ));
 
-        $this->addElement('text', 'telefone', array(
+        $this->addElement('text', 'telefone_coordenador', array(
             'label'      => 'Telefone:',
             'required'   => true,
             'order'          => 7
         ));
 
-        $this->addElement('text', 'fax', array(
+        $this->addElement('text', 'fax_coordenador', array(
             'label'      => 'Fax:',
             'required'   => false,
             'order'          => 8
@@ -221,13 +223,13 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'attribs'    => array('onblur' => 'setLocal(this.value)')
         ));
 
-        $this->addElement('text', 'coordenador_projeto', array(
+        $this->addElement('text', 'responsavel_entrega', array(
             'label'      => 'Responsável:',
             'required'   => true,
             'order'          => 108,
         ));
 
-        $this->addElement('text', 'telefone_responsavel', array(
+        $this->addElement('text', 'telefone_entrega', array(
             'label'      => 'Telefone:',
             'required'   => true,
             'order'          => 109,
@@ -242,26 +244,32 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             ),
         ));
 
+        $this->addElement('text', 'beneficiario_id', array(
+            'label'      => 'teste:',
+            'required'   => true,
+            'order'          => 111
+        ));
+
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'order'          => 111,
+            'order'          => 112,
             'label'    => 'Enviar',
         ));
 
         $this->addElement('hidden', 'data_solicitacao', array(
             'value' =>  date('Y-m-d', time()),
-            'order'          => 112,
+            'order'          => 113,
         ));
 
         $this->addElement('hidden', 'local_entrega_solicitacao', array(
             'value' =>  'CDT',
-            'order'          => 113
+            'order'          => 114
         ));
 
         $this->addElement('hidden', 'hidden_teste', array(
             'value'      => '',
-            'order'          => 114,
+            'order'          => 115,
         ));
 
 
@@ -331,6 +339,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
 
         $individual = $this->getDisplayGroup('individual');
+        var_dump($individual);
 
         $individual->addElements(array ($this->getElement($name1), $this->getElement($name2),
             $this->getElement($name3), $this->getElement($name4)));

@@ -35,6 +35,12 @@ class Application_Model_Tarefa
 
         $table->update($data['tarefas'],$where);
     }
+    public function getLastInsertedId(){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(tarefa_id) FROM tarefa");
+        return (int)$result;
+    }
 
     public function selectAll()
     {

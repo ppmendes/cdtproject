@@ -100,6 +100,7 @@ class ArquivosController extends Zend_Controller_Action
         $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
         $data['nomeProjeto']=$nome_projeto['nome'];
 
+
         if(is_array($data)){
             $detalhes->setAction('/arquivos/detalhes/arquivo_id/' . $id);
             $detalhes->populate(array("arquivos" => $data));

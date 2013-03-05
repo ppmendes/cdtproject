@@ -20,7 +20,11 @@ class TarefasController extends Zend_Controller_Action
         $form = new Application_Form_Tarefas();
         $form->startform();
         $model = new Application_Model_Tarefa();
+        $modeltarefadepen=new Application_Model_TarefasDependentes();
+        $modelusuarios=new Application_Model_UsuariosAssociadosTarefa();
+
         $id = $this->_getParam('tarefa_id');
+
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -28,15 +32,49 @@ class TarefasController extends Zend_Controller_Action
                 //print_r($form->getValues());
                 //exit;
 //                echo "</pre>";
+
                 $data = $form->getValues();
 
+                $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+                $data['tarefas']['criador']=$usuario_logado->usuario_id;
+
+                $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
+                $rhAssociados=$data['tarefas']['asociado_tarefa'];
+
+                unset($data['tarefas']['ac'],$data['tarefas']['todas_tarefas'],$data['tarefas']['dependencia_tarefa']);
+                unset($data['tarefas']['recursos_humanos'],$data['tarefas']['percentagem_trabalho'],$data['tarefas']['asociado_tarefa']);
+                unset($data['tarefas']['comentario_email'],$data['tarefas']['aca']);
+
                 if($id){ //update
-                    $model->update($data, $id);
+                    //$model->update($data, $id);
+                    //$modeltarefadepen->update($tarefaDependencia, $id);
+
                 }else{ //insert
 
-                    var_dump($data);
-                    exit;
+                    //insert na tabela tarefa
                     $model->insert($data);
+
+                    // insert na tabela tarefas_dependentes;
+                    //determinado o ide da tarefa
+                    $idtarefa= $model->getLastInsertedId();
+                    for($i=0;$i < count($tarefaDependencia); $i++)
+                    {
+                        $datatd['tarefa_id']=$idtarefa;
+                        $datatd['tarefa_dependente']=$tarefaDependencia[$i];
+                        $modeltarefadepen->insert($datatd);
+                    }
+
+                    //insert tabela usuarios associados
+                    for($i=0;$i<count($rhAssociados); $i++)
+                    {
+                        $datarh['tarefa_id']=$idtarefa;
+                        $dataexplode=explode('|',$rhAssociados[$i]);
+                        $datarh['usuario_id']=$dataexplode[0];
+                        $datarh['porcentagem']=$dataexplode[1];
+                        $modelusuarios->insert($datarh);
+
+                    }
+
                 }
 
                 $this->_redirect('/tarefas/');
@@ -46,10 +84,19 @@ class TarefasController extends Zend_Controller_Action
 
             if(is_array($data)){
 
-                //$projeto_id_controller=$data['tarefas']['projeto_id'];
+                $id_projeto = $data['projeto_id'];
+                $id_instituicao=$data['instituicao_id'];
+                $id_tarefa=$data['tarefa_id'];
                 $form->setAction('/tarefas/detalhes/tarefa_id/' . $id);
-                //$form->setIdProjeto($projeto_id_controller);
+                $form->setIdProjeto($id_projeto);
+                $form->setIdTarefa($id_tarefa);
                 $form->startform();
+
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+                $nome_instituicao=$db->fetchRow("select nome from instituicao where instituicao_id=$id_instituicao");
+                $data['ac']=$nome_projeto['nome'];
+                $data['aca']=$nome_instituicao['nome'];
                 $form->populate(array("tarefas" => $data));
             }
         }
@@ -96,13 +143,22 @@ class TarefasController extends Zend_Controller_Action
     public function detalhesAction(){
         $request = $this->getRequest();
         $detalhes = new Application_Form_Tarefas();
-        $detalhes->startform();
         $model = new Application_Model_Tarefa();
         $id = $this->_getParam('tarefa_id');
         $this->view->id = $id;
 
-
         $data = $model->find($id)->toArray();
+
+        $id_projeto=$data['projeto_id'];
+        $id_instituicao=$data['instituicao_id'];
+        $id_tarefa=$data['tarefa_id'];
+        $detalhes->setIdTarefa($id_tarefa);
+        $detalhes->startform();
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $nome_projeto=$db->fetchRow("select nome from projeto where projeto_id=$id_projeto");
+        $nome_instituicao=$db->fetchRow("select nome from instituicao where instituicao_id=$id_instituicao");
+        $data['ac']=$nome_projeto['nome'];
+        $data['aca']=$nome_instituicao['nome'];
 
         if(is_array($data)){
             $detalhes->setAction('/tarefas/detalhes/tarefa_id/' . $id);

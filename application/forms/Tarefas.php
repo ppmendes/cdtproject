@@ -10,10 +10,14 @@ class Application_Form_Tarefas extends Zend_Form
 {
 
     private $id_projeto;
+    private $id_tarefa;
 
 
     public function setIdProjeto($id_projeto_controller){
         $this->id_projeto = $id_projeto_controller;
+    }
+    public function setIdTarefa($id_tarefa_controller){
+        $this->id_tarefa = $id_tarefa_controller;
     }
 
     public function startform()
@@ -36,7 +40,7 @@ class Application_Form_Tarefas extends Zend_Form
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-autoid").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id)}')
+            'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id)}')
         ));
         $this->addElement($emt);
 
@@ -94,7 +98,7 @@ class Application_Form_Tarefas extends Zend_Form
 
 
 
-    /***************************** LABEL DETALHES *********************************/
+        /***************************** LABEL DETALHES **00*******************************/
         $this->addElement('hidden', 'label_projeto', array(
             'description' => 'Detalhes',
             'ignore' => true,
@@ -115,9 +119,11 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-        $this->addElement('text', 'dono', array(
+        $this->addElement('select', 'dono', array(
             'label'      => 'Responsável da tarefa:',
             'required'   => true,
+            'multiOptions'=>Application_Model_Usuario::getOptions1($this->id_projeto)
+
         ));
 
         $this->addElement('text', 'website_relacionado', array(
@@ -134,12 +140,12 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Descrição:',
             'required'   => true,
         ));
-    /******************************** LABEL DATAS **************************************/
+        /******************************** LABEL DATAS **************************************/
         $this->addElement('hidden', 'label_datas', array(
             'description' => 'Datas',
             'ignore' => true,
             'decorators' => array(
-            array('Description', array('escape'=>false)),
+                array('Description', array('escape'=>false)),
             ),
         ));
 
@@ -185,26 +191,15 @@ class Application_Form_Tarefas extends Zend_Form
             8 => '8',
 
         );//
-        $array_minutos_trabalhadas = array(
-            1 => '00',
-            2 => '15',
-            3 => '30',
-            4 => '45',
-        );
 
-        $this->addElement('select', 'horas_trabalho', array(
+
+        $this->addElement('select', 'horas_trabalhadas', array(
             'label'      => 'Horas Diárias de Atividade:',
             'multiOptions'  => $array_horas_trabalhadas,
             'value'=>8,
             'required'   => true
         ));
 
-        $this->addElement('select', 'minutos_trabalho', array(
-            'label'      => 'Minutos:',
-            'multiOptions'  => $array_minutos_trabalhadas,
-            'value'=>1,
-            'required'   => true,
-        ));
 
         $this->addElement('button', 'botaoDuracao', array(
             'required' => false,
@@ -229,18 +224,12 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => true,
         ));
 
-        /*$this->addElement('multiselect', 'todas_tarefas', array(
+        $this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
             'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
-        ));*/
-
-        $multi = new Zend_Form_Element_Multiselect('depe');
-        $multi->setMultiOptions(Application_Model_Tarefa::getOptions1($this->id_projeto))
-            ->setLabel('Dependencias')
-            ->addValidator('InArray',true,array(array_keys(Application_Model_Tarefa::getOptions1($this->id_projeto))));
-
-        $this->addElement($multi);
+            'size'=>10,
+        ));
 
         $this->addElement('button', 'botao_Adicionar_Tarefa', array(
             'required' => false,
@@ -252,18 +241,17 @@ class Application_Form_Tarefas extends Zend_Form
             'label'     => '<<',
         ));
 
-        $this->addElement('multiselect', 'dependencia_tarefa[]', array(
+        $this->addElement('multiselect', 'dependencia_tarefa', array(
             'label'      => 'Dependencias das Tarefas:',
             'required'   => false,
+            'size'=>10,
+            'multiOptions' => Application_Model_TarefasDependentes::getOptions($this->id_tarefa),
+            'RegisterInArrayValidator'=>false,
+
         ));
 
-        /*$multi2 = new Zend_Form_Element_Multiselect('depe2');
-        $multi2->setLabel('Dependencias 2');
-
-        $this->addElement($multi2);*/
-
         /******************************** LABEL RECURSOS HUMANOS **************************************/
-        $this->addElement('hidden', 'recursos_humanos', array(
+        $this->addElement('hidden', 'recursos_humano', array(
             'description' => 'Recursos Humanos',
             'ignore' => true,
             'decorators' => array(
@@ -296,6 +284,8 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('multiselect', 'asociado_tarefa', array(
             'label'      => 'Asociado a Tarefa:',
             'required'   => false,
+            'multiOptions' => Application_Model_UsuariosAssociadosTarefa::getOptions($this->id_tarefa),
+            'RegisterInArrayValidator'=>false,
         ));
 
         $this->addElement('textarea', 'comentario_email', array(
@@ -303,7 +293,7 @@ class Application_Form_Tarefas extends Zend_Form
             'required'   => false,
         ));
 
-        $this->addElement('checkbox', 'notificar_email', array(
+        $this->addElement('checkbox', 'tarefa_notificacao', array(
             'label'      => 'Notificar associados da tarefa por e-mail:',
             'required'   => true,
         ));
@@ -317,23 +307,11 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-        //usuario logado?
-        $this->addElement('text', 'criador', array(
-            'label'      => 'Criador:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true,
-        ));
-
-        $this->addElement('text', 'tarefa_notificacao', array(
-            'label'      => 'Notificação:',
-            'required'   => true,
-        ));
-
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('aca');
         $emt->setLabel('Area:');
         $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#usuario-instituicao_id").val(ui.item.id) }')
+            'function(event,ui) { $("#tarefas-instituicao_id").val(ui.item.id) }')
         ));
         $this->addElement($emt);
 
@@ -342,14 +320,14 @@ class Application_Form_Tarefas extends Zend_Form
             'label'     => 'Pesquisar',
         ));
 
-        // Add the submit button
+        // Add the submit button90
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
             'label'    => 'Inserir Tarefa',
         ));
 
         //set hidden projeto
-        $this->addElement('hidden', 'autoid', array(
+        $this->addElement('hidden', 'projeto_id', array(
             'value'      => ''
         ));
 

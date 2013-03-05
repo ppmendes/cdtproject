@@ -38,6 +38,7 @@ echo $this->form;
                 type:'GET',
                 success: function(data){
                     $('select#tarefas-recursos_humanos').html(data);
+                    $('select#tarefas-dono').html(data);
                 }
             })
         }
@@ -94,7 +95,6 @@ echo $this->form;
 
     }
 
-
     function calcular_dias_total(dia_inicio,nro_dias)
     {
         var dias=nro_dias;
@@ -119,6 +119,7 @@ echo $this->form;
         }
         return nro_dias;
     }
+
     function formato(data)
     {
         var cadena="";
@@ -139,8 +140,8 @@ echo $this->form;
 
             switch ($('#tarefas-tipo_duracao_id').val()) {
                 case '1'://horas
-                    //alert($('#tarefas-minutos_trabalho').val());
-                    var horas=parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4;
+
+                    var horas=parseFloat($('#tarefas-horas_trabalhadas').val());
                     $('#tarefas-duracao').val(dias_entre_datas()*horas);
                     //
                     //alert(dias_entre_datas()*horas);
@@ -159,7 +160,7 @@ echo $this->form;
 
             switch ($('#tarefas-tipo_duracao_id').val()) {
                 case '1'://horas
-                    var duracao=parseFloat($('#tarefas-duracao').val())/(parseFloat($('#tarefas-horas_trabalho').val())+ (parseFloat($('#tarefas-minutos_trabalho').val())-1)/4);
+                    var duracao=parseFloat($('#tarefas-duracao').val())/parseFloat($('#tarefas-horas_trabalhadas').val());
                     alert(duracao+'redond::'+  Math.ceil(duracao) );
 
                     var inicio = $('#tarefas-data_inicio').val().split("/");
@@ -193,37 +194,57 @@ echo $this->form;
 
         // TAREFAS DEPENDENTES
         $('#tarefas-botao_Adicionar_Tarefa').click(function(){
-            $('#tarefas-depe option:selected').clone().prependTo($('#tarefas-dependencia_tarefa'));
-            $('#tarefas-depe option:selected').remove();
+
+            var tarefa_depe=$('#tarefas-todas_tarefas option:selected').clone().prependTo($('#tarefas-dependencia_tarefa'));
+            $('#tarefas-todas_tarefas option:selected').remove();
         });
 
         $('#tarefas-botao_Deletar_Tarefa').click(function(){
-            $('#tarefas-depe2 option:selected').clone().prependTo($('#tarefas-depe'));
-            $('#tarefas-depe2 option:selected').remove();
+            $('#tarefas-dependencia_tarefa option:selected').clone().prependTo($('#tarefas-todas_tarefas'));
+            $('#tarefas-dependencia_tarefa option:selected').remove();
         });
 
         // USUÁRIOS ASSOCIADOS A TAREFAS
         $('#tarefas-botaoAdicionarRH').click(function(){
-           // alert($('#tarefas-recursos_humanos option:selected').val() + $('#tarefas-percentagem_trabalho option:selected').val());
-            var recursos_humanos=$('#tarefas-recursos_humanos option:selected').clone();
-            recursos_humanos.html(recursos_humanos.html()+' ['+$('#tarefas-percentagem_trabalho option:selected').html()+'%]');
-            //recursos_humanos.html(recursos_humanos.html()+' ['+$('#tarefas-percentagem_trabalho option:selected').html()+'%]');
-            recursos_humanos.prependTo($('#tarefas-asociado_tarefa'));
+            var options = Array();
+            $('#tarefas-recursos_humanos > option:selected').each(
+                    function(i){
+                        var usuario=$(this).clone();
+                        options[i]= $(this).text()+' ['+$('#tarefas-percentagem_trabalho option:selected').html()+'%]';
+                        usuario.html(options[i]);
+                        usuario.val(usuario.val()+'|'+$('#tarefas-percentagem_trabalho option:selected').html());
+                       usuario.prependTo($('#tarefas-asociado_tarefa'));
+
+                    });
             $('#tarefas-recursos_humanos option:selected').remove();
         });
 
         $('#tarefas-botaoDeletarRH').click(function(){
-            var usuario = $('#tarefas-asociado_tarefa option:selected').clone();
-            var user=usuario;
-            user=user.html().toString().split("[") ;
-            usuario.html(user[0]);
-            usuario.prependTo('#tarefas-recursos_humanos');
+            var options = Array();
+            $('#tarefas-asociado_tarefa > option:selected').each(
+                            function(i){
+                        var usuario=$(this).clone();
+                        options[i]= $(this).text();
+                        user=options[i].split("[");
+                        usuario.html(user[0]);
+                        usuario.prependTo($('#tarefas-recursos_humanos'));
+                    });
             $('#tarefas-asociado_tarefa option:selected').remove();
         });
 
+       $('#tarefas-submit').click(function(){
+
+           $('#tarefas-dependencia_tarefa > option').each(
+                   function(){
+                       $(this).prop('selected', true);
+                   });
+           $('#tarefas-asociado_tarefa > option').each(
+                   function(){
+                       $(this).prop('selected', true);
+                   });
+        });
+
     });
-
-
 
 
 </script>
