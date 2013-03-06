@@ -60,6 +60,7 @@ class Application_Model_Usuario
             else
             {
                 $options = array();
+                //
 
                 $db = Zend_Db_Table::getDefaultAdapter();
                 $resultado_usu = $db->fetchAll("select U.usuario_id from Usuario as U inner join usuarios_associados_tarefa as UAT on U.usuario_id=UAT.usuario_id where UAT.tarefa_id=$id_tarefa_form");
