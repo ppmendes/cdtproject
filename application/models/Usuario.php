@@ -72,11 +72,9 @@ class Application_Model_Usuario
                 }
                 $id=implode(',',$id);
 
-                $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form and usuario_id not in ($id)");
+                $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form and usuario.usuario_id not in ($id)");
 
-                print_r($resultado);
-                exit;
-                       foreach($resultado as $item){
+                foreach($resultado as $item){
 
                            $options[$item['usuario_id']] = $item['nome'];
                        }

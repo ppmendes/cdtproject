@@ -227,6 +227,8 @@ echo $this->form;
                         options[i]= $(this).text();
                         user=options[i].split("[");
                         usuario.html(user[0]);
+                        valor=usuario.val().split("|");
+                        usuario.val(valor[0]);
                         usuario.prependTo($('#tarefas-recursos_humanos'));
                     });
             $('#tarefas-asociado_tarefa option:selected').remove();
