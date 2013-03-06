@@ -17,10 +17,12 @@ class Application_Model_TarefasDependentes
 
     public function delete($id)
     {
-
+        $table = new Application_Model_DbTable_TarefasDependentes();
+        $where = $table->getAdapter()->quoteInto('tarefa_id = ?',$id);
+        $table->delete($where);
     }
 
-    public function update($id)
+    public function update($data)
     {
 
     }

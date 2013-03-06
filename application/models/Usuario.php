@@ -24,36 +24,63 @@ class Application_Model_Usuario
         }
 
     }
-
     public static function getOptions1($id_projeto_form = null){
         try{
             if($id_projeto_form == null)
             {
-                $options = array(''=>'nenhum');
-                $table = new Application_Model_DbTable_Usuario();
-                $resultado = $table->fetchAll();
-
-
-                foreach($resultado as $item){
-
-                    $options[$item['usuario_id']] = $item['nome'];
-                }
+                $options = array();
                 return $options;
             }
             else
             {
-                $options = array(''=>'nenhum');
+                //$options = array();
 
                 $db = Zend_Db_Table::getDefaultAdapter();
                 $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form");
-
 
                 foreach($resultado as $item){
 
                     $options[$item['usuario_id']] = $item['nome'];
                 }
                 return $options;
+           }
+        } catch(Exception $e){
+
+        }
+
+    }
+
+    public static function getOptions2($id_projeto_form = null, $id_tarefa_form=null){
+        try{
+            if($id_projeto_form == null)
+            {
+                $options = array();
+                return $options;
             }
+            else
+            {
+                $options = array();
+
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $resultado_usu = $db->fetchAll("select U.usuario_id from Usuario as U inner join usuarios_associados_tarefa as UAT on U.usuario_id=UAT.usuario_id where UAT.tarefa_id=$id_tarefa_form");
+
+                $id=array();
+                foreach($resultado_usu as $item_usu)
+                {
+                    $id[]=$item_usu['usuario_id'];
+                }
+                $id=implode(',',$id);
+
+                $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form and usuario_id not in ($id)");
+
+                print_r($resultado);
+                exit;
+                       foreach($resultado as $item){
+
+                           $options[$item['usuario_id']] = $item['nome'];
+                       }
+                       return $options;
+                }
         } catch(Exception $e){
 
         }

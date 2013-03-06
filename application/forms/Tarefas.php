@@ -122,8 +122,8 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('select', 'dono', array(
             'label'      => 'Responsável da tarefa:',
             'required'   => true,
-            'multiOptions'=>Application_Model_Usuario::getOptions1($this->id_projeto)
-
+            'multiOptions'=>Application_Model_Usuario::getOptions1($this->id_projeto),
+            'RegisterInArrayValidator'=>false,
         ));
 
         $this->addElement('text', 'website_relacionado', array(
@@ -226,7 +226,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('multiselect', 'todas_tarefas', array(
             'label'      => 'Todas as Tarefas:',
-            'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
+            'multiOptions' => Application_Model_Tarefa::getOptions3($this->id_projeto,$this->id_tarefa),
             'required'   => false,
             'size'=>10,
         ));
@@ -261,7 +261,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('multiselect', 'recursos_humanos', array(
             'label'      => 'Recursos Humanos:',
-            'multiOptions' => Application_Model_Usuario::getOptions1(),
+            'multiOptions' => Application_Model_Usuario::getOptions2($this->id_projeto,$this->id_tarefa),
             'required'   => false,
         ));
 

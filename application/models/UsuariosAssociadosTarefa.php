@@ -16,7 +16,9 @@ class Application_Model_UsuariosAssociadosTarefa
 
     public function delete($id)
     {
-
+        $table = new Application_Model_DbTable_UsuariosAssociadosTarefa();
+        $where = $table->getAdapter()->quoteInto('tarefa_id = ?',$id);
+        $table->delete($where);
     }
 
     public function update($id)
@@ -31,10 +33,9 @@ class Application_Model_UsuariosAssociadosTarefa
             {
                 $options =array();
                 $db = Zend_Db_Table::getDefaultAdapter();
-                $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where tarefa_id in (select TD.tarefa_dependente from tarefa as T inner join tarefas_dependentes as TD on T.tarefa_id=TD.tarefa_id where T.tarefa_id=$id_tarefa_form)");
+                $resultado = $db->fetchAll("select U.nome, U.usuario_id, UAT.porcentagem from Usuario as U inner join usuarios_associados_tarefa as UAT on U.usuario_id=UAT.usuario_id where UAT.tarefa_id=$id_tarefa_form");
                 foreach($resultado as $item){
-
-                    $options[$item['tarefa_id']] = $item['nome'];
+                    $options[$item['usuario_id'].'|'.$item['porcentagem']] = $item['nome'].' ['.$item['porcentagem'].'%]';
                 }
                 return $options;
             }

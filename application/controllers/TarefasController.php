@@ -46,8 +46,27 @@ class TarefasController extends Zend_Controller_Action
                 unset($data['tarefas']['comentario_email'],$data['tarefas']['aca']);
 
                 if($id){ //update
-                    //$model->update($data, $id);
-                    //$modeltarefadepen->update($tarefaDependencia, $id);
+                    $model->update($data, $id);
+                    // update na tabela tarefas_dependentes;
+                    $modeltarefadepen->delete($id);
+                    for($i=0;$i < count($tarefaDependencia); $i++)
+                    {
+                        $datatd['tarefa_id']=$id;
+                        $datatd['tarefa_dependente']=$tarefaDependencia[$i];
+                        $modeltarefadepen->insert($datatd);
+                    }
+                    //update na tabela usuarios dependentes
+                    $modelusuarios->delete($id);
+                    for($i=0;$i<count($rhAssociados); $i++)
+                    {
+                        $datarh['tarefa_id']=$id;
+                        $dataexplode=explode('|',$rhAssociados[$i]);
+                        $datarh['usuario_id']=$dataexplode[0];
+                        $datarh['porcentagem']=$dataexplode[1];
+                        $modelusuarios->insert($datarh);
+
+                    }
+
 
                 }else{ //insert
 
@@ -152,6 +171,7 @@ class TarefasController extends Zend_Controller_Action
         $id_projeto=$data['projeto_id'];
         $id_instituicao=$data['instituicao_id'];
         $id_tarefa=$data['tarefa_id'];
+        $detalhes->setIdProjeto($id_projeto);
         $detalhes->setIdTarefa($id_tarefa);
         $detalhes->startform();
         $db = Zend_Db_Table::getDefaultAdapter();
