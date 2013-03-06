@@ -1,3 +1,31 @@
+<link rel="stylesheet" type="text/css" media="screen" href="css/combogrid/jquery-ui-1.8.9.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="css/combogrid/jquery.ui.combogrid.css"/>
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $( "#orcamento-rubrica").combogrid({
+            debug:true,
+            colModel: [{'columnName':'codigo_rubrica','width':'45','label':'Código Rúbrica'},{'columnName':'descricao','width':'45','label':'Descrição'}],
+            url: 'orcamentos/combogridrubrica/',
+            select: function( event, ui ) {
+                $("#orcamento-rubrica").val( ui.item.codigo_rubrica + ' - ' +  ui.item.descricao );
+                $("#orcamento-rubrica_id").val( ui.item.rubrica_id );
+                return false;
+            }
+        });
+
+        $( "#orcamento-projeto").combogrid({
+            debug:true,
+            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
+            url: 'orcamentos/combogridprojeto/',
+            select: function( event, ui ) {
+                $("#orcamento-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
+                $("#orcamento-projeto_id").val( ui.item.projeto_id );
+                return false;
+            }
+        });
+    });
+</script>
 <?php
 
     $this->form->setAction($this->url());

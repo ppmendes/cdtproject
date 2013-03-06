@@ -238,5 +238,9 @@ div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-crono
     float:left;
 }
 
+#descricao {
+margin-left: 50px;
+}
+
 
 

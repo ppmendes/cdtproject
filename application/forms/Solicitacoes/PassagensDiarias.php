@@ -81,11 +81,14 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         ));
 
         //Beneficiário input type text
-        $this->addElement('select', 'beneficiario_id', array(
-            'label'      => 'Beneficiário:',
-            'multiOptions' => Application_Model_Beneficiario::getOptions(),
-            'required'   => true
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        $emt->setLabel('Beneficiario:');
+        $emt->setRequired(true);
+        $emt->setJQueryParam('data', Application_Model_Beneficiario::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#solicitacoes-beneficiario_id").val(ui.item.id); preencher();}')
         ));
+        $this->addElement($emt);
 
         $this->addElement('text', 'cargo', array(
             'label'      => 'Cargo/Profissão:',
@@ -98,27 +101,31 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         ));
 
         //Telefone input type text
-        $this->addElement('text', 'telefone', array(
+        $this->addElement('text', 'telefone_contratado', array(
             'label'      => 'Telefone:',
             'required'   => true,
+            'readonly'   => true,
         ));
 
         //CPF input type text
         $this->addElement('text', 'cpf_cnpj', array(
             'label'      => 'CPF:',
             'required'   => true,
+            'readonly'   => true,
         ));
 
         //RG input type text
         $this->addElement('text', 'rg_ie', array(
             'label'      => 'RG:',
             'required'   => false,
+            'readonly'   => true,
         ));
 
         //E-mail input type text
-        $this->addElement('text', 'email', array(
+        $this->addElement('text', 'email_contratado', array(
             'label'      => 'E-mail:',
             'required'   => true,
+            'readonly'   => true,
         ));
 
         $this->addElement('hidden', 'label_banco', array(
@@ -132,18 +139,21 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('select', 'banco_id', array(
             'label'      => 'Banco:',
             'multiOptions' => Application_Model_Banco::getOptions(),
-            'required'   => true
+            'required'   => true,
+            'readonly'   => true,
         ));
         //Agencia input type text
         $this->addElement('text', 'agencia_banco', array(
             'label'      => 'Agência:',
             'required'   => true,
+            'readonly'   => true,
         ));
 
         //Conta input type text
         $this->addElement('text', 'conta_bancaria', array(
             'label'      => 'Conta:',
             'required'   => true,
+            'readonly'   => true,
         ));
 
         $this->addElement('hidden', 'label_motivo', array(
@@ -226,13 +236,13 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'required'   => true,
         ));
 
-        $this->addElement('text', 'data', array(
-            'label'      => 'Data:',
-            'required'   => true,
-        ));
+        $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('data');
+        $emtDatePicker3->setLabel('Data: ');
+        $emtDatePicker3->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker3);
 
         $this->addElement('text', 'valor', array(
-            'label'      => 'Valor estimando de diárias:',
+            'label'      => 'Valor estimado de diárias:',
             'required'   => true,
         ));
 
@@ -242,6 +252,36 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'label'    => 'Enviar',
         ));
 
+        $this->addElement('hidden', 'beneficiario_id', array(
+            'value'      => '',
+        ));
+
 
     }
 }
+
+?>
+
+<script>
+
+    function preencher()
+    {
+        var valor = 'id=' + $('#solicitacoes-beneficiario_id').val();
+        $.ajax({
+            url: '/solicitacoes/preenchebeneficiario/',
+            dataType:'json',
+            data: valor,
+            success: function(data){
+                $('#solicitacoes-cpf_cnpj').val(data.cpf_cnpj);
+                $('#solicitacoes-rg_ie').val(data.rg_ie);
+                $('#solicitacoes-telefone_contratado').val(data.telefone);
+                $('#solicitacoes-email_contratado').val(data.email);
+                $('#solicitacoes-banco_id').val(data.banco_id);
+                $('#solicitacoes-agencia_banco').val(data.agencia_banco);
+                $('#solicitacoes-conta_bancaria').val(data.conta_bancaria);
+
+            }
+        })
+    }
+
+</script>

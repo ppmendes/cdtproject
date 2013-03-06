@@ -248,7 +248,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'class'         => 'campos'
         ));
 
-        $this->addDisplayGroup(array('descricao','produto','qtde', 'cronograma_inicio', 'cronograma_termino'), 'individual');
+        $this->addDisplayGroup(array('descricao','produto','numero_itens', 'cronograma_inicio', 'cronograma_termino'), 'individual');
 
         $individual = $this->getDisplayGroup('individual');
 
