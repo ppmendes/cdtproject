@@ -49,11 +49,10 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         ));
 
         //Projeto input type text
-        $this->addElement('select', 'projeto_id', array(
+        $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
-            'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true,
-            'order'          => 4
+            'order' => 4,
         ));
 
         //Coordenador do projeto input type text
@@ -270,6 +269,10 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('hidden', 'hidden_teste', array(
             'value'      => '',
             'order'          => 115,
+        ));
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '',
+            'order' =>116,
         ));
 
 

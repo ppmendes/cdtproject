@@ -92,7 +92,7 @@ class Application_Form_Beneficiarios_Beneficiariospf extends Zend_Form
             'required'   => false
         ));
 
-        //E-mail input type text
+       //E-mail input type text
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
             'required'   => true,
