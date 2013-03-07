@@ -97,12 +97,21 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 $data = $form->getValues();
 
-//                unset($data['solicitacoes']['data_solicitacao_view']);
-//                unset($data['solicitacoes']['local_entrega_solicitacao_view']);
-//                unset($data['solicitacoes']['local']);
-//                unset($data['solicitacoes']['hidden_teste']);
+
+                //Unset nos campos de beneficário, pois só armazena em solicitações o ID
+                unset($data['solicitacoes']['cpf_cnpj']);
+                unset($data['solicitacoes']['rg_ie']);
+                unset($data['solicitacoes']['pis_inss']);
+                unset($data['solicitacoes']['endereco_contratado']);
+                unset($data['solicitacoes']['telefone_contratado']);
+                unset($data['solicitacoes']['email_ccontratado']);
+                unset($data['solicitacoes']['banco_id']);
+                unset($data['solicitacoes']['agencia_banco']);
+                unset($data['solicitacoes']['conta_bancaria']);
+
                 $data['solicitacoes']['projeto_id'] = 1;
 
+                //Concatenação de todos os campos que podem ser múltiplos, para salvar em apenas um campo no banco
                 $descricao = $model->concatenaCampos("descricao_", $data);
                 $produto = $model->concatenaCampos("produto_", $data);
                 $qtde = $model->concatenaCampos("qtde_", $data);
@@ -115,8 +124,12 @@ class SolicitacoesController extends Zend_Controller_Action
                 $valor_parcelas = $model->concatenaCampos("valor_parcelas_", $data);
                 $data_pagamento = $model->concatenaCampos("data_pagamento_", $data);
 
+
+                //Conta quantos campos existem no primeiro conjunto de campos que podem ser adicionados pelo botão "mais" no form
                 for ($i=2 ; $i<11 ; $i++)
                 {
+                    //conta quantos são os campos descricao_i, 2<i<11, dentro do array data[solicitacoes] e dá unset
+                    //todos estes campos já foram concatenados acima e serão salvos em apenas um campo na tabela do banco
                     if (array_key_exists("descricao_" . $i, $data['solicitacoes']) == 1)
                     {
                         unset($data['solicitacoes']['descricao_' . $i]);
@@ -127,8 +140,11 @@ class SolicitacoesController extends Zend_Controller_Action
                     }
                 }
 
+                //Conta quantos campos existem no segundo conjunto de campos que podem ser adicionados pelo botão "mais" no form
                 for ($i=2 ; $i<11 ; $i++)
                 {
+                    //conta quantos são os campos valor_total_i, 2<i<11, dentro do array data[solicitacoes] e dá unset
+                    //todos estes campos já foram concatenados acima e serão salvos em apenas um campo na tabela do banco
                     if (array_key_exists("valor_total" . $i, $data['solicitacoes']) == 1)
                     {
                         unset($data['solicitacoes']['valor_total_' . $i]);
