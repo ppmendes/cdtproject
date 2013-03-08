@@ -1,4 +1,78 @@
+<link rel="stylesheet" type="text/css" media="screen" href="css/combogrid/jquery-ui-1.8.9.custom.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="css/combogrid/jquery.ui.combogrid.css"/>
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $( "#solicitacoes-projeto").combogrid({
+            debug:true,
+            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
+            url: 'solicitacoes/combogridprojeto/',
+            select: function( event, ui ) {
+                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
+                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );
+                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);
+                preencherCoordenador();
+                return false;
+            }
+        });
+        $( "#solicitacoes-beneficiario").combogrid({
+            debug:true,
+            colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cpf_cnpj','width':'45','label':'CPF'}],
+            url: 'solicitacoes/combogridbeneficiario/',
+            select: function( event, ui ) {
+                $("#solicitacoes-beneficiario").val( ui.item.nome );
+                $("#solicitacoes-beneficiario_id").val( ui.item.beneficiario_id );
+                preencherBeneficiario();
+                return false;
+            }
+        });
+    });
+</script>
+
 <?php
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
+
+<script>
+
+    function preencherCoordenador()
+    {
+        var valor = 'id=' + $('#solicitacoes-coordenador_tecnico_id').val();
+        $.ajax({
+            url: '/solicitacoes/preenchecoordenador/',
+            dataType:'json',
+            data: valor,
+            success: function(data)
+            {
+            $('#solicitacoes-coordenador_projeto').val(data.username);
+            $('#solicitacoes-email').val(data.email);
+            $('#solicitacoes-telefone_coordenador').val(data.telefone);
+            $('#solicitacoes-celular_coordenador').val(data.celular);
+            }
+            })
+    }
+
+    function preencherBeneficiario()
+    {
+        var valor = 'id=' + $('#solicitacoes-beneficiario_id').val();
+        $.ajax({
+            url: '/solicitacoes/preenchebeneficiario/',
+            dataType:'json',
+            data: valor,
+            success: function(data){
+                $('#solicitacoes-cpf_cnpj').val(data.cpf_cnpj);
+                $('#solicitacoes-rg_ie').val(data.rg_ie);
+                $('#solicitacoes-pis_inss').val(data.nit_pis);
+                $('#solicitacoes-endereco_contratado').val(data.endereco);
+                $('#solicitacoes-telefone_contratado').val(data.telefone);
+                $('#solicitacoes-email_contratado').val(data.email);
+                $('#solicitacoes-banco_id').val(data.banco_id);
+                $('#solicitacoes-agencia_banco').val(data.agencia_banco);
+                $('#solicitacoes-conta_bancaria').val(data.conta_bancaria);
+
+            }
+        })
+    }
+
+</script>

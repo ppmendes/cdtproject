@@ -4,12 +4,14 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $( "#solicitacoes-projeto").combogrid({
-            debug:true,
+            debug:false,
             colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
             url: 'solicitacoes/combogridprojeto/',
             select: function( event, ui ) {
                 $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
                 $("#solicitacoes-projeto_id").val( ui.item.projeto_id );
+                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);
+                preencher();
                 return false;
             }
         });
@@ -69,6 +71,23 @@ echo $this->form;
         var valorEstimado = $('div#descricao dd').eq(ind3-1);
         valorEstimado.children('input').attr('value', total);
 
+    }
+
+    function preencher()
+    {
+        var valor = 'id=' + $('#solicitacoes-coordenador_tecnico_id').val();
+        $.ajax({
+            url: '/solicitacoes/preenchecoordenador/',
+            dataType:'json',
+            data: valor,
+            success: function(data){
+                $('#solicitacoes-coordenador_projeto').val(data.username);
+                $('#solicitacoes-email').val(data.email);
+                $('#solicitacoes-telefone_coordenador').val(data.telefone);
+                $('#solicitacoes-celular_coordenador').val(data.celular);
+
+            }
+        })
     }
 
 </script>

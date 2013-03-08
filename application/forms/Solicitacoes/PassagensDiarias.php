@@ -30,32 +30,38 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         ));
 
         //Projeto input type text
-        $this->addElement('select', 'projeto_id', array(
+        $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
-            'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('select', 'coodenador_projeto', array(
+        $this->addElement('text', 'coodenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
         ));
 
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
-            'required'   => true
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
         ));
 
-        $this->addElement('text', 'telefone', array(
+        $this->addElement('text', 'telefone_coordenador', array(
             'label'      => 'Telefone:',
-            'required'   => true
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
         ));
 
-        $this->addElement('text', 'fax', array(
-            'label'      => 'Fax:',
-            'required'   => false
+        $this->addElement('text', 'celular_coordenador', array(
+            'label'      => 'Celular:',
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
         ));
 
         $this->addElement('hidden', 'label_beneficiario', array(
@@ -80,15 +86,10 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'required'   => true
         ));
 
-        //Beneficiário input type text
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
-        $emt->setLabel('Beneficiario:');
-        $emt->setRequired(true);
-        $emt->setJQueryParam('data', Application_Model_Beneficiario::getOptions())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#solicitacoes-beneficiario_id").val(ui.item.id); preencher();}')
+        $this->addElement('text', 'beneficiario', array(
+            'label'      => 'Beneficiário:',
+            'required'   => true,
         ));
-        $this->addElement($emt);
 
         $this->addElement('text', 'cargo', array(
             'label'      => 'Cargo/Profissão:',
@@ -110,8 +111,9 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         //CPF input type text
         $this->addElement('text', 'cpf_cnpj', array(
             'label'      => 'CPF:',
-            'required'   => true,
+            'required'   => false,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         //RG input type text
@@ -119,13 +121,15 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'label'      => 'RG:',
             'required'   => false,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         //E-mail input type text
         $this->addElement('text', 'email_contratado', array(
             'label'      => 'E-mail:',
-            'required'   => true,
+            'required'   => false,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('hidden', 'label_banco', array(
@@ -139,21 +143,24 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('select', 'banco_id', array(
             'label'      => 'Banco:',
             'multiOptions' => Application_Model_Banco::getOptions(),
-            'required'   => true,
+            'required'   => false,
             'readonly'   => true,
+            'ignore'     => true,
         ));
         //Agencia input type text
         $this->addElement('text', 'agencia_banco', array(
             'label'      => 'Agência:',
-            'required'   => true,
+            'required'   => false,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         //Conta input type text
         $this->addElement('text', 'conta_bancaria', array(
             'label'      => 'Conta:',
-            'required'   => true,
+            'required'   => false,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('hidden', 'label_motivo', array(
@@ -256,32 +263,17 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'value'      => '',
         ));
 
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '',
+        ));
+
+        $this->addElement('hidden', 'coordenador_tecnico_id', array(
+            'value'      => '',
+        ));
+
 
     }
 }
 
 ?>
 
-<script>
-
-    function preencher()
-    {
-        var valor = 'id=' + $('#solicitacoes-beneficiario_id').val();
-        $.ajax({
-            url: '/solicitacoes/preenchebeneficiario/',
-            dataType:'json',
-            data: valor,
-            success: function(data){
-                $('#solicitacoes-cpf_cnpj').val(data.cpf_cnpj);
-                $('#solicitacoes-rg_ie').val(data.rg_ie);
-                $('#solicitacoes-telefone_contratado').val(data.telefone);
-                $('#solicitacoes-email_contratado').val(data.email);
-                $('#solicitacoes-banco_id').val(data.banco_id);
-                $('#solicitacoes-agencia_banco').val(data.agencia_banco);
-                $('#solicitacoes-conta_bancaria').val(data.conta_bancaria);
-
-            }
-        })
-    }
-
-</script>

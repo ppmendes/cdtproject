@@ -56,10 +56,11 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('select', 'coodenador_projeto', array(
+        $this->addElement('text', 'coodenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
             'order'          => 5
         ));
 
@@ -67,19 +68,25 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
             'order'          => 6,
         ));
 
         $this->addElement('text', 'telefone_coordenador', array(
             'label'      => 'Telefone:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
             'order'          => 7
         ));
 
-        $this->addElement('text', 'fax_coordenador', array(
-            'label'      => 'Fax:',
+        $this->addElement('text', 'celular_coordenador', array(
+            'label'      => 'Celular:',
             'required'   => false,
+            'readonly'   => true,
+            'ignore'         => true,
             'order'          => 8
         ));
 
@@ -271,6 +278,11 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'order'          => 115,
         ));
         $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '',
+            'order' =>116,
+        ));
+
+        $this->addElement('hidden', 'coordenador_tecnico_id', array(
             'value'      => '',
             'order' =>116,
         ));

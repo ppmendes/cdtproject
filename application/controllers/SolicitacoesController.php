@@ -349,6 +349,7 @@ class SolicitacoesController extends Zend_Controller_Action
         try{
             $rows = $dbAdapter->fetchAll($select);
 
+
             $response->page = $page;
             $response->total = $total_pages;
             $response->records = $count;
@@ -364,6 +365,91 @@ class SolicitacoesController extends Zend_Controller_Action
 
         exit;
     }
+
+    public function combogridbeneficiarioAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'projeto_id';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'nome like ? or apelido like ?';
+
+        $select = $dbAdapter->select()->from('beneficiario',array('count(*) as count'))->where($where,$searchTerm);
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from('beneficiario',array('beneficiario_id','nome','cpf_cnpj'))->where($where,$searchTerm)
+                ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from('beneficiario',array('beneficiario_id','nome','cpf_cnpj'))->where($where,$searchTerm)
+                ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
+
+    public function preenchecoordenadorAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('id', 0))
+        {
+            $id = (int) $this->_request->getParam('id', 0);
+            $campos = new Application_Model_DbTable_Usuario();
+            $row = $campos->fetchAll('usuario_id = ' . (int) $id)->toArray();
+        }
+        else
+        {
+            $row = '';
+        }
+
+        echo json_encode($row[0]);
+    }
+
 
     public function preenchebeneficiarioAction() {
         $this->_helper->layout->disableLayout();

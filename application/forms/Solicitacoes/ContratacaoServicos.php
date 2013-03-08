@@ -39,38 +39,43 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         ));
 
         //Projeto input type text
-        $this->addElement('select', 'projeto_id', array(
+        $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
-            'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true,
             'order'          => 2,
 
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('select', 'coodenador_projeto', array(
+        $this->addElement('text', 'coodenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 3,
         ));
 
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 4,
+            'ignore'         => true,
         ));
 
         $this->addElement('text', 'telefone_coordenador', array(
             'label'      => 'Telefone:',
-            'required'   => true,
+            'required'   => false,
+            'readonly'   => true,
             'order'          => 5,
+            'ignore'         => true,
         ));
 
-        $this->addElement('text', 'fax_coordenador', array(
-            'label'      => 'Fax:',
+        $this->addElement('text', 'celular_coordenador', array(
+            'label'      => 'Celular:',
             'required'   => false,
+            'readonly'   => true,
             'order'          => 6,
+            'ignore'         => true,
         ));
 
 
@@ -84,15 +89,12 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         ));
 
 
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
-        $emt->setLabel('Beneficiario:');
-        $emt->setOrder(8);
-        $emt->setRequired(true);
-        $emt->setJQueryParam('data', Application_Model_Beneficiario::getOptions())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#solicitacoes-beneficiario_id").val(ui.item.id); preencher();}')
+        $this->addElement('text', 'beneficiario', array(
+            'label'      => 'Beneficiário:',
+            'required'   => true,
+            'order'          => 8,
+
         ));
-        $this->addElement($emt);
 
         //CPF input type text
         $this->addElement('text', 'cpf_cnpj', array(
@@ -377,6 +379,16 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('hidden', 'beneficiario_id', array(
             'value'      => '',
             'order'      => 205,
+        ));
+
+        $this->addElement('hidden', 'projeto_id', array(
+            'value'      => '',
+            'order' =>206,
+        ));
+
+        $this->addElement('hidden', 'coordenador_tecnico_id', array(
+            'value'      => '',
+            'order' =>207,
         ));
 
 
@@ -688,29 +700,6 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     function getNum2(){
         $('#solicitacoes-hidden_teste2').attr('value', num2);
         return num2;
-    }
-
-
-    function preencher()
-    {
-        var valor = 'id=' + $('#solicitacoes-beneficiario_id').val();
-        $.ajax({
-            url: '/solicitacoes/preenchebeneficiario/',
-            dataType:'json',
-            data: valor,
-            success: function(data){
-            $('#solicitacoes-cpf_cnpj').val(data.cpf_cnpj);
-            $('#solicitacoes-rg_ie').val(data.rg_ie);
-            $('#solicitacoes-pis_inss').val(data.nit_pis);
-            $('#solicitacoes-endereco_contratado').val(data.endereco);
-            $('#solicitacoes-telefone_contratado').val(data.telefone);
-            $('#solicitacoes-email_contratado').val(data.email);
-            $('#solicitacoes-banco_id').val(data.banco_id);
-            $('#solicitacoes-agencia_banco').val(data.agencia_banco);
-            $('#solicitacoes-conta_bancaria').val(data.conta_bancaria);
-
-            }
-        })
     }
 
 </script>
