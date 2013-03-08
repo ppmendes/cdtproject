@@ -376,7 +376,7 @@ class SolicitacoesController extends Zend_Controller_Action
         $searchTerm = $this->_getParam('searchTerm');
 
         if(!$sidx){
-            $sidx = 'projeto_id';
+            $sidx = 'beneficario_id';
             $sord = 'ASC';
         }
         if ($searchTerm=="") {
