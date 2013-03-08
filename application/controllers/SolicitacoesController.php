@@ -387,7 +387,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
-        $where = 'nome like ? or apelido like ?';
+        $where = 'nome like ? or cpf_cnpj like ?';
 
         $select = $dbAdapter->select()->from('beneficiario',array('count(*) as count'))->where($where,$searchTerm);
 
