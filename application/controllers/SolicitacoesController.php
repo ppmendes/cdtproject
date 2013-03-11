@@ -349,7 +349,7 @@ class SolicitacoesController extends Zend_Controller_Action
         try{
             $rows = $dbAdapter->fetchAll($select);
 
-
+            $response = (object) array();
             $response->page = $page;
             $response->total = $total_pages;
             $response->records = $count;
@@ -415,7 +415,7 @@ class SolicitacoesController extends Zend_Controller_Action
         try{
             $rows = $dbAdapter->fetchAll($select);
 
-
+            $response = (object) array();
             $response->page = $page;
             $response->total = $total_pages;
             $response->records = $count;
