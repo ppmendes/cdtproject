@@ -66,7 +66,9 @@ class IndexController extends Zend_Controller_Action
 
             //$stmt = $select->query();
 
-            $permissoes = array('projetos/index');
+            //monta array de permissoe
+            $permissoes = array();
+
             //while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
 
             //}
@@ -92,6 +94,10 @@ class IndexController extends Zend_Controller_Action
         $auth = Zend_Auth::getInstance();
         $auth->clearIdentity();
         $this->_redirect("/");
+    }
+
+    public function permissiondeniedAction(){
+
     }
 
 
