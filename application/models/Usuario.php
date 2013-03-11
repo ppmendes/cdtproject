@@ -66,14 +66,18 @@ class Application_Model_Usuario
                 $resultado_usu = $db->fetchAll("select U.usuario_id from Usuario as U inner join usuarios_associados_tarefa as UAT on U.usuario_id=UAT.usuario_id where UAT.tarefa_id=$id_tarefa_form");
 
                 $id=array();
-                foreach($resultado_usu as $item_usu)
-                {
-                    $id[]=$item_usu['usuario_id'];
+                if($resultado_usu!=array()){
+                    foreach($resultado_usu as $item_usu)
+                    {
+                        $id[]=$item_usu['usuario_id'];
+                    }
+                    $id=implode(',',$id);
+
+                    $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form and usuario.usuario_id not in ($id)");
                 }
-                $id=implode(',',$id);
-
-                $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form and usuario.usuario_id not in ($id)");
-
+                else{
+                    $resultado = $db->fetchAll("select usuario.usuario_id, usuario.nome from usuario inner join projeto_usuario on usuario.usuario_id = projeto_usuario.usuario_id where projeto_id = $id_projeto_form ");
+                }
                 foreach($resultado as $item){
 
                            $options[$item['usuario_id']] = $item['nome'];
