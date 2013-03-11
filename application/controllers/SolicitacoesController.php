@@ -338,11 +338,11 @@ class SolicitacoesController extends Zend_Controller_Action
 
         if($total_pages!=0)
         {
-            $select = $dbAdapter->select()->from('projeto',array('projeto_id','nome','apelido'))->where($where,$searchTerm)
+            $select = $dbAdapter->select()->from('projeto',array('projeto_id','nome','apelido', 'coordenador_tecnico'))->where($where,$searchTerm)
                 ->order(array("$sidx $sord"))->limit($limit,$start);
         }
         else{
-            $select = $dbAdapter->select()->from('projeto',array('projeto_id','nome','apelido'))->where($where,$searchTerm)
+            $select = $dbAdapter->select()->from('projeto',array('projeto_id','nome','apelido', 'coordenador_tecnico'))->where($where,$searchTerm)
                 ->order(array("$sidx $sord"));
         }
 
