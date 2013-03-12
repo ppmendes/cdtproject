@@ -30,13 +30,18 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             $acao = $request->getActionName();
             $parametros = $request->getParams();
 
+
+
             if(isset($parametros['projeto_id'])){
                 $projeto_id = $parametros['projeto_id'];
             }else{
-                $projeto_id = null;
+                $projeto_id = '*';
             }
 
             $permitirAcesso = false;
+            if($controller == 'index'){
+                $permitirAcesso = true;
+            }
             if(isset($permissoes[$controller][$acao][$projeto_id])
                 && $permissoes[$controller][$acao][$projeto_id] === true){
                 $permitirAcesso = true;
@@ -51,12 +56,13 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
                 $permitirAcesso = true;
             }
 
-            if($permitirAcesso === false)
+            if($permitirAcesso === false){
                 //se não possui permissão redireciona para index
                 $this->redireciona($request,'index','permissiondenied');
             }
 
 
         }
+    }
 }
 ?>
