@@ -145,22 +145,28 @@ class Application_Model_Tarefa
                 $options = array();
                 $db = Zend_Db_Table::getDefaultAdapter();
                 $resultado_dep = $db->fetchAll("select tarefa_id from tarefa where tarefa_id in (select TD.tarefa_dependente from tarefa as T inner join tarefas_dependentes as TD on T.tarefa_id=TD.tarefa_id where T.tarefa_id=$id_tarefa_form)");
+
                 $id=array();
-                foreach($resultado_dep as $item_dep)
-                {
-                    $id[]=$item_dep['tarefa_id'];
+                if($resultado_dep !=array()){
+                    foreach($resultado_dep as $item_dep)
+                    {
+                        $id[]=$item_dep['tarefa_id'];
+                    }
+                    $id=implode(',',$id);
+                    $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where projeto_id = $id_projeto_form and tarefa_id not in ($id)");
+
                 }
-                $id=implode(',',$id);
+                else{
+                    $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where projeto_id = $id_projeto_form ");
 
-                $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where projeto_id = $id_projeto_form and tarefa_id not in
-                                    ($id)");
-
+                }
                 foreach($resultado as $item){
 
                             $options[$item['tarefa_id']] = $item['nome'];
                                          }
 
                 return $options;
+
             }
         } catch(Exception $e){
 

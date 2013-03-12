@@ -36,7 +36,7 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         ));
 
         //Coordenador do projeto input type text
-        $this->addElement('text', 'coodenador_projeto', array(
+        $this->addElement('text', 'coordenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
             'required'   => false,
             'readonly'   => true,
