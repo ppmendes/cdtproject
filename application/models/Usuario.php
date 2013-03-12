@@ -81,9 +81,7 @@ class Application_Model_Usuario
                        return $options;
                 }
         } catch(Exception $e){
-
         }
-
     }
 
     public function insert($data)

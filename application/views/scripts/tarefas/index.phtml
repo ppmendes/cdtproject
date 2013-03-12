@@ -60,6 +60,7 @@
         <th>Nome da Tarefa</th>
         <th>Dono</th>
         <th>Data de início</th>
+        <th>Data de final</th>
         <th>Duração</th>
     </tr>
     </thead>
@@ -69,6 +70,15 @@
     $filter = new Zend_Filter_DateFilter();
     foreach($this->tarefas as $row)
     {
+        $dataAtual=date("Y-m-d H:i:s ");
+
+        if($dataAtual<$row['data_final'])
+        {
+            $cor='green';
+        }else{
+            $cor='red';
+        }
+
         //$row = $row->toArray();
         echo "<tr id='".$row['tarefa_id']."'>";
         echo "<td>" .   $row['tarefa_id'] . "</td>";
@@ -76,9 +86,12 @@
         echo "<td>" .   $row['pr.nome'] . "</td>";
         echo "<td><a href='/tarefas/detalhes/tarefa_id/{$row['tarefa_id']}'>" . $row['nome'] . "</a></td>";
         echo "<td>" .   $row['us.username'] . "</td>";
-        echo "<td>" .   $filter->filter($row['data_inicio']) . "</td>";
+        echo "<td style='background: $cor;'>" .   $filter->filter($row['data_inicio']) . "</td>";
+        echo "<td>" .   $filter->filter($row['data_final']) . "</td>";
         echo "<td >" .  $row['duracao'] . "</td>";
         echo "</tr>";
     }
+
+
     echo "</tbody></table>";
 ?>

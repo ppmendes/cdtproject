@@ -25,15 +25,11 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             //array com as permissões do usuário
             $permissoes = $data->permissoes;
 
-            //TODO vai vir do banco
-            $permissoes['index']['*']['*'] = true;
-            $permissoes['projetos']['index']['*'] = true;
-            $permissoes['projetos']['detalhes']['*'] = true;
-
             //controlador, ação e parâmetros da url acessada
             $controller = $request->getControllerName();
             $acao = $request->getActionName();
             $parametros = $request->getParams();
+
             if(isset($parametros['projeto_id'])){
                 $projeto_id = $parametros['projeto_id'];
             }else{

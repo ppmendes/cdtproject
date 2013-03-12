@@ -12,6 +12,14 @@ class Application_Form_Projetos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Projetos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
+
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
             'label'      => 'Nome do projeto:',
@@ -45,14 +53,7 @@ class Application_Form_Projetos extends Zend_Form
             'required'   => true
         ));
 
-        //Criador input type text
-        $this->addElement('select', 'criador', array(
-            'label'      => 'Criador:',
-            'multiOptions' => Application_Model_Usuario::getOptions(),
-            'required'   => true
-        ));
-		
-		//adicionar fase de desenvolvimento
+        //adicionar fase de desenvolvimento
 		//$fasesDesenvolvimento = new Application_Model_FasesDesenvolvimentos();
         //$todasFasesDesenvolvimento = $fasesDesenvolvimento->fetchAll();
 
