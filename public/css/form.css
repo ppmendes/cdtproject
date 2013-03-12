@@ -108,7 +108,7 @@
     height: 18px;
 }
 
-.zend_form div#descricao dd#solicitacoes-solicitacao_nome-element, dd#solicitacoes-solicitacao_nome-element textarea#solicitacoes-solicitacao_nome.campos {
+.zend_form div#descricao dd#solicitacoes-descricao-element, dd#solicitacoes-descricao-element textarea#solicitacoes-descricao.campos {
     width:415px;
 }
 

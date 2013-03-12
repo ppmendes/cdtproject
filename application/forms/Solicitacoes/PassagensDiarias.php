@@ -20,6 +20,12 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             ),
         ));
 
+        //Projeto input type text
+        $this->addElement('text', 'solicitacao_nome', array(
+            'label'      => 'Nome da Solicitação:',
+            'required'   => true
+        ));
+
 
         $this->addElement('hidden', 'label_projeto', array(
             'description' => 'Identificação do Projeto',
