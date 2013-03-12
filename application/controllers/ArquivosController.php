@@ -33,6 +33,8 @@ class ArquivosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+                $data['arquivos']['dono_arquivo']=$usuario_logado->usuario_id;
                 unset($data['arquivos']['ac']);
                 unset($data['arquivos']['nomeProjeto']);
 

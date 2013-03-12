@@ -44,7 +44,6 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true
         ));
 
-
         //tipo de arquivo select type
         $this->addElement('select', 'tipo_arquivo_id', array(
             'label'      => 'Tipo de Arquivo:',
@@ -52,13 +51,7 @@ class Application_Form_Arquivos extends Zend_Form
             'required'   => true
         ));
 
-        //item preenchido automaticamnete
-        $this->addElement('text', 'dono_arquivo', array(
-            'label'      => 'Dono:',
-            'required'   => true,
-        ));
-
-        // projeto autocomplete
+       // projeto autocomplete
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('nomeProjeto');
         $emt->setLabel('Projeto:');
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())

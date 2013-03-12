@@ -26,6 +26,9 @@ class ProjetosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+                $data['projetos']['criador']=$usuario_logado->usuario_id;
+
                 if($id){
                     $model->update($data, $id);
                 }else{
@@ -64,8 +67,6 @@ class ProjetosController extends Zend_Controller_Action
         }
 
         $this->view->detalhes = $detalhes;
-
-
     }
 
     public function excluirAction(){
