@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
+class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 {
 
     public function init()
@@ -24,6 +24,15 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('text', 'solicitacao_nome', array(
             'label'      => 'Nome da Solicitação:',
             'required'   => true
+        ));
+
+        //Data da solicitação
+        $this->addElement('text', 'data_solicitacao_view', array(
+            'label'      => 'Data da Solicitação:',
+            'value'      => date('Y-m-d', time()),
+            'disabled'   => true,
+            'required'   => false,
+            'ignore'     => true,
         ));
 
 
@@ -89,22 +98,26 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('select', 'vinculo', array(
             'label'      => 'Vínculo Institucional:',
             'multiOptions'  => $array_vinculo,
-            'required'   => true
+            'required'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('text', 'beneficiario', array(
             'label'      => 'Beneficiário:',
             'required'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('text', 'cargo', array(
             'label'      => 'Cargo/Profissão:',
             'required'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('text', 'unidade', array(
             'label'      => 'Unidade/Departamento:',
             'required'   => true,
+            'ignore'     => true,
         ));
 
         //Telefone input type text
@@ -112,6 +125,7 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => true,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         //CPF input type text
@@ -275,6 +289,10 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
 
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
             'value'      => '',
+        ));
+
+        $this->addElement('hidden', 'data_solicitacao', array(
+            'value' =>  date('Y-m-d', time()),
         ));
 
 

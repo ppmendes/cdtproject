@@ -175,8 +175,8 @@ div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-crono
 
 .zend_form div#pagamento dt{
     display:block;
-    width: 70px;
-    text-align: left;
+    width: 85px;
+    text-align: center;
     margin-bottom: 18px;
     margin-left: 10px;
     margin-right: 4px;
@@ -186,7 +186,7 @@ div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-crono
 
 .zend_form div#pagamento dd{
     display:block;
-    width: 70px;
+    width: 85px;
     text-align: left;
     margin-bottom: 18px;
     margin-left: 4px;
@@ -197,7 +197,7 @@ div#cronograma dd#solicitacoes-cronograma_termino-element, dd#solicitacoes-crono
 
 .zend_form div#pagamento .pagamento_campos{
     display:block;
-    width: 70px;
+    width: 85px;
     text-align: left;
     margin-bottom: 4px;
     margin-left: 4px;

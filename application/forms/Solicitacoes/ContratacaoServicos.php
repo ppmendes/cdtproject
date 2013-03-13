@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
+class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 {
 
     public $decoratorMaior = array(
@@ -19,7 +19,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         array()
     );
 
-    public function init()
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
@@ -32,14 +32,23 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'solicitacao_nome', array(
             'label'      => 'Nome da Solicitação:',
             'required'   => true,
-            //'order'          => 2,
 
+        ));
+
+        //Data da solicitação
+        $this->addElement('text', 'data_solicitacao_view', array(
+            'label'      => 'Data da Solicitação:',
+            'value'      => date('Y-m-d', time()),
+            'disabled'   => true,
+            'required'   => false,
+            'order'          => 1,
+            'ignore'     => true,
         ));
 
         $this->addElement('hidden', 'label_projeto', array(
             'description' => 'Identificação do Projeto',
             'ignore' => true,
-            'order'          => 1,
+            'order'          => 2,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -49,8 +58,8 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
             'required'   => true,
-            'order'          => 2,
-
+            'order'          => 3,
+            'ignore'     => true,
         ));
 
         //Coordenador do projeto input type text
@@ -58,14 +67,14 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Coordenador do Projeto:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 3,
+            'order'          => 4,
         ));
 
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 4,
+            'order'          => 5,
             'ignore'         => true,
         ));
 
@@ -73,7 +82,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 5,
+            'order'          => 6,
             'ignore'         => true,
         ));
 
@@ -81,7 +90,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Celular:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 6,
+            'order'          => 7,
             'ignore'         => true,
         ));
 
@@ -89,7 +98,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('hidden', 'label_beneficiario', array(
             'description' => 'Dados do Contratado',
             'ignore' => true,
-            'order'          => 7,
+            'order'          => 8,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -99,8 +108,8 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'beneficiario', array(
             'label'      => 'Beneficiário:',
             'required'   => true,
-            'order'          => 8,
-
+            'order'      => 9,
+            'ignore'     => true,
         ));
 
         //CPF input type text
@@ -108,7 +117,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'CPF:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 9,
+            'order'          => 10,
             'ignore'         => true,
         ));
 
@@ -117,7 +126,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'RG:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 10,
+            'order'          => 11,
             'ignore'         => true,
         ));
 
@@ -126,7 +135,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'PIS ou INSS:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 11,
+            'order'          => 12,
             'ignore'         => true,
         ));
 
@@ -135,7 +144,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Endereço:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 12,
+            'order'          => 13,
             'ignore'         => true,
         ));
 
@@ -144,7 +153,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 13,
+            'order'          => 14,
             'ignore'         => true,
         ));
 
@@ -201,13 +210,13 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             ),
         ));
 
-        $this->addElement('textarea', 'objeto_servico', array(
+        $this->addElement('textarea', 'objetivo_solicitacao', array(
             'label'      => 'Objeto do Serviço:',
             'required'   => true,
             'order'          => 21,
         ));
 
-        $this->addElement('textarea', 'objeto_justificativa', array(
+        $this->addElement('textarea', 'justificativa', array(
             'label'      => 'Objeto do Serviço (justificativa/motivação):',
             'required'   => true,
             'order'          => 22,
@@ -293,7 +302,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 102
         ));
 
-        $this->addElement('text', 'valor_total', array(
+        $this->addElement('text', 'preco_total', array(
             'label'      => 'Valor Total do Serviço:',
             'required'   => true,
             'class'      => 'pagamento_campos',
@@ -335,7 +344,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 108
         ));
 
-        $this->addDisplayGroup(array('valor_total','execucao_inicio','execucao_termino', 'qtd_parcelas', 'valor_parcelas', 'data_pagamento'), 'individual2');
+        $this->addDisplayGroup(array('preco_total','execucao_inicio','execucao_termino', 'qtd_parcelas', 'valor_parcelas', 'data_pagamento'), 'individual2');
 
         $individual2 = $this->getDisplayGroup('individual2');
 
@@ -345,7 +354,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
 
         ));
 
-        $individual2->setOrder(109);
+        $individual2->setOrder(110);
 
         $this->addElement('button', 'add_item_mais_2', array(
             'label'      => 'Mais',
@@ -398,6 +407,11 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
             'order' =>207,
         ));
 
+        $this->addElement('hidden', 'data_solicitacao', array(
+            'value' =>  date('Y-m-d', time()),
+            'order'          => 208,
+        ));
+
 
     }
 
@@ -414,7 +428,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         for ( $i = 2; $i<=$num ; ++$i) {
         $name1 = "descricao_". $i;
         $name2 = "produto_". $i;
-        $name3 = "qtde_". $i;
+        $name3 = "numero_itens_". $i;
         $name4 = "cronograma_inicio_". $i;
         $name5 = "cronograma_termino_". $i;
         $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
@@ -423,7 +437,7 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         }
 
         for ( $j=2; $j<=$num2 ; ++$j) {
-        $name1 = "valor_total_". $j;
+        $name1 = "preco_total_". $j;
         $name2 = "execucao_inicio_". $j;
         $name3 = "execucao_termino_". $j;
         $name4 = "qtd_parcelas_". $j;
@@ -584,10 +598,10 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
                 "Produto:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-produto-element'><input type='text' name='solicitacoes[produto_"+ num +
                 "]' id='solicitacoes-produto' value='' class='campos'></dd>");
-        $('#cronograma').append("<dt id='solicitacoes-qtde-label'><label for='solicitacoes-qtde_" + num + "' class='required'>" +
+        $('#cronograma').append("<dt id='solicitacoes-numero_itens-label'><label for='solicitacoes-numero_itens_" + num + "' class='required'>" +
                 "Qtde:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-qtde-element'><input type='text' name='solicitacoes[qtde_"+ num + "]' " +
-                "id='solicitacoes-qtde' value='' class='campos'></dd>");
+        $('#cronograma').append("<dd id='solicitacoes-numero_itens-element'><input type='text' name='solicitacoes[numero_itens_"+ num + "]' " +
+                "id='solicitacoes-numero_itens' value='' class='campos'></dd>");
         $('#cronograma').append("<dt id='solicitacoes-cronograma_inicio-label'><label for='solicitacoes-cronograma_inicio_" + num + "' " +
                 "class='required'>Início do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-cronograma_inicio-element'><input type='text' " +
@@ -643,10 +657,10 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
     function adicionaCampo2(){
         //var x = "' + margem * (num-1) + 'px'>
         num2++;
-        $('#pagamento').append("<dt id='solicitacoes-valor_total-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
-                "for='solicitacoes-valor_total_" + num2 + "' class='required'>Valor Total do Serviço:</label></dt>");
-        $('#pagamento').append("<dd id='solicitacoes-valor_total-element'><input type='text' name='solicitacoes[valor_total_" + num2 + "]' " +
-                "id='solicitacoes-valor_total' value='' class='pagamento_campos'></dd>");
+        $('#pagamento').append("<dt id='solicitacoes-preco_total-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
+                "for='solicitacoes-preco_total_" + num2 + "' class='required'>Valor Total do Serviço:</label></dt>");
+        $('#pagamento').append("<dd id='solicitacoes-preco_total-element'><input type='text' name='solicitacoes[preco_total_" + num2 + "]' " +
+                "id='solicitacoes-preco_total' value='' class='pagamento_campos'></dd>");
         $('#pagamento').append("<dt id='solicitacoes-execucao_inicio-label'><label for='solicitacoes-execucao_inicio_" + num2 +
                 "' class='required'>Início:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-execucao_inicio-element'><input type='text' name='solicitacoes[execucao_inicio_" + num2 + "]' " +
