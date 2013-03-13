@@ -86,6 +86,11 @@ class Application_Form_Usuarios extends Zend_Form
             'required'   => false
         ));
 
+        $this->addElement('button', 'botaoAlterarPermissoes', array(
+            'required' => false,
+            'label'     => 'Alterar Permissôes',
+        ));
+
         //userName input type text
         $this->addElement('text', 'username', array(
             'label'      => 'Nome de Usuario:',

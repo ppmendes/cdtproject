@@ -25,7 +25,6 @@ class TarefasController extends Zend_Controller_Action
 
         $id = $this->_getParam('tarefa_id');
 
-
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
 //                echo "<pre>";

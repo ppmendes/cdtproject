@@ -102,7 +102,6 @@
 
             foreach($this->tree as $row) // "$this->usuarios" nome da variável definida no controller
             {
-
                 echo "<tr id='".$row['instituicao_id']."'>";
                 echo "<td><a href='/usuarios/treeview/instituicao_id/{$row['instituicao_id']}'>" .$row['nome']. "</a></td>";
                 echo "</tr>";

@@ -20,6 +20,7 @@ class UsuariosController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_Usuarios();
         $model = new Application_Model_Usuario;
+        //$modelPerfilUsuarios= New Application_Model_Pe
         $id = $this->_getParam('usuario_id');
         $this->view->pais = 76;
         $form->getElement("estados_id")->setRegisterInArrayValidator(FALSE);
@@ -30,6 +31,13 @@ class UsuariosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+
+                //obteniendo ID usuario
+                $IDusuario= $model->getLastInsertedId();
+                //copiar permissoes de perfil-usuarios-permissoes a permissoes segundo
+                $codigoperfil=$data['usuario']['perfil_usuario_id'];
+
+
 
                 //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
@@ -62,7 +70,19 @@ class UsuariosController extends Zend_Controller_Action
                         unset($data['usuario']['username']);
                         unset($data['usuario']['password']);
                     }
+                    // adicionamos na tabela "permissoes" as permissoes trazidas desde perfil-usuario-permissoes segundo o id de usuario e o id do perfil
+                    $db = Zend_Db_Table::getDefaultAdapter();
+                    $permissoes=$db->fetchAll("SELECT controller, action, valor FROM `perfil-usuario-permissoes` p where perfil_usuario_id=$codigoperfil;");
 
+                    for($i=0;$i<count($permissoes); $i++)
+                    {
+                        $datarh['tarefa_id']=$idtarefa;
+                        $dataexplode=explode('|',$rhAssociados[$i]);
+                        $datarh['usuario_id']=$dataexplode[0];
+                        $datarh['porcentagem']=$dataexplode[1];
+                        $modelusuarios->insert($datarh);
+
+                    }
                     $model->insert($data);
                 }
                 $this->_redirect('/usuarios/');
@@ -94,10 +114,11 @@ class UsuariosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+
                 //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
-                if($id){
 
+                if($id){
                     //adicionar novo arquivo e tirar o antigo na lixeira
                     $newdata=$model->verificarMudancasArquivos($data,$id);
                     // finalmente atualizamos o banco de dados
@@ -108,12 +129,14 @@ class UsuariosController extends Zend_Controller_Action
                         $nome_imagem=$model->getLastInsertedId();
                         $data=$model->editarImagem($nome_imagem,$data);
                     }
-                    $model->insert($data);
 
+
+                    $model->insert($data);
                 }
                 $this->_redirect('/usuarios/');
             }
         }elseif  ($id){
+
             $data = $model->find($id)->toArray();
             $this->view->pais = $data['pais_id'];
 
@@ -243,5 +266,26 @@ class UsuariosController extends Zend_Controller_Action
         $model->criarTreeview($result);
 
         $this->view->treeview;
+    }
+
+    public function treeviewpermissoesAction()
+    {
+        $layout = $this->_helper->layout();
+        $layout->setLayout('iframe');
+        $model = new Application_Model_Usuario;
+        /*$id = $this->_getParam('instituicao_id');
+        if($id==null)
+        {
+            $id=32;
+        }*/
+        // mostra as instituições pais
+        //$this->view->tree = $model->retornaPais();
+
+        // retorna array do procedure
+        //$result=$model->paeFilhos($id);
+        // cria o treeview
+        //$model->criarTreeview($result);
+
+        $this->view->treepermissoes;
     }
 }

@@ -58,7 +58,7 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
 
             if($permitirAcesso === false){
                 //se não possui permissão redireciona para index
-                $this->redireciona($request,'index','permissiondenied');
+                //$this->redireciona($request,'index','permissiondenied');
             }
 
 

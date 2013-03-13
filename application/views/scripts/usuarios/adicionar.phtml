@@ -15,6 +15,12 @@ echo $this->form;
                 overlayShow: true
             }).click();
         });
+
+        $("#usuario-botaoAlterarPermissoes").click(function() {
+            $('<a class="fancybox fancybox.iframe" href="usuarios/treeviewpermissoes">pesquisar 1</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
     });
 </script>
 
@@ -101,11 +107,15 @@ echo $this->form;
             $('#usuario-perfil_usuario_id-label').css('display','none');
             $('#usuario-perfil_usuario_id-element').css('display','none');
             $('#usuario-perfil_usuario_id').attr('required','false');
+            $('#usuario-botaoAlterarPermissoes-label').css('display','none');
+            $('#usuario-botaoAlterarPermissoes-element').css('display','none');
+            $('#usuario-botaoAlterarPermissoes').attr('required','false');
 
             $('#usuario-username').attr('disabled' , 'disabled');
             $('#usuario-password').attr('disabled' , 'disabled');
             $('#usuario-verifypassword').attr('disabled' , 'disabled');
             $('#usuario-perfil_usuario_id').attr('disabled' , 'disabled');
+            $('#usuario-botaoAlterarPermissoes').attr('disabled','disabled');
         }else
         {
             $('#usuario-username-label').css('display','block');
@@ -120,11 +130,15 @@ echo $this->form;
             $('#usuario-perfil_usuario_id-label').css('display','block');
             $('#usuario-perfil_usuario_id-element').css('display','block');
             $('#usuario-perfil_usuario_id').attr('required','true');
+            $('#usuario-botaoAlterarPermissoes-label').css('display','block');
+            $('#usuario-botaoAlterarPermissoes-element').css('display','block');
+            $('#usuario-botaoAlterarPermissoes').attr('required','true');
 
             $('#usuario-username').removeAttr('disabled');
             $('#usuario-password').removeAttr('disabled');
             $('#usuario-verifypassword').removeAttr('disabled');
             $('#usuario-perfil_usuario_id').removeAttr('disabled');
+            $('#usuario-botaoAlterarPermissoes').removeAttr('disabled');
         }
     }
 
