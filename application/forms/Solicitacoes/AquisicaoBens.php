@@ -39,20 +39,28 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             ),
         ));
 
+        //Projeto input type text
+        $this->addElement('text', 'solicitacao_nome', array(
+            'label'      => 'Nome da solicitação:',
+            'required'   => true,
+            'order' => 3,
+        ));
+
+
         //Data da solicitação
         $this->addElement('text', 'data_solicitacao_view', array(
             'label'      => 'Data da Solicitação:',
             'value'      => date('Y-m-d', time()),
             'disabled'   => true,
             'required'   => false,
-            'order'          => 3,
+            'order'          => 4,
         ));
 
         //Projeto input type text
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
             'required'   => true,
-            'order' => 4,
+            'order' => 5,
         ));
 
         //Coordenador do projeto input type text
@@ -61,7 +69,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
-            'order'          => 5
+            'order'          => 6
         ));
 
 
@@ -71,7 +79,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
-            'order'          => 6,
+            'order'          => 7,
         ));
 
         $this->addElement('text', 'telefone_coordenador', array(
@@ -79,7 +87,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
-            'order'          => 7
+            'order'          => 8
         ));
 
         $this->addElement('text', 'celular_coordenador', array(
@@ -87,13 +95,13 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
-            'order'          => 8
+            'order'          => 9
         ));
 
         $this->addElement('hidden', 'label_tipo', array(
             'description' => '2 - Tipo de Solicitação',
             'ignore' => true,
-            'order'          => 9,
+            'order'          => 10,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -103,14 +111,14 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'label'      => 'Tipo:',
             'multiOptions' => Application_Model_TipoSolicitacao::getOptionsAquisicao(),
             'required'   => true,
-            'order'          => 10,
+            'order'          => 11,
             'id'         => 'radiobutton',
         ));
 
         $this->addElement('hidden', 'label_descricao', array(
             'description' => '3 - Descrição Detalhada dos Bens/Serviços',
             'ignore' => true,
-            'order'          => 11,
+            'order'          => 12,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -124,7 +132,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             //'attribs' => array('onblur' => 'calcularTotal(1)'),
         ));
 
-        $this->addElement('textarea', 'solicitacao_nome', array(
+        $this->addElement('textarea', 'descricao', array(
             'label'      => 'Descrição:',
             'required'   => true,
             'order'          => 14,
@@ -146,7 +154,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'class'         => 'campos',
         ));
 
-        $this->addDisplayGroup(array('label_item','numero_itens','solicitacao_nome', 'preco_unidade', 'valor_estimado'), 'individual');
+        $this->addDisplayGroup(array('label_item','numero_itens','descricao', 'preco_unidade', 'valor_estimado'), 'individual');
 
         $individual = $this->getDisplayGroup('individual');
 
@@ -284,7 +292,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
             'value'      => '',
-            'order' =>116,
+            'order' =>117,
         ));
 
 
@@ -299,7 +307,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
         for ( $i = 2; $i<=$num ; $i++) {
             $name1 = "numero_itens_". $i;
-            $name2 = "solicitacao_nome_". $i;
+            $name2 = "descricao_". $i;
             $name3 = "preco_unidade_". $i;
             $name4 = "valor_estimado_". $i;
             $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3, $dados['solicitacoes'][$name3],
@@ -354,7 +362,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
 
         $individual = $this->getDisplayGroup('individual');
-        var_dump($individual);
 
         $individual->addElements(array ($this->getElement($name1), $this->getElement($name2),
             $this->getElement($name3), $this->getElement($name4)));
@@ -374,10 +381,10 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             "for='solicitacoes-numero_itens_" + num + "'>Quantidade:</label></dt>");
         $('#descricao').append("<dd id='solicitacoes-numero_itens-element'><input id='solicitacoes-numero_itens' " +
             "class='campos' type='text' value='' name='solicitacoes[numero_itens_" + num + "]'></dd>");
-        $('#descricao').append("<dt id='solicitacoes-solicitacao_nome-label'><label class='required' " +
-                "for='solicitacoes-solicitacao_nome_" + num + "'>Descrição:</label></dt>");
-        $('#descricao').append("<dd id='solicitacoes-solicitacao_nome-element'><textarea id='solicitacoes-solicitacao_nome' " +
-                "class='campos' cols='80' rows='24' name='solicitacoes[solicitacao_nome_" + num + "]'></textarea></dd>");
+        $('#descricao').append("<dt id='solicitacoes-descricao-label'><label class='required' " +
+                "for='solicitacoes-descricao_" + num + "'>Descrição:</label></dt>");
+        $('#descricao').append("<dd id='solicitacoes-descricao-element'><textarea id='solicitacoes-descricao' " +
+                "class='campos' cols='80' rows='24' name='solicitacoes[descricao_" + num + "]'></textarea></dd>");
         $('#descricao').append("<dt id='solicitacoes-preco_unidade-label'><label class='optional' " +
                 "for='solicitacoes-preco_unidade_" + num + "'>Preço Unitário:</label></dt>");
         $('#descricao').append("<dd id='solicitacoes-preco_unidade-element'><input id='solicitacoes-preco_unidade' " +

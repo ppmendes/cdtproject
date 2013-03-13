@@ -28,6 +28,13 @@ class Application_Form__Solicitacoes_ContratacaoServicos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        //Projeto input type text
+        $this->addElement('text', 'solicitacao_nome', array(
+            'label'      => 'Nome da Solicitação:',
+            'required'   => true,
+            //'order'          => 2,
+
+        ));
 
         $this->addElement('hidden', 'label_projeto', array(
             'description' => 'Identificação do Projeto',

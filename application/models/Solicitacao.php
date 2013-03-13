@@ -18,7 +18,7 @@ class Application_Model_Solicitacao
                 ->from(array('s' => 'solicitacao'))
                 ->where('s.deletado = ?', false)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
-                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
                 ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
             $stmt = $select->query();
@@ -42,7 +42,7 @@ class Application_Model_Solicitacao
                 ->orWhere('s.tipo_solicitacao_id = ?', 4)
                 ->orWhere('s.tipo_solicitacao_id = ?', 5)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
-                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
                 ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
             $stmt = $select->query();
@@ -67,7 +67,7 @@ class Application_Model_Solicitacao
                 ->orWhere('s.tipo_solicitacao_id = ?', 7)
                 ->orWhere('s.tipo_solicitacao_id = ?', 8)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
-                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
                 ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
             $stmt = $select->query();
@@ -89,7 +89,7 @@ class Application_Model_Solicitacao
                 ->where('s.deletado = ?', false)
                 ->where('s.tipo_solicitacao_id = ?', 3)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
-                ->joinLeft(array('cp' => 'usuario'), 's.coodenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id','cp.nome'=>'cp.nome'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
                 ->joinLeft(array('b' => 'beneficiario'), 's.beneficiario_id = b.beneficiario_id',array('b.nome'=>'b.nome'));;
             $stmt = $select->query();
@@ -116,12 +116,12 @@ class Application_Model_Solicitacao
 
     }
 
-    public function insertAquisicao($data, $numero_itens, $solicitacao_nome, $preco_unidade, $valor_estimado)
+    public function insertAquisicao($data, $numero_itens, $descricao, $preco_unidade, $valor_estimado)
     {
         $table = new Application_Model_DbTable_Solicitacao();
 
         $data['solicitacoes']['numero_itens'] = $data['solicitacoes']['numero_itens'] . $numero_itens;
-        $data['solicitacoes']['solicitacao_nome'] = $data['solicitacoes']['solicitacao_nome'] . $solicitacao_nome;
+        $data['solicitacoes']['descricao'] = $data['solicitacoes']['descricao'] . $descricao;
         $data['solicitacoes']['preco_unidade'] = $data['solicitacoes']['preco_unidade'] . $preco_unidade;
         $data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
 
@@ -135,7 +135,7 @@ class Application_Model_Solicitacao
         $table = new Application_Model_DbTable_Solicitacao();
 
         $data['solicitacoes']['$descricao'] = $data['solicitacoes']['numero_itens'] . $descricao;
-        $data['solicitacoes']['$produto'] = $data['solicitacoes']['solicitacao_nome'] . $produto;
+        $data['solicitacoes']['$produto'] = $data['solicitacoes']['descricao'] . $produto;
         $data['solicitacoes']['$qtde'] = $data['solicitacoes']['preco_unidade'] . $qtde;
         $data['solicitacoes']['$cronograma_inicio'] = $data['solicitacoes']['valor_estimado'] . $cronograma_inicio;
         $data['solicitacoes']['$cronograma_termino'] = $data['solicitacoes']['numero_itens'] . $cronograma_termino;
@@ -163,6 +163,20 @@ class Application_Model_Solicitacao
 
     }
 
+    public function updateaquisicao($data, $id, $numero_itens, $descricao, $preco_unidade, $valor_estimado)
+    {
+        $table = new Application_Model_DbTable_Solicitacao;
+
+        $data['solicitacoes']['numero_itens'] = $data['solicitacoes']['numero_itens'] . $numero_itens;
+        $data['solicitacoes']['descricao'] = $data['solicitacoes']['descricao'] . $descricao;
+        $data['solicitacoes']['preco_unidade'] = $data['solicitacoes']['preco_unidade'] . $preco_unidade;
+        $data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
+
+        $where = $table->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $table->update($data['solicitacoes'],$where);
+    }
+
     public function update($data, $id)
     {
         $table = new Application_Model_DbTable_Solicitacao;
@@ -170,6 +184,7 @@ class Application_Model_Solicitacao
 
         $table->update($data['solicitacoes'],$where);
     }
+
 
     public function concatenaCampos($campo, $data)
     {
@@ -186,5 +201,25 @@ class Application_Model_Solicitacao
             }
         }
         return $result;
+    }
+
+    public function buscaProjetoNome($solicitacao_id)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('s' => 'solicitacao'))
+                ->where('s.solicitacao_id = ?', $solicitacao_id)
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
+                'cp.username'=>'cp.username', 'cp.email' => 'cp.email', 'cp.telefone' => 'cp.telefone', 'cp.celular' => 'cp.celular'));
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 }
