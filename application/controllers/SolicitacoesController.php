@@ -598,13 +598,39 @@ class SolicitacoesController extends Zend_Controller_Action
     }
 
 
-    public function excluirAction(){
+    public function excluiraquisicaoAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Solicitacoes();
+        $excluir = new Application_Form_Solicitacoes_AquisicaoBens();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
 
-        $model->delete($id);
+        $model->deleteAquisicao($id);
+        $this->_redirect('/solicitacoes/');
+
+        $this->view->excluir = $excluir;
+
+    }
+
+    public function excluircontratacaoAction(){
+        //$request = $this->getRequest();
+        $excluir = new Application_Form_Solicitacoes_ContratacaoServicos();
+        $model = new Application_Model_Solicitacao();
+        $id = $this->_getParam('solicitacao_id');
+
+        $model->deleteContratacao($id);
+        $this->_redirect('/solicitacoes/');
+
+        $this->view->excluir = $excluir;
+
+    }
+
+    public function excluirpassagensAction(){
+        //$request = $this->getRequest();
+        $excluir = new Application_Form_Solicitacoes_PassagensDiarias();
+        $model = new Application_Model_Solicitacao();
+        $id = $this->_getParam('solicitacao_id');
+
+        $model->deletePassagens($id);
         $this->_redirect('/solicitacoes/');
 
         $this->view->excluir = $excluir;

@@ -1,14 +1,44 @@
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
-    function confirmarExclusao(id)
+    function confirmarExclusao(id, tipo)
     {
-        var answer = confirm("Deseja realmente excluir a solicitação?");
-        if (answer) {
-            top.location.href = '/../solicitacoes/excluir/solicitacao_id/'+id;
-        }
-        else {
+        if (tipo == 1 || tipo == 4 || tipo == 5)
+        {
+            var answer = confirm("Deseja realmente excluir a solicitação?");
+            if (answer)
+            {
+                top.location.href = '/../solicitacoes/excluiraquisicao/solicitacao_id/'+id;
+            }
+            else
+            {
             alert("A solicitação não foi excluída!");
+            }
         }
+        else if (tipo == 2 || tipo == 6 || tipo == 7 || tipo == 8)
+        {
+            var answer = confirm("Deseja realmente excluir a solicitação?");
+            if (answer)
+            {
+                top.location.href = '/../solicitacoes/excluircontratacao/solicitacao_id/'+id;
+            }
+            else
+            {
+                alert("A solicitação não foi excluída!");
+            }
+        }
+        else
+        {
+            var answer = confirm("Deseja realmente excluir a solicitação?");
+            if (answer)
+            {
+                top.location.href = '/../solicitacoes/excluirpassagens/solicitacao_id/'+id;
+            }
+            else
+            {
+                alert("A solicitação não foi excluída!");
+            }
+        }
+
     }
 </script>
 <script>
@@ -33,7 +63,7 @@
 $id = $this->id;
 $tipo = $this->tipo;
 
-echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='confirmarExclusao($id, $tipo)'>Excluir</button>";
 echo "<button onclick='editar($id, $tipo)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());

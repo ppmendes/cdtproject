@@ -304,15 +304,45 @@ class Application_Model_Solicitacao
 
     }
 
-    public function delete($id)
+    public function deleteAquisicao($id)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
-        $table = "solicitacao";
+        $table_solicitacao = "solicitacao";
+        $table_bensServicos = 'bens_servicos';
         $deletado = true;
         $where = $db->quoteInto('solicitacao_id = ?', $id);
         $data = array('deletado' => $deletado);
 
-        $db->update($table, $data, $where);
+        $db->update($table_solicitacao, $data, $where);
+        $db->update($table_bensServicos, $data, $where);
+
+    }
+
+    public function deleteContratacao($id)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table_solicitacao = "solicitacao";
+        $table_servicos = 'servicos';
+        $deletado = true;
+        $where = $db->quoteInto('solicitacao_id = ?', $id);
+        $data = array('deletado' => $deletado);
+
+        $db->update($table_solicitacao, $data, $where);
+        $db->update($table_servicos, $data, $where);
+
+    }
+
+    public function deletePassagens($id)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table_solicitacao = "solicitacao";
+        $table_passagens = 'diarias_passagens';
+        $deletado = true;
+        $where = $db->quoteInto('solicitacao_id = ?', $id);
+        $data = array('deletado' => $deletado);
+
+        $db->update($table_solicitacao, $data, $where);
+        $db->update($table_passagens, $data, $where);
 
     }
 
@@ -324,11 +354,21 @@ class Application_Model_Solicitacao
         $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
         $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
         $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
-        //$data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
+        unset($data['solicitacoes']['valor_estimado']);
 
-        $where = $table->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'];
+        unset($data['solicitacoes']['quantidade']);
+        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'];
+        unset($data['solicitacoes']['nome']);
+        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'];
+        unset($data['solicitacoes']['valor_unitario']);
 
-        $table->update($data['solicitacoes'],$where);
+        $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $where_bensServicos = $table_bensServicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $table_solicitacao->update($data['solicitacoes'], $where_solicitacao);
+
+        $table_bensServicos->update($data['bens_servicos'], $where_bensServicos);
     }
 
     public function update($data, $id)
