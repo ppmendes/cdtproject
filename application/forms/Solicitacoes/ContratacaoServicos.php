@@ -231,7 +231,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             ),
         ));
 
-        $this->addElement('text', 'descricao', array(
+        $this->addElement('text', 'tipo_servicos', array(
             'label'      => 'Descricao:',
             'required'   => true,
             'order'          => 24,
@@ -252,21 +252,21 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'cronograma_inicio', array(
+        $this->addElement('text', 'data_servicos', array(
             'label'      => 'Início do Cronograma:',
             'required'   => true,
             'order'          => 27,
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'cronograma_termino', array(
+        $this->addElement('text', 'data_servicos_fim', array(
             'label'      => 'Fim do Cronograma:',
             'required'   => true,
             'order'          => 28,
             'class'         => 'campos'
         ));
 
-        $this->addDisplayGroup(array('descricao','produto','numero_itens', 'cronograma_inicio', 'cronograma_termino'), 'individual');
+        $this->addDisplayGroup(array('tipo_servicos','produto','numero_itens', 'data_servicos', 'data_servicos_fim'), 'individual');
 
         $individual = $this->getDisplayGroup('individual');
 
@@ -302,28 +302,29 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 102
         ));
 
-        $this->addElement('text', 'preco_total', array(
+        $this->addElement('text', 'valor_real', array(
             'label'      => 'Valor Total do Serviço:',
             'required'   => true,
             'class'      => 'pagamento_campos',
             'order'          => 103,
         ));
 
-        $this->addElement('text', 'execucao_inicio', array(
-            'label'      => 'Início:',
-            'required'   => true,
-            'class'      => 'pagamento_campos',
-            'order'          => 104
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('inicio_execucao');
+        $emtDatePicker1->setOrder(104);
+        $emtDatePicker1->setRequired(true);
+        $emtDatePicker1->setLabel('Início: ');
+        $emtDatePicker1->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker1);
 
-        $this->addElement('text', 'execucao_termino', array(
-            'label'      => 'Término:',
-            'required'   => true,
-            'class'      => 'pagamento_campos',
-            'order'          => 105
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('fim_execucao');
+        $emtDatePicker2->setOrder(105);
+        $emtDatePicker2->setRequired(true);
+        $emtDatePicker2->setLabel('Término: ');
+        $emtDatePicker2->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker2);
 
-        $this->addElement('text', 'qtd_parcelas', array(
+
+        $this->addElement('text', 'quantidade_parcelas', array(
             'label'      => 'Qtde de Parcelas:',
             'required'   => true,
             'class'      => 'pagamento_campos',
@@ -337,14 +338,14 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 107
         ));
 
-        $this->addElement('text', 'data_pagamento', array(
-            'label'      => 'Data(s) Pagamento:',
-            'required'   => true,
-            'class'      => 'pagamento_campos',
-            'order'          => 108
-        ));
+        $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('data_pagamento');
+        $emtDatePicker3->setOrder(108);
+        $emtDatePicker3->setRequired(true);
+        $emtDatePicker3->setLabel('Data(s) Pagamento: ');
+        $emtDatePicker3->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker3);
 
-        $this->addDisplayGroup(array('preco_total','execucao_inicio','execucao_termino', 'qtd_parcelas', 'valor_parcelas', 'data_pagamento'), 'individual2');
+        $this->addDisplayGroup(array('valor_real','inicio_execucao','fim_execucao', 'quantidade_parcelas', 'valor_parcelas', 'data_pagamento'), 'individual2');
 
         $individual2 = $this->getDisplayGroup('individual2');
 
@@ -356,22 +357,22 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 
         $individual2->setOrder(110);
 
-        $this->addElement('button', 'add_item_mais_2', array(
-            'label'      => 'Mais',
-            'ignore'   => true,
-            'id'         => 'botao_mais',
-            'attribs' => array('onClick' => 'adicionaCampo2()'),
-            'order'          => 200
-
-        ));
-
-        $this->addElement('button', 'add_item_menos_2', array(
-            'label'      => 'Menos',
-            'ignore'   => true,
-            'id'         => 'botao_menos',
-            'attribs' => array('onClick' => 'removeCampo2()'),
-            'order'          => 201
-        ));
+//        $this->addElement('button', 'add_item_mais_2', array(
+//            'label'      => 'Mais',
+//            'ignore'   => true,
+//            'id'         => 'botao_mais',
+//            'attribs' => array('onClick' => 'adicionaCampo2()'),
+//            'order'          => 200
+//
+//        ));
+//
+//        $this->addElement('button', 'add_item_menos_2', array(
+//            'label'      => 'Menos',
+//            'ignore'   => true,
+//            'id'         => 'botao_menos',
+//            'attribs' => array('onClick' => 'removeCampo2()'),
+//            'order'          => 201
+//        ));
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
@@ -426,28 +427,28 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $order2= 111;
 
         for ( $i = 2; $i<=$num ; ++$i) {
-        $name1 = "descricao_". $i;
+        $name1 = "tipo_servicos_". $i;
         $name2 = "produto_". $i;
         $name3 = "numero_itens_". $i;
-        $name4 = "cronograma_inicio_". $i;
-        $name5 = "cronograma_termino_". $i;
+        $name4 = "data_servicos_". $i;
+        $name5 = "data_servicos_fim_". $i;
         $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
             $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5], $order);
         $order = $order + 5;
         }
 
-        for ( $j=2; $j<=$num2 ; ++$j) {
-        $name1 = "preco_total_". $j;
-        $name2 = "execucao_inicio_". $j;
-        $name3 = "execucao_termino_". $j;
-        $name4 = "qtd_parcelas_". $j;
-        $name5 = "valor_parcelas_". $j;
-        $name6 = "data_pagamento_". $j;
-        $this->addNewField2($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
-            $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5],
-            $name6, $dados['solicitacoes'][$name6], $order2);
-        $order2 = $order2 + 6;
-        }
+//        for ( $j=2; $j<=$num2 ; ++$j) {
+//        $name1 = "valor_real_". $j;
+//        $name2 = "inicio_execucao_". $j;
+//        $name3 = "fim_execucao_". $j;
+//        $name4 = "quantidade_parcelas_". $j;
+//        $name5 = "valor_parcelas_". $j;
+//        $name6 = "data_pagamento_". $j;
+//        $this->addNewField2($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
+//            $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5],
+//            $name6, $dados['solicitacoes'][$name6], $order2);
+//        $order2 = $order2 + 6;
+//        }
 
     }
 
@@ -514,74 +515,74 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         echo "<script>incNum()</script>";
     }
 
-    public function addNewField2($name1, $value1, $name2, $value2, $name3, $value3, $name4, $value4, $name5, $value5, $name6, $value6, $order2) {
-
-        $this->addElement('text', $name1, array(
-            'required'       => true,
-            'label'          => 'Valor Total do Serviço:',
-            'value'          => $value1,
-            'class'          => 'pagamento_campos',
-            'order'          => $order2
-        ));
-
-        $order2++;
-
-        $this->addElement('text', $name2, array(
-            'required'       => true,
-            'label'          => 'Início:',
-            'value'          => $value2,
-            'class'          => 'pagamento_campos',
-            'order'          => $order2
-        ));
-
-        $order2++;
-
-        $this->addElement('text', $name3, array(
-            'required'       => true,
-            'label'          => 'Término:',
-            'value'          => $value3,
-            'class'          => 'pagamento_campos',
-            'order'          => $order2
-        ));
-
-        $order2++;
-
-        $this->addElement('text', $name4, array(
-            'required'       => true,
-            'label'          => 'Qtde de Parcelas:',
-            'value'          => $value4,
-            'class'          => 'pagamento_campos',
-            'order'          => $order2
-        ));
-
-        $order2++;
-
-        $this->addElement('text', $name5, array(
-            'required'       => true,
-            'label'          => 'Valor das Parcelas',
-            'value'          => $value5,
-            'class'          => 'pagamento_campos',
-            'order'          => $order2
-        ));
-
-        $order2++;
-
-        $this->addElement('text', $name6, array(
-            'required'       => true,
-            'label'          => 'Data(s) Pagamento',
-            'value'          => $value6,
-            'class'          => 'pagamento_campos',
-            'order'          => $order2
-        ));
-
-
-        $individual2 = $this->getDisplayGroup('individual2');
-
-        $individual2->addElements(array ($this->getElement($name1), $this->getElement($name2), $this->getElement($name3),
-            $this->getElement($name4), $this->getElement($name5), $this->getElement($name6)));
-
-        echo "<script>incNum2()</script>";
-    }
+//    public function addNewField2($name1, $value1, $name2, $value2, $name3, $value3, $name4, $value4, $name5, $value5, $name6, $value6, $order2) {
+//
+//        $this->addElement('text', $name1, array(
+//            'required'       => true,
+//            'label'          => 'Valor Total do Serviço:',
+//            'value'          => $value1,
+//            'class'          => 'pagamento_campos',
+//            'order'          => $order2
+//        ));
+//
+//        $order2++;
+//
+//        $this->addElement('text', $name2, array(
+//            'required'       => true,
+//            'label'          => 'Início:',
+//            'value'          => $value2,
+//            'class'          => 'pagamento_campos',
+//            'order'          => $order2
+//        ));
+//
+//        $order2++;
+//
+//        $this->addElement('text', $name3, array(
+//            'required'       => true,
+//            'label'          => 'Término:',
+//            'value'          => $value3,
+//            'class'          => 'pagamento_campos',
+//            'order'          => $order2
+//        ));
+//
+//        $order2++;
+//
+//        $this->addElement('text', $name4, array(
+//            'required'       => true,
+//            'label'          => 'Qtde de Parcelas:',
+//            'value'          => $value4,
+//            'class'          => 'pagamento_campos',
+//            'order'          => $order2
+//        ));
+//
+//        $order2++;
+//
+//        $this->addElement('text', $name5, array(
+//            'required'       => true,
+//            'label'          => 'Valor das Parcelas',
+//            'value'          => $value5,
+//            'class'          => 'pagamento_campos',
+//            'order'          => $order2
+//        ));
+//
+//        $order2++;
+//
+//        $this->addElement('text', $name6, array(
+//            'required'       => true,
+//            'label'          => 'Data(s) Pagamento',
+//            'value'          => $value6,
+//            'class'          => 'pagamento_campos',
+//            'order'          => $order2
+//        ));
+//
+//
+//        $individual2 = $this->getDisplayGroup('individual2');
+//
+//        $individual2->addElements(array ($this->getElement($name1), $this->getElement($name2), $this->getElement($name3),
+//            $this->getElement($name4), $this->getElement($name5), $this->getElement($name6)));
+//
+//        echo "<script>incNum2()</script>";
+//    }
 }
 ?>
 
@@ -590,10 +591,10 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
     var margem = 0;
     function adicionaCampo(){
         num++;
-        $('#cronograma').append("<dt id='solicitacoes-descricao-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
-                "for='solicitacoes-descricao_" + num + "' class='required'>Descricao:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-descricao-element'><input type='text' name='solicitacoes[descricao_"+
-                num + "]' id='solicitacoes-descricao' value='' class='campos'></dd>");
+        $('#cronograma').append("<dt id='solicitacoes-tipo_servicos-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
+                "for='solicitacoes-tipo_servicos_" + num + "' class='required'>Descricao:</label></dt>");
+        $('#cronograma').append("<dd id='solicitacoes-tipo_servicos-element'><input type='text' name='solicitacoes[tipo_servicos_"+
+                num + "]' id='solicitacoes-tipo_servicos' value='' class='campos'></dd>");
         $('#cronograma').append("<dt id='solicitacoes-produto-label'><label for='solicitacoes-produto_" + num + "' class='required'>" +
                 "Produto:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-produto-element'><input type='text' name='solicitacoes[produto_"+ num +
@@ -602,14 +603,14 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
                 "Qtde:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-numero_itens-element'><input type='text' name='solicitacoes[numero_itens_"+ num + "]' " +
                 "id='solicitacoes-numero_itens' value='' class='campos'></dd>");
-        $('#cronograma').append("<dt id='solicitacoes-cronograma_inicio-label'><label for='solicitacoes-cronograma_inicio_" + num + "' " +
+        $('#cronograma').append("<dt id='solicitacoes-data_servicos-label'><label for='solicitacoes-data_servicos_" + num + "' " +
                 "class='required'>Início do Cronograma:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-cronograma_inicio-element'><input type='text' " +
-                "name='solicitacoes[cronograma_inicio_"+ num + "]' id='solicitacoes-cronograma_inicio' value='' class='campos'></dd>");
-        $('#cronograma').append("<dt id='solicitacoes-cronograma_termino-label'><label for='solicitacoes-cronograma_termino_" + num + "' " +
+        $('#cronograma').append("<dd id='solicitacoes-data_servicos-element'><input type='text' " +
+                "name='solicitacoes[data_servicos_"+ num + "]' id='solicitacoes-data_servicos' value='' class='campos'></dd>");
+        $('#cronograma').append("<dt id='solicitacoes-data_servicos_fim-label'><label for='solicitacoes-data_servicos_fim_" + num + "' " +
                 "class='required'>Fim do Cronograma:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-cronograma_termino-element'><input type='text' " +
-                "name='solicitacoes[cronograma_termino_"+ num + "]' id='solicitacoes-cronograma_termino' value='' class='campos'></dd>");
+        $('#cronograma').append("<dd id='solicitacoes-data_servicos_fim-element'><input type='text' " +
+                "name='solicitacoes[data_servicos_fim_"+ num + "]' id='solicitacoes-data_servicos_fim' value='' class='campos'></dd>");
 
         $('#solicitacoes-hidden_teste').attr('value', num);
 
@@ -652,27 +653,28 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 </script>
 
 <script>
+    /*
     var num2 = 1;
     var margem = 0;
     function adicionaCampo2(){
         //var x = "' + margem * (num-1) + 'px'>
         num2++;
-        $('#pagamento').append("<dt id='solicitacoes-preco_total-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
-                "for='solicitacoes-preco_total_" + num2 + "' class='required'>Valor Total do Serviço:</label></dt>");
-        $('#pagamento').append("<dd id='solicitacoes-preco_total-element'><input type='text' name='solicitacoes[preco_total_" + num2 + "]' " +
-                "id='solicitacoes-preco_total' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append("<dt id='solicitacoes-execucao_inicio-label'><label for='solicitacoes-execucao_inicio_" + num2 +
+        $('#pagamento').append("<dt id='solicitacoes-valor_real-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
+                "for='solicitacoes-valor_real_" + num2 + "' class='required'>Valor Total do Serviço:</label></dt>");
+        $('#pagamento').append("<dd id='solicitacoes-valor_real-element'><input type='text' name='solicitacoes[valor_real_" + num2 + "]' " +
+                "id='solicitacoes-valor_real' value='' class='pagamento_campos'></dd>");
+        $('#pagamento').append("<dt id='solicitacoes-inicio_execucao-label'><label for='solicitacoes-inicio_execucao_" + num2 +
                 "' class='required'>Início:</label></dt>");
-        $('#pagamento').append("<dd id='solicitacoes-execucao_inicio-element'><input type='text' name='solicitacoes[execucao_inicio_" + num2 + "]' " +
-                "id='solicitacoes-execucao_inicio' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append("<dt id='solicitacoes-execucao_termino-label'><label for='solicitacoes-execucao_termino_" + num2 + "' " +
+        $('#pagamento').append("<dd id='solicitacoes-inicio_execucao-element'><input type='text' name='solicitacoes[inicio_execucao_" + num2 + "]' " +
+                "id='solicitacoes-inicio_execucao' value='' class='pagamento_campos'></dd>");
+        $('#pagamento').append("<dt id='solicitacoes-fim_execucao-label'><label for='solicitacoes-fim_execucao_" + num2 + "' " +
                 "class='required'>Término:</label></dt>");
-        $('#pagamento').append("<dd id='solicitacoes-execucao_termino-element'><input type='text' name='solicitacoes[execucao_termino_"+ num2 + "]' " +
-                "id='solicitacoes-execucao_termino' value='' class='pagamento_campos'></dd>");
-        $('#pagamento').append("<dt id='solicitacoes-qtd_parcelas-label'><label for='solicitacoes-qtd_parcelas_" + num2 + "' " +
+        $('#pagamento').append("<dd id='solicitacoes-fim_execucao-element'><input type='text' name='solicitacoes[fim_execucao_"+ num2 + "]' " +
+                "id='solicitacoes-fim_execucao' value='' class='pagamento_campos'></dd>");
+        $('#pagamento').append("<dt id='solicitacoes-quantidade_parcelas-label'><label for='solicitacoes-quantidade_parcelas_" + num2 + "' " +
                 "class='required'>Qtde de Parcelas:</label></dt>");
-        $('#pagamento').append("<dd id='solicitacoes-qtd_parcelas-element'><input type='text' " +
-                "name='solicitacoes[qtd_parcelas_" + num2 + "]' id='solicitacoes-qtd_parcelas' value='' class='pagamento_campos'></dd>");
+        $('#pagamento').append("<dd id='solicitacoes-quantidade_parcelas-element'><input type='text' " +
+                "name='solicitacoes[quantidade_parcelas_" + num2 + "]' id='solicitacoes-quantidade_parcelas' value='' class='pagamento_campos'></dd>");
         $('#pagamento').append("<dt id='solicitacoes-valor_parcelas-label'><label for='solicitacoes-valor_parcelas_" + num2 + "' " +
                 "class='required'>Valor das Parcelas:</label></dt>");
         $('#pagamento').append("<dd id='solicitacoes-valor_parcelas-element'><input type='text' " +
@@ -722,6 +724,6 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $('#solicitacoes-hidden_teste2').attr('value', num2);
         return num2;
     }
-
+         */
 </script>
 

@@ -42,29 +42,29 @@ class SolicitacoesController extends Zend_Controller_Action
                 $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
                 unset($data['solicitacoes']['coordenador_tecnico_id']);
 
-                $data['solicitacoes']['preco_total'] = intval($data['solicitacoes']['valor_estimado']);
+                //$data['solicitacoes']['valor_real'] = intval($data['solicitacoes']['valor_estimado']);
+
+//                for ($i=2 ; $i<11 ; $i++)
+//                {
+//                    if (array_key_exists("quantidade_" . $i, $data['solicitacoes']) == 1)
+//                    {
+//                        $data['solicitacoes']['valor_real'] += intval($data['solicitacoes']['valor_estimado_' . $i]);
+//                    }
+//                }
+
+                $quantidade = $model->concatenaCampos("quantidade_", $data);
+                $nome = $model->concatenaCampos("nome_", $data);
+                $valor_unitario = $model->concatenaCampos("valor_unitario_", $data);
+               // $valor_estimado = $model->concatenaCampos("valor_estimado_", $data);
+
 
                 for ($i=2 ; $i<11 ; $i++)
                 {
-                    if (array_key_exists("numero_itens_" . $i, $data['solicitacoes']) == 1)
+                    if (array_key_exists("quantidade_" . $i, $data['solicitacoes']) == 1)
                     {
-                        $data['solicitacoes']['preco_total'] += intval($data['solicitacoes']['valor_estimado_' . $i]);
-                    }
-                }
-
-                $numero_itens = $model->concatenaCampos("numero_itens_", $data);
-                $descricao = $model->concatenaCampos("descricao_", $data);
-                $preco_unidade = $model->concatenaCampos("preco_unidade_", $data);
-                $valor_estimado = $model->concatenaCampos("valor_estimado_", $data);
-
-
-                for ($i=2 ; $i<11 ; $i++)
-                {
-                    if (array_key_exists("numero_itens_" . $i, $data['solicitacoes']) == 1)
-                    {
-                        unset($data['solicitacoes']['numero_itens_' . $i]);
-                        unset($data['solicitacoes']['descricao_' . $i]);
-                        unset($data['solicitacoes']['preco_unidade_' . $i]);
+                        unset($data['solicitacoes']['quantidade_' . $i]);
+                        unset($data['solicitacoes']['nome_' . $i]);
+                        unset($data['solicitacoes']['valor_unitario_' . $i]);
                         unset($data['solicitacoes']['valor_estimado_' . $i]);
                     }
                 }
@@ -72,9 +72,9 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 if($id){
 
-                    $model->updateaquisicao($data, $id, $numero_itens, $descricao, $preco_unidade, $valor_estimado);
+                    $model->updateaquisicao($data, $id, $quantidade, $nome, $valor_unitario);
                 }else{
-                    $model->insertAquisicao($data, $numero_itens, $descricao, $preco_unidade, $valor_estimado);
+                    $model->insertAquisicao($data, $quantidade, $nome, $valor_unitario);
                 }
 
                 $this->_redirect('/solicitacoes/');
@@ -98,15 +98,18 @@ class SolicitacoesController extends Zend_Controller_Action
                 $form = new Application_Form_Solicitacoes_AquisicaoBens();
                 $form->startform();
 
-                $array1 = explode("|", $data['numero_itens']);
-                $array2 = explode("|", $data['descricao']);
-                $array3 = explode("|", $data['preco_unidade']);
-                $array4 = explode("|", $data['valor_estimado']);
 
-                $data['numero_itens'] = $array1[0];
-                $data['descricao'] = $array2[0];
-                $data['preco_unidade'] = $array3[0];
-                $data['valor_estimado'] = $array4[0];
+
+                $data_bens_servicos = $model->findAquisicao($id);
+
+
+                $array1 = explode("|", $data_bens_servicos[0]['quantidade']);
+                $array2 = explode("|", $data_bens_servicos[0]['nome']);
+                $array3 = explode("|", $data_bens_servicos[0]['valor_unitario']);
+
+                $data['quantidade'] = $array1[0];
+                $data['nome'] = $array2[0];
+                $data['valor_unitario'] = $array3[0];
 
                 $order = 18;
 
@@ -114,25 +117,27 @@ class SolicitacoesController extends Zend_Controller_Action
                 {
                     if (array_key_exists($i - 1, $array1) == 1)
                     {
-                        $name1 = "numero_itens_" . $i;
+                        $name1 = "quantidade_" . $i;
                         $data[$name1] = $array1[$i - 1];
 
-                        $name2 = "descricao_" . $i;
+                        $name2 = "nome_" . $i;
                         $data[$name2] = $array2[$i - 1];
 
-                        $name3 = "preco_unidade_" . $i;
+                        $name3 = "valor_unitario_" . $i;
                         $data[$name3] = $array3[$i - 1];
 
                         $name4 = "valor_estimado_" . $i;
-                        $data[$name4] = $array4[$i - 1];
+                        $data[$name4] = intval(intval($array1[$i - 1]) * intval($array3[$i - 1]));
 
                         $form->addNewField($name1, $array1[$i - 1], $name2, $array2[$i - 1], $name3, $array3[$i - 1],
-                            $name4, $array4[$i - 1], $order, $i);
+                            $name4, $data[$name4], $order, $i);
 
                         $order = $order + 4;
 
                     }
                 }
+
+                $data['valor_estimado'] = intval(intval($data['quantidade']) * intval($data['valor_unitario']));
 
                 $form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
 
@@ -186,57 +191,32 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
                 //Concatenação de todos os campos que podem ser múltiplos, para salvar em apenas um campo no banco
-                $descricao = $model->concatenaCampos("descricao_", $data);
+                $tipo_servicos = $model->concatenaCampos("tipo_servicos_", $data);
                 $produto = $model->concatenaCampos("produto_", $data);
                 $numero_itens = $model->concatenaCampos("numero_itens_", $data);
-                $cronograma_inicio = $model->concatenaCampos("cronograma_inicio_", $data);
-                $cronograma_termino = $model->concatenaCampos("cronograma_termino_", $data);
-                $preco_total = $model->concatenaCampos("preco_total_", $data);
-                $execucao_inicio = $model->concatenaCampos("execucao_inicio_", $data);
-                $execucao_termino = $model->concatenaCampos("execucao_termino_", $data);
-                $qtd_parcelas = $model->concatenaCampos("qtd_parcelas_", $data);
-                $valor_parcelas = $model->concatenaCampos("valor_parcelas_", $data);
-                $data_pagamento = $model->concatenaCampos("data_pagamento_", $data);
-
+                $data_servicos = $model->concatenaCampos("data_servicos_", $data);
+                $data_servicos_fim = $model->concatenaCampos("data_servicos_fim_", $data);
 
                 //Conta quantos campos existem no primeiro conjunto de campos que podem ser adicionados pelo botão "mais" no form
                 for ($i=2 ; $i<11 ; $i++)
                 {
                     //conta quantos são os campos descricao_i, 2<i<11, dentro do array data[solicitacoes] e dá unset
                     //todos estes campos já foram concatenados acima e serão salvos em apenas um campo na tabela do banco
-                    if (array_key_exists("descricao_" . $i, $data['solicitacoes']) == 1)
+                    if (array_key_exists("tipo_servicos_" . $i, $data['solicitacoes']) == 1)
                     {
-                        unset($data['solicitacoes']['descricao_' . $i]);
+                        unset($data['solicitacoes']['tipo_servicos_' . $i]);
                         unset($data['solicitacoes']['produto_' . $i]);
                         unset($data['solicitacoes']['numero_itens_' . $i]);
-                        unset($data['solicitacoes']['cronograma_inicio_' . $i]);
-                        unset($data['solicitacoes']['cronograma_termino_' . $i]);
+                        unset($data['solicitacoes']['data_servicos_' . $i]);
+                        unset($data['solicitacoes']['data_servicos_fim_' . $i]);
                     }
                 }
-
-                //Conta quantos campos existem no segundo conjunto de campos que podem ser adicionados pelo botão "mais" no form
-                for ($i=2 ; $i<11 ; $i++)
-                {
-                    //conta quantos são os campos preco_total_i, 2<i<11, dentro do array data[solicitacoes] e dá unset
-                    //todos estes campos já foram concatenados acima e serão salvos em apenas um campo na tabela do banco
-                    if (array_key_exists("preco_total_" . $i, $data['solicitacoes']) == 1)
-                    {
-                        unset($data['solicitacoes']['preco_total_' . $i]);
-                        unset($data['solicitacoes']['execucao_inicio_' . $i]);
-                        unset($data['solicitacoes']['execucao_termino_' . $i]);
-                        unset($data['solicitacoes']['qtd_parcelas_' . $i]);
-                        unset($data['solicitacoes']['valor_parcelas_' . $i]);
-                        unset($data['solicitacoes']['data_pagamento_' . $i]);
-                    }
-                }
-
 
                 if($id){
                     $model->update($data, $id);
                 }else{
 
-                    $model->insertContratacao($data, $descricao, $produto, $numero_itens, $cronograma_inicio,$cronograma_termino,
-                        $preco_total, $execucao_inicio, $execucao_termino, $qtd_parcelas, $valor_parcelas, $data_pagamento);
+                    $model->insertContratacao($data, $tipo_servicos, $produto, $numero_itens, $data_servicos,$data_servicos_fim);
                 }
 
                 $this->_redirect('/solicitacoes/');
@@ -279,29 +259,19 @@ class SolicitacoesController extends Zend_Controller_Action
                 $form = new Application_Form_Solicitacoes_ContratacaoServicos();
                 $form->startform();
 
-                $array1 = explode("|", $data['descricao']);
-                $array2 = explode("|", $data['produto']);
-                $array3 = explode("|", $data['numero_itens']);
-                $array4 = explode("|", $data['cronograma_inicio']);
-                $array5 = explode("|", $data['cronograma_termino']);
-                $array6 = explode("|", $data['preco_total']);
-                $array7 = explode("|", $data['execucao_inicio']);
-                $array8 = explode("|", $data['execucao_termino']);
-                $array9 = explode("|", $data['qtd_parcelas']);
-                $array10 = explode("|", $data['valor_parcelas']);
-                $array11 = explode("|", $data['data_pagamento']);
+                $data_servicos = $model->findContratacao($id);
 
-                $data['descricao'] = $array1[0];
+                $array1 = explode("|", $data_servicos[0]['tipo_servicos']);
+                $array2 = explode("|", $data_servicos[0]['produto']);
+                $array3 = explode("|", $data_servicos[0]['numero_itens']);
+                $array4 = explode("|", $data_servicos[0]['data_servicos']);
+                $array5 = explode("|", $data_servicos[0]['data_servicos_fim']);
+
+                $data['tipo_servicos'] = $array1[0];
                 $data['produto'] = $array2[0];
                 $data['numero_itens'] = $array3[0];
-                $data['cronograma_inicio'] = $array4[0];
-                $data['cronograma_termino'] = $array5[0];
-                $data['preco_total'] = $array6[0];
-                $data['execucao_inicio'] = $array7[0];
-                $data['execucao_termino'] = $array8[0];
-                $data['qtd_parcelas'] = $array9[0];
-                $data['valor_parcelas'] = $array10[0];
-                $data['data_pagamento'] = $array11[0];
+                $data['data_servicos'] = $array4[0];
+                $data['data_servicos_fim'] = $array5[0];
 
                 $order = 29;
 
@@ -309,7 +279,7 @@ class SolicitacoesController extends Zend_Controller_Action
                 {
                     if (array_key_exists($i - 1, $array1) == 1)
                     {
-                        $name1 = "descricao_" . $i;
+                        $name1 = "tipo_servicos_" . $i;
                         $data[$name1] = $array1[$i - 1];
 
                         $name2 = "produto_" . $i;
@@ -318,10 +288,10 @@ class SolicitacoesController extends Zend_Controller_Action
                         $name3 = "numero_itens_" . $i;
                         $data[$name3] = $array3[$i - 1];
 
-                        $name4 = "cronograma_inicio_" . $i;
+                        $name4 = "data_servicos_" . $i;
                         $data[$name4] = $array4[$i - 1];
 
-                        $name5 = "cronograma_termino_" . $i;
+                        $name5 = "data_servicos_fim_" . $i;
                         $data[$name5] = $array5[$i - 1];
 
                         $form->addNewField($name1, $array1[$i - 1], $name2, $array2[$i - 1], $name3, $array3[$i - 1],
@@ -368,11 +338,56 @@ class SolicitacoesController extends Zend_Controller_Action
         }elseif ($id){
             $data = $model->find($id)->toArray();
 
+            //Preencher dados de projeto e coordenador
+            $dadosProjeto = $model->buscaProjetoNome($id);
+
+            $data['coordenador_projeto_id'] = $data['coordenador_projeto'];
+            $data['email'] = $dadosProjeto[0]['cp.email'];
+            $data['telefone_coordenador'] = $dadosProjeto[0]['cp.telefone'];
+            $data['fax_coordenador'] = $dadosProjeto[0]['cp.celular'];
+            $data['projeto'] = $dadosProjeto[0]['p.nome'];
+            $data['coordenador_projeto'] = $dadosProjeto[0]['cp.username'];
+            $data['projeto'] = $dadosProjeto[0]['p.nome'];
+            $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
+
+            //Preencher dados do beneficiário
+            $dadosBeneficiario = $model->buscaBeneficiario($id);
+
+            $data['beneficiario_id'] = $dadosBeneficiario[0]['b.beneficiario_id'];
+            $data['beneficiario'] = $dadosBeneficiario[0]['b.nome'];
+            $data['cpf_cnpj'] = $dadosBeneficiario[0]['b.cpf_cnpj'];
+            $data['rg_ie'] = $dadosBeneficiario[0]['b.rg_ie'];
+            $data['telefone_contratado'] = $dadosBeneficiario[0]['b.telefone'];
+            $data['email_contratado'] = $dadosBeneficiario[0]['b.email'];
+            $data['banco_id'] = $dadosBeneficiario[0]['ba.nome_banco'];
+            $data['agencia_banco'] = $dadosBeneficiario[0]['b.agencia_banco'];
+            $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
+
+            $form = new Application_Form_Solicitacoes_PassagensDiarias();
+
+            //Preencher os dados da passagem e diárias
+            $dadosPassagens = $model->findPassagens($id);
+
+
+            $data['motivos'] = $dadosPassagens[0]['motivos'];
+            $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];
+            $data['data_saida'] = $dadosPassagens[0]['data_saida'];
+            $data['data_volta'] = $dadosPassagens[0]['data_volta'];
+            $data['hora_saida'] = '';
+            $data['hora_chegada'] = '';
+            $data['tipo_detalhe'] = '';
+            $data['valor_passagens'] = $dadosPassagens[0]['valor_passagens'];
+            $data['local'] = '';
+            $data['data'] = '';
+            $data['valor'] = '';
+
+        }
+
+
             if(is_array($data)){
                 $form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
                 $form->populate(array("solicitacoes" => $data));
             }
-        }
 
         $this->view->form = $form;
 
@@ -385,7 +400,10 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
         $this->view->id = $id;
 
+
         $data = $model->find($id)->toArray();
+
+        $this->view->tipo = intval($data['tipo_solicitacao_id']);
 
         if($data['tipo_solicitacao_id'] == 1 || $data['tipo_solicitacao_id'] == 4 || $data['tipo_solicitacao_id'] == 5)
         {
@@ -399,21 +417,22 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['projeto'] = $dadosProjeto[0]['p.nome'];
             $data['coordenador_projeto'] = $dadosProjeto[0]['cp.username'];
             $data['projeto'] = $dadosProjeto[0]['p.nome'];
-            $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp_usuario_id'];
+            $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
 
 
             $detalhes = new Application_Form_Solicitacoes_AquisicaoBens();
             $detalhes->startform();
 
-            $array1 = explode("|", $data['numero_itens']);
-            $array2 = explode("|", $data['descricao']);
-            $array3 = explode("|", $data['preco_unidade']);
-            $array4 = explode("|", $data['valor_estimado']);
+            $data_bens_servicos = $model->findAquisicao($id);
 
-            $data['numero_itens'] = $array1[0];
-            $data['descricao'] = $array2[0];
-            $data['preco_unidade'] = $array3[0];
-            $data['valor_estimado'] = $array4[0];
+
+            $array1 = explode("|", $data_bens_servicos[0]['quantidade']);
+            $array2 = explode("|", $data_bens_servicos[0]['nome']);
+            $array3 = explode("|", $data_bens_servicos[0]['valor_unitario']);
+
+            $data['quantidade'] = $array1[0];
+            $data['nome'] = $array2[0];
+            $data['valor_unitario'] = $array3[0];
 
             $order = 18;
 
@@ -421,25 +440,27 @@ class SolicitacoesController extends Zend_Controller_Action
             {
                 if (array_key_exists($i - 1, $array1) == 1)
                 {
-                    $name1 = "numero_itens_" . $i;
+                    $name1 = "quantidade_" . $i;
                     $data[$name1] = $array1[$i - 1];
 
-                    $name2 = "descricao_" . $i;
+                    $name2 = "nome_" . $i;
                     $data[$name2] = $array2[$i - 1];
 
-                    $name3 = "preco_unidade_" . $i;
+                    $name3 = "valor_unitario_" . $i;
                     $data[$name3] = $array3[$i - 1];
 
                     $name4 = "valor_estimado_" . $i;
-                    $data[$name4] = $array4[$i - 1];
+                    $data[$name4] = intval(intval($array1[$i - 1]) * intval($array3[$i - 1]));
 
                     $detalhes->addNewField($name1, $array1[$i - 1], $name2, $array2[$i - 1], $name3, $array3[$i - 1],
-                        $name4, $array4[$i - 1], $order, $i);
+                        $name4, $data[$name4], $order, $i);
 
                     $order = $order + 4;
 
                 }
             }
+
+            $data['valor_estimado'] = intval(intval($data['quantidade']) * intval($data['valor_unitario']));
 
 
         }else if ($data['tipo_solicitacao_id'] == 2 || $data['tipo_solicitacao_id'] == 6 ||
@@ -477,29 +498,19 @@ class SolicitacoesController extends Zend_Controller_Action
             $detalhes = new Application_Form_Solicitacoes_ContratacaoServicos();
             $detalhes->startform();
 
-            $array1 = explode("|", $data['descricao']);
-            $array2 = explode("|", $data['produto']);
-            $array3 = explode("|", $data['numero_itens']);
-            $array4 = explode("|", $data['cronograma_inicio']);
-            $array5 = explode("|", $data['cronograma_termino']);
-            $array6 = explode("|", $data['preco_total']);
-            $array7 = explode("|", $data['execucao_inicio']);
-            $array8 = explode("|", $data['execucao_termino']);
-            $array9 = explode("|", $data['qtd_parcelas']);
-            $array10 = explode("|", $data['valor_parcelas']);
-            $array11 = explode("|", $data['data_pagamento']);
+            $data_servicos = $model->findContratacao($id);
 
-            $data['descricao'] = $array1[0];
+            $array1 = explode("|", $data_servicos[0]['tipo_servicos']);
+            $array2 = explode("|", $data_servicos[0]['produto']);
+            $array3 = explode("|", $data_servicos[0]['numero_itens']);
+            $array4 = explode("|", $data_servicos[0]['data_servicos']);
+            $array5 = explode("|", $data_servicos[0]['data_servicos_fim']);
+
+            $data['tipo_servicos'] = $array1[0];
             $data['produto'] = $array2[0];
             $data['numero_itens'] = $array3[0];
-            $data['cronograma_inicio'] = $array4[0];
-            $data['cronograma_termino'] = $array5[0];
-            $data['preco_total'] = $array6[0];
-            $data['execucao_inicio'] = $array7[0];
-            $data['execucao_termino'] = $array8[0];
-            $data['qtd_parcelas'] = $array9[0];
-            $data['valor_parcelas'] = $array10[0];
-            $data['data_pagamento'] = $array11[0];
+            $data['data_servicos'] = $array4[0];
+            $data['data_servicos_fim'] = $array5[0];
 
             $order = 29;
 
@@ -507,7 +518,7 @@ class SolicitacoesController extends Zend_Controller_Action
             {
                 if (array_key_exists($i - 1, $array1) == 1)
                 {
-                    $name1 = "descricao_" . $i;
+                    $name1 = "tipo_servicos_" . $i;
                     $data[$name1] = $array1[$i - 1];
 
                     $name2 = "produto_" . $i;
@@ -516,10 +527,10 @@ class SolicitacoesController extends Zend_Controller_Action
                     $name3 = "numero_itens_" . $i;
                     $data[$name3] = $array3[$i - 1];
 
-                    $name4 = "cronograma_inicio_" . $i;
+                    $name4 = "data_servicos_" . $i;
                     $data[$name4] = $array4[$i - 1];
 
-                    $name5 = "cronograma_termino_" . $i;
+                    $name5 = "data_servicos_fim_" . $i;
                     $data[$name5] = $array5[$i - 1];
 
                     $detalhes->addNewField($name1, $array1[$i - 1], $name2, $array2[$i - 1], $name3, $array3[$i - 1],
@@ -529,43 +540,51 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 }
             }
-
-            $order = 110;
-
-            for ($i=2 ; $i<11 ; $i++)
-            {
-                if (array_key_exists($i - 1, $array6) == 1)
-                {
-                    $name6 = "preco_total_" . $i;
-                    $data[$name6] = $array6[$i - 1];
-
-                    $name7 = "execucao_inicio_" . $i;
-                    $data[$name7] = $array7[$i - 1];
-
-                    $name8 = "execucao_termino_" . $i;
-                    $data[$name8] = $array8[$i - 1];
-
-                    $name9 = "qtd_parcelas_" . $i;
-                    $data[$name9] = $array9[$i - 1];
-
-                    $name10 = "valor_parcelas_" . $i;
-                    $data[$name10] = $array10[$i - 1];
-
-                    $name11 = "data_pagamento_" . $i;
-                    $data[$name11] = $array11[$i - 1];
-
-                    $detalhes->addNewField2($name6, $array6[$i - 1], $name7, $array7[$i - 1], $name8, $array8[$i - 1],
-                        $name9, $array9[$i - 1], $name10, $array10[$i - 1], $name11, $array11[$i - 1], $order);
-
-                    $order = $order + 6;
-
-                }
-            }
-
-
         }else
         {
+            //Preencher dados de projeto e coordenador
+            $dadosProjeto = $model->buscaProjetoNome($id);
+
+            $data['coordenador_projeto_id'] = $data['coordenador_projeto'];
+            $data['email'] = $dadosProjeto[0]['cp.email'];
+            $data['telefone_coordenador'] = $dadosProjeto[0]['cp.telefone'];
+            $data['fax_coordenador'] = $dadosProjeto[0]['cp.celular'];
+            $data['projeto'] = $dadosProjeto[0]['p.nome'];
+            $data['coordenador_projeto'] = $dadosProjeto[0]['cp.username'];
+            $data['projeto'] = $dadosProjeto[0]['p.nome'];
+            $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
+
+            //Preencher dados do beneficiário
+            $dadosBeneficiario = $model->buscaBeneficiario($id);
+
+            $data['beneficiario_id'] = $dadosBeneficiario[0]['b.beneficiario_id'];
+            $data['beneficiario'] = $dadosBeneficiario[0]['b.nome'];
+            $data['cpf_cnpj'] = $dadosBeneficiario[0]['b.cpf_cnpj'];
+            $data['rg_ie'] = $dadosBeneficiario[0]['b.rg_ie'];
+            $data['telefone_contratado'] = $dadosBeneficiario[0]['b.telefone'];
+            $data['email_contratado'] = $dadosBeneficiario[0]['b.email'];
+            $data['banco_id'] = $dadosBeneficiario[0]['ba.nome_banco'];
+            $data['agencia_banco'] = $dadosBeneficiario[0]['b.agencia_banco'];
+            $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
+
             $detalhes = new Application_Form_Solicitacoes_PassagensDiarias();
+
+            //Preencher os dados da passagem e diárias
+            $dadosPassagens = $model->findPassagens($id);
+
+
+            $data['motivos'] = $dadosPassagens[0]['motivos'];
+            $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];
+            $data['data_saida'] = $dadosPassagens[0]['data_saida'];
+            $data['data_volta'] = $dadosPassagens[0]['data_volta'];
+            $data['hora_saida'] = '';
+            $data['hora_chegada'] = '';
+            $data['tipo_detalhe'] = '';
+            $data['valor_passagens'] = $dadosPassagens[0]['valor_passagens'];
+            $data['local'] = '';
+            $data['data'] = '';
+            $data['valor'] = '';
+
         }
 
         if(is_array($data)){

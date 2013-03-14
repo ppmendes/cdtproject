@@ -9,6 +9,66 @@ class Application_Model_Solicitacao
         return $solicitacao;
     }
 
+    public function findAquisicao($id){
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('b' => 'bens_servicos'))
+                ->where('b.deletado = false and b.solicitacao_id = ' . $id);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+
+
+    }
+
+    public function findContratacao($id){
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('s' => 'servicos'))
+                ->where('s.deletado = false and s.solicitacao_id = ' . $id);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+
+    }
+
+    public function findPassagens($id)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('d' => 'diarias_passagens'))
+                ->where('d.solicitacao_id = ?', $id)
+                ->joinLeft(array('td' => 'tipo_diarias_passagens'), 'd.tipo_diarias_passagens_id = td.tipo_diarias_passagens_id',
+                array('td.nome_tipo' => 'td.nome_tipo'));
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+
     public function selectAll()
     {
         try{
@@ -121,37 +181,72 @@ class Application_Model_Solicitacao
 
     }
 
-    public function insertAquisicao($data, $numero_itens, $descricao, $preco_unidade, $valor_estimado)
+    public function insertAquisicao($data, $quantidade, $nome, $valor_unitario)
     {
-        $table = new Application_Model_DbTable_Solicitacao();
-
-        $data['solicitacoes']['numero_itens'] = $data['solicitacoes']['numero_itens'] . $numero_itens;
-        $data['solicitacoes']['descricao'] = $data['solicitacoes']['descricao'] . $descricao;
-        $data['solicitacoes']['preco_unidade'] = $data['solicitacoes']['preco_unidade'] . $preco_unidade;
-        $data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao();
+        $table_bensServicos = new Application_Model_DbTable_BensServicos();
 
 
-        $table->insert($data['solicitacoes']);
+        $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
+        $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
+        $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
+        unset($data['solicitacoes']['valor_estimado']);
+
+        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'];
+        unset($data['solicitacoes']['quantidade']);
+        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'];
+        unset($data['solicitacoes']['nome']);
+        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'];
+        unset($data['solicitacoes']['valor_unitario']);
+
+        $table_solicitacao->insert($data['solicitacoes']);
+
+        $data['bens_servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
+
+        $table_bensServicos->insert($data['bens_servicos']);
     }
 
-    public function insertContratacao($data, $descricao, $produto, $numero_itens, $cronograma_inicio,$cronograma_termino, $preco_total,
-                $execucao_inicio, $execucao_termino, $qtd_parcelas, $valor_parcelas, $data_pagamento)
+    public function insertContratacao($data, $tipo_servicos, $produto, $numero_itens, $data_servicos,$data_servicos_fim)
     {
-        $table = new Application_Model_DbTable_Solicitacao();
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao();
+        $table_servicos = new Application_Model_DbTable_Servicos();
 
-        $data['solicitacoes']['descricao'] = $data['solicitacoes']['descricao'] . $descricao;
-        $data['solicitacoes']['produto'] = $data['solicitacoes']['produto'] . $produto;
-        $data['solicitacoes']['numero_itens'] = $data['solicitacoes']['numero_itens'] . $numero_itens;
-        $data['solicitacoes']['cronograma_inicio'] = $data['solicitacoes']['cronograma_inicio'] . $cronograma_inicio;
-        $data['solicitacoes']['cronograma_termino'] = $data['solicitacoes']['cronograma_termino'] . $cronograma_termino;
-        $data['solicitacoes']['preco_total'] = $data['solicitacoes']['preco_total'] . $preco_total;
-        $data['solicitacoes']['execucao_inicio'] = $data['solicitacoes']['execucao_inicio'] . $execucao_inicio;
-        $data['solicitacoes']['execucao_termino'] = $data['solicitacoes']['execucao_termino'] . $execucao_termino;
-        $data['solicitacoes']['qtd_parcelas'] = $data['solicitacoes']['qtd_parcelas'] . $qtd_parcelas;
-        $data['solicitacoes']['valor_parcelas'] = $data['solicitacoes']['valor_parcelas'] . $valor_parcelas;
-        $data['solicitacoes']['data_pagamento'] = $data['solicitacoes']['data_pagamento'] . $data_pagamento;
+        $data['solicitacoes']['tipo_servicos'] .= $tipo_servicos;
+        $data['solicitacoes']['produto'] .= $produto;
+        $data['solicitacoes']['numero_itens'] .= $numero_itens;
+        $data['solicitacoes']['data_servicos'] .= $data_servicos;
+        $data['solicitacoes']['data_servicos_fim'] .= $data_servicos_fim;
 
-        $table->insert($data['solicitacoes']);
+
+        $data['servicos']['tipo_servicos'] = $data['solicitacoes']['tipo_servicos'];
+        $data['servicos']['produto'] = $data['solicitacoes']['produto'];
+        $data['servicos']['numero_itens'] = $data['solicitacoes']['numero_itens'];
+        $data['servicos']['data_servicos'] = $data['solicitacoes']['data_servicos'];
+        $data['servicos']['data_servicos_fim'] = $data['solicitacoes']['data_servicos_fim'];
+        $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
+        $data['servicos']['inicio_execucao'] = $data['solicitacoes']['inicio_execucao'];
+        $data['servicos']['fim_execucao'] = $data['solicitacoes']['fim_execucao'];
+        $data['servicos']['quantidade_parcelas'] = $data['solicitacoes']['quantidade_parcelas'];
+        $data['servicos']['valor_parcelas'] = $data['solicitacoes']['valor_parcelas'];
+        $data['servicos']['data_pagamento'] = $data['solicitacoes']['data_pagamento'];
+
+        unset($data['solicitacoes']['tipo_servicos']);
+        unset($data['solicitacoes']['produto']);
+        unset($data['solicitacoes']['numero_itens']);
+        unset($data['solicitacoes']['data_servicos']);
+        unset($data['solicitacoes']['data_servicos_fim']);
+        unset($data['solicitacoes']['valor_real']);
+        unset($data['solicitacoes']['inicio_execucao']);
+        unset($data['solicitacoes']['fim_execucao']);
+        unset($data['solicitacoes']['quantidade_parcelas']);
+        unset($data['solicitacoes']['valor_parcelas']);
+        unset($data['solicitacoes']['data_pagamento']);
+
+        $table_solicitacao->insert($data['solicitacoes']);
+
+        $data['servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
+
+        $table_servicos->insert($data['servicos']);
     }
 
     public function insertPassagens($data)
@@ -221,14 +316,15 @@ class Application_Model_Solicitacao
 
     }
 
-    public function updateaquisicao($data, $id, $numero_itens, $descricao, $preco_unidade, $valor_estimado)
+    public function updateaquisicao($data, $id, $quantidade, $nome, $valor_unitario)
     {
-        $table = new Application_Model_DbTable_Solicitacao;
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao();
+        $table_bensServicos = new Application_Model_DbTable_BensServicos();
 
-        $data['solicitacoes']['numero_itens'] = $data['solicitacoes']['numero_itens'] . $numero_itens;
-        $data['solicitacoes']['descricao'] = $data['solicitacoes']['descricao'] . $descricao;
-        $data['solicitacoes']['preco_unidade'] = $data['solicitacoes']['preco_unidade'] . $preco_unidade;
-        $data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
+        $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
+        $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
+        $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
+        //$data['solicitacoes']['valor_estimado'] = $data['solicitacoes']['valor_estimado'] . $valor_estimado;
 
         $where = $table->getAdapter()->quoteInto('solicitacao_id = ?',$id);
 
@@ -303,6 +399,7 @@ class Application_Model_Solicitacao
             echo $e->getMessage();
         }
     }
+
 
     public function getLastInsertedId($table){
 

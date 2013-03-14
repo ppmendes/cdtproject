@@ -12,17 +12,29 @@
     }
 </script>
 <script>
-    function editar(id)
+    function editar(id, tipo)
     {
+        if (tipo == 1 || tipo == 4 || tipo == 5)
+        {
         top.location.href = '/../solicitacoes/adicionaraquisicao/solicitacao_id/'+id;
+        }
+        else if (tipo == 2 || tipo == 6 || tipo == 7 || tipo == 8)
+        {
+        top.location.href = '/../solicitacoes/adicionarcontratacao/solicitacao_id/'+id;
+        }
+        else
+        {
+        top.location.href = '/../solicitacoes/adicionarpassagens/solicitacao_id/'+id;
+        }
     }
 </script>
 
 <?php
 $id = $this->id;
+$tipo = $this->tipo;
 
 echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
-echo "<button onclick='editar($id)'>Editar</button>";
+echo "<button onclick='editar($id, $tipo)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;

@@ -124,7 +124,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             ),
         ));
 
-        $this->addElement('text', 'numero_itens', array(
+        $this->addElement('text', 'quantidade', array(
             'label'      => 'Quantidade:',
             'required'   => true,
             'order'          => 13,
@@ -132,14 +132,14 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             //'attribs' => array('onblur' => 'calcularTotal(1)'),
         ));
 
-        $this->addElement('textarea', 'descricao', array(
+        $this->addElement('textarea', 'nome', array(
             'label'      => 'Descrição:',
             'required'   => true,
             'order'          => 14,
             'class'         => 'campos',
         ));
 
-        $this->addElement('text', 'preco_unidade', array(
+        $this->addElement('text', 'valor_unitario', array(
             'label'      => 'Preço Unitário:',
             'required'   => true,
             'order'          => 15,
@@ -154,7 +154,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'class'         => 'campos',
         ));
 
-        $this->addDisplayGroup(array('label_item','numero_itens','descricao', 'preco_unidade', 'valor_estimado'), 'individual');
+        $this->addDisplayGroup(array('label_item','quantidade','nome', 'valor_unitario', 'valor_estimado'), 'individual');
 
         $individual = $this->getDisplayGroup('individual');
 
@@ -306,9 +306,9 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $order = 18;
 
         for ( $i = 2; $i<=$num ; $i++) {
-            $name1 = "numero_itens_". $i;
-            $name2 = "descricao_". $i;
-            $name3 = "preco_unidade_". $i;
+            $name1 = "quantidade_". $i;
+            $name2 = "nome_". $i;
+            $name3 = "valor_unitario_". $i;
             $name4 = "valor_estimado_". $i;
             $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3, $dados['solicitacoes'][$name3],
                                $name4, $dados['solicitacoes'][$name4], $order, $i);
@@ -377,18 +377,18 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
     var margem = 0;
     function adicionaCampo(){
         num++;
-        $('#descricao').append("<dt id='solicitacoes-numero_itens-label'><label class='required' " +
-            "for='solicitacoes-numero_itens_" + num + "'>Quantidade:</label></dt>");
-        $('#descricao').append("<dd id='solicitacoes-numero_itens-element'><input id='solicitacoes-numero_itens' " +
-            "class='campos' type='text' value='' name='solicitacoes[numero_itens_" + num + "]'></dd>");
-        $('#descricao').append("<dt id='solicitacoes-descricao-label'><label class='required' " +
-                "for='solicitacoes-descricao_" + num + "'>Descrição:</label></dt>");
-        $('#descricao').append("<dd id='solicitacoes-descricao-element'><textarea id='solicitacoes-descricao' " +
-                "class='campos' cols='80' rows='24' name='solicitacoes[descricao_" + num + "]'></textarea></dd>");
-        $('#descricao').append("<dt id='solicitacoes-preco_unidade-label'><label class='optional' " +
-                "for='solicitacoes-preco_unidade_" + num + "'>Preço Unitário:</label></dt>");
-        $('#descricao').append("<dd id='solicitacoes-preco_unidade-element'><input id='solicitacoes-preco_unidade' " +
-                "class='campos' type='text' value='' onblur='calcularTotal("+num+")' name='solicitacoes[preco_unidade_" + num + "]'></dd>");
+        $('#descricao').append("<dt id='solicitacoes-quantidade-label'><label class='required' " +
+            "for='solicitacoes-quantidade_" + num + "'>Quantidade:</label></dt>");
+        $('#descricao').append("<dd id='solicitacoes-quantidade-element'><input id='solicitacoes-quantidade' " +
+            "class='campos' type='text' value='' name='solicitacoes[quantidade_" + num + "]'></dd>");
+        $('#descricao').append("<dt id='solicitacoes-nome-label'><label class='required' " +
+                "for='solicitacoes-nome_" + num + "'>Descrição:</label></dt>");
+        $('#descricao').append("<dd id='solicitacoes-nome-element'><textarea id='solicitacoes-nome' " +
+                "class='campos' cols='80' rows='24' name='solicitacoes[nome_" + num + "]'></textarea></dd>");
+        $('#descricao').append("<dt id='solicitacoes-valor_unitario-label'><label class='optional' " +
+                "for='solicitacoes-valor_unitario_" + num + "'>Preço Unitário:</label></dt>");
+        $('#descricao').append("<dd id='solicitacoes-valor_unitario-element'><input id='solicitacoes-valor_unitario' " +
+                "class='campos' type='text' value='' onblur='calcularTotal("+num+")' name='solicitacoes[valor_unitario_" + num + "]'></dd>");
         $('#descricao').append("<dt id='solicitacoes-valor_estimado-label'><label class='required' " +
                 "for='solicitacoes-valor_estimado_" + num + "'>Valor Estimado:</label></dt>");
         $('#descricao').append("<dd id='solicitacoes-valor_estimado-element'><input id='solicitacoes-valor_estimado' " +
