@@ -23,6 +23,41 @@
             }
         });
     });
+
+
+    function maskPre(val, msk, pre) {
+
+        val = val.replace(RegExp('[' + msk.replace(/#/g, '') + ']', 'g'), '')
+
+        if (val.length > 0) {
+            val = pre + val
+        }
+
+        mskVal = ''
+        v = val.length - 1
+        for (m = msk.length - 1; m >= 0 && v >= -msk.indexOf('#'); --m) {
+            if ('#' != msk.charAt(m)) {
+                mskVal = msk.charAt(m) + mskVal
+                if ('#' != msk.charAt(m - 1))
+                    continue
+                --m
+            }
+            mskVal = val.charAt(v) + mskVal
+            v--
+
+        }
+
+        if (pre.length > 0) {
+            mskVal = mskVal.replace(RegExp('^' + pre.charAt(0) + '+', 'g'), '')
+        }
+
+        return mskVal
+
+    }
+    function mask(val, msk) {
+
+        return maskPre(val, msk, '')
+    }
 </script>
 <?php
 

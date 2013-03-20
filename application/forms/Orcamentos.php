@@ -46,9 +46,12 @@ class Application_Form_Orcamentos extends Zend_Form
         ));
 
         //valor
+
         $this->addElement('text', 'valor', array(
             'label'      => 'Valor:',
-            'required'   => true
+            'required'   => true,
+            'attribs'    => array('maxLength' => 13),
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
         //destinatário
