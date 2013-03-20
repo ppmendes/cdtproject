@@ -29,6 +29,10 @@
     {
         top.location.href= '/../tarefas/index/projeto_id/'+id;
     }
+    function orcamentos(id)
+    {
+        top.location.href = '/../orcamentos/index/projeto_id/'+id;
+    }
 </script>
 
 <?php
@@ -42,4 +46,6 @@ echo $this->detalhes;
 echo "<button class='termo_aditivo' onclick='termoAditivo($id)'>Termo Aditivo do Projeto</button>";
 echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'>Cronograma Financeiro</button>";
 echo "<button class='' onclick='tarefasProjeto($id)'>Tarefas</button>";
+echo "<button class='' onclick='orcamentos($id)'>Orcamento</button>";
+
 ?>

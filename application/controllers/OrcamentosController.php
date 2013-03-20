@@ -11,7 +11,8 @@ class OrcamentosController extends Zend_Controller_Action
     public function indexAction()
     {
         $orcamentoModel = new Application_Model_Orcamento();
-        $this->view->orcamentos = $orcamentoModel->selectAll();
+        $id = $this->_getParam('projeto_id');
+        $this->view->orcamentos = $orcamentoModel->selectAll($id);
 
     }
 

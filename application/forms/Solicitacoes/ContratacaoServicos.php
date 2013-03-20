@@ -231,7 +231,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             ),
         ));
 
-        $this->addElement('text', 'tipo_servicos', array(
+        $this->addElement('text', 'descricao', array(
             'label'      => 'Descricao:',
             'required'   => true,
             'order'          => 24,
@@ -245,28 +245,28 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'numero_itens', array(
+        $this->addElement('text', 'quantidade', array(
             'label'      => 'Qtde:',
             'required'   => true,
             'order'          => 26,
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'data_servicos', array(
+        $this->addElement('text', 'inicio_atividades', array(
             'label'      => 'Início do Cronograma:',
             'required'   => true,
             'order'          => 27,
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'data_servicos_fim', array(
+        $this->addElement('text', 'fim_atividades', array(
             'label'      => 'Fim do Cronograma:',
             'required'   => true,
             'order'          => 28,
             'class'         => 'campos'
         ));
 
-        $this->addDisplayGroup(array('tipo_servicos','produto','numero_itens', 'data_servicos', 'data_servicos_fim'), 'individual');
+        $this->addDisplayGroup(array('descricao','produto','quantidade', 'inicio_atividades', 'fim_atividades'), 'individual');
 
         $individual = $this->getDisplayGroup('individual');
 
@@ -427,11 +427,11 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $order2= 111;
 
         for ( $i = 2; $i<=$num ; ++$i) {
-        $name1 = "tipo_servicos_". $i;
+        $name1 = "descricao_". $i;
         $name2 = "produto_". $i;
-        $name3 = "numero_itens_". $i;
-        $name4 = "data_servicos_". $i;
-        $name5 = "data_servicos_fim_". $i;
+        $name3 = "quantidade_". $i;
+        $name4 = "inicio_atividades_". $i;
+        $name5 = "fim_atividades_". $i;
         $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
             $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5], $order);
         $order = $order + 5;
@@ -591,26 +591,26 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
     var margem = 0;
     function adicionaCampo(){
         num++;
-        $('#cronograma').append("<dt id='solicitacoes-tipo_servicos-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
-                "for='solicitacoes-tipo_servicos_" + num + "' class='required'>Descricao:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-tipo_servicos-element'><input type='text' name='solicitacoes[tipo_servicos_"+
-                num + "]' id='solicitacoes-tipo_servicos' value='' class='campos'></dd>");
+        $('#cronograma').append("<dt id='solicitacoes-descricao-label' style='float:left; margin-left:'" + margem*(num-1) + "px><label " +
+                "for='solicitacoes-descricao_" + num + "' class='required'>Descricao:</label></dt>");
+        $('#cronograma').append("<dd id='solicitacoes-descricao-element'><input type='text' name='solicitacoes[descricao_"+
+                num + "]' id='solicitacoes-descricao' value='' class='campos'></dd>");
         $('#cronograma').append("<dt id='solicitacoes-produto-label'><label for='solicitacoes-produto_" + num + "' class='required'>" +
                 "Produto:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-produto-element'><input type='text' name='solicitacoes[produto_"+ num +
                 "]' id='solicitacoes-produto' value='' class='campos'></dd>");
-        $('#cronograma').append("<dt id='solicitacoes-numero_itens-label'><label for='solicitacoes-numero_itens_" + num + "' class='required'>" +
+        $('#cronograma').append("<dt id='solicitacoes-quantidade-label'><label for='solicitacoes-quantidade_" + num + "' class='required'>" +
                 "Qtde:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-numero_itens-element'><input type='text' name='solicitacoes[numero_itens_"+ num + "]' " +
-                "id='solicitacoes-numero_itens' value='' class='campos'></dd>");
-        $('#cronograma').append("<dt id='solicitacoes-data_servicos-label'><label for='solicitacoes-data_servicos_" + num + "' " +
+        $('#cronograma').append("<dd id='solicitacoes-quantidade-element'><input type='text' name='solicitacoes[quantidade_"+ num + "]' " +
+                "id='solicitacoes-quantidade' value='' class='campos'></dd>");
+        $('#cronograma').append("<dt id='solicitacoes-inicio_atividades-label'><label for='solicitacoes-inicio_atividades_" + num + "' " +
                 "class='required'>Início do Cronograma:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-data_servicos-element'><input type='text' " +
-                "name='solicitacoes[data_servicos_"+ num + "]' id='solicitacoes-data_servicos' value='' class='campos'></dd>");
-        $('#cronograma').append("<dt id='solicitacoes-data_servicos_fim-label'><label for='solicitacoes-data_servicos_fim_" + num + "' " +
+        $('#cronograma').append("<dd id='solicitacoes-inicio_atividades-element'><input type='text' " +
+                "name='solicitacoes[inicio_atividades_"+ num + "]' id='solicitacoes-inicio_atividades' value='' class='campos'></dd>");
+        $('#cronograma').append("<dt id='solicitacoes-fim_atividades-label'><label for='solicitacoes-fim_atividades_" + num + "' " +
                 "class='required'>Fim do Cronograma:</label></dt>");
-        $('#cronograma').append("<dd id='solicitacoes-data_servicos_fim-element'><input type='text' " +
-                "name='solicitacoes[data_servicos_fim_"+ num + "]' id='solicitacoes-data_servicos_fim' value='' class='campos'></dd>");
+        $('#cronograma').append("<dd id='solicitacoes-fim_atividades-element'><input type='text' " +
+                "name='solicitacoes[fim_atividades_"+ num + "]' id='solicitacoes-fim_atividades' value='' class='campos'></dd>");
 
         $('#solicitacoes-hidden_teste').attr('value', num);
 

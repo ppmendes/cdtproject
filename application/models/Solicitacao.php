@@ -206,23 +206,26 @@ class Application_Model_Solicitacao
         $table_bensServicos->insert($data['bens_servicos']);
     }
 
-    public function insertContratacao($data, $tipo_servicos, $produto, $numero_itens, $data_servicos,$data_servicos_fim)
+    public function insertContratacao($data, $descricao, $produto, $quantidade, $inicio_atividades,$fim_atividades)
     {
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_servicos = new Application_Model_DbTable_Servicos();
+        $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
 
-        $data['solicitacoes']['tipo_servicos'] .= $tipo_servicos;
+        $data['solicitacoes']['descricao'] .= $descricao;
         $data['solicitacoes']['produto'] .= $produto;
-        $data['solicitacoes']['numero_itens'] .= $numero_itens;
-        $data['solicitacoes']['data_servicos'] .= $data_servicos;
-        $data['solicitacoes']['data_servicos_fim'] .= $data_servicos_fim;
+        $data['solicitacoes']['quantidade'] .= $quantidade;
+        $data['solicitacoes']['inicio_atividades'] .= $inicio_atividades;
+        $data['solicitacoes']['fim_atividades'] .= $fim_atividades;
 
 
-        $data['servicos']['tipo_servicos'] = $data['solicitacoes']['tipo_servicos'];
-        $data['servicos']['produto'] = $data['solicitacoes']['produto'];
-        $data['servicos']['numero_itens'] = $data['solicitacoes']['numero_itens'];
-        $data['servicos']['data_servicos'] = $data['solicitacoes']['data_servicos'];
-        $data['servicos']['data_servicos_fim'] = $data['solicitacoes']['data_servicos_fim'];
+        $data['cronograma_atividades']['descricao'] = $data['solicitacoes']['descricao'];
+        $data['cronograma_atividades']['produto'] = $data['solicitacoes']['produto'];
+        $data['cronograma_atividades']['quantidade'] = $data['solicitacoes']['quantidade'];
+        $data['cronograma_atividades']['inicio_atividades'] = $data['solicitacoes']['inicio_atividades'];
+        $data['cronograma_atividades']['fim_atividades'] = $data['solicitacoes']['fim_atividades'];
+
+
         $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
         $data['servicos']['inicio_execucao'] = $data['solicitacoes']['inicio_execucao'];
         $data['servicos']['fim_execucao'] = $data['solicitacoes']['fim_execucao'];
@@ -230,11 +233,11 @@ class Application_Model_Solicitacao
         $data['servicos']['valor_parcelas'] = $data['solicitacoes']['valor_parcelas'];
         $data['servicos']['data_pagamento'] = $data['solicitacoes']['data_pagamento'];
 
-        unset($data['solicitacoes']['tipo_servicos']);
+        unset($data['solicitacoes']['descricao']);
         unset($data['solicitacoes']['produto']);
-        unset($data['solicitacoes']['numero_itens']);
-        unset($data['solicitacoes']['data_servicos']);
-        unset($data['solicitacoes']['data_servicos_fim']);
+        unset($data['solicitacoes']['quantidade']);
+        unset($data['solicitacoes']['inicio_atividades']);
+        unset($data['solicitacoes']['fim_atividades']);
         unset($data['solicitacoes']['valor_real']);
         unset($data['solicitacoes']['inicio_execucao']);
         unset($data['solicitacoes']['fim_execucao']);
@@ -247,6 +250,10 @@ class Application_Model_Solicitacao
         $data['servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
 
         $table_servicos->insert($data['servicos']);
+
+        $data['cronograma_atividades']['servicos_id'] = $this->getLastInsertedId('servicos');
+
+        $table_cronograma_atividades->insert($data['cronograma_atividades']);
     }
 
     public function insertPassagens($data)
@@ -279,8 +286,6 @@ class Application_Model_Solicitacao
 
         $data['solicitacoes']['tipo_solicitacao_id'] = 3;
 
-        $data['diarias_passagens']['pais_origem_id'] = 76;
-        $data['diarias_passagens']['pais_destino_id'] = 76;
         unset($data['diarias_passagens']['hora_saida']);
         unset($data['diarias_passagens']['hora_chegada']);
         unset($data['diarias_passagens']['tipo_detalhe']);
@@ -288,20 +293,126 @@ class Application_Model_Solicitacao
         unset($data['diarias_passagens']['data']);
         unset($data['diarias_passagens']['local']);
 
-
-//        echo "<pre>";
-//        print_r($data['diarias_passagens']);
-//        print_r('aaaaaaaaaaaaaa </br></br>');
-//        print_r($data['solicitacoes']);
-//        exit;
-//        echo "</pre>";
-
         $table_solicitacao->insert($data['solicitacoes']);
 
         $data['diarias_passagens']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
 
         $table_diarias->insert($data['diarias_passagens']);
 
+    }
+
+    public function updateaquisicao($data, $id, $quantidade, $nome, $valor_unitario)
+    {
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao();
+        $table_bensServicos = new Application_Model_DbTable_BensServicos();
+
+        $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
+        $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
+        $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
+        unset($data['solicitacoes']['valor_estimado']);
+
+        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'];
+        unset($data['solicitacoes']['quantidade']);
+        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'];
+        unset($data['solicitacoes']['nome']);
+        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'];
+        unset($data['solicitacoes']['valor_unitario']);
+
+        $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $where_bensServicos = $table_bensServicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $table_solicitacao->update($data['solicitacoes'], $where_solicitacao);
+
+        $table_bensServicos->update($data['bens_servicos'], $where_bensServicos);
+    }
+
+    public function updateContratacao($data, $id, $descricao, $produto, $quantidade, $inicio_atividades, $fim_atividades)
+    {
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao;
+        $table_servicos = new Application_Model_DbTable_Servicos();
+        $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
+
+        $data['solicitacoes']['descricao'] .= $descricao;
+        $data['solicitacoes']['produto'] .= $produto;
+        $data['solicitacoes']['quantidade'] .= $quantidade;
+        $data['solicitacoes']['inicio_atividades'] .= $inicio_atividades;
+        $data['solicitacoes']['fim_atividades'] .= $fim_atividades;
+
+
+        $data['cronograma_atividades']['descricao'] = $data['solicitacoes']['descricao'];
+        $data['cronograma_atividades']['produto'] = $data['solicitacoes']['produto'];
+        $data['cronograma_atividades']['quantidade'] = $data['solicitacoes']['quantidade'];
+        $data['cronograma_atividades']['inicio_atividades'] = $data['solicitacoes']['inicio_atividades'];
+        $data['cronograma_atividades']['fim_atividades'] = $data['solicitacoes']['fim_atividades'];
+
+
+        $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
+        $data['servicos']['inicio_execucao'] = $data['solicitacoes']['inicio_execucao'];
+        $data['servicos']['fim_execucao'] = $data['solicitacoes']['fim_execucao'];
+        $data['servicos']['quantidade_parcelas'] = $data['solicitacoes']['quantidade_parcelas'];
+        $data['servicos']['valor_parcelas'] = $data['solicitacoes']['valor_parcelas'];
+        $data['servicos']['data_pagamento'] = $data['solicitacoes']['data_pagamento'];
+
+        unset($data['solicitacoes']['descricao']);
+        unset($data['solicitacoes']['produto']);
+        unset($data['solicitacoes']['quantidade']);
+        unset($data['solicitacoes']['inicio_atividades']);
+        unset($data['solicitacoes']['fim_atividades']);
+        unset($data['solicitacoes']['valor_real']);
+        unset($data['solicitacoes']['inicio_execucao']);
+        unset($data['solicitacoes']['fim_execucao']);
+        unset($data['solicitacoes']['quantidade_parcelas']);
+        unset($data['solicitacoes']['valor_parcelas']);
+        unset($data['solicitacoes']['data_pagamento']);
+
+        $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $where_servicos = $table_servicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        //$where_cronograma_atividades = $table_cronograma_atividades->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $table_solicitacao->update($data['solicitacoes'],$where_solicitacao);
+        $table_servicos->update($data['servicos'],$where_servicos);
+    }
+
+    public function updatePassagens($data, $id)
+    {
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao;
+        $table_passagens = new Application_Model_DbTable_DiariasPassagens();
+
+        $data['diarias_passagens']['motivos'] = $data['solicitacoes']['motivos'];
+        unset($data['solicitacoes']['motivos']);
+        $data['diarias_passagens']['tipo_diarias_passagens_id'] = $data['solicitacoes']['tipo_diarias_passagens'];
+        unset($data['solicitacoes']['tipo_diarias_passagens']);
+        $data['diarias_passagens']['data_saida'] = $data['solicitacoes']['data_saida'];
+        unset($data['solicitacoes']['data_saida']);
+        $data['diarias_passagens']['data_volta'] = $data['solicitacoes']['data_volta'];
+        unset($data['solicitacoes']['data_volta']);
+        $data['diarias_passagens']['hora_saida'] = $data['solicitacoes']['hora_saida'];
+        unset($data['solicitacoes']['hora_saida']);
+        $data['diarias_passagens']['hora_chegada'] = $data['solicitacoes']['hora_chegada'];
+        unset($data['solicitacoes']['hora_chegada']);
+        $data['diarias_passagens']['tipo_detalhe'] = $data['solicitacoes']['tipo_detalhe'];
+        unset($data['solicitacoes']['tipo_detalhe']);
+        $data['diarias_passagens']['valor_passagens'] = $data['solicitacoes']['valor_passagens'];
+        unset($data['solicitacoes']['valor_passagens']);
+        $data['diarias_passagens']['local'] = $data['solicitacoes']['local'];
+        unset($data['solicitacoes']['local']);
+        $data['diarias_passagens']['data'] = $data['solicitacoes']['data'];
+        unset($data['solicitacoes']['data']);
+        $data['diarias_passagens']['valor'] = $data['solicitacoes']['valor'];
+        unset($data['solicitacoes']['valor']);
+
+        unset($data['diarias_passagens']['hora_saida']);
+        unset($data['diarias_passagens']['hora_chegada']);
+        unset($data['diarias_passagens']['tipo_detalhe']);
+        unset($data['diarias_passagens']['valor']);
+        unset($data['diarias_passagens']['data']);
+        unset($data['diarias_passagens']['local']);
+
+        $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $where_passagens = $table_passagens->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $table_solicitacao->update($data['solicitacoes'],$where_solicitacao);
+        $table_passagens->update($data['diarias_passagens'],$where_passagens);
     }
 
     public function deleteAquisicao($id)
@@ -345,40 +456,6 @@ class Application_Model_Solicitacao
         $db->update($table_passagens, $data, $where);
 
     }
-
-    public function updateaquisicao($data, $id, $quantidade, $nome, $valor_unitario)
-    {
-        $table_solicitacao = new Application_Model_DbTable_Solicitacao();
-        $table_bensServicos = new Application_Model_DbTable_BensServicos();
-
-        $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
-        $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
-        $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
-        unset($data['solicitacoes']['valor_estimado']);
-
-        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'];
-        unset($data['solicitacoes']['quantidade']);
-        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'];
-        unset($data['solicitacoes']['nome']);
-        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'];
-        unset($data['solicitacoes']['valor_unitario']);
-
-        $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
-        $where_bensServicos = $table_bensServicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
-
-        $table_solicitacao->update($data['solicitacoes'], $where_solicitacao);
-
-        $table_bensServicos->update($data['bens_servicos'], $where_bensServicos);
-    }
-
-    public function update($data, $id)
-    {
-        $table = new Application_Model_DbTable_Solicitacao;
-        $where = $table->getAdapter()->quoteInto('solicitacao_id = ?',$id);
-
-        $table->update($data['solicitacoes'],$where);
-    }
-
 
     public function concatenaCampos($campo, $data)
     {

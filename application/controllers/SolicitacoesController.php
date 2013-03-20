@@ -191,32 +191,32 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
                 //Concatenação de todos os campos que podem ser múltiplos, para salvar em apenas um campo no banco
-                $tipo_servicos = $model->concatenaCampos("tipo_servicos_", $data);
+                $descricao = $model->concatenaCampos("descricao_", $data);
                 $produto = $model->concatenaCampos("produto_", $data);
-                $numero_itens = $model->concatenaCampos("numero_itens_", $data);
-                $data_servicos = $model->concatenaCampos("data_servicos_", $data);
-                $data_servicos_fim = $model->concatenaCampos("data_servicos_fim_", $data);
+                $quantidade = $model->concatenaCampos("quantidade_", $data);
+                $inicio_atividades = $model->concatenaCampos("inicio_atividades_", $data);
+                $fim_atividades = $model->concatenaCampos("fim_atividades_", $data);
 
                 //Conta quantos campos existem no primeiro conjunto de campos que podem ser adicionados pelo botão "mais" no form
                 for ($i=2 ; $i<11 ; $i++)
                 {
                     //conta quantos são os campos descricao_i, 2<i<11, dentro do array data[solicitacoes] e dá unset
                     //todos estes campos já foram concatenados acima e serão salvos em apenas um campo na tabela do banco
-                    if (array_key_exists("tipo_servicos_" . $i, $data['solicitacoes']) == 1)
+                    if (array_key_exists("descricao_" . $i, $data['solicitacoes']) == 1)
                     {
-                        unset($data['solicitacoes']['tipo_servicos_' . $i]);
+                        unset($data['solicitacoes']['descricao_' . $i]);
                         unset($data['solicitacoes']['produto_' . $i]);
-                        unset($data['solicitacoes']['numero_itens_' . $i]);
-                        unset($data['solicitacoes']['data_servicos_' . $i]);
-                        unset($data['solicitacoes']['data_servicos_fim_' . $i]);
+                        unset($data['solicitacoes']['quantidade_' . $i]);
+                        unset($data['solicitacoes']['inicio_atividades_' . $i]);
+                        unset($data['solicitacoes']['fim_atividades_' . $i]);
                     }
                 }
 
                 if($id){
-                    $model->update($data, $id);
+                    $model->updateContratacao($data, $id, $descricao, $produto, $quantidade, $inicio_atividades,$fim_atividades );
                 }else{
 
-                    $model->insertContratacao($data, $tipo_servicos, $produto, $numero_itens, $data_servicos,$data_servicos_fim);
+                    $model->insertContratacao($data, $descricao, $produto, $quantidade, $inicio_atividades,$fim_atividades);
                 }
 
                 $this->_redirect('/solicitacoes/');
@@ -261,17 +261,17 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 $data_servicos = $model->findContratacao($id);
 
-                $array1 = explode("|", $data_servicos[0]['tipo_servicos']);
+                $array1 = explode("|", $data_servicos[0]['descricao']);
                 $array2 = explode("|", $data_servicos[0]['produto']);
-                $array3 = explode("|", $data_servicos[0]['numero_itens']);
-                $array4 = explode("|", $data_servicos[0]['data_servicos']);
-                $array5 = explode("|", $data_servicos[0]['data_servicos_fim']);
+                $array3 = explode("|", $data_servicos[0]['quantidade']);
+                $array4 = explode("|", $data_servicos[0]['inicio_atividades']);
+                $array5 = explode("|", $data_servicos[0]['fim_atividades']);
 
-                $data['tipo_servicos'] = $array1[0];
+                $data['descricao'] = $array1[0];
                 $data['produto'] = $array2[0];
-                $data['numero_itens'] = $array3[0];
-                $data['data_servicos'] = $array4[0];
-                $data['data_servicos_fim'] = $array5[0];
+                $data['quantidade'] = $array3[0];
+                $data['inicio_atividades'] = $array4[0];
+                $data['fim_atividades'] = $array5[0];
 
                 $order = 29;
 
@@ -279,19 +279,19 @@ class SolicitacoesController extends Zend_Controller_Action
                 {
                     if (array_key_exists($i - 1, $array1) == 1)
                     {
-                        $name1 = "tipo_servicos_" . $i;
+                        $name1 = "descricao_" . $i;
                         $data[$name1] = $array1[$i - 1];
 
                         $name2 = "produto_" . $i;
                         $data[$name2] = $array2[$i - 1];
 
-                        $name3 = "numero_itens_" . $i;
+                        $name3 = "quantidade_" . $i;
                         $data[$name3] = $array3[$i - 1];
 
-                        $name4 = "data_servicos_" . $i;
+                        $name4 = "inicio_atividades_" . $i;
                         $data[$name4] = $array4[$i - 1];
 
-                        $name5 = "data_servicos_fim_" . $i;
+                        $name5 = "fim_" . $i;
                         $data[$name5] = $array5[$i - 1];
 
                         $form->addNewField($name1, $array1[$i - 1], $name2, $array2[$i - 1], $name3, $array3[$i - 1],
@@ -328,7 +328,7 @@ class SolicitacoesController extends Zend_Controller_Action
                 unset($data['solicitacoes']['coordenador_tecnico_id']);
 
                 if($id){
-                    $model->update($data, $id);
+                    $model->updatePassagens($data, $id);
                 }else{
                     $model->insertPassagens($data);
                 }
@@ -500,17 +500,17 @@ class SolicitacoesController extends Zend_Controller_Action
 
             $data_servicos = $model->findContratacao($id);
 
-            $array1 = explode("|", $data_servicos[0]['tipo_servicos']);
+            $array1 = explode("|", $data_servicos[0]['descricao']);
             $array2 = explode("|", $data_servicos[0]['produto']);
-            $array3 = explode("|", $data_servicos[0]['numero_itens']);
-            $array4 = explode("|", $data_servicos[0]['data_servicos']);
-            $array5 = explode("|", $data_servicos[0]['data_servicos_fim']);
+            $array3 = explode("|", $data_servicos[0]['quantidade']);
+            $array4 = explode("|", $data_servicos[0]['inicio_atividades']);
+            $array5 = explode("|", $data_servicos[0]['fim_atividades']);
 
-            $data['tipo_servicos'] = $array1[0];
+            $data['descricao'] = $array1[0];
             $data['produto'] = $array2[0];
-            $data['numero_itens'] = $array3[0];
-            $data['data_servicos'] = $array4[0];
-            $data['data_servicos_fim'] = $array5[0];
+            $data['quantidade'] = $array3[0];
+            $data['inicio_atividades'] = $array4[0];
+            $data['fim_atividades'] = $array5[0];
 
             $order = 29;
 
@@ -518,19 +518,19 @@ class SolicitacoesController extends Zend_Controller_Action
             {
                 if (array_key_exists($i - 1, $array1) == 1)
                 {
-                    $name1 = "tipo_servicos_" . $i;
+                    $name1 = "descricao_" . $i;
                     $data[$name1] = $array1[$i - 1];
 
                     $name2 = "produto_" . $i;
                     $data[$name2] = $array2[$i - 1];
 
-                    $name3 = "numero_itens_" . $i;
+                    $name3 = "quantidade_" . $i;
                     $data[$name3] = $array3[$i - 1];
 
-                    $name4 = "data_servicos_" . $i;
+                    $name4 = "inicio_atividades_" . $i;
                     $data[$name4] = $array4[$i - 1];
 
-                    $name5 = "data_servicos_fim_" . $i;
+                    $name5 = "fim_atividades_" . $i;
                     $data[$name5] = $array5[$i - 1];
 
                     $detalhes->addNewField($name1, $array1[$i - 1], $name2, $array2[$i - 1], $name3, $array3[$i - 1],
