@@ -187,7 +187,6 @@ class UsuariosController extends Zend_Controller_Action
         $id = $this->_getParam('usuario_id');
         $this->view->id = $id;
 
-
         $data = $model->find($id)->toArray();
 
         if(is_array($data)){
@@ -307,13 +306,10 @@ class UsuariosController extends Zend_Controller_Action
 
         }else
         {
+
             echo 'nao entro :(';
         }
         //atualizar permissoes do usuario;
-
-
-
-
 
     }
 
