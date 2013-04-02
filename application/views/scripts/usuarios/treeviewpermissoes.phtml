@@ -9,7 +9,7 @@
     });
 
     function agregar($id,$nome){
-        var branches = $("<li><input id='"+$id+"' name='datostree[]' type='checkbox' value='projetos|index|"+$id+"' checked >"+$nome+" <button onclick='apagar("+$id+")'>apagar</button><ul>" +
+        var branches = $("<li><input id='"+$id+"' name='datostree[]' type='checkbox' value='projetos|index|"+$id+"' checked >"+$nome+" <button type='button' onclick='apagar("+$id+")'>apagar</button><ul>" +
                 "<li><input name='datostree[]' type='checkbox' value='projetos|detalhes|"+$id+"' >Visualizar</li>" +
                 "<li><input name='datostree[]' type='checkbox' value='projetos|adicionar|"+$id+"' >Adicionar</li>" +
                 "<li><input name='datostree[]' type='checkbox' value='projetos|adicionar|"+$id+"' >Alterar</li>" +
@@ -39,13 +39,93 @@
     <div id="main">
         <ul id="browser" class="filetree">
             <li id="proj"><input name="datostree[]" type="checkbox" value="projetos|index|*">Projetos <button id="pesquisarprojetos" type="button">Adicionar</button></li>
+        </ul>
+    </div>
 
-            <li><input name="datostree[]" type="checkbox" value="tarefas|index|*">Tarefas1
+    <div id="main1">
+        <ul id="browser1" class="filetree">
+
+            <li><input name="datostree[]" type="checkbox" value="tarefas|index|*">Tarefas
                 <ul id="tarefas">
                     <li><input name="datostree[]" type="checkbox" value="tarefas|detalhes|*" >Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" value="tarefas|adicionar|*" >Adicionar</li>
                     <li><input name="datostree[]" type="checkbox" value="tarefas|adicionar|*" >Alterar</li>
                     <li><input name="datostree[]" type="checkbox" value="tarefas|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+
+            <li><input  name="datostree[]" type="checkbox" value="arquivos">Arquivos
+                <ul id="arquivos">
+                    <li><input name="datostree[]" type="checkbox" value="arquivos|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="arquivos|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="arquivos|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="arquivos|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" value="beneficiarios">Beneficiario
+                <ul id="beneficiarios">
+                    <li><input name="datostree[]" type="checkbox" value="beneficiarios|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="beneficiarios|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="beneficiarios|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="beneficiarios|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div id="main2">
+        <ul id="browser2" class="filetree">
+            <li><input  name="datostree[]" type="checkbox" value="usuarios">Usuario
+                <ul id="usuarios">
+                    <li><input name="datostree[]" type="checkbox" value="usuarios|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="usuarios|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="usuarios|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="usuarios|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" value="empenhos">Empenho
+                <ul id="empenhos">
+                    <li><input name="datostree[]" type="checkbox" value="empenhos|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="empenhos|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="empenhos|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="empenhos|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" value="intituicoes">Instituições
+                <ul id="intituicoes">
+                    <li><input name="datostree[]" type="checkbox" value="intituicoes|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="intituicoes|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="intituicoes|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="intituicoes|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div id="main3">
+        <ul id="browser3" class="filetree">
+            <li><input  name="datostree[]" type="checkbox" value="orcamentario">Orçamento
+                <ul id="orcamentario">
+                    <li><input name="datostree[]" type="checkbox" value="orcamentario|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="orcamentario|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="orcamentario|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="orcamentario|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" value="solicitacoes">Solicitações
+                <ul id="solicitacoes">
+                    <li><input name="datostree[]" type="checkbox" value="solicitacoes|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="solicitacoes|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="solicitacoes|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="solicitacoes|excluir|*" >Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" value="termoaditivo">Termo Aditivo
+                <ul id="termoaditivo">
+                    <li><input name="datostree[]" type="checkbox" value="termoaditivo|detalhes|*" >Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" value="termoaditivo|adicionar|*" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" value="termoaditivo|adicionar|*" >Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" value="termoaditivo|excluir|*" >Apagar</li>
                 </ul>
             </li>
         </ul>

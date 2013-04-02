@@ -19,6 +19,10 @@ h1 { font-size: large }
     background: url(bg.gif) repeat-x; text-align: center }
 #banner a { color: white; }
 
-#main { padding: 1em; }
-
+#main, #main1, #main2, #main3  {
+    float: left;
+    overflow: auto;
+    padding: 1em;
+    width: 20%; }
+#main1 { padding: 1em; }
 a img { border: none; }
