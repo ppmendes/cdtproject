@@ -140,6 +140,19 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Descrição:',
             'required'   => true,
         ));
+
+        $emt = new ZendX_JQuery_Form_Element_AutoComplete('aca');
+        $emt->setLabel('Area:');
+        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
+            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+            'function(event,ui) { $("#tarefas-instituicao_id").val(ui.item.id) }')
+        ));
+        $this->addElement($emt);
+
+        $this->addElement('button', 'botaoPesquisa', array(
+            'required' => false,
+            'label'     => 'Pesquisar',
+        ));
         /******************************** LABEL DATAS **************************************/
         $this->addElement('hidden', 'label_datas', array(
             'description' => 'Datas',
@@ -267,7 +280,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('button', 'botaoAdicionarRH', array(
             'required' => false,
-            'label'     => '>',
+            'label'     => '>>',
         ));
 
         $this->addElement('select', 'percentagem_trabalho', array(
@@ -278,7 +291,7 @@ class Application_Form_Tarefas extends Zend_Form
 
         $this->addElement('button', 'botaoDeletarRH', array(
             'required' => false,
-            'label'     => '<',
+            'label'     => '<<',
         ));
 
         $this->addElement('multiselect', 'asociado_tarefa', array(
@@ -307,17 +320,33 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
 
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('aca');
-        $emt->setLabel('Area:');
-        $emt->setJQueryParam('data', Application_Model_Instituicao::getOptions())
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-instituicao_id").val(ui.item.id) }')
+        $this->addElement('multiselect', 'outros_recursos', array(
+            'label'      => 'Outros Recursos:',
+            'multiOptions' => Application_Model_Rubrica::getOptions2(),
+            'required'   => false,
         ));
-        $this->addElement($emt);
 
-        $this->addElement('button', 'botaoPesquisa', array(
+        $this->addElement('button', 'botaoAdicionarOR', array(
             'required' => false,
-            'label'     => 'Pesquisar',
+            'label'     => '>>',
+        ));
+
+        $this->addElement('select', 'percentagem_recurso', array(
+            'label'      => 'Porcentagem Completa:',
+            'multiOptions'  => $array_progresso_tarefa,
+            'required'   => true
+        ));
+
+        $this->addElement('button', 'botaoDeletarOR', array(
+            'required' => false,
+            'label'     => '<<',
+        ));
+
+        $this->addElement('multiselect', 'asociado_tarefa1', array(
+            'label'      => 'Asociado a Tarefa:',
+            'required'   => false,
+            'multiOptions' => Application_Model_RubricaAssociadaTarefa::getOptions($this->id_tarefa),
+            'RegisterInArrayValidator'=>false,
         ));
 
         // Add the submit button90

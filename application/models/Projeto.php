@@ -36,24 +36,20 @@ class Application_Model_Projeto
         $table->update($data['projetos'],$where);
     }
 
-    public function selectAll()
+    public function selectAll($usuario_logado)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
-            $select = $db->select()
-                ->from(array('p' => 'projeto'))
-                ->where('p.deletado = ?', false)
-                ->joinLeft(array('ep' => 'estado_projeto'), 'p.estado_projeto_id = ep.estado_projeto_id')
-                ->joinLeft(array('pr' => 'prioridade'), 'p.prioridade_id = pr.prioridade_id')
-                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
-                ->joinLeft(array('ga' => 'instituicao_gerencia'), 'p.instituicao_gerencia_id = ga.instituicao_gerencia_id',array(
-                'ga.instituicao_gerencia_id'=>'ga.instituicao_gerencia_id','ga.nome_instituicao_gerencia'=>'ga.nome_instituicao_gerencia'));
-            $stmt = $select->query();
+            $select = $db->fetchAll("SELECT IG.nome_instituicao_gerencia, P.projeto_id, P.nome, P.apelido, P.data_inicio, P.data_final, P.data_final_real, U.nome as coordenador, P.percentagem_completo, EP.nome_estado, PRI.nome_prioridade
+from projeto as P inner join estado_projeto as EP on P.estado_projeto_id=EP.estado_projeto_id
+     inner join prioridade as PRI on P.prioridade_id=PRI.prioridade_id
+     inner join instituicao_gerencia as IG on P.instituicao_gerencia_id=IG.instituicao_gerencia_id
+     inner join usuario as U on P.coordenador_tecnico=U.usuario_id
+     inner join projeto_usuario as PU on P.projeto_id=PU.projeto_id where PU.usuario_id=$usuario_logado");
 
-            $result = $stmt->fetchAll();
 
-            return $result;
+            return $select;
         }catch(Exception $e){
            echo $e->getMessage();
         }

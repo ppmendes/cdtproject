@@ -234,7 +234,38 @@ echo $this->form;
             $('#tarefas-asociado_tarefa option:selected').remove();
         });
 
-       $('#tarefas-submit').click(function(){
+        // OTROS RECURSOS
+        $('#tarefas-botaoAdicionarOR').click(function(){
+            var options = Array();
+            $('#tarefas-outros_recursos > option:selected').each(
+                    function(i){
+                        var recursos=$(this).clone();
+                        options[i]= $(this).text()+' ['+$('#tarefas-percentagem_recurso option:selected').html()+'%]';
+                        recursos.html(options[i]);
+                        recursos.val(recursos.val()+'|'+$('#tarefas-percentagem_recurso option:selected').html());
+                        recursos.prependTo($('#tarefas-asociado_tarefa1'));
+
+                    });
+            $('#tarefas-outros_recursos option:selected').remove();
+        });
+
+        $('#tarefas-botaoDeletarOR').click(function(){
+            var options = Array();
+            $('#tarefas-asociado_tarefa1 > option:selected').each(
+                    function(i){
+                        var recurso=$(this).clone();
+                        options[i]= $(this).text();
+                        recur=options[i].split("[");
+                        recurso.html(recur[0]);
+                        valor=recurso.val().split("|");
+                        recurso.val(valor[0]);
+                        recurso.prependTo($('#tarefas-outros_recursos'));
+                    });
+            $('#tarefas-asociado_tarefa1 option:selected').remove();
+        });
+
+
+        $('#tarefas-submit').click(function(){
 
            $('#tarefas-dependencia_tarefa > option').each(
                    function(){
@@ -244,6 +275,10 @@ echo $this->form;
                    function(){
                        $(this).prop('selected', true);
                    });
+            $('#tarefas-asociado_tarefa1 > option').each(
+                    function(){
+                        $(this).prop('selected', true);
+                    });
         });
 
     });

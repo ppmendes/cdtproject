@@ -2,7 +2,11 @@
 
 class Application_Form_Usuarios extends Zend_Form
 {
-    public function init()
+    public function setIdInstituicao($id_instituicao_controller){
+        $this->id_instituicao = $id_instituicao_controller;
+    }
+
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
@@ -80,9 +84,9 @@ class Application_Form_Usuarios extends Zend_Form
         ));
 
         //Perfil de usuario input type text
-        $this->addElement('select', 'perfil_usuario_id', array(
+        $this->addElement('select', 'perfil_id', array(
             'label'      => 'Perfil do Usuario',
-            'multiOptions' => Application_Model_PerfilUsuario::getOptions(),
+            'multiOptions' => Application_Model_Perfil::getOptions(),
             'required'   => false
         ));
 

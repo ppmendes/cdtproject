@@ -22,6 +22,7 @@ class TarefasController extends Zend_Controller_Action
         $model = new Application_Model_Tarefa();
         $modeltarefadepen=new Application_Model_TarefasDependentes();
         $modelusuarios=new Application_Model_UsuariosAssociadosTarefa();
+        $modelrubricastarefas=new Application_Model_RubricaAssociadaTarefa();
 
         $id = $this->_getParam('tarefa_id');
 
@@ -39,10 +40,12 @@ class TarefasController extends Zend_Controller_Action
 
                 $tarefaDependencia=$data['tarefas']['dependencia_tarefa'];
                 $rhAssociados=$data['tarefas']['asociado_tarefa'];
+                $rubricasAssociadasTarefas=$data['tarefas']['asociado_tarefa1'];
 
                 unset($data['tarefas']['ac'],$data['tarefas']['todas_tarefas'],$data['tarefas']['dependencia_tarefa']);
                 unset($data['tarefas']['recursos_humanos'],$data['tarefas']['percentagem_trabalho'],$data['tarefas']['asociado_tarefa']);
                 unset($data['tarefas']['comentario_email'],$data['tarefas']['aca']);
+                unset($data['tarefas']['outros_recursos'],$data['tarefas']['percentagem_recurso'],$data['tarefas']['asociado_tarefa1']);
 
                 if($id){ //update
                     $model->update($data, $id);
@@ -63,9 +66,17 @@ class TarefasController extends Zend_Controller_Action
                         $datarh['usuario_id']=$dataexplode[0];
                         $datarh['porcentagem']=$dataexplode[1];
                         $modelusuarios->insert($datarh);
-
                     }
-
+                    //update na tabela rubrica associada a tarefas
+                    $modelrubricastarefas->delete($id);
+                    for($i=0;$i<count($rubricasAssociadasTarefas);$i++)
+                    {
+                        $dataRubricaAssociadaTarefa['tarefa_id']=$id;
+                        $dataexplode=explode('|',$rubricasAssociadasTarefas[$i]);
+                        $dataRubricaAssociadaTarefa['rubrica_id']=$dataexplode[0];
+                        $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
+                        $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
+                    }
 
                 }else{ //insert
 
@@ -90,9 +101,17 @@ class TarefasController extends Zend_Controller_Action
                         $datarh['usuario_id']=$dataexplode[0];
                         $datarh['porcentagem']=$dataexplode[1];
                         $modelusuarios->insert($datarh);
-
                     }
 
+                    //insert tabela rubricas associadas a tarefas
+                    for($i=0;$i<count($rubricasAssociadasTarefas); $i++)
+                    {
+                        $dataRubricaAssociadaTarefa['tarefa_id']=$idtarefa;
+                        $dataexplode=explode('|',$rubricasAssociadasTarefas[$i]);
+                        $dataRubricaAssociadaTarefa['rubrica_id']=$dataexplode[0];
+                        $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
+                        $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
+                    }
                 }
 
                 $this->_redirect('/tarefas/');

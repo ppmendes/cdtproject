@@ -297,8 +297,6 @@ class Application_Model_Usuario
 
         }
         $this->fecharnivel($nivel);
-
-
     }
 
     public function fecharnivel($nivel)
@@ -325,6 +323,13 @@ class Application_Model_Usuario
         } catch(Exception $e){
             Zend_Registry::get('Log')->log($e->getMessage(),Zend_Log::DEBUG);
         }
+    }
+
+    public function selectAllProjects()
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result=$db->fetchAll("select projeto_id, nome from projeto");
+        return $result;
     }
 }
 

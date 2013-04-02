@@ -13,6 +13,7 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             $request->setActionName('index');
         }
     }
+
     public function preDispatch(Zend_Controller_Request_Abstract $request){
         /* Verifica se o usuário não está logado */
         if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -29,8 +30,6 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             $controller = $request->getControllerName();
             $acao = $request->getActionName();
             $parametros = $request->getParams();
-
-
 
             if(isset($parametros['projeto_id'])){
                 $projeto_id = $parametros['projeto_id'];
@@ -58,7 +57,7 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
 
             if($permitirAcesso === false){
                 //se não possui permissão redireciona para index
-                //$this->redireciona($request,'index','permissiondenied');
+                $this->redireciona($request,'index','permissiondenied');
             }
 
 
