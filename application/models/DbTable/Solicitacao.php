@@ -26,6 +26,11 @@ class Application_Model_DbTable_Solicitacao extends Zend_Db_Table_Abstract
             'refTableClass'     => 'Application_Model_DbTable_TipoSolicitacao',
             'refColumns'        => 'tipo_solicitacao_id'
         ),
+        'Application_Model_DbTable_DiariasPassagens' => array(
+            'columns'           => 'diarias_passagens_id',
+            'refTableClass'     => 'Application_Model_DbTable_DiariasPassagens',
+            'refColumns'        => 'diarias_passagens_id'
+        ),
     );
 }
 

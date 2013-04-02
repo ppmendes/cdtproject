@@ -66,6 +66,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->jQuery()->enable()
             ->setLocalPath('/js/jquery-1.8.1.js')
             ->setUiLocalPath('/js/jquery-ui-1.8.1.js')
+           ->addStylesheet('/css/combogrid/jquery.ui.combogrid.css')
             ->uiEnable();
     }
 

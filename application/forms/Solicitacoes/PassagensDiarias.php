@@ -1,6 +1,6 @@
 <?php
 
-class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
+class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 {
 
     public function init()
@@ -24,6 +24,15 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('text', 'solicitacao_nome', array(
             'label'      => 'Nome da Solicitação:',
             'required'   => true
+        ));
+
+        //Data da solicitação
+        $this->addElement('text', 'data_solicitacao_view', array(
+            'label'      => 'Data da Solicitação:',
+            'value'      => date('Y-m-d', time()),
+            'disabled'   => true,
+            'required'   => false,
+            'ignore'     => true,
         ));
 
 
@@ -89,22 +98,26 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('select', 'vinculo', array(
             'label'      => 'Vínculo Institucional:',
             'multiOptions'  => $array_vinculo,
-            'required'   => true
+            'required'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('text', 'beneficiario', array(
             'label'      => 'Beneficiário:',
             'required'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('text', 'cargo', array(
             'label'      => 'Cargo/Profissão:',
             'required'   => true,
+            'ignore'     => true,
         ));
 
         $this->addElement('text', 'unidade', array(
             'label'      => 'Unidade/Departamento:',
             'required'   => true,
+            'ignore'     => true,
         ));
 
         //Telefone input type text
@@ -112,6 +125,7 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => true,
             'readonly'   => true,
+            'ignore'     => true,
         ));
 
         //CPF input type text
@@ -204,6 +218,35 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
             'required'   => true
         ));
 
+        $this->addElement('select', 'pais_origem_id', array(
+            'label'      => 'País de Origem: ',
+            'multiOptions' => Application_Model_Pais::getOptions(),
+            'required'   => true,
+            'value'      => 76,
+        ));
+
+        $this->addElement('text', 'cidade_origem', array(
+            'label'      => 'Cidade de Origem: ',
+            'required'   => true
+        ));
+
+        $this->addElement('select', 'pais_destino_id', array(
+            'label'      => 'País de Destino: ',
+            'multiOptions' => Application_Model_Pais::getOptions(),
+            'required'   => true,
+            'value'      => 76,
+        ));
+
+        $this->addElement('text', 'cidade_destino', array(
+            'label'      => 'Cidade de Destino: ',
+            'required'   => true
+        ));
+
+        $this->addElement('text', 'numero_voo', array(
+            'label'      => 'Numero do voô: ',
+            'required'   => true,
+        ));
+
         //Data da solicitação
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_saida');
         $emtDatePicker1->setLabel('Data de Ida: ');
@@ -275,6 +318,10 @@ class Application_Form__Solicitacoes_PassagensDiarias extends Zend_Form
 
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
             'value'      => '',
+        ));
+
+        $this->addElement('hidden', 'data_solicitacao', array(
+            'value' =>  date('Y-m-d', time()),
         ));
 
 

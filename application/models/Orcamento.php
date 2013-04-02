@@ -71,4 +71,106 @@ class Application_Model_Orcamento
         }
 
     }
+
+    public function selectAll($id)
+
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+//            $subselect1 = $db->select()
+//                ->from(array('e' => 'empenho'), array('e.valor_empenho' => 'SUM(e.valor_empenho)'))
+//                ->where('e.orcamento_id = o.orcamento_id');
+//
+//            $subselect2 = $db->select()
+//                ->from(array('e2' => 'empenho'), array('pe.valor_pre_empenho' => 'SUM(pe.valor_pre_empenho)'))
+//                ->joinLeft(array('pe'=> 'pre_empenho'), 'e2.pre_empenho_id = pe.pre_empenho_id', array('pe.valor_pre_empenho' => 'SUM(pe.valor_pre_empenho)'))
+//                ->where('e2.orcamento_id = o.orcamento_id');
+//
+//            $subselect3 = $db->select()
+//                ->from(array('d' => 'desembolso'), array('d.valor_desembolso' => 'SUM(d.valor_desembolso)'))
+//                ->joinLeft(array('e3'=> 'empenho'), 'd.empenho_id = e3.empenho_id', array('d.valor_desembolso' => 'SUM(d.valor_desembolso)'))
+//                ->where('e3.orcamento_id = o.orcamento_id');
+//
+//            $select = $db->select()->from(array("o" => "orcamento"),
+//                array('o.orcamento_id'=>'o.orcamento_id', 'o.rubrica_id'=>'o.rubrica_id', 'o.valor_orcamento'=>'SUM(o.valor_orcamento)',
+//                'o.destinatario_id'=>'o.destinatario_id', 'o.projeto_id'=>'o.projeto_id', 'dt.nome_destinatario'=>'dt.nome_destinatario',
+//                'r.codigo_rubrica'=>'r.codigo_rubrica', 'r.descricao'=>'r.descricao', 'valor_empenho'=>$subselect1,
+//                'valor_pre_empenho'=>$subselect2, 'valor_desembolso'=>$subselect3))
+//                ->joinLeft(array('dt' => 'destinatario'), 'o.destinatario_id = dt.destinatario_id', array('dt.nome_destinatario'=>'dt.nome_destinatario'))
+//                ->joinLeft(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica' => 'r.codigo_rubrica', 'r.descricao' => 'r.descricao'))
+//
+//                ->where('o.projeto_id = ?', $id)
+//                ->group(array('o.rubrica_id'=>'o.rubrica_id', 'o.destinatario_id'=>'o.destinatario_id'));
+
+            $resultado = $db->fetchAll("SELECT o.orcamento_id, o.rubrica_id, SUM( o.valor_orcamento ) , o.destinatario_id,
+                                        o.projeto_id, dt.nome_destinatario, r.codigo_rubrica, r.descricao,
+
+                                        (SELECT SUM( valor_empenho )
+                                         FROM empenho AS e
+                                         WHERE e.orcamento_id = o.orcamento_id
+                                         ) AS valor_empenho,
+
+                                         (SELECT SUM( pe.valor_pre_empenho )
+                                         FROM empenho AS e2
+                                         LEFT JOIN pre_empenho AS pe ON e2.pre_empenho_id = pe.pre_empenho_id
+                                         WHERE e2.orcamento_id = o.orcamento_id
+                                         ) AS valor_pre_empenho,
+
+                                         (SELECT SUM( d.valor_desembolso )
+                                         FROM desembolso AS d
+                                         LEFT JOIN empenho AS e3 ON d.empenho_id = e3.empenho_id
+                                         WHERE e3.orcamento_id = o.orcamento_id
+                                         ) AS valor_desembolso
+
+                                         FROM orcamento AS o
+                                         LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
+                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                         WHERE o.projeto_id = ". $id . "
+                                         GROUP BY o.rubrica_id, o.destinatario_id");
+
+
+//            echo "<pre>";
+//            print_r($resultado);
+//            exit;
+//            echo "</pre>";
+
+
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectAAAA($id){
+        try{
+            $options = array();
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('d' => 'desembolso'), array('d.desembolso_id'=>'d.desembolso_id', 'd.valor_desembolso'=>'SUM(d.valor_desembolso)',
+                'd.empenho_id' => 'd.empenho_id'))
+                ->joinLeft(array('e' => 'empenho'), 'd.empenho_id = e.empenho_id', array('e.empenho_id' => 'e.empenho_id',
+                'e.valor_empenho' => 'SUM(e.valor_empenho)', 'e.orcamento_id' => 'e.orcamento_id', 'e.pre_empenho_id' => 'e.pre_empenho_id'))
+                ->joinLeft(array('pe'=> 'pre_empenho'), 'e.pre_empenho_id = pe.pre_empenho_id', array('pe.valor_pre_empenho' => 'SUM(pe.valor_pre_empenho)'))
+                ->joinLeft(array('o' => 'orcamento'), 'e.orcamento_id = o.orcamento_id', array('o.rubrica_id'=>'o.rubrica_id',
+                 'o.destinatario_id' => 'o.destinatario_id', 'o.projeto_id' => 'o.projeto_id'))
+                ->joinLeft(array('dt' => 'destinatario'), 'o.destinatario_id = dt.destinatario_id', array('dt.nome_destinatario'=>'dt.nome_destinatario'))
+                ->joinLeft(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica' => 'r.codigo_rubrica',
+                'r.descricao' => 'r.descricao'))
+                ->where('o.projeto_id = ?' , $id)
+                ->group(array('o.rubrica_id'=> 'o.rubrica_id', 'dt.nome_destinatario'=>'dt.nome_destinatario'));
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+
+    }
 }

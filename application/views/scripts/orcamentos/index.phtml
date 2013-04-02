@@ -36,7 +36,7 @@
 <script>
     function adicionar()
     {
-        top.location.href = '/../orcamento/adicionar/';
+        top.location.href = '/../orcamentos/adicionar/';
 
     }
 </script>
@@ -44,49 +44,51 @@
     table * *{
         text-align: center;
     }
-    .novoprojeto {
+    .novoorcamento {
         float:right;
     }
 </style>
-    <button class='novoprojeto' onclick='adicionar()'>Novo Projeto</button>
+    <button class='novoorcamento' onclick='adicionar()'>Novo Orçamento</button>
 
-<table id='table_id' border='1'>
+<table id='table_id'>
     <thead>
     <tr>
         <!-- Código; Rubrica; Natureza da despesa; Destinação; Valor da Rubrica; Valor empenhado; Saldo orçamentário Valor desembolsado; Valor total;
         Valor estimado, Total empenhado, Saldo orçamentário, saldo financeiro -->
-        <th>Id</th>
-        <th>Instituicao</th>
-        <th>Nome</th>
-        <th>Apelido</th>
-        <th>Data de início</th>
-        <th>Data final</th>
-        <th>Data final real</th>
-        <th>Estado do projeto</th>
-        <th>Porcentagem completa</th>
-        <th>Prioridade</th>
-        <th>Coordenador técnico</th>
+        <th> </th>
+        <th>Código</th>
+        <th>Natureza da Despesa</th>
+        <th>Destinatário</th>
+        <th>Valor da Rubrica</th>
+<!--        <th>Orçamento Disponibilizado</th>-->
+        <th>Empenhado</th>
+        <th>Saldo Orcam.</th>
+        <th>Desembolsado</th>
     </tr>
     </thead>
     <tbody>
 
     <?php
-    foreach($this->projetos as $row)
+    $i = 1;
+    foreach($this->orcamentos as $row)
     {
-    //$row = $row->toArray();
-    echo "<tr id='".$row['projeto_id']."'>";
-    echo "<td>" .   $row['projeto_id'] . "</td>";
-    echo "<td>" .   $row['ga.nome'] . "</td>";
-    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";
-    echo "<td>" .   $row['apelido'] . "</td>";
-    echo "<td >" .  $row['data_inicio'] . "</td>";
-    echo "<td >" .  $row['data_final'] . "</td>";
-    echo "<td >" .  $row['data_final_real'] . "</td>";
-    echo "<td >" .  $row['nome_estado'] . "</td>";
-    echo "<td >" .  $row['percentagem_completo'] . "</td>";
-    echo "<td >" .  $row['nome_prioridade'] . "</td>";
-    echo "<td >" .  $row['ct.sobrenome'] . "</td>";
+    $valor_empenho = number_format(0 + ($row['valor_empenho'] - $row['valor_pre_empenho']), 2, '.', '');
+    $saldo_orcamentario =  number_format(0 + ($row['SUM( o.valor_orcamento )'] - $valor_empenho), 2, '.', '');
+    $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
+
+        //$row = $row->toArray();
+    echo "<tr id='".$row['orcamento_id']."'>";
+    echo "<td>" .   $i . "</td>";
+    echo "<td>" .   $row['codigo_rubrica'] . "</td>";
+    echo "<td>" . $row['descricao'] . "</a></td>";
+    echo "<td>" .   $row['nome_destinatario'] . "</td>";
+    echo "<td >" .  $row['SUM( o.valor_orcamento )'] . "</td>";
+  //  echo "<td >" .  $row[''] . "</td>";
+    echo "<td >" .  $valor_empenho . "</td>";
+    echo "<td >" .  $saldo_orcamentario . "</td>";
+    echo "<td >" .  $valor_desembolso . "</td>";
     echo "</tr>";
+    $i++;
     }
     echo "</tbody></table>";
 ?>
