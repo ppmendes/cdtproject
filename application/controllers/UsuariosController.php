@@ -33,11 +33,9 @@ class UsuariosController extends Zend_Controller_Action
 
                 $data = $form->getValues();
 
-
                 //copiar permissoes de perfil-usuarios-permissoes a permissoes segundo
                 $codigoperfil=$data['usuario']['perfil_id'];
                 $passwordcriptografado=md5($data['usuario']['password']);
-
 
                 //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
@@ -138,7 +136,6 @@ class UsuariosController extends Zend_Controller_Action
                         $nome_imagem=$model->getLastInsertedId();
                         $data=$model->editarImagem($nome_imagem,$data);
                     }
-
 
                     $model->insert($data);
                 }
