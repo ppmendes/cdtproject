@@ -14,7 +14,8 @@ class Zend_Filter_DecimalFilter implements Zend_Filter_Interface
     public function filter($value = null)
     {
         // perform some transformation upon $value to arrive on $valueFiltered
-        if($value != null && $value != 0 ){
+        // Caso ocorra algum problema, descomentar esta linha ----> if($value != null && $value != 0 ){
+        if($value != null ){
                 if(strpos($value,',') !== false){
                     $value = str_replace('.','',$value);
                     return str_replace(',','.',$value);

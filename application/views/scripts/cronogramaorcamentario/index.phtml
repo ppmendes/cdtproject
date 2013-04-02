@@ -1,0 +1,117 @@
+<script>
+    $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+    });
+</script>
+<script>
+    function adicionar(projeto_id)
+    {
+        top.location.href = '/../cronogramaorcamentario/adicionar/projeto_id/'+projeto_id;
+
+    }
+
+    function editar(id, pid)
+    {
+        top.location.href = '/../cronogramaorcamentario/adicionar/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid;
+    }
+
+    function confirmarExclusao(id, pid)
+    {
+        var answer = confirm("Deseja realmente excluir o cronograma?");
+        if (answer) {
+            top.location.href = '/../cronogramaorcamentario/excluir/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid;
+        }
+        else {
+            alert("O cronograma não foi excluído!");
+        }
+    }
+
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novaparcela {
+        float:right;
+    }
+</style>
+<?php
+    $projeto_id = $this->id;
+    echo "<button class='novaparcela btn_add' onclick='adicionar($projeto_id)'>Nova Parcela</button>";
+?>
+<table id='table_id' border='0'>
+    <thead>
+    <tr>
+        <th>Parcela</th>
+        <th>Data</th>
+        <th>Orçamento a receber</th>
+        <th>Orçamento disponibilizado</th>
+        <th>Tipo</th>
+        <th>Fatura</th>
+        <th>Editar</th>
+        <th>Excluir</th>
+<!--        <th>Data final real</th>-->
+<!--        <th>Estado do projeto</th>-->
+<!--        <th>Porcentagem completa</th>-->
+<!--        <th>Prioridade</th>-->
+<!--        <th>Coordenador técnico</th>-->
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+
+    $filter = new Zend_Filter_DateFilter();
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+    $i = 1;
+    foreach($this->cronograma_orcamentario as $row)
+    {
+    //$row = $row->toArray();
+    echo "<tr id='".$row['cronograma_orcamentario_id']."'>";
+    echo "<td>" .$i. "</td>";
+    echo "<td>" .   $row['data_previa'] . "</td>";
+    echo "<td>" .   $decimalfilter->filter($row['valor_a_receber']) . "</td>";
+    echo "<td><a href='/cronogramaorcamentario/detalhes/cronograma_orcamentario_id/{$row['cronograma_orcamentario_id']}/projeto_id/{$projeto_id}'>"
+        .$decimalfilter->filter($row['valor_recebido']) . "</a></td>";
+    echo "<td>" .   $row['tipo'] . "</td>";
+    echo "<td>" .   $row['numero_fatura_pf'] . "</td>";
+//    echo "<td><a class='\right btn_edit\' href='/cronogramaorcamentario/adicionar/projeto_id/".$projeto_id."/cronograma_orcamentario_id/"
+//    ."{$row['cronograma_orcamentario_id']}'>aa</a></td>";
+//    echo "<td><a class='\right btn_delete\' href='/cronogramaorcamentario/excluir/cronograma_orcamentario_id/{$row['cronograma_orcamentario_id']}'>bb</a></td>";
+    echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
+    echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
+    $i++;
+    echo "</tr>";
+    }
+    echo "</tbody></table>";
+?>
