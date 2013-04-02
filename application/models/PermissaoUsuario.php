@@ -24,7 +24,7 @@ class Application_Model_PermissaoUsuario
 
     public function update()
     {
-
+        //
     }
     public static function getOptions()
     {
