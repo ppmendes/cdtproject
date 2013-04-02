@@ -58,11 +58,11 @@ class IndexController extends Zend_Controller_Action
             $db = Zend_Db_Table::getDefaultAdapter();
 
             //array com as permissões do usuário
-            $permissoesdb = $db->fetchAll("select controller, action, valor FROM permissoes where usuario_id=$data->usuario_id;");
+            $permissoesdb = $db->fetchAll("select controller, action, valor FROM `permissao-usuario` where usuario_id=$data->usuario_id;");
 
             $permissoes = array();
             foreach($permissoesdb as $permissao){
-                $permissoes[$permissao['controller']][$permissao['action']][$permissao['valor']] = true;
+                    $permissoes[$permissao['controller']][$permissao['action']][$permissao['valor']] = true;
             }
 
             $data->permissoes = $permissoes;

@@ -1,10 +1,10 @@
 <?php
 
-class Application_Model_PerfilUsuario
+class Application_Model_PerfilPermissao
 {
     public function find($id){
         //DB TABLE
-        $table = new Application_Model_DbTable_PerfilUsuarioPermissoes();
+        $table = new Application_Model_DbTable_PerfilPermissao();
         $perfil_usuario_permissoes = $table->find($id)->current();
         return $perfil_usuario_permissoes;
     }

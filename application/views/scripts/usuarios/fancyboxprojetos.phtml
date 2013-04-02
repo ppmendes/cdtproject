@@ -1,9 +1,8 @@
-<script>
+<script type="text/javascript">
     $(function() {
         $( "#tabs" ).tabs();
     });
-</script>
-<script>
+
     $(document).ready(function() {
 
         $('#table_id_usuario').dataTable({
@@ -53,14 +52,20 @@
         });
     });
 
-</script>
-<script>
-    function adicionar()
+    function retornarProjetos()
     {
-        top.location.href = '/../usuarios/adicionar/';
 
+        linhas_checadas = $('input:checked').parent('td').parent('tr');
+
+        $.each(linhas_checadas, function(index,value){
+           var id = $(value).children('td:eq(0)').children('input').val();
+           var nome =  $(value).children('td:eq(1)').html();
+           parent.agregar(id,nome);
+        });
+        parent.$.fancybox.close();
     }
 </script>
+
 <style>
     table * *{
         text-align: center;
@@ -68,64 +73,45 @@
     .novousuario {
         float:right;
     }
+    #tabs{
+        width: 50%;
+    }
+    ul.treeview{
+        width: 40%;
+        position: absolute;
+        top:0;
+        right: 0;
+    }
+    .dataTables_wrapper .ui-toolbar{
+        width: 97%;
+    }
 </style>
 
-<div class="botoes_superiores">
-    <button class='novousuario btn_add' onclick='adicionar()'>Novo Usuario</button>
-</div>
 <div id="tabs">
-    <ul>
-        <li><a href="#tabs-1">Usuario</a></li>
-        <li><a href="#tabs-2">Contato</a></li>
-    </ul>
     <div id="tabs-1">
         <table id='table_id_usuario'>
             <thead>
             <tr>
-                <th>Permissões</th>
-                <th>Usuário</th>
-                <th>Nome Usuário</th>
-                <th>Instituição</th>
+                <th></th>
+                <th>Nome Projeto</th>
             </tr>
             </thead>
             <tbody>
 
             <?php
 
-            foreach($this->usuario as $row) // "$this->usuarios" nome da variável definida no controller
+            foreach($this->fancy as $row) // "$this->usuarios" nome da variável definida no controller
             {
-                echo "<tr id='".$row['usuario_id']."'>";
-                echo "<td><a href='/usuarios/treeviewpermissoes/usuario_id/{$row['usuario_id']}'><img width='16' height='16' border='0' alt='' src='../imagens/icones/edit.png'></a></td>";
-                echo "<td>" .$row['u.sobrenome']. "</td>";
-                echo "<td><a href='/usuarios/detalhes/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
-                echo "<td>" .$row['i.nome']. "</td>";
+                echo "<tr id='".$row['projeto_id']."'>";
+                echo "<td><input type='checkbox' name='projetosselecionados[]' value='".$row['projeto_id']."'></td>";
+                echo "<td>" .$row['nome']. "</td>";
                 echo "</tr>";
             }
+
             ?>
             </tbody>
         </table>
-    </div>
-    <div id="tabs-2">
-        <table id='table_id_contato'>
-            <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Sobrenome</th>
-                <th>Instituição</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-            foreach($this->usuariocontatos as $row) // "$this->usuarios" nome da variável definida no controller
-            {
-                echo "<tr id='".$row['usuario_id']."'>";
-                echo "<td><a href='/usuarios/detalhescontatos/usuario_id/{$row['usuario_id']}'>" .$row['u.nome']. "</a></td>";
-                echo "<td>" .$row['u.sobrenome']. "</td>";
-                echo "<td>" .$row['i.nome']. "</td>";
-                echo "</tr>";
-            }
-            ?>
-            </tbody>
-        </table>
+
     </div>
 </div>
+<button onclick="retornarProjetos()">Enviar</button>

@@ -19,8 +19,9 @@ class UsuariosController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Usuarios();
+        $form->startform();
         $model = new Application_Model_Usuario;
-        //$modelPerfilUsuarios= New Application_Model_Pe
+        $modelPermissoes= New Application_Model_PermissaoUsuario();
         $id = $this->_getParam('usuario_id');
         $this->view->pais = 76;
         $form->getElement("estados_id")->setRegisterInArrayValidator(FALSE);
@@ -32,16 +33,16 @@ class UsuariosController extends Zend_Controller_Action
 
                 $data = $form->getValues();
 
-                //obteniendo ID usuario
-                $IDusuario= $model->getLastInsertedId();
-                //copiar permissoes de perfil-usuarios-permissoes a permissoes segundo
-                $codigoperfil=$data['usuario']['perfil_usuario_id'];
 
+                //copiar permissoes de perfil-usuarios-permissoes a permissoes segundo
+                $codigoperfil=$data['usuario']['perfil_id'];
+                $passwordcriptografado=md5($data['usuario']['password']);
 
 
                 //desabilita o atributo verifypassword
                 unset($data['usuario']['verifypassword']);
                 unset($data['usuario']['ac']);
+
                 if($id){
 
                     //adicionar novo arquivo e tirar o antigo na lixeira
@@ -50,7 +51,7 @@ class UsuariosController extends Zend_Controller_Action
                     //quando a opção contato for selecionada
                     if($data['usuario']['tipo_usuario']=='contato')
                     {
-                        unset($data['usuario']['perfil_usuario_id']);
+                        unset($data['usuario']['perfil_id']);
                         unset($data['usuario']['username']);
                         unset($data['usuario']['password']);
                     }
@@ -66,24 +67,27 @@ class UsuariosController extends Zend_Controller_Action
                     }
                     if($data['usuario']['tipo_usuario']=='contato')
                     {
-                        unset($data['usuario']['perfil_usuario_id']);
+                        unset($data['usuario']['perfil_id']);
                         unset($data['usuario']['username']);
                         unset($data['usuario']['password']);
                     }
-                    // adicionamos na tabela "permissoes" as permissoes trazidas desde perfil-usuario-permissoes segundo o id de usuario e o id do perfil
+                    $data['usuario']['password']=$passwordcriptografado;
+                    $model->insert($data);
+
+                    //obteniendo ID usuario
+                    $IDusuario= $modelPermissoes->getLastInsertedId();
+                    // adicionamos na tabela "permissao-usuario" as permissoes trazidas desde perfil-permissao segundo o id de usuario e o id do perfil
                     $db = Zend_Db_Table::getDefaultAdapter();
-                    $permissoes=$db->fetchAll("SELECT controller, action, valor FROM `perfil-usuario-permissoes` p where perfil_usuario_id=$codigoperfil;");
+                    $permissoes=$db->fetchAll("SELECT controller, action, valor FROM `perfil-permissao` p where perfil_id=$codigoperfil;");
 
                     for($i=0;$i<count($permissoes); $i++)
                     {
-                        $datarh['tarefa_id']=$idtarefa;
-                        $dataexplode=explode('|',$rhAssociados[$i]);
-                        $datarh['usuario_id']=$dataexplode[0];
-                        $datarh['porcentagem']=$dataexplode[1];
-                        $modelusuarios->insert($datarh);
-
+                        $datapermissoes['usuario_id']=$IDusuario;
+                        $datapermissoes['controller']=$permissoes[$i]['controller'];
+                        $datapermissoes['action']=$permissoes[$i]['action'];
+                        $datapermissoes['valor']=$permissoes[$i]['valor'];
+                        $modelPermissoes->insert($datapermissoes);
                     }
-                    $model->insert($data);
                 }
                 $this->_redirect('/usuarios/');
             }
@@ -92,7 +96,12 @@ class UsuariosController extends Zend_Controller_Action
             $this->view->pais = $data['pais_id'];
 
             if(is_array($data)){
+                $idinstituicao=$data['instituicao_id'];
                 $form->setAction('/usuarios/detalhes/usuario_id/' . $id);
+                $form->startform();
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $nome_instituicao=$db->fetchRow("select nome from instituicao where instituicao_id=$idinstituicao");
+                $data['ac']=$nome_instituicao['nome'];
                 $form->populate(array("usuario" => $data));
             }
         }
@@ -155,9 +164,13 @@ class UsuariosController extends Zend_Controller_Action
         $model = new Application_Model_Usuario;
         $id = $this->_getParam('usuario_id');
         $this->view->id = $id;
-        //jajaja
+        $db = Zend_Db_Table::getDefaultAdapter();
 
         $data = $model->find($id)->toArray();
+        $detalhes->startform();
+        $id_instituicao=$data['instituicao_id'];
+        $nome_instituicao=$db->fetchRow("select nome from instituicao where instituicao_id=$id_instituicao");
+        $data['ac']=$nome_instituicao['nome'];
 
         if(is_array($data)){
             $detalhes->setAction('/usuarios/detalhes/usuario_id/' . $id);
@@ -262,6 +275,7 @@ class UsuariosController extends Zend_Controller_Action
 
         // retorna array do procedure
         $result=$model->paeFilhos($id);
+
         // cria o treeview
         $model->criarTreeview($result);
 
@@ -270,22 +284,45 @@ class UsuariosController extends Zend_Controller_Action
 
     public function treeviewpermissoesAction()
     {
+        $modelpermissões = new Application_Model_PermissaoUsuario();
+        $id_usuario = $this->_getParam('usuario_id');
+        $this->view->usuario_id=$id_usuario;
+        if($this->getRequest()->isPost())
+        {
+            echo 'entro!!';
+            $datos=$this->getRequest()->getParams();
+            $datostreeview=$datos['datostree'];
+
+                $modelpermissões->delete($id_usuario);
+                print_r($id_usuario);
+                foreach($datostreeview as $item)
+                {
+                    $data['usuario_id']=$id_usuario;
+                    $dataexplode=explode('|',$item);
+                    $data['controller']=$dataexplode[0];
+                    $data['action']=$dataexplode[1];
+                    $data['valor']=$dataexplode[2];
+                    $modelpermissões->insert($data);
+                }
+
+        }else
+        {
+            echo 'nao entro :(';
+        }
+        //atualizar permissoes do usuario;
+
+
+
+
+
+    }
+
+    public function fancyboxprojetosAction()
+    {
         $layout = $this->_helper->layout();
         $layout->setLayout('iframe');
         $model = new Application_Model_Usuario;
-        /*$id = $this->_getParam('instituicao_id');
-        if($id==null)
-        {
-            $id=32;
-        }*/
-        // mostra as instituições pais
-        //$this->view->tree = $model->retornaPais();
 
-        // retorna array do procedure
-        //$result=$model->paeFilhos($id);
-        // cria o treeview
-        //$model->criarTreeview($result);
-
-        $this->view->treepermissoes;
+        $this->view->fancy=$model->selectAllProjects();
     }
 }

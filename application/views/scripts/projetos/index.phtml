@@ -71,10 +71,11 @@
     $filter = new Zend_Filter_DateFilter();
     foreach($this->projetos as $row)
     {
+
     //$row = $row->toArray();
     echo "<tr id='".$row['projeto_id']."'>";
     echo "<td>" .   $row['projeto_id'] . "</td>";
-    echo "<td>" .   $row['ga.nome_instituicao_gerencia'] . "</td>";
+    echo "<td>" .   $row['nome_instituicao_gerencia'] . "</td>";
     echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['nome'] . "</a></td>";
     echo "<td>" .   $row['apelido'] . "</td>";
     echo "<td >" .  $filter->filter($row['data_inicio']) . "</td>";
@@ -83,7 +84,7 @@
     echo "<td >" .  $row['nome_estado'] . "</td>";
     echo "<td >" .  $row['percentagem_completo'] . "</td>";
     echo "<td >" .  $row['nome_prioridade'] . "</td>";
-    echo "<td >" .  $row['ct.sobrenome'] . "</td>";
+    echo "<td >" .  $row['nome'] . "</td>";
     echo "</tr>";
     }
     echo "</tbody></table>";
