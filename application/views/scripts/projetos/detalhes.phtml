@@ -33,6 +33,10 @@
     {
         top.location.href = '/../orcamentos/index/projeto_id/'+id;
     }
+    function cronogramaOrcamentario(id)
+    {
+        top.location.href= '/../cronogramaorcamentario/index/projeto_id/'+id;
+    }
 </script>
 
 <?php
@@ -47,5 +51,6 @@ echo "<button class='termo_aditivo' onclick='termoAditivo($id)'>Termo Aditivo do
 echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'>Cronograma Financeiro</button>";
 echo "<button class='' onclick='tarefasProjeto($id)'>Tarefas</button>";
 echo "<button class='' onclick='orcamentos($id)'>Orcamento</button>";
+echo "<button class='' onclick='cronogramaOrcamentario($id)'>Cronograma Orçamentário</button>";
 
 ?>
