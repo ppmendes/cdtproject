@@ -206,20 +206,12 @@ class Zend_Validate_Between2 extends Zend_Validate_Abstract
      */
     public function isValid($value)
     {
-        $temp = str_replace(".", "", $value);
-        $value = str_replace(",", ".",$temp);
-        $this->_setValue($value);
+        $decimalfilter = new Zend_Filter_DecimalFilter();
 
-        $temp = str_replace(".", "", $this->_min);
-        $minimo = str_replace(",", ".",$temp);
-
-        var_dump($this->_max);
-
-        $maximo = str_replace(",", "", $this->_max);
-
-        var_dump($minimo);
-        var_dump($maximo);
-        var_dump($value);
+        $minimo = $decimalfilter->filter($this->_min);
+        $maximo = $decimalfilter->filter($this->_max);
+        $value = $decimalfilter->filter($value);
+        $this->setMax($decimalfilter->filter($maximo));
 
         if ($this->_inclusive) {
             if ($minimo > $value || $value > $maximo) {

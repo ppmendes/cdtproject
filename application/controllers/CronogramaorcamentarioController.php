@@ -40,10 +40,7 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
-//                echo "<pre>";
-//                print_r($data);
-//                exit;
-//                echo "</pre>";
+
                     if($id){
                         $model->update($data, $id);
                     }else{

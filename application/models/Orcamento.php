@@ -10,19 +10,36 @@ class Application_Model_Orcamento
         return $orcamento;
     }
 
-    public function insert($orcamento)
+    public function insert($data)
     {
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        $data['orcamento']['valor_orcamento'] = $decimalfilter->filter($data['orcamento']['valor_orcamento']);
+        unset($data['orcamento']['rubrica']);
+        unset($data['orcamento']['saldo']);
 
+        $table = new Application_Model_DbTable_Orcamento();
+        $table->insert($data['orcamento']);
     }
 
     public function delete($id)
     {
-
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "orcamento";
+        $where = $db->quoteInto('orcamento_id = ?', $id);
+        $db->delete($table, $where);
     }
 
-    public function update($orcamento)
+    public function update($data, $id)
     {
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        $data['orcamento']['valor'] = $decimalfilter->filter($data['orcamento']['valor']);
+        unset($data['orcamento']['rubrica']);
+        unset($data['orcamento']['saldo']);
 
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "orcamento";
+        $where = $db->quoteInto('orcamento_id = ?', $id);
+        $db->update($table, $data['orcamento'],$where);
     }
 
     public static function getOptions(){
@@ -75,33 +92,9 @@ class Application_Model_Orcamento
     public function selectAll($id)
 
     {
+
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
-
-//            $subselect1 = $db->select()
-//                ->from(array('e' => 'empenho'), array('e.valor_empenho' => 'SUM(e.valor_empenho)'))
-//                ->where('e.orcamento_id = o.orcamento_id');
-//
-//            $subselect2 = $db->select()
-//                ->from(array('e2' => 'empenho'), array('pe.valor_pre_empenho' => 'SUM(pe.valor_pre_empenho)'))
-//                ->joinLeft(array('pe'=> 'pre_empenho'), 'e2.pre_empenho_id = pe.pre_empenho_id', array('pe.valor_pre_empenho' => 'SUM(pe.valor_pre_empenho)'))
-//                ->where('e2.orcamento_id = o.orcamento_id');
-//
-//            $subselect3 = $db->select()
-//                ->from(array('d' => 'desembolso'), array('d.valor_desembolso' => 'SUM(d.valor_desembolso)'))
-//                ->joinLeft(array('e3'=> 'empenho'), 'd.empenho_id = e3.empenho_id', array('d.valor_desembolso' => 'SUM(d.valor_desembolso)'))
-//                ->where('e3.orcamento_id = o.orcamento_id');
-//
-//            $select = $db->select()->from(array("o" => "orcamento"),
-//                array('o.orcamento_id'=>'o.orcamento_id', 'o.rubrica_id'=>'o.rubrica_id', 'o.valor_orcamento'=>'SUM(o.valor_orcamento)',
-//                'o.destinatario_id'=>'o.destinatario_id', 'o.projeto_id'=>'o.projeto_id', 'dt.nome_destinatario'=>'dt.nome_destinatario',
-//                'r.codigo_rubrica'=>'r.codigo_rubrica', 'r.descricao'=>'r.descricao', 'valor_empenho'=>$subselect1,
-//                'valor_pre_empenho'=>$subselect2, 'valor_desembolso'=>$subselect3))
-//                ->joinLeft(array('dt' => 'destinatario'), 'o.destinatario_id = dt.destinatario_id', array('dt.nome_destinatario'=>'dt.nome_destinatario'))
-//                ->joinLeft(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica' => 'r.codigo_rubrica', 'r.descricao' => 'r.descricao'))
-//
-//                ->where('o.projeto_id = ?', $id)
-//                ->group(array('o.rubrica_id'=>'o.rubrica_id', 'o.destinatario_id'=>'o.destinatario_id'));
 
             $resultado = $db->fetchAll("SELECT o.orcamento_id, o.rubrica_id, SUM( o.valor_orcamento ) , o.destinatario_id,
                                         o.projeto_id, dt.nome_destinatario, r.codigo_rubrica, r.descricao,
@@ -127,13 +120,10 @@ class Application_Model_Orcamento
                                          LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
                                          LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                          WHERE o.projeto_id = ". $id . "
-                                         GROUP BY o.rubrica_id, o.destinatario_id");
+                                         GROUP BY o.rubrica_id, o.destinatario_id
+                                         ORDER BY o.data_registro_orcamento");
 
 
-//            echo "<pre>";
-//            print_r($resultado);
-//            exit;
-//            echo "</pre>";
 
 
             return $resultado;
@@ -143,34 +133,16 @@ class Application_Model_Orcamento
         }
     }
 
-    public function selectAAAA($id){
-        try{
-            $options = array();
-            $db = Zend_Db_Table::getDefaultAdapter();
+    public function calculaTotal($orcamento)
+    {
+        $total = 0;
+        for($i=0 ; $i<sizeOf($orcamento) ; $i++)
+        {
 
-            $select = $db->select()
-                ->from(array('d' => 'desembolso'), array('d.desembolso_id'=>'d.desembolso_id', 'd.valor_desembolso'=>'SUM(d.valor_desembolso)',
-                'd.empenho_id' => 'd.empenho_id'))
-                ->joinLeft(array('e' => 'empenho'), 'd.empenho_id = e.empenho_id', array('e.empenho_id' => 'e.empenho_id',
-                'e.valor_empenho' => 'SUM(e.valor_empenho)', 'e.orcamento_id' => 'e.orcamento_id', 'e.pre_empenho_id' => 'e.pre_empenho_id'))
-                ->joinLeft(array('pe'=> 'pre_empenho'), 'e.pre_empenho_id = pe.pre_empenho_id', array('pe.valor_pre_empenho' => 'SUM(pe.valor_pre_empenho)'))
-                ->joinLeft(array('o' => 'orcamento'), 'e.orcamento_id = o.orcamento_id', array('o.rubrica_id'=>'o.rubrica_id',
-                 'o.destinatario_id' => 'o.destinatario_id', 'o.projeto_id' => 'o.projeto_id'))
-                ->joinLeft(array('dt' => 'destinatario'), 'o.destinatario_id = dt.destinatario_id', array('dt.nome_destinatario'=>'dt.nome_destinatario'))
-                ->joinLeft(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica' => 'r.codigo_rubrica',
-                'r.descricao' => 'r.descricao'))
-                ->where('o.projeto_id = ?' , $id)
-                ->group(array('o.rubrica_id'=> 'o.rubrica_id', 'dt.nome_destinatario'=>'dt.nome_destinatario'));
-
-            $stmt = $select->query();
-            $resultado = $stmt->fetchAll();
-
-
-            return $resultado;
-
-        }catch(Exception $e){
-            echo $e->getMessage();
+            $total = $total + ($orcamento[$i]['SUM( o.valor_orcamento )']);
         }
 
+        return $total;
     }
+
 }
