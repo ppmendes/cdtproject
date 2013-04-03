@@ -11,18 +11,37 @@ body {
 	background: #fff;
 	color: #333;
 }
-
+form {
+    background-color: #ECECEC;
+    border: 1px solid #CCCCCC;
+    margin: 10px auto;
+    overflow: hidden;
+    padding: 10px;
+    width: 80%;
+}
 h1, h2 { font-family: 'trebuchet ms', verdana, arial; padding: 10px; margin: 0 }
 h1 { font-size: large }
+
 
 #banner { padding: 15px; background-color: #06b; color: white; font-size: large; border-bottom: 1px solid #ccc;
     background: url(bg.gif) repeat-x; text-align: center }
 #banner a { color: white; }
-
-#main, #main1, #main2, #main3  {
+#main{
     float: left;
     overflow: auto;
     padding: 1em;
-    width: 20%; }
-#main1 { padding: 1em; }
+    width: 35%;
+}
+
+#main1, #main2, #main3  {
+    float: left;
+    overflow: auto;
+    padding: 1em;
+    width: 18%; }
+#but{
+    overflow: hidden;
+    width: 100%;
+}
+
 a img { border: none; }
+
