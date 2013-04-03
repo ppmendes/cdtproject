@@ -283,30 +283,19 @@ class UsuariosController extends Zend_Controller_Action
         $modelpermissões = new Application_Model_PermissaoUsuario();
         $id_usuario = $this->_getParam('usuario_id');
         $this->view->usuario_id=$id_usuario;
-        if($this->getRequest()->isPost())
+
+        //verificamos se o usuario é novinho ou já é um usuario registrado, por o numeros de projeto cadastrado
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchAll("SELECT controller, action, valor FROM `permissao-usuario` WHERE usuario_id=$id_usuario");
+
+        $permissoes=null;
+        //concatenamos os valores da consulta
+        for($i=0;$i<count($result);$i++)
         {
-            echo 'entro!!';
-            $datos=$this->getRequest()->getParams();
-            $datostreeview=$datos['datostree'];
-
-                $modelpermissões->delete($id_usuario);
-                print_r($id_usuario);
-                foreach($datostreeview as $item)
-                {
-                    $data['usuario_id']=$id_usuario;
-                    $dataexplode=explode('|',$item);
-                    $data['controller']=$dataexplode[0];
-                    $data['action']=$dataexplode[1];
-                    $data['valor']=$dataexplode[2];
-                    $modelpermissões->insert($data);
-                }
-
-        }else
-        {
-
-            echo 'nao entro :(';
+            $permissoes[$i]=$result[$i]['controller'].'|'.$result[$i]['action'].'|'.$result[$i]['valor'];
         }
-        //atualizar permissoes do usuario;
+
+        $this->view->permissoes=$permissoes;
 
     }
 

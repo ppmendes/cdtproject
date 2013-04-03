@@ -1,4 +1,18 @@
 <script type="text/javascript">
+
+    function load()
+    {
+        var permissoes = ['tarefas|detalhes|*','arquivos|detalhes|*'];
+        for(i=0;i<permissoes.length;i++)
+        {
+            thischeckbox= document.getElementById(permissoes[i]).value;
+            if(thischeckbox)
+            {
+
+            }
+        }
+    }
+
     $(document).ready(function() {
         $('.fancybox').fancybox();
         $("#pesquisarprojetos").click(function() {
@@ -37,7 +51,7 @@
 
 </script>
 
-<form action="<?php echo $this->url() ?>" method="POST">
+<form name="formu" id="formulario">
 
     <div id="main">
         <ul id="browser" class="filetree">
@@ -134,7 +148,7 @@
         </ul>
     </div>
     <div id="but">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" onclick="load()">
     </div>
 
 
