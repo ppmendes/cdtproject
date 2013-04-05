@@ -34,9 +34,9 @@
     });
 </script>
 <script>
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = '/../orcamentos/adicionar/';
+        top.location.href = '/../orcamentos/adicionar/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -48,7 +48,11 @@
         float:right;
     }
 </style>
-    <button class='novoorcamento' onclick='adicionar()'>Novo Orçamento</button>
+
+<?php
+$projeto_id = $this->pid;
+echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Novo Orçamento</button>";
+?>
 
 <table id='table_id'>
     <thead>

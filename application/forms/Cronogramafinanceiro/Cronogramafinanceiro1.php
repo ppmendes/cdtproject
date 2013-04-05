@@ -35,7 +35,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
         ));
 
         $orcamento = Application_Model_Projeto::getValorOrcamento($this->id_projeto);
-        $valorLimite = number_format($orcamento['0']['orcamento'] - $this->valorParcelas, 2);
+        $valorLimite = number_format($orcamento['0']['orcamento'] - $this->valorParcelas, 2, ',', '.');
 
 
         $this->addElement('text', 'saldo', array(
@@ -56,8 +56,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
         ));
 
         $elemento = $this->getElement('valor_aplicado_a_rubrica');
-        $elemento->addValidator(new Zend_Validate_Between2(array('min' => 0, 'max' => $valorLimite)));
-        //$elemento->setFilters(array('DecimalFilter'));
+        $elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $valorLimite)));
 
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_previa');
         $emtDatePicker->setLabel('Data Prévia: ');

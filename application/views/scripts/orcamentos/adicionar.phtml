@@ -1,3 +1,8 @@
+<?php
+$this->form->setAction($this->url());
+echo $this->form;
+?>
+
 <script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -10,18 +15,9 @@
                 $("#orcamento-rubrica_id").val( ui.item.rubrica_id );
                 return false;
             }
-        });
-
-        $( "#orcamento-projeto").combogrid({
-            debug:true,
-            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
-            url: 'orcamentos/combogridprojeto/',
-            select: function( event, ui ) {
-                $("#orcamento-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
-                $("#orcamento-projeto_id").val( ui.item.projeto_id );
-                return false;
-            }
-        });
+       });
+        $saldo =  $('#orcamento-saldo');
+        $saldo.val(mask($saldo.val(), '###.###.###,##'));
     });
 
 
@@ -59,8 +55,3 @@
         return maskPre(val, msk, '')
     }
 </script>
-<?php
-
-    $this->form->setAction($this->url());
-    echo $this->form;
-?>

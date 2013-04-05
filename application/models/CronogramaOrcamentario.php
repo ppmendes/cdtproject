@@ -16,17 +16,6 @@ class Application_Model_CronogramaOrcamentario
         $decimalfilter = new Zend_Filter_DecimalFilter();
         $data['cronograma_orcamentario']['valor_a_receber'] = $decimalfilter->filter($data['cronograma_orcamentario']['valor_a_receber']);
         $data['cronograma_orcamentario']['valor_recebido'] = $decimalfilter->filter($data['cronograma_orcamentario']['valor_recebido']);
-
-        //        $str = $data['cronograma_orcamentario']['valor_a_receber'];
-//        $temp = str_replace(".", "", $str);
-//        $valor_a_receber = str_replace(",", ".",$temp);
-        //      $data['cronograma_orcamentario']['valor_a_receber'] = $valor_a_receber;
-
-//        $str = $data['cronograma_orcamentario']['valor_recebido'];
-//        $temp = str_replace(".", "", $str);
-//        $valor_recebido = str_replace(",", ".",$temp);
-//        $data['cronograma_orcamentario']['valor_recebido'] = $valor_recebido;
-
         $table = new Application_Model_DbTable_CronogramaOrcamentario();
         $table->insert($data['cronograma_orcamentario']);
     }
@@ -35,11 +24,7 @@ class Application_Model_CronogramaOrcamentario
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "cronograma_orcamentario";
-        //$deletado = true;
         $where = $db->quoteInto('cronograma_orcamentario_id = ?', $id);
-        //$data = array('deletado' => $deletado);
-
-        //$db->update($table, $data, $where);
         $db->delete($table, $where);
 
     }

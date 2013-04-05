@@ -11,43 +11,57 @@ class OrcamentosController extends Zend_Controller_Action
     public function indexAction()
     {
         $orcamentoModel = new Application_Model_Orcamento();
-        $id = $this->_getParam('projeto_id');
-        $this->view->orcamentos = $orcamentoModel->selectAll($id);
+        $pid = $this->_getParam('projeto_id');
+        $this->view->orcamentos = $orcamentoModel->selectAll($pid);
+        $this->view->pid = $pid;
+
 
     }
 
     public function adicionarAction(){
 
-        $form = new Application_Form_Orcamentos();
-        //$model = new Application_Model_Orcamento();
         $id = $this->_getParam('orcamento_id');
+        $pid= $this->_getParam('projeto_id');
         $request = $this->getRequest();
+        $form = new Application_Form_Orcamentos();
+        $model = new Application_Model_Orcamento();
+        $orcamento = $model->selectAll($pid);
+        $totalParcelas = $model->calculaTotal($orcamento);
+        $form->setValorParcelas($totalParcelas);
+        $form->setProjetoId($pid);
+        $form->startform();
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-                  //echo "<pre>";
-                  //print_r($form->getValues());
-                  //echo "</pre>";
-                //$data = $form->getValues();
-                //var_dump($data);
-                echo 'tsa';
-                /*if($id){
+
+                $data = $form->getValues();
+
+                if($id){
                     $model->update($data, $id);
                 }else{
                     $model->insert($data);
                 }
 
-                $this->_redirect('/orcamentos/');*/
+                $this->_redirect('/orcamentos/index/projeto_id/'.$data['orcamento']['projeto_id']);
             }
+            $this->view->form = $form;
+
         }elseif ($id){
             $data = $model->find($id)->toArray();
 
+
             if(is_array($data)){
                 $form->setAction('/orcamentos/detalhes/orcamento_id/' . $id);
-                $form->populate(array("orcamentos" => $data));
-            }
-        }
+                $form->setProjetoId($pid);
+                $form->startform();
+                $form->populate(array("orcamento" => $data));
+                $this->view->form = $form;
 
+            }
+        }else
+
+        $form->setProjetoId($pid);
+        $form->startform();
         $this->view->form = $form;
     }
 
@@ -56,6 +70,7 @@ class OrcamentosController extends Zend_Controller_Action
         $detalhes = new Application_Form_Orcamentos();
         $model = new Application_Model_Projeto;
         $id = $this->_getParam('orcamento_id');
+        $pid= $this->_getParam('projeto_id');
         $this->view->id = $id;
 
 
@@ -63,6 +78,8 @@ class OrcamentosController extends Zend_Controller_Action
 
         if(is_array($data)){
             $detalhes->setAction('/orcamentos/detalhes/orcamento_id/' . $id);
+            $detalhes->setProjetoId($pid);
+            $detalhes->startform();
             $detalhes->populate(array("orcamentos" => $data));
         }
 
@@ -206,6 +223,7 @@ class OrcamentosController extends Zend_Controller_Action
     public function excluirAction(){
         //$request = $this->getRequest();
         $excluir = new Application_Form_Orcamentos();
+        $excluir->startform();
         $model = new Application_Model_Projeto;
         $id = $this->_getParam('orcamento_id');
 
