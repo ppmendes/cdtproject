@@ -4,28 +4,28 @@
 
     function load()
     {
-        var array;
-
+           var arreglo= new Array();
+           var i=0;
            <?php $nro=count($permissoes);
-           for($i=0;$i<$nro;$i++)
+
+          for($i=0;$i<$nro;$i++)
            {
                ?>
-               array[$i]= '<?php echo $permissoes[$i]; ?>';
+             arreglo[i]= "<?php echo $permissoes[$i]; ?>";
+             i++;
                <?php }?>
 
-
-           alert(array[0]);
-         /*for(i=0;i< y;i++)
+        var X= document.forms['formu'].datostree.length;
+        for(i=0;i< arreglo.length; i++)
         {
             for(j=0;j<X;j++)
             {
-               if (document.forms['formu'].datostree[j].value == '')
+               if (document.forms['formu'].datostree[j].value == arreglo[i])
                    {
                        document.forms['formu'].datostree[j].checked=true;
-
                    }
             }
-        } */
+        }
     }
 
     $(document).ready(function() {
@@ -66,7 +66,7 @@
 
 </script>
 
-<form name="formu" id="formu">
+<form name="formu" id="formu" onload="load()">
 
     <div id="main">
         <ul id="browser" class="filetree">
@@ -86,7 +86,7 @@
                 </ul>
             </li>
 
-            <li><input  name="datostree" type="checkbox" id="arqAc" value="arquivos">Arquivos
+            <li><input  name="datostree" type="checkbox" id="arqAc" value="arquivos|index|*">Arquivos
                 <ul id="arquivos">
                     <li><input name="datostree" type="checkbox" id="arqVi" value="arquivos|detalhes|*" >Visualizar</li>
                     <li><input name="datostree" type="checkbox" id="arqAd" value="arquivos|adicionar|*" >Adicionar</li>
@@ -163,8 +163,8 @@
         </ul>
     </div>
     <div id="but">
-        <input type="button" value="check" onclick="load()">
-        <input type="submit" value="Submit" onclick="load()">
+
+        <input type="submit" value="Submit">
     </div>
 
 
