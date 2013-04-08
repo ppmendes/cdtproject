@@ -229,7 +229,6 @@ class Application_Model_Usuario
         $file = $upload->getFileName('icone');
         //$file = $data['usuario']['icone'];
 
-
              try {
                 // upload received file(s)
                 $upload->receive();
@@ -266,7 +265,6 @@ class Application_Model_Usuario
         $id = $array[0]["id"];
 
         echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
-
 
         for($i=1;$i<$nroElementos;$i++)
         {

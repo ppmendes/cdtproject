@@ -284,19 +284,40 @@ class UsuariosController extends Zend_Controller_Action
         $id_usuario = $this->_getParam('usuario_id');
         $this->view->usuario_id=$id_usuario;
 
-        //verificamos se o usuario é novinho ou já é um usuario registrado, por o numeros de projeto cadastrado
-        $db = Zend_Db_Table::getDefaultAdapter();
-        $result = $db->fetchAll("SELECT controller, action, valor FROM `permissao-usuario` WHERE usuario_id=$id_usuario");
-
-        $permissoes=null;
-        //concatenamos os valores da consulta
-        for($i=0;$i<count($result);$i++)
+        if($this->getRequest()->isPost())
         {
-            $permissoes[$i]=$result[$i]['controller'].'|'.$result[$i]['action'].'|'.$result[$i]['valor'];
+            echo 'entro!!';
+            $datos=$this->getRequest()->getParams();
+            $datostreeview=$datos['datostree'];
+            print_r($datostreeview);
+            $modelpermissões->delete($id_usuario);
+
+
+            foreach($datostreeview as $item)
+            {
+                $data['usuario_id']=$id_usuario;
+                $dataexplode=explode('|',$item);
+                $data['controller']=$dataexplode[0];
+                $data['action']=$dataexplode[1];
+                $data['valor']=$dataexplode[2];
+                $modelpermissões->insert($data);
+            }
+        }else
+        {
+            //verificamos se o usuario é novinho ou já é um usuario registrado, por o numeros de projeto cadastrado
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $result = $db->fetchAll("SELECT controller, action, valor FROM `permissao-usuario` WHERE usuario_id=$id_usuario");
+
+            $permissoes=null;
+            //concatenamos os valores da consulta
+            for($i=0;$i<count($result);$i++)
+            {
+                $permissoes[$i]=$result[$i]['controller'].'|'.$result[$i]['action'].'|'.$result[$i]['valor'];
+            }
+
+            $this->view->permissoes=$permissoes;
+            echo 'nao entro :(';
         }
-
-        $this->view->permissoes=$permissoes;
-
     }
 
     public function fancyboxprojetosAction()
