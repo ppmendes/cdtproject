@@ -2,9 +2,9 @@
 
 class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_Form
 {
-
     private $valorParcelas;
     private $id_projeto;
+    private $tipo = 1;
 
     public function setValorParcelas($valor){
         $this->valorParcelas = $valor;
@@ -12,6 +12,10 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
 
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
+    }
+
+    public function setTipo($tipo){
+        $this->tipo = $tipo;
     }
 
     public function init() {}
@@ -22,39 +26,68 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('cronograma_financeiro');
 
-        $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
+        //$id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
 
         $this->setMethod('post');
 
-        $nomeProjeto = Application_Model_Projeto::getNome($id_projeto);
+
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'nomeProjeto', array(
             'label'      => 'Projeto:',
             'value'      => $nomeProjeto['0']['nome'],
-            'disabled'         => true,
+            'readonly'         => true,
             'required'   => false,
         ));
 
+        $this->addElement('text', 'data_previa', array(
+            'label'      => 'Data Prévia:',
+            'readonly'   => true,
+            'required'   => false,
+        ));
+
+        $data_previa = $this->getElement('data_previa');
+        $data_previa->setFilters(array('DateFilter'));
+
         $orcamento = Application_Model_Projeto::getValorOrcamento($this->id_projeto);
-        $valorLimite = $orcamento['0']['orcamento'] - $this->valorParcelas;
+        $valorLimite = number_format($orcamento['0']['orcamento'] - $this->valorParcelas, 2, ',', '.');
+
+
         $this->addElement('text', 'saldo', array(
             'label'     => 'Saldo Atual:',
-            'value'     => $orcamento['0']['orcamento'],
-            'disabled'  => true,
+            'value'     => $valorLimite,
+            'readonly'  => true,
             'required'  => false,
+//            'attribs'    => array('maxLength' => 13),
+//            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
+
+        //$valorSaldo = Application_Model_CronogramaFinanceiro::calculaTotal()
         $this->addElement('text', 'valor_aplicado_a_rubrica', array(
             'label'      => 'Valor estimado da parcela:',
-            'required'   => true,
-            'attribs'    => array('maxLength' => 13),
+            //'attribs'    => array('maxLength' => 13),
+            //'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
+            'readonly'   => true,
+            'required'   => false,
         ));
 
-        $elemento = $this->getElement('valor_aplicado_a_rubrica');
-        $elemento->addValidator(new Zend_Validate_Between(array('min' => 0, 'max' => $valorLimite)));
+        $valor_aplicado_a_rubrica = $this->getElement('valor_aplicado_a_rubrica');
+        $valor_aplicado_a_rubrica->setFilters(array('DecimalFilter'));
 
-        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_previa');
-        $emtDatePicker->setLabel('Data Prévia: ');
+        $this->addElement('text', 'valor_recebido', array(
+            'label'      => 'Valor recebido:',
+            'required'   => false,
+            'attribs'    => array('maxLength' => 13),
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
+        ));
+
+        //$elemento = $this->getElement('valor_aplicado_a_rubrica');
+        //$elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $valorLimite)));
+
+        $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_pagamento');
+        $emtDatePicker->setLabel('Data do Pagamento: ');
         $emtDatePicker->setFilters(array('DateFilter'));
+        $emtDatePicker->setRequired(false);
 
         $this->addElement($emtDatePicker);
 
@@ -66,15 +99,13 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
         $this->addElement('select', 'tipo', array(
             'label'      => 'Tipo:',
             'multiOptions'  => $array_tipo_pagamento,
+            'value'      => $array_tipo_pagamento[$this->tipo],
             'required'   => true ,
-            'value'   => 2,
             'attribs' => array('onChange' => 'tipoPagamento(this.value)'),
         ));
 
-        echo "<script>chamaTipoPagamento(2)</script>";
-
         $this->addElement('text', 'numero_fatura_pf', array(
-            'label'      => 'Número PF:',
+            'label'      => 'Número da Fatura:',
             'required'   => true
         ));
 
@@ -88,9 +119,19 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
         //set hidden
         $this->addElement('hidden', 'projeto_id', array(
             'label'      => '',
+            'value'      => $this->id_projeto,
+        ));
+
+        $this->addElement('hidden', 'orcamento', array(
+            'label'      => '',
             'value'      => $valorLimite,
         ));
 
+        $this->addElement('hidden', 'tipo_form', array(
+            'label'      => '',
+            'value'      => 2,
+        ));
 
     }
 }
+

@@ -1,5 +1,6 @@
 <?php
     $this->form->setAction($this->url());
+    $tipo = $this->tipo;
     echo $this->form;
 ?>
 <script type="text/javascript">
@@ -8,6 +9,12 @@
         $saldo.val(mask($saldo.val(), '###.###.###,##'));
     });
 
+    var tipo = '<?php echo $tipo; ?>';
+
+    if (tipo == 2)
+    {
+    chamaTipoPagamento(2);
+    }
 
     function chamaTipoPagamento(valor)
     {

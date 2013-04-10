@@ -26,23 +26,32 @@ class CronogramafinanceiroController extends Zend_Controller_Action
         $pid= $this->_getParam('projeto_id');
         $request = $this->getRequest();
         $form = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
+        $form2 = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
         $model = new Application_Model_CronogramaFinanceiro();
         $cronogramaFinanceiro = $model->selectAll($pid);
+
+
         $totalParcelas = $model->calculaTotal($cronogramaFinanceiro);
+
         $form->setValorParcelas($totalParcelas);
         $form->setProjetoId($pid);
         $form->startform();
 
+        $form2->setValorParcelas($totalParcelas);
+        $form2->setProjetoId($pid);
+        $form2->startform();
+
 
         if($this->getRequest()->isPost()){
+            $tipo_form = $request->getPost()['cronograma_financeiro']['tipo_form'];
 
+            if ($tipo_form == 1)
+            {
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
-//                echo "<pre>";
-//                print_r($data);
-//                exit;
-//                echo "</pre>";
+                unset($data['cronograma_financeiro']['tipo_form']);
+
                     if($id){
                         $model->update($data, $id);
                     }else{
@@ -53,28 +62,53 @@ class CronogramafinanceiroController extends Zend_Controller_Action
 
             }
             $this->view->form = $form;
+            }
+            else
+            {
+                if($form2->isValid($request->getPost())){
+
+                $data = $form2->getValues();
+                unset($data['cronograma_financeiro']['tipo_form']);
+
+                    if($id){
+                        $model->update($data, $id);
+                    }else{
+                        $model->insert($data);
+                    }
+
+                $this->_redirect('/cronogramafinanceiro/index/projeto_id/'.$data['cronograma_financeiro']['projeto_id']);
+
+            }
+                $this->view->form = $form2;
+            }
         }elseif ($id){
+            $form2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){
-                if($data['tipo'] == 1){
-                $form->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
-                $form->setValorParcelas($totalParcelas);
-                $form->setProjetoId($pid);
-                $form->startform();
-                $form->populate(array("cronograma_financeiro" => $data));
-                $this->view->form = $form;
+                $tipo = $data['tipo'];
 
-                }
-                else if($data['tipo']== 2){
-                    $form2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
-                    $form2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
-                    $form2->setValorParcelas($totalParcelas);
-                    $form2->setProjetoId($pid);
-                    $form2->startform();
-                    $form2->populate(array("cronograma_financeiro" => $data));
-                    $this->view->form = $form2;
-                }
+                 $this->view->tipo = $tipo;
+
+
+                $form2->setTipo($tipo);
+                $form2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+                $form2->setValorParcelas($totalParcelas);
+                $form2->setProjetoId($pid);
+                $form2->startform();
+                $form2->populate(array("cronograma_financeiro" => $data));
+                $this->view->form = $form2;
+
+//                }
+//                else if($tipo == 2){
+//                    $form2= new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2();
+//                    $form2->setAction('/cronogramafinanceiro/detalhes/cronograma_financeiro_id/' . $id . '/projeto_id/' .$pid);
+//                    $form2->setValorParcelas($totalParcelas);
+//                    $form2->setProjetoId($pid);
+//                    $form2->startform();
+//                    $form2->populate(array("cronograma_financeiro" => $data));
+//                    $this->view->form = $form2;
+//                }
             }
         }
         else {

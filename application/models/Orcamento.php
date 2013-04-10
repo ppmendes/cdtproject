@@ -145,4 +145,24 @@ class Application_Model_Orcamento
         return $total;
     }
 
+    public function getOrcamentoProjeto ($pid) {
+        try{
+            $options = array();
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('p' => 'projeto'), array('p.orcamento' => 'p.orcamento'))
+                ->where('p.projeto_id = ?' , $pid);
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
 }
