@@ -1,4 +1,7 @@
-   <?php  $permissoes=$this->permissoes;?>
+   <?php    $result=$this->permissoes;
+            $nomeprojetos=$this->nomeprojetos;
+
+   ?>
 
 <script type="text/javascript">
 
@@ -8,27 +11,51 @@
 
     function load()
     {
-           var arreglo= new Array();
-           var i=0;
-           <?php $nro=count($permissoes);
+        var arreglo = new Array();
+        var arreglonomes = new Array([],[]);
+        var i=0;
+        var k=0;
+        <?php
 
-          for($i=0;$i<$nro;$i++)
-           {
+        for($i=0;$i<count($nomeprojetos);$i++)
+        {
+            $valor = $nomeprojetos[$i]['valor'];
+            $nome = $nomeprojetos[$i]['nome'];
+        }
+
+        // for para preencher as permissoes no arreglo javascript arreglo[i]
+        $nro=count($result);
+        for($i=0;$i<$nro;$i++)
+        {
                ?>
-             arreglo[i]= "<?php echo $permissoes[$i]; ?>";
-             i++;
-               <?php }?>
+             arreglo[i]= "<?php echo $result[$i]; ?>";
+             i++; <?php }
 
-        var X= document.forms['formu'].datostree.length;
+        // for para preencher os nomes do projeto e seu valor no arreglo javascript arreglonomes[i]
+        for($i=0;$i<count($nomeprojetos);$i++)
+        {
+               ?>
+             arreglonomes[0][k]= "<?php echo $nomeprojetos[$i]['valor']; ?>";
+             arreglonomes[1][k]= "<?php echo $nomeprojetos[$i]['nome']; ?>";
+             k++; <?php }?>
+
+        for(i=0;i<arreglonomes.length;i++)
+        {
+            agregar(arreglonomes[0][i], arreglonomes[1][i]);
+        }
+
+
+        var frm = document.getElementById("formu");
 
         for(i=0;i< arreglo.length; i++)
         {
-            for(j=0;j<X;j++)
-            {
-               if (document.forms['formu'].datostree[j].value == arreglo[i])
-                   {
-                       document.forms['formu'].datostree[j].checked=true;
-                   }
+             for (j=0;j<frm.elements.length;j++)
+             {
+                 if(frm.elements[j].type=='checkbox')
+                 {
+                     if(frm.elements[j].value == arreglo[i])
+                     { frm.elements[j].checked=true;}
+                 }
             }
         }
     }
