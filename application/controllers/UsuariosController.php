@@ -284,13 +284,13 @@ class UsuariosController extends Zend_Controller_Action
         $id_usuario = $this->_getParam('usuario_id');
         $this->view->usuario_id=$id_usuario;
 
+
         if($this->getRequest()->isPost())
         {
             echo 'entro!!';
             $datos=$this->getRequest()->getParams();
             $datostreeview=$datos['datostree'];
             $modelpermissões->delete($id_usuario);
-
 
             foreach($datostreeview as $item)
             {
@@ -306,7 +306,8 @@ class UsuariosController extends Zend_Controller_Action
             //verificamos se o usuario é novinho ou já é um usuario registrado, por o numeros de projeto cadastrado
             $db = Zend_Db_Table::getDefaultAdapter();
             $result = $db->fetchAll("SELECT controller, action, valor FROM `permissao-usuario` WHERE usuario_id=$id_usuario");
-            $nomeprojeto= $db->fetchAll("SELECT distinct PU.valor, P.nome FROM `permissao-usuario` as PU inner join projeto as P on PU.valor=P.projeto_id");
+            $nomeprojeto= $db->fetchAll("SELECT distinct PU.valor, P.nome FROM `permissao-usuario` as PU inner join projeto as P on PU.valor=P.projeto_id where PU.usuario_id=$id_usuario ");
+
 
             $permissoes=null;
             //concatenamos os valores da consulta
@@ -318,6 +319,7 @@ class UsuariosController extends Zend_Controller_Action
             $this->view->permissoes=$permissoes;
             $this->view->nomeprojetos=$nomeprojeto;
             echo 'nao entro :(';
+            //huihu
         }
     }
 
