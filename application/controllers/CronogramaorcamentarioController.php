@@ -13,9 +13,14 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
 	    $cronogramaOrcamentarioModel = new Application_Model_CronogramaOrcamentario();
         $id = $this->_getParam('projeto_id');
         $cronogramaOrcamentario = $cronogramaOrcamentarioModel->selectAll($id);
+        $totalRubricas = $cronogramaOrcamentarioModel->selectTotalRubricas($id);
+
+
+
         $this->view->cronograma_orcamentario = $cronogramaOrcamentario;
-        //$this->form->array = $cronogramaOrcamentario;
+        $this->view->total = $cronogramaOrcamentarioModel->selectAllTotal(($id));
         $this->view->id = $id;
+        $this->view->totalRubricas = $totalRubricas;
 
 
     }

@@ -1,4 +1,4 @@
-<script>
+<script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     $(document).ready(function() {
         $('#table_id').dataTable({
             "sDom": 'R<"H"lfr>t<"F"ip<',
@@ -74,11 +74,22 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
 
     <?php
     $i = 1;
+    $somaRubrica = 0;
+    $somaEmpenho = 0;
+    $somaSaldoOrc = 0;
+    $somaDesembolso = 0;
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+    $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['p.orcamento']);
+
     foreach($this->orcamentos as $row)
     {
-    $valor_empenho = number_format(0 + ($row['valor_empenho'] - $row['valor_pre_empenho']), 2, '.', '');
+    $valor_empenho = number_format(0 + ($row['valor_empenho'] + $row['valor_pre_empenho']), 2, '.', '');
     $saldo_orcamentario =  number_format(0 + ($row['SUM( o.valor_orcamento )'] - $valor_empenho), 2, '.', '');
     $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
+    $somaRubrica = $somaRubrica + $row['SUM( o.valor_orcamento )'];
+    $somaEmpenho = $somaEmpenho + $valor_empenho;
+    $somaSaldoOrc = $somaSaldoOrc + $saldo_orcamentario;
+    $somaDesembolso = $somaDesembolso + $valor_desembolso;
 
         //$row = $row->toArray();
     echo "<tr id='".$row['orcamento_id']."'>";
@@ -86,13 +97,43 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<td>" .   $row['codigo_rubrica'] . "</td>";
     echo "<td>" . $row['descricao'] . "</a></td>";
     echo "<td>" .   $row['nome_destinatario'] . "</td>";
-    echo "<td >" .  $row['SUM( o.valor_orcamento )'] . "</td>";
+    echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";
   //  echo "<td >" .  $row[''] . "</td>";
-    echo "<td >" .  $valor_empenho . "</td>";
-    echo "<td >" .  $saldo_orcamentario . "</td>";
-    echo "<td >" .  $valor_desembolso . "</td>";
+    echo "<td >" .  $decimalfilter->filter($valor_empenho) . "</td>";
+    echo "<td >" .  $decimalfilter->filter($saldo_orcamentario) . "</td>";
+    echo "<td >" .  $decimalfilter->filter($valor_desembolso) . "</td>";
     echo "</tr>";
     $i++;
+
+
     }
     echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Orçamento Previsto</th>";
+    echo "<th> Total Rubrica</th>";
+    echo "<th> Orçamento Disponibilizado</th>";
+    echo "<th> Total Empenhado</th>";
+    echo "<th> Saldo Orçamentário</th>";
+    echo "<th> Total Desembolsado</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $orcamentoProjeto . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
+    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
+
 ?>

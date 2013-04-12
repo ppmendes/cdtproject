@@ -63,6 +63,36 @@ class Application_Model_CronogramaOrcamentario
         }
     }
 
+    public function selectAllTotal($id)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT SUM( c.valor_recebido ), SUM( c.valor_a_receber )
+                                        FROM cronograma_orcamentario AS c
+                                        WHERE c.projeto_id = " . $id . ";");
+
+            return $resultado;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectTotalRubricas($id)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT SUM( valor_orcamento ) AS valor_orcamento
+                                         FROM orcamento
+                                         WHERE projeto_id = ". $id);
+
+            return $resultado;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
     public static function getOptions(){
         try{
             //$options2 = array();

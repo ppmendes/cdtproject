@@ -14,6 +14,8 @@ class OrcamentosController extends Zend_Controller_Action
         $pid = $this->_getParam('projeto_id');
         $this->view->orcamentos = $orcamentoModel->selectAll($pid);
         $this->view->pid = $pid;
+        $this->view->orcamentoProjeto = $orcamentoModel->getOrcamentoProjeto($pid);
+
 
 
     }

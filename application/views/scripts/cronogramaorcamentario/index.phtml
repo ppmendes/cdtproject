@@ -94,6 +94,9 @@
     $filter = new Zend_Filter_DateFilter();
     $decimalfilter = new Zend_Filter_DecimalFilter();
     $i = 1;
+    $pagas = 0;
+    $totalPrevisto = $decimalfilter->filter($this->total[0]['SUM( c.valor_a_receber )']);
+    $totalRecebido = $decimalfilter->filter($this->total[0]['SUM( c.valor_recebido )']);
     foreach($this->cronograma_orcamentario as $row)
     {
     //$row = $row->toArray();
@@ -111,7 +114,37 @@
     echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
     echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
     $i++;
+
+    if ($row['valor_a_receber'] == 0)
+    {
+        $pagas++;
+
+    }
+
     echo "</tr>";
     }
     echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Total Rubricas</th>";
+    echo "<th> Valor Total a Receber</th>";
+    echo "<th> Valor Total Recebido</th>";
+    echo "<th> Índice de Realização das Parcelas</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $decimalfilter->filter($this->totalRubricas[0]['valor_orcamento']) . "</td>";
+    echo "<td>" . $decimalfilter->filter($totalPrevisto) . "</td>";
+    echo "<td>" . $decimalfilter->filter($totalRecebido) . "</td>";
+    echo "<td>" . number_format(0 + ($pagas/($i - 1)) * 100, 2, '.', '') . "%</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
 ?>

@@ -45,17 +45,17 @@ class Application_Form_Orcamentos extends Zend_Form
         ));
 
         $orcamento = Application_Model_Projeto::getValorOrcamento($this->id_projeto);
-        $valorLimite = number_format($orcamento['0']['orcamento'] + 50000 - $this->valorParcelas, 2, ',', '.');
+        $valorLimite = number_format($orcamento['0']['orcamento'] - $this->valorParcelas, 2, ',', '.');
 
 
-        $this->addElement('text', 'saldo', array(
-            'label'     => 'Saldo Atual:',
-            'value'     => $valorLimite,
-            'readonly'  => true,
-            'required'  => false,
-//            'attribs'    => array('maxLength' => 13),
-//            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
-        ));
+//        $this->addElement('text', 'saldo', array(
+//            'label'     => 'Saldo Atual:',
+//            'value'     => $valorLimite,
+//            'readonly'  => true,
+//            'required'  => false,
+////            'attribs'    => array('maxLength' => 13),
+////            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
+//        ));
 
         //Código - Natureza da Despesa - Rubrica
         $this->addElement('text', 'rubrica', array(
@@ -86,8 +86,8 @@ class Application_Form_Orcamentos extends Zend_Form
             'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
-        $elemento = $this->getElement('valor_orcamento');
-        $elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $valorLimite)));
+        //$elemento = $this->getElement('valor_orcamento');
+        //$elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $valorLimite)));
 
         //destinatário
         $this->addElement('select', 'destinatario_id', array(

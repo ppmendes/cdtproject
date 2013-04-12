@@ -4,6 +4,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
 {
     private $valorParcelas;
     private $id_projeto;
+    private $tipo = 1;
 
     public function setValorParcelas($valor){
         $this->valorParcelas = $valor;
@@ -11,6 +12,10 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
 
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
+    }
+
+    public function setTipo($tipo){
+        $this->tipo = $tipo;
     }
 
     public function init() {}
@@ -72,6 +77,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
         $this->addElement('select', 'tipo', array(
             'label'      => 'Tipo:',
             'multiOptions'  => $array_tipo_pagamento,
+            'value'      => $array_tipo_pagamento[$this->tipo],
             'required'   => true ,
             'attribs' => array('onChange' => 'tipoPagamento(this.value)'),
         ));
@@ -97,6 +103,11 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1 extends Zend_F
         $this->addElement('hidden', 'orcamento', array(
             'label'      => '',
             'value'      => $valorLimite,
+        ));
+
+        $this->addElement('hidden', 'tipo_form', array(
+            'label'      => '',
+            'value'      => 1,
         ));
 
     }

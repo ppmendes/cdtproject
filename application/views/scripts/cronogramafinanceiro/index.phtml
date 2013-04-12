@@ -73,10 +73,12 @@
     <thead>
     <tr>
         <th>Id</th>
-        <th>Valor</th>
-        <th>Data</th>
+        <th>Data Prevista</th>
+        <th>Valor Previsto</th>
+        <th>Valor Recebido</th>
         <th>Tipo</th>
-        <th>Fatura</th>
+        <th>Fatura/PF</th>
+        <th>Data Pagamento</th>
         <th>Editar</th>
         <th>Excluir</th>
 <!--        <th>Data final real</th>-->
@@ -90,19 +92,47 @@
 
     <?php
 
-    $filter = new Zend_Filter_DateFilter();
+    $datefilter = new Zend_Filter_DateFilter();
     $decimalfilter = new Zend_Filter_DecimalFilter();
+
+    //$totalPrevisto = $decimalfilter->filter($this->total[0]['SUM( c.valor_a_receber )']);
+    //$totalRecebido = $decimalfilter->filter($this->total[0]['SUM( c.valor_recebido )']);
+
+    $totalPrevisto = 0;
+    $totalRecebido = 0;
 
     foreach($this->cronogramaFinanceiro as $row)
     {
+
+    $totalPrevisto += $row['valor_aplicado_a_rubrica'];
+    $totalRecebido += $row['valor_recebido'];
     //$row = $row->toArray();
     echo "<tr id='".$row['cronograma_financeiro_id']."'>";
     echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}/projeto_id/{$projeto_id}'>"
         .$row['cronograma_financeiro_id']. "</a></td>";
-    echo "<td>" .   $decimalfilter->filter($row['valor_aplicado_a_rubrica']) . "</td>";
-    echo "<td>" .   $row['data_previa'] . "</td>";
-    echo "<td>" .   $row['tipo'] . "</td>";
+        echo "<td>" .   $datefilter->filter($row['data_previa']) . "</td>";
+        echo "<td>" .   $decimalfilter->filter($row['valor_aplicado_a_rubrica']) . "</td>";
+        echo "<td>" .   $decimalfilter->filter($row['valor_recebido']) . "</td>";
+
+        if($row['tipo'] == 1)
+        {
+            echo "<td> Fatura</td>";
+        }
+        if($row['tipo'] == 2)
+        {
+            echo "<td> PF</td>";
+        }
+
     echo "<td>" .   $row['numero_fatura_pf'] . "</td>";
+
+        if ($row['data_pagamento'] == null)
+        {
+            echo "<td>---</td>";
+        }
+        else
+        {
+            echo "<td>" . $datefilter->filter($row['data_pagamento']) . "</td>";
+        }
 //    echo "<td><a class='\right btn_edit\' href='/cronogramafinanceiro/adicionar/projeto_id/".$projeto_id."/cronograma_financeiro_id/"
 //    ."{$row['cronograma_financeiro_id']}'>aa</a></td>";
 //    echo "<td><a class='\right btn_delete\' href='/cronogramafinanceiro/excluir/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}'>bb</a></td>";
@@ -122,4 +152,25 @@
     echo "</tr>";
     }
     echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Total Previsto</th>";
+    echo "<th> Total Recebido</th>";
+    //echo "<th> Índice de Realização das Parcelas</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $decimalfilter->filter($totalPrevisto) . "</td>";
+    echo "<td>" . $decimalfilter->filter($totalRecebido) . "</td>";
+    //echo "<td>" . number_format(0 + ($pagas/($i - 1)) * 100, 2, '.', '') . "%</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
 ?>
