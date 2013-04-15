@@ -95,6 +95,83 @@ class DesembolsoController extends Zend_Controller_Action
 
     }
 
+    public function combogridempenhoAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+        $pid = $this->_getParam('projeto_id');
+
+        if(!$sidx){
+            $sidx = 'nome';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = '(nome like ? or descricao_historico like ?) and o.projeto_id = ' . $pid;
+
+        $select = $dbAdapter->select()->from(array('e'=>'empenho'),array('count(*) as count'))
+                                      ->where($where,$searchTerm)
+                                      ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
+                                      ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'));
+
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from(array('e' => 'empenho') ,array('orcamento_id', 'empenho_id','beneficiario_id', 'descricao_historico'))
+                                          ->where($where,$searchTerm)
+                                          ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
+                                          ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'))
+                                          ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from(array('e'=>'empenho'),array('empenho_id','beneficiario_id', 'descricao_historico'))
+                                          ->where($where,$searchTerm)
+                                          ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
+                                          ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'))
+                                          ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+            $response = (object) array();
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
+
 
 }
 
