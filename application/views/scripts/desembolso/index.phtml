@@ -75,11 +75,22 @@
 
     <?php
 
+    $somaRubrica = 0;
+    $somaEmpenho = 0;
+    $somaSaldoOrc = 0;
+    $somaDesembolso = 0;
     $datefilter = new Zend_Filter_DateFilter();
     $decimalfilter = new Zend_Filter_DecimalFilter();
 
+    $orcamentoProjeto = $this->resultado[0]['orcamento'];
+    $somaEmpenho = number_format(0 + ($this->resultado[0]['SUM( e.valor_empenho )'] + $this->resultado[0]['SUM( pe.valor_pre_empenho )']), 2, '.', '');
+    $somaSaldoOrc =  number_format(0 + ($this->resultado[0]['SUM( o.valor_orcamento )'] - $somaEmpenho), 2, '.', '');
+    $somaDesembolso = number_format(0 + $this->resultado[0]['SUM( d.valor_desembolso )'], 2, '.', '');
+    $somaRubrica = number_format(0 + $this->resultado[0]['SUM( o.valor_orcamento )'], 2, '.', '');
+
     foreach($this->resultado as $row)
     {
+
         echo "<tr id='".$row['desembolso_id']."'>";
         echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
         echo "<td>" .   $row['desembolso_rel'] . "</td>";
@@ -102,4 +113,31 @@
         echo "</tr>";
     }
     echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Orçamento Previsto</th>";
+    echo "<th> Total Rubrica</th>";
+    echo "<th> Orçamento Disponibilizado</th>";
+    echo "<th> Total Empenhado</th>";
+    echo "<th> Saldo Orçamentário</th>";
+    echo "<th> Total Desembolsado</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $orcamentoProjeto . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
+    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
 ?>

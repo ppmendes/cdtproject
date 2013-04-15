@@ -139,6 +139,7 @@
 .cg-menu {
 	padding-right: 2px;
 	margin: 0;
+    width: 56%;
 }
 .cg-menu .cg-menu {
 	margin-top: -3px;

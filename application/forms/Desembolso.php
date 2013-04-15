@@ -19,16 +19,11 @@ class Application_Form_Desembolso extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
-        //Filtro por processo input type text
-        $this->addElement('text', 'desembolso_rel', array(
-            'label'      => 'Filtro por processo:',
-            'required'   => true,
-        ));
-
         //Empenho a liquidar input type text
-        $this->addElement('text', 'empenho', array(
+        $this->addElement('textarea', 'empenho', array(
             'label'      => 'Empenho a liquidar:',
             'required'   => true,
+            'style'      => 'height: 70px',
         ));
 
         //Código do documento hábil input type text
@@ -37,11 +32,11 @@ class Application_Form_Desembolso extends Zend_Form
             'required'   => true,
         ));
 
-        //Data Documento Hábil input type text
-        $this->addElement('text', 'data_documento_habil', array(
-            'label'      => 'Data Documento Hábil:',
-            'required'   => true,
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_documento_habil');
+        $emtDatePicker1->setLabel('Data Documento Hábil: ');
+        $emtDatePicker1->setFilters(array('DateFilter'));
+        $emtDatePicker1->setRequired(true);
+        $this->addElement($emtDatePicker1);
 
         //Ordem Bancária input type text
         $this->addElement('text', 'order_dinheiro', array(
@@ -49,11 +44,11 @@ class Application_Form_Desembolso extends Zend_Form
             'required'   => true,
         ));
 
-        //Data do Pagamento input type text
-        $this->addElement('text', 'data_pagamento', array(
-            'label'      => 'Data do Pagamento:',
-            'required'   => true,
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_pagamento');
+        $emtDatePicker2->setLabel('Data de Pagamento: ');
+        $emtDatePicker2->setFilters(array('DateFilter'));
+        $emtDatePicker2->setRequired(true);
+        $this->addElement($emtDatePicker2);
 
         //Valor do Desembolso input type text
         $this->addElement('text', 'valor_desembolso', array(

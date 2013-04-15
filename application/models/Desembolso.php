@@ -65,17 +65,26 @@ class Application_Model_Desembolso
             6 => 'd.valor_desembolso',
             7 => 'd.empenho_id',
             8 => 'd.extornado',
-            9 => 'd.desembolso_id',
-            10 => 'd.empenho_id',
-            11 => 'o.projeto_id'
+            9 => 'o.projeto_id',
+            10=> 'SUM( d.valor_desembolso )',
+            11=> 'SUM( e.valor_empenho )',
+            12=> 'SUM( pe.valor_pre_empenho )',
+            13=> 'SUM( o.valor_orcamento )',
+            14=> 'p.orcamento',
+            15=> 'dt.destinatario_id',
+
         );
 
-        $select = $db->select()
+            $select = $db->select()
             ->from(array('d' => 'desembolso'),array())
             ->where('p.projeto_id = ?', $id)
             ->joinLeft(array('e'=>'empenho'), 'd.empenho_id = e.empenho_id', array())
+            ->joinLeft(array('pe'=>'pre_empenho'), 'e.pre_empenho_id = pe.pre_empenho_id', array())
             ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
             ->joinLeft(array('p'=>'projeto'), 'o.projeto_id = p.projeto_id', array())
+            ->joinLeft(array('r'=>'rubrica'), 'o.rubrica_id = r.rubrica_id', array())
+            ->joinLeft(array('dt'=>'destinatario'), 'o.destinatario_id = dt.destinatario_id', array())
+            ->group(array('r.rubrica_id', 'dt.destinatario_id'))
             ->columns($colunas);
 
 
