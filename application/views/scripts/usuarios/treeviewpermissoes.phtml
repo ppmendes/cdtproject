@@ -1,7 +1,6 @@
    <?php    $result=$this->permissoes;
-            print_r($result);
             $nomeprojetos=$this->nomeprojetos;
-   //hyuhuguy
+
    ?>
 
 <script type="text/javascript">
@@ -14,7 +13,8 @@
     function load()
     {
         var arreglo = new Array();
-        var arreglonomes = new Array([],[]);
+        var arreglo_valor=new Array();
+        var arreglo_nome = new Array();
         var i=0;
         var k=0;
         <?php
@@ -34,22 +34,20 @@
             for($i=0;$i<count($nomeprojetos);$i++)
             {
                 ?>
-                arreglonomes[0][k]= "<?php echo $nomeprojetos[$i]['valor']; ?>";
-                arreglonomes[1][k]= "<?php echo $nomeprojetos[$i]['nome']; ?>";
+                arreglo_valor[k]= "<?php echo $nomeprojetos[$i]['valor']; ?>";
+                arreglo_nome[k]= "<?php echo $nomeprojetos[$i]['nome']; ?>";
                 k++; <?php }?>
 
-
-
-            for(i=0;i<arreglonomes.length;i++)
+            for(i=0;i<arreglo_nome.length;i++)
             {
-                agregar(arreglonomes[0][i], arreglonomes[1][i]);
+                agregar(arreglo_valor[i],arreglo_nome[i]);
             }
         <?php }?>
 
 
 
         var frm = document.getElementById("formu");
-
+        var pat = /detalhes/;
         for(i=0;i< arreglo.length; i++)
         {
              for (j=0;j<frm.elements.length;j++)
@@ -57,7 +55,9 @@
                  if(frm.elements[j].type=='checkbox')
                  {
                      if(frm.elements[j].value == arreglo[i])
-                     { frm.elements[j].checked=true;}
+                       frm.elements[j].checked=true;
+
+
                  }
             }
         }
@@ -76,9 +76,9 @@
 
         var ProAl="proAl";
         var branches = $("<li><input id='" + $id + "' name='datostree[]' type='checkbox' value='projetos|index|" + $id + "' checked >" + $nome + " <button type='button' onclick='apagar(" + $id + ")'>apagar</button><ul>" +
-                "<li><input name='datostree[]' type='checkbox' id='proVi' onclick='habilitar(\"proVi","proAl\")' value='projetos|detalhes|"+$id+"' >Visualizar</li>" +
-                "<li><input name='datostree[]' type='checkbox' id='proAd' value='projetos|adicionar|"+$id+"'  >Adicionar</li>" +
-                "<li><input name='datostree[]' type='checkbox' id='proAl' value='projetos|adicionar|"+$id+"' disabled='true'>Alterar</li>" +
+                "<li><input name='datostree[]' type='checkbox' id='"+$id+"Vi' onclick=habilitar('"+$id+"Vi','"+$id+"Al') value='projetos|detalhes|"+$id+"' >Visualizar</li>" +
+                "<li><input name='datostree[]' type='checkbox' id='proAd' value='projetos|adicionar|*'  >Adicionar</li>" +
+                "<li><input name='datostree[]' type='checkbox' id='"+$id+"Al' value='projetos|adicionar|"+$id+"' disabled='true'>Alterar</li>" +
                 "<li><input name='datostree[]' type='checkbox' id='proAp' value='projetos|excluir|"+$id+"' >Apagar</li></ul></li>").appendTo("#proj");
         $("#browser").treeview({
             add: branches
@@ -103,7 +103,6 @@
 
     function habilitar($id_check, $id_disabled)
     {
-        /*,$id_disabled*/
         if(document.getElementById($id_check).checked==true)
             document.getElementById($id_disabled).disabled=false;
         else
@@ -130,7 +129,7 @@
                 <ul id="tarefas">
                     <li><input name="datostree[]" type="checkbox" id="tarVi" value="tarefas|detalhes|*"  onclick='habilitar("tarVi","tarAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="tarAd" value="tarefas|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAl" value="tarefas|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAl" value="tarefas|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="tarAp" value="tarefas|excluir|*">Apagar</li>
                 </ul>
             </li>
@@ -139,7 +138,7 @@
                 <ul id="arquivos">
                     <li><input name="datostree[]" type="checkbox" id="arqVi" value="arquivos|detalhes|*" onclick='habilitar("arqVi","arqAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="arqAd" value="arquivos|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAl" value="arquivos|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAl" value="arquivos|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="arqAp" value="arquivos|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -147,7 +146,7 @@
                 <ul id="beneficiarios">
                     <li><input name="datostree[]" type="checkbox" id="benVi" value="beneficiarios|detalhes|*" onclick='habilitar("benVi","benAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="benAd" value="beneficiarios|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="benAl" value="beneficiarios|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="benAl" value="beneficiarios|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="benAp" value="beneficiarios|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -160,7 +159,7 @@
                 <ul id="usuarios">
                     <li><input name="datostree[]" type="checkbox" id="usuVi" value="usuarios|detalhes|*" onclick='habilitar("usuVi","usuAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="usuAd" value="usuarios|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAl" value="usuarios|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAl" value="usuarios|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="usuAp" value="usuarios|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -168,7 +167,7 @@
                 <ul id="empenhos">
                     <li><input name="datostree[]" type="checkbox" id="empVi" value="empenhos|detalhes|*" onclick='habilitar("empVi","empAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="empAd" value="empenhos|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAl" value="empenhos|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAl" value="empenhos|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="empAp" value="empenhos|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -176,7 +175,7 @@
                 <ul id="instituicoes">
                     <li><input name="datostree[]" type="checkbox" id="insVi" value="instituicoes|detalhes|*" onclick='habilitar("insVi","insAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="insAd" value="instituicoes|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="insAl" value="instituicoes|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="insAl" value="instituicoes|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="insAp" value="instituicoes|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -189,7 +188,7 @@
                 <ul id="orcamentario">
                     <li><input name="datostree[]" type="checkbox" id="orcVi" value="orcamentario|detalhes|*" onclick='habilitar("orcVi","orcAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="orcAd" value="orcamentario|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="orcAl" value="orcamentario|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="orcAl" value="orcamentario|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="orcAp" value="orcamentario|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -197,7 +196,7 @@
                 <ul id="solicitacoes">
                     <li><input name="datostree[]" type="checkbox" id="solVi" value="solicitacoes|detalhes|*" onclick='habilitar("solVi","solAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="solAd" value="solicitacoes|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="solAl" value="solicitacoes|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="solAl" value="solicitacoes|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="solAp" value="solicitacoes|excluir|*" >Apagar</li>
                 </ul>
             </li>
@@ -205,7 +204,7 @@
                 <ul id="termoaditivo">
                     <li><input name="datostree[]" type="checkbox" id="tadVi" value="termoaditivo|detalhes|*" onclick='habilitar("tadVi","tadAl")'>Visualizar</li>
                     <li><input name="datostree[]" type="checkbox" id="tadAd" value="termoaditivo|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAl" value="termoaditivo|adicionar|*" disabled="true">Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAl" value="termoaditivo|adicionar|#" disabled="true">Alterar</li>
                     <li><input name="datostree[]" type="checkbox" id="tadAp" value="termoaditivo|excluir|*" >Apagar</li>
                 </ul>
             </li>
