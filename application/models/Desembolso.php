@@ -49,8 +49,10 @@ class Application_Model_Desembolso
 //
 //        return $result;
 //    }
-    public function selectAll()
+    public function selectAll($id)
     {
+        try{
+
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $colunas = array(
@@ -65,16 +67,33 @@ class Application_Model_Desembolso
             8 => 'd.extornado',
             9 => 'd.desembolso_id',
             10 => 'd.empenho_id',
+            11 => 'o.projeto_id'
         );
 
         $select = $db->select()
             ->from(array('d' => 'desembolso'),array())
+            ->where('p.projeto_id = ?', $id)
+            ->joinLeft(array('e'=>'empenho'), 'd.empenho_id = e.empenho_id', array())
+            ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
+            ->joinLeft(array('p'=>'projeto'), 'o.projeto_id = p.projeto_id', array())
             ->columns($colunas);
 
 
         $stmt = $select->query();
 
-        while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
+        $result = $stmt->fetchAll();
+
+        return $result;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+}
+
+
+
+        /*while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
             $extornado = $row[8];
             $desembolso_id = $row[9];
             $empenho_id = $row[10];
@@ -93,6 +112,6 @@ class Application_Model_Desembolso
 
         return $data;
     }
-}
+}   */
 
 

@@ -3,7 +3,15 @@
 class Application_Form_Desembolso extends Zend_Form
 {
 
-    public function init()
+    private $id_projeto;
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
+    public function init() {}
+
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setElementsBelongTo('desembolso');

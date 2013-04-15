@@ -17,7 +17,15 @@
 class Application_Form_Empenhos extends Zend_Form
 {
 
-    public function init()
+    private $id_projeto;
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
+    public function init() {}
+
+    public function startform()
     {
         $this->setIsArray('true');
         //$this->setAttrib('enctype', 'multipart/form-data');
@@ -55,9 +63,8 @@ class Application_Form_Empenhos extends Zend_Form
             'required'   => true
         ));
 
-        $this->addElement('select', 'projeto_id', array(
+        $this->addElement('text', 'projeto_id', array(
             'label'      => 'Projeto: ',
-            'multiOptions' => Application_Model_Projeto::getOptions(),
             'required'   => true
         ));
 

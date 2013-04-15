@@ -20,10 +20,10 @@
                     "sNext":     " > ",
                     "sLast":     " >> "
                 }
-            },
-            "bProcessing": true,
-            "sAjaxSource": 'empenhos/indexajax',
-            "bDeferRender": true
+            }
+          //  "bProcessing": true,
+          //  "sAjaxSource": 'empenhos/indexajax/projeto_id/'+id,
+          //  "bDeferRender": true
             //"bSort": false,
 //            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
 //            "aoColumns": [
@@ -38,9 +38,9 @@
     });
 </script>
 <script>
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = '/../empenhos/adicionar/';
+        top.location.href = '/../empenhos/adicionar/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -52,15 +52,19 @@
         float:right;
     }
 </style>
-    <button class='novoprojeto btn_add' onclick='adicionar()'>Novo Empenho</button>
+
+
+<?php
+    $projeto_id = $this->id;
+    echo "<button class='novoprojeto btn_add' onclick='adicionar($projeto_id)'>Novo Empenho</button>";
+?>
 
 <table id='table_id'>
     <thead>
     <tr>
-        <th>Descrição</th>
+        <th>Código Rubrica</th>
         <th>Data</th>
         <th>Beneficiário</th>
-        <th>Projeto</th>
         <th>Valor</th>
         <th>Número de Parcelas</th>
         <th>Data de Início da Bolsa</th>
@@ -77,14 +81,13 @@
     {
     //$row = $row->toArray();
     echo "<tr id='".$row['empenho_id']."'>";
-    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['descricao'] . "</a></td>";
+    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['codigo_rubrica'] . "</a></td>";
     echo "<td>" .   $row['data'] . "</td>";
     echo "<td >" .  $row['beneficiario_id'] . "</td>";
-    echo "<td >" .  $row['projeto_id'] . "</td>";
     echo "<td >" .  $row['valor_empenho'] . "</td>";
     echo "<td >" .  $row['numero_parcelas'] . "</td>";
-    echo "<td >" .  $row['data_inicio_bolsa'] . "</td>";
-    echo "<td >" .  $row['data_fim_bolsa'] . "</td>";
+    echo "<td >" .  $row['data_inicio'] . "</td>";
+    echo "<td >" .  $row['data_fim'] . "</td>";
     echo "<td >" .  $row['orcamento_id'] . "</td>";
     echo "<td >" .  $row['usuario_id'] . "</td>";
     echo "<td >" .  $row['pre_empenho_id'] . "</td>";
@@ -92,3 +95,4 @@
     }
     echo "</tbody></table>";
 ?>
+
