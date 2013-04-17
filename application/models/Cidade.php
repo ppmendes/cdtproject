@@ -24,16 +24,27 @@ class Application_Model_Cidade
 
     }
 
-    public static function getOptions(){
+    public static function getOptions($id_cidade_form = null){
         try{
-            $options = array();
-            $table = new Application_Model_DbTable_Cidade;
-            $resultado = $table->fetchAll();
-            foreach($resultado as $item){
-                $options[$item['cidade_id']] = $item['cidade_nome'];
+            if($id_cidade_form==null)
+            {
+                $options = array();
+                $table = new Application_Model_DbTable_Cidade();
+                $resultado = $table->fetchAll();
+                foreach($resultado as $item){
+                    $options[$item['cidade_id']] = $item['cidade_nome'];
+                }
+                return $options;
+            }else{
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $resultado = $db->fetchAll("select cidade_id, cidade_nome from cidade where cidade_id = $id_cidade_form");
+
+                foreach($resultado as $item){
+                    $options[$item['cidade_id']] = $item['cidade_nome'];
+                }
+                return $options;
             }
-            return $options;
-        } catch(Exception $e){
+        }catch (Exception $e){
 
         }
 

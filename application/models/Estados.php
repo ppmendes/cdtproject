@@ -26,16 +26,29 @@ class Application_Model_Estados
 
     }
 
-    public static function getOptions(){
+    public static function getOptions($id_estado_form = null){
         try{
-            $options = array();
-            $table = new Application_Model_DbTable_Estados();
-            $resultado = $table->fetchAll();
-            foreach($resultado as $item){
-                $options[$item['estados_id']] = $item['estados_nome'];
+            if($id_estado_form==null)
+            {
+                $options = array();
+                $table = new Application_Model_DbTable_Estados();
+                $resultado = $table->fetchAll();
+                foreach($resultado as $item){
+                    $options[$item['estados_id']] = $item['estados_nome'];
+                }
+                return $options;
+
+            }else{
+                $db = Zend_Db_Table::getDefaultAdapter();
+                $resultado = $db->fetchAll("select estados_id, estados_nome from estados where estados_id = $id_estado_form");
+
+                foreach($resultado as $item){
+                    $options[$item['estados_id']] = $item['estados_nome'];
+                }
+                return $options;
             }
-            return $options;
-        } catch(Exception $e){
+
+        }catch (Exception $e){
 
         }
 
