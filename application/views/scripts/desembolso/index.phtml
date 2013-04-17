@@ -20,9 +20,9 @@
                     "sNext":     " > ",
                     "sLast":     " >> "
                 }
-            },
-            "bProcessing": true,
-            "sAjaxSource": 'desembolso/indexajax'
+            }
+           // "bProcessing": true,
+           // "sAjaxSource": 'desembolso/indexajax'
             //"bSort": false,
 //            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
 //            "aoColumns": [
@@ -36,9 +36,9 @@
     });
 </script>
 <script>
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = '/../desembolso/adicionar/';
+        top.location.href = '/../desembolso/adicionar/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -50,39 +50,95 @@
         float:right;
     }
 </style>
-<button class='novodesembolso btn_add' onclick='adicionar()'>Novo Desembolso</button>
+
+<?php
+    $projeto_id = $this->id;
+    echo "<button class='novodesembolso btn_add' onclick='adicionar($projeto_id)'>Novo Desembolso</button>";
+
+?>
 
 <table id='table_id' border='0'>
     <thead>
     <tr>
         <th>Id</th>
         <th>Desembolso_Rel</th>
+        <th>Empenho</th>
         <th>Código do Documento Hábil</th>
         <th>Data do Documento</th>
         <th>Ordem Bancária</th>
         <th>Data do Pagamento</th>
         <th>Valor</th>
-        <th>Empenho</th>
         <th>Extornado</th>
     </tr>
     </thead>
     <tbody>
 
     <?php
-//    foreach($this->resultado as $row)
-//    {
-//        //$row = $row->toArray();
-//        echo "<tr id='".$row['desembolso_id']."'>";
-//        echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
-//        echo "<td>" .   $row['desembolso_rel'] . "</td>";
-//        echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
-//        echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
-//        echo "<td >" .  $row['data_documento_habil'] . "</td>";
-//        echo "<td >" .  $row['order_dinheiro'] . "</td>";
-//        echo "<td >" .  $row['data_pagamento'] . "</td>";
-//        echo "<td >" .  $row['valor_desembolso'] . "</td>";
-//        echo "<td >" .  $row['extornado'] . "</td>";
-//        echo "</tr>";
-//    }
+
+    $somaRubrica = 0;
+    $somaEmpenho = 0;
+    $somaSaldoOrc = 0;
+    $somaDesembolso = 0;
+    $datefilter = new Zend_Filter_DateFilter();
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+
+
+    $orcamentoProjeto = $decimalfilter->filter($this->soma[0]['orcamento']);
+    $somaEmpenho = number_format(0 + ($this->soma[0]['valor_empenho'] + $this->soma[0]['valor_pre_empenho']), 2, '.', '');
+    $somaDesembolso = number_format(0 + $this->soma[0]['SUM( d.valor_desembolso )'], 2, '.', '');
+    $somaRubrica = number_format(0 + $this->soma[0]['valor_orcamento'], 2, '.', '');
+    $somaSaldoFin =  number_format(0 + ($this->soma[0]['valor_recebido'] - $somaDesembolso), 2, '.', '');
+
+    foreach($this->resultado as $row)
+    {
+
+        echo "<tr id='".$row['desembolso_id']."'>";
+        echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
+        echo "<td>" .   $row['desembolso_rel'] . "</td>";
+        echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
+        echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
+        echo "<td >" .  $datefilter->filter($row['data_documento_habil']) . "</td>";
+        echo "<td >" .  $row['order_dinheiro'] . "</td>";
+        echo "<td >" .  $datefilter->filter($row['data_pagamento']) . "</td>";
+        echo "<td >" .  $decimalfilter->filter($row['valor_desembolso']) . "</td>";
+
+        if ($row['extornado'] == true)
+        {
+            echo "<td> Sim </td>";
+        }
+        else
+        {
+            echo "<td> Não </td>";
+        }
+        //echo "<td >" .  $row['extornado'] . "</td>";
+        echo "</tr>";
+    }
     echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Orçamento Previsto</th>";
+    echo "<th> Total Rubrica</th>";
+    echo "<th> Orçamento Disponibilizado</th>";
+    echo "<th> Total Empenhado</th>";
+    echo "<th> Total Desembolsado</th>";
+    echo "<th> Saldo Financeiro</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $orcamentoProjeto . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
+    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoFin) . "</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
 ?>

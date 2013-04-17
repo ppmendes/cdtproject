@@ -49,8 +49,10 @@ class Application_Model_Desembolso
 //
 //        return $result;
 //    }
-    public function selectAll()
+    public function selectAll($id)
     {
+        try{
+
         $db = Zend_Db_Table::getDefaultAdapter();
 
         $colunas = array(
@@ -63,18 +65,85 @@ class Application_Model_Desembolso
             6 => 'd.valor_desembolso',
             7 => 'd.empenho_id',
             8 => 'd.extornado',
-            9 => 'd.desembolso_id',
-            10 => 'd.empenho_id',
+            9 => 'o.projeto_id',
+            10=> 'p.orcamento',
+
         );
 
-        $select = $db->select()
+            $select = $db->select()
             ->from(array('d' => 'desembolso'),array())
+            ->where('p.projeto_id = ?', $id)
+            ->joinLeft(array('e'=>'empenho'), 'd.empenho_id = e.empenho_id', array())
+            ->joinLeft(array('pe'=>'pre_empenho'), 'e.pre_empenho_id = pe.pre_empenho_id', array())
+            ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
+            ->joinLeft(array('p'=>'projeto'), 'o.projeto_id = p.projeto_id', array())
+            //->joinLeft(array('r'=>'rubrica'), 'o.rubrica_id = r.rubrica_id', array())
+            //->joinLeft(array('dt'=>'destinatario'), 'o.destinatario_id = dt.destinatario_id', array())
+            //->group(array('r.rubrica_id', 'dt.destinatario_id'))
             ->columns($colunas);
+
+
 
 
         $stmt = $select->query();
 
-        while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
+        $result = $stmt->fetchAll();
+
+        return $result;
+
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+
+    public function selectAllSoma($id)
+    {
+        try
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT o.projeto_id, SUM( d.valor_desembolso ), p.orcamento,
+
+                                        (SELECT SUM( valor_orcamento )
+                                        FROM orcamento AS orc
+                                        WHERE orc.projeto_id = " . $id . "
+                                        ) AS valor_orcamento,
+
+                                        (SELECT SUM( valor_empenho )
+                                         FROM empenho AS e1, orcamento AS orc
+                                         WHERE e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         ) AS valor_empenho,
+
+                                         (SELECT SUM( pe.valor_pre_empenho )
+                                         FROM pre_empenho AS pe, empenho as e1, orcamento as orc
+                                         WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         ) AS valor_pre_empenho,
+
+                                         (SELECT SUM( valor_recebido )
+                                         FROM cronograma_financeiro AS cf
+                                         WHERE cf.projeto_id = " . $id . "
+                                         ) AS valor_recebido
+
+                                         FROM desembolso AS d
+                                         LEFT JOIN empenho AS e ON d.empenho_id = e.empenho_id
+                                         LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                                         LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
+                                         WHERE o.projeto_id = ". $id);
+
+
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+}
+
+
+
+        /*while ($row = $stmt->fetch(Zend_Db::FETCH_NUM)) {
             $extornado = $row[8];
             $desembolso_id = $row[9];
             $empenho_id = $row[10];
@@ -93,6 +162,6 @@ class Application_Model_Desembolso
 
         return $data;
     }
-}
+}   */
 
 
