@@ -82,11 +82,12 @@
     $datefilter = new Zend_Filter_DateFilter();
     $decimalfilter = new Zend_Filter_DecimalFilter();
 
-    $orcamentoProjeto = $this->resultado[0]['orcamento'];
-    $somaEmpenho = number_format(0 + ($this->resultado[0]['SUM( e.valor_empenho )'] + $this->resultado[0]['SUM( pe.valor_pre_empenho )']), 2, '.', '');
-    $somaSaldoOrc =  number_format(0 + ($this->resultado[0]['SUM( o.valor_orcamento )'] - $somaEmpenho), 2, '.', '');
-    $somaDesembolso = number_format(0 + $this->resultado[0]['SUM( d.valor_desembolso )'], 2, '.', '');
-    $somaRubrica = number_format(0 + $this->resultado[0]['SUM( o.valor_orcamento )'], 2, '.', '');
+
+    $orcamentoProjeto = $decimalfilter->filter($this->soma[0]['orcamento']);
+    $somaEmpenho = number_format(0 + ($this->soma[0]['valor_empenho'] + $this->soma[0]['valor_pre_empenho']), 2, '.', '');
+    $somaDesembolso = number_format(0 + $this->soma[0]['SUM( d.valor_desembolso )'], 2, '.', '');
+    $somaRubrica = number_format(0 + $this->soma[0]['valor_orcamento'], 2, '.', '');
+    $somaSaldoFin =  number_format(0 + ($this->soma[0]['valor_recebido'] - $somaDesembolso), 2, '.', '');
 
     foreach($this->resultado as $row)
     {
@@ -122,8 +123,8 @@
     echo "<th> Total Rubrica</th>";
     echo "<th> Orçamento Disponibilizado</th>";
     echo "<th> Total Empenhado</th>";
-    echo "<th> Saldo Orçamentário</th>";
     echo "<th> Total Desembolsado</th>";
+    echo "<th> Saldo Financeiro</th>";
     echo "</tr>";
     echo "</thead>";
 
@@ -133,8 +134,8 @@
     echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
     echo "<td> TODO </td>";
     echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
-    echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoFin) . "</td>";
 
     echo "</tr>";
     echo "</tbody>";

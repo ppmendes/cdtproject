@@ -91,6 +91,47 @@ class Application_Model_Empenho
         echo $e->getMessage();
     }
     }
+
+    public function selectAllSoma($id)
+    {
+        try
+        {
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT o.projeto_id, SUM( e.valor_empenho ), p.orcamento,
+
+                                        (SELECT SUM( valor_orcamento )
+                                        FROM orcamento AS orc
+                                        WHERE orc.projeto_id = " . $id . "
+                                        ) AS valor_orcamento,
+
+                                        (SELECT SUM( valor_desembolso )
+                                         FROM desembolso AS des, empenho AS emp, orcamento AS orc
+                                         WHERE des.empenho_id = emp.empenho_id AND emp.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         ) AS valor_desembolso,
+
+                                         (SELECT SUM( pe.valor_pre_empenho )
+                                         FROM pre_empenho AS pe, empenho as e1, orcamento as orc
+                                         WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         ) AS valor_pre_empenho,
+
+                                         (SELECT SUM( valor_recebido )
+                                         FROM cronograma_financeiro AS cf
+                                         WHERE cf.projeto_id = " . $id . "
+                                         ) AS valor_recebido
+
+                                         FROM empenho AS e
+                                         LEFT JOIN pre_empenho AS pe ON e.pre_empenho_id = pe.pre_empenho_id
+                                         LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                                         LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
+                                         WHERE o.projeto_id = ". $id);
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 }
 
         /* Esta parte é usada quando o módulo inteiro é carregado, podendo ser 40 mil registros.
