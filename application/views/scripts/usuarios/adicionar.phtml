@@ -6,7 +6,6 @@ $id = $this->id;
 echo $this->form;
 ?>
 
-
 <script type="text/javascript">
     $(document).ready(function() {
         $('.fancybox').fancybox();
@@ -24,17 +23,17 @@ echo $this->form;
     });
 </script>
 
-
 <script type="text/javascript">
 
     var id = '<?php echo $id; ?>';
     var pais = '<?php echo $pais; ?>';
     var tipo = '<?php echo $tipo; ?>';
 
-    carregaEstados(<?php echo $pais; ?>);
+    //carregaEstados(<?php //echo $pais; ?>);
 
-    if (id == '')
+    if (id != '')
     {
+
         carregaEstados(pais);
         tipoUsuario(tipo);
     }

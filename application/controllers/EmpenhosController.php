@@ -13,6 +13,7 @@ class EmpenhosController extends Zend_Controller_Action
 	    $model = new Application_Model_Empenho();
         $id = $this->_getParam('projeto_id');
         $this->view->resultado = $model->selectAll($id);
+        $this->view->soma = $model->selectAllSoma($id);
         $this->view->id = $id;
     }
 

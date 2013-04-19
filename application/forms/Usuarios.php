@@ -2,8 +2,20 @@
 
 class Application_Form_Usuarios extends Zend_Form
 {
+    private $id_estado;
+    private $id_cidade;
+    private $id_instituicao;
+
     public function setIdInstituicao($id_instituicao_controller){
         $this->id_instituicao = $id_instituicao_controller;
+    }
+
+    public function setIdEstado($id_estado_controller){
+        $this->id_estado = $id_estado_controller;
+    }
+
+    public function setIdCidade($id_cidade_controller){
+        $this->id_cidade = $id_cidade_controller;
     }
 
     public function startform()
@@ -17,7 +29,7 @@ class Application_Form_Usuarios extends Zend_Form
 
 
         $this->addElement('hidden', 'label_titulo', array(
-            'description' => 'Formulário de Usuários Contatos',
+            'description' => 'Formulário de Usuários | Contatos',
             'ignore' => true,
             'decorators' => array(
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
@@ -147,7 +159,7 @@ class Application_Form_Usuarios extends Zend_Form
         //Estado input type text
         $this->addElement('select', 'estados_id', array(
             'label'      => 'Estado:',
-            'multiOptions' => Application_Model_Estados::getOptions(),
+            'multiOptions' => Application_Model_Estados::getOptions($this->id_estado),
             'required'   => false,
             'attribs'    => array('onchange' => 'carregaCidades(this.value)')
         ));
@@ -155,7 +167,7 @@ class Application_Form_Usuarios extends Zend_Form
         //Cidade input type text
         $this->addElement('select', 'cidade_id', array(
             'label'      => 'Cidade:',
-            'multiOptions' => Application_Model_Cidade::getOptions(),
+            'multiOptions' => Application_Model_Cidade::getOptions($this->id_cidade),
             'required'   => false,
         ));
 

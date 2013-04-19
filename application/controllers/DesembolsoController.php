@@ -13,6 +13,7 @@ class DesembolsoController extends Zend_Controller_Action
         $model = new Application_Model_Desembolso();
         $id = $this->_getParam('projeto_id');
         $this->view->resultado = $model->selectAll($id);
+        $this->view->soma = $model->selectAllSoma($id);
         $this->view->id = $id;
     }
 

@@ -39,6 +39,10 @@ class Application_Model_CronogramaFinanceiro
 
     public function update($data, $id)
     {
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+
+        $data['cronograma_financeiro']['valor_recebido'] = $decimalfilter->filter($data['cronograma_financeiro']['valor_recebido']);
+
         unset($data['cronograma_financeiro']['nomeProjeto']);
         unset($data['cronograma_financeiro']['saldo']);
         unset($data['cronograma_financeiro']['orcamento']);
