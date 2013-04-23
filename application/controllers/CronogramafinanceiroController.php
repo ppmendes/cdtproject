@@ -11,11 +11,11 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $cronogramaFinanceiroModel = new Application_Model_CronogramaFinanceiro();
-        $id = $this->_getParam('projeto_id');
-        $cronogramaFinanceiro = $cronogramaFinanceiroModel->selectAll($id);
+        $pid = $this->_getParam('projeto_id');
+        $cronogramaFinanceiro = $cronogramaFinanceiroModel->selectAll($pid);
         $this->view->cronogramaFinanceiro = $cronogramaFinanceiro;
         //$this->form->array = $cronogramaFinanceiro;
-        $this->view->id = $id;
+        $this->view->pid = $pid;
 
 
     }

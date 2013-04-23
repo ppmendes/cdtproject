@@ -1,3 +1,7 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
 <script>
     $(document).ready(function() {
         $('#table_id').dataTable({
@@ -34,6 +38,12 @@
 //                null,
 //            ]
         });
+        $('.fancybox').fancybox();
+        $('button.menu_financeiro').click(function() {
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
 
     });
 </script>
@@ -55,7 +65,7 @@
 
 
 <?php
-    $projeto_id = $this->id;
+    echo "<button class='menu_financeiro'>Menu Financeiro</button>";
     echo "<button class='novoprojeto btn_add' onclick='adicionar($projeto_id)'>Novo Empenho</button>";
 ?>
 

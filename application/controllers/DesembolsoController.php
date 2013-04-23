@@ -11,10 +11,10 @@ class DesembolsoController extends Zend_Controller_Action
     public function indexAction()
     {
         $model = new Application_Model_Desembolso();
-        $id = $this->_getParam('projeto_id');
-        $this->view->resultado = $model->selectAll($id);
-        $this->view->soma = $model->selectAllSoma($id);
-        $this->view->id = $id;
+        $pid = $this->_getParam('projeto_id');
+        $this->view->resultado = $model->selectAll($pid);
+        $this->view->soma = $model->selectAllSoma($pid);
+        $this->view->pid = $pid;
     }
 
 //    public function indexajaxAction()
@@ -118,7 +118,7 @@ class DesembolsoController extends Zend_Controller_Action
 
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
-        $where = '(nome like ? or descricao_historico like ?) and o.projeto_id = ' . $pid;
+        $where = '(nome like ? or descricao_historico like ?) and o.projeto_id = ' . $pid . ' and (valor_empenho - 19000) > 0';
 
         $select = $dbAdapter->select()->from(array('e'=>'empenho'),array('count(*) as count'))
                                       ->where($where,$searchTerm)
@@ -139,7 +139,8 @@ class DesembolsoController extends Zend_Controller_Action
 
         if($total_pages!=0)
         {
-            $select = $dbAdapter->select()->from(array('e' => 'empenho') ,array('orcamento_id', 'empenho_id','beneficiario_id', 'descricao_historico'))
+            $select = $dbAdapter->select()->from(array('e' => 'empenho') ,array('orcamento_id', 'empenho_id','beneficiario_id', 'descricao_historico',
+                                                                                'valor_empenho'))
                                           ->where($where,$searchTerm)
                                           ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
                                           ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'))

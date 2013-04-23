@@ -1,3 +1,7 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
 <script>
     $(document).ready(function() {
         $('#table_id').dataTable({
@@ -33,6 +37,12 @@
 //                null,
 //            ]
         });
+        $('.fancybox').fancybox();
+        $('button.menu_financeiro').click(function() {
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
     });
 </script>
 <script>
@@ -52,7 +62,7 @@
 </style>
 
 <?php
-    $projeto_id = $this->id;
+    echo "<button class='menu_financeiro'>Menu Financeiro</button>";
     echo "<button class='novodesembolso btn_add' onclick='adicionar($projeto_id)'>Novo Desembolso</button>";
 
 ?>
@@ -60,7 +70,8 @@
 <table id='table_id' border='0'>
     <thead>
     <tr>
-        <th>Id</th>
+        <th>Código</th>
+        <th>Natureza da Despesa</th>
         <th>Desembolso_Rel</th>
         <th>Empenho</th>
         <th>Código do Documento Hábil</th>
@@ -93,10 +104,11 @@
     {
 
         echo "<tr id='".$row['desembolso_id']."'>";
-        echo "<td><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .   $row['desembolso_id'] . "</td>";
+        echo "<td>" . $row['codigo_rubrica'] . "</td>";
+        echo "<td>" . $row['descricao'] . "</td>";
         echo "<td>" .   $row['desembolso_rel'] . "</td>";
         echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
-        echo "<td >" .  $row['codigo_documento_habil'] . "</td>";
+        echo "<td ><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .  $row['codigo_documento_habil'] . "</td>";
         echo "<td >" .  $datefilter->filter($row['data_documento_habil']) . "</td>";
         echo "<td >" .  $row['order_dinheiro'] . "</td>";
         echo "<td >" .  $datefilter->filter($row['data_pagamento']) . "</td>";

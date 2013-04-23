@@ -84,6 +84,15 @@ class ProjetosController extends Zend_Controller_Action
 
     }
 
+    public function fancyboxmenufinanceiroAction()
+    {
+        $layout = $this->_helper->layout();
+        $layout->setLayout('iframe');
+        $id = $this->_getParam('projeto_id');
+        $this->view->id = $id;
+
+    }
+
 
 }
 
