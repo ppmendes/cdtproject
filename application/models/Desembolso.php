@@ -67,6 +67,8 @@ class Application_Model_Desembolso
             8 => 'd.extornado',
             9 => 'o.projeto_id',
             10=> 'p.orcamento',
+            11=> 'r.codigo_rubrica',
+            12=> 'r.descricao',
 
         );
 
@@ -77,6 +79,7 @@ class Application_Model_Desembolso
             ->joinLeft(array('pe'=>'pre_empenho'), 'e.pre_empenho_id = pe.pre_empenho_id', array())
             ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
             ->joinLeft(array('p'=>'projeto'), 'o.projeto_id = p.projeto_id', array())
+            ->joinLeft(array('r'=>'rubrica'), 'o.rubrica_id = r.rubrica_id', array())
             //->joinLeft(array('r'=>'rubrica'), 'o.rubrica_id = r.rubrica_id', array())
             //->joinLeft(array('dt'=>'destinatario'), 'o.destinatario_id = dt.destinatario_id', array())
             //->group(array('r.rubrica_id', 'dt.destinatario_id'))
