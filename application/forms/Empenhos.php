@@ -57,9 +57,8 @@ class Application_Form_Empenhos extends Zend_Form
         $emtDatePicker1->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker1);
 
-        $this->addElement('select', 'beneficiario_id', array(
+        $this->addElement('text', 'beneficiario', array(
             'label'      => 'Beneficiário: ',
-            'multiOptions' => Application_Model_Beneficiario::getOptions(),
             'required'   => true
         ));
 
@@ -106,6 +105,10 @@ class Application_Form_Empenhos extends Zend_Form
             'label'      => 'Pré Empenho: ',
             'multiOptions' => Application_Model_PreEmpenho::getOptions(),
             'required'   => true
+        ));
+
+        $this->addElement('hidden', 'beneficiario_id', array(
+            'value'      => '',
         ));
 
         // Add the submit button

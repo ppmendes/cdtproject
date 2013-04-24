@@ -1,3 +1,19 @@
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $( "#empenhos-beneficiario").combogrid({
+            debug:false,
+            colModel: [{'columnName':'nome','width':'45','label':'Beneficiário'}],
+            url: 'empenhos/combogridbeneficiario/',
+            select: function( event, ui ) {
+                $("#empenhos-beneficiario").val( ui.item.nome );
+                return false;
+            }
+        });
+    });
+
+</script>
+
 <?php
     $this->form->setAction($this->url());
     echo $this->form;

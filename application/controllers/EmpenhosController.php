@@ -86,6 +86,75 @@ class EmpenhosController extends Zend_Controller_Action
 
     }
 
+    public function combogridbeneficiarioAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'nome';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'nome like ? ';
+
+        $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('count(*) as count'))
+                                      ->where($where,$searchTerm);
+
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('nome'))
+                                          ->where($where,$searchTerm)
+                                          ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('nome'))
+                                          ->where($where,$searchTerm)
+                                          ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+            $response = (object) array();
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
 
 }
 
