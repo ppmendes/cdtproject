@@ -28,7 +28,7 @@ class EmpenhosController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_Empenhos();
         $model = new Application_Model_Empenho;
-        $id = $this->_getParam('id');
+        $id = $this->_getParam('projeto_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
@@ -43,8 +43,8 @@ class EmpenhosController extends Zend_Controller_Action
                 $this->_redirect('/empenhos/');
             }
         }elseif ($id){
-            $data = $model->find($id)->toArray();
-
+            //$data = $model->find($id)->toArray();
+            $form->startForm();
             if(is_array($data)){
                 $form->populate(array("empenhos" => $data));
             }
