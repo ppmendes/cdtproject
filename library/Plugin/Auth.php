@@ -42,6 +42,10 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             if($controller == 'index'){
                 $permitirAcesso = true;
             }
+            if($acao=='treeview' || $acao=='treeviewpermissoes')
+            {
+                $permitirAcesso=true;
+            }
 
             if(isset($permissoes[$controller][$acao][$projeto_id])
                 && $permissoes[$controller][$acao][$projeto_id] === true){
