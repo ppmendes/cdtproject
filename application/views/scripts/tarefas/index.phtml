@@ -34,10 +34,9 @@
     });
 </script>
 <script>
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = '/../tarefas/adicionar/';
-
+        top.location.href = '/../tarefas/adicionar/projeto_id/'+projeto_id;
     }
 </script>
 <style>
@@ -48,8 +47,12 @@
         float:right;
     }
 </style>
+<?php
+$projeto_id = $this->pid;
 
-<button class='novatarefa btn_add' onclick='adicionar()'>Nova Tarefa</button>
+echo "<button class='novatarefa btn_add' onclick='adicionar($projeto_id)'>Nova Tarefa</button>";
+
+?>
 
 <table id='table_id' border='0'>
     <thead>
