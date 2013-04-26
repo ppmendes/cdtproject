@@ -118,15 +118,21 @@ class DesembolsoController extends Zend_Controller_Action
 
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
-        $where = '(nome like ? or descricao_historico like ?) and o.projeto_id = ' . $pid . ' and (valor_empenho - 19000) > 0';
+        $qtdRubrica = $dbAdapter->fetchAll("SELECT count(*) as count, empenho_id, valor_empenho, descricao_historico, nome,
 
-        $select = $dbAdapter->select()->from(array('e'=>'empenho'),array('count(*) as count'))
-                                      ->where($where,$searchTerm)
-                                      ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
-                                      ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'));
+                  (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                    FROM desembolso AS des
+                    WHERE e.empenho_id = des.empenho_id
+                  ) AS saldo_empenho
 
+                  FROM empenho AS e
+                  LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                  LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+                  WHERE o.projeto_id = " . $pid . " AND (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                  FROM desembolso AS des
+                  WHERE e.empenho_id = des.empenho_id
+                  ) >= 0 AND (nome LIKE " . $searchTerm . " OR descricao_historico LIKE " . $searchTerm . ")");
 
-        $qtdRubrica = $dbAdapter->fetchAll($select);
         $count = $qtdRubrica[0]['count'];
 
         if( $count >0 ) {
@@ -139,23 +145,58 @@ class DesembolsoController extends Zend_Controller_Action
 
         if($total_pages!=0)
         {
-            $select = $dbAdapter->select()->from(array('e' => 'empenho') ,array('orcamento_id', 'empenho_id','beneficiario_id', 'descricao_historico',
-                                                                                'valor_empenho'))
-                                          ->where($where,$searchTerm)
-                                          ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
-                                          ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'))
-                                          ->order(array("$sidx $sord"))->limit($limit,$start);
+            try
+            {
+
+                $rows = $dbAdapter->fetchAll("SELECT empenho_id, valor_empenho, descricao_historico, nome,
+
+                  (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                    FROM desembolso AS des
+                    WHERE e.empenho_id = des.empenho_id
+                  ) AS saldo_empenho
+
+                  FROM empenho AS e
+                  LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                  LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+                  WHERE o.projeto_id = " . $pid . " AND (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                  FROM desembolso AS des
+                  WHERE e.empenho_id = des.empenho_id
+                  ) >= 0 AND (nome LIKE '" . $searchTerm . "' OR descricao_historico LIKE '" . $searchTerm . "')
+                  ORDER BY " . $sidx . " " . $sord . "
+                  LIMIT " . $start . ", " . $limit);
+
+        } catch (Exception $e)
+            {
+                echo $e->getMessage();
+            }
         }
         else{
-            $select = $dbAdapter->select()->from(array('e'=>'empenho'),array('empenho_id','beneficiario_id', 'descricao_historico'))
-                                          ->where($where,$searchTerm)
-                                          ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
-                                          ->joinLeft(array('b'=>'beneficiario'), 'e.beneficiario_id = b.beneficiario_id', array('nome' => 'nome'))
-                                          ->order(array("$sidx $sord"));
+            try
+            {
+
+                $rows = $dbAdapter->fetchAll("SELECT empenho_id, valor_empenho, descricao_historico, nome,
+
+                  (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                    FROM desembolso AS des
+                    WHERE e.empenho_id = des.empenho_id
+                  ) AS saldo_empenho
+
+                  FROM empenho AS e
+                  LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                  LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+                  WHERE o.projeto_id = " . $pid . " AND (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                  FROM desembolso AS des
+                  WHERE e.empenho_id = des.empenho_id
+                  ) >= 0 AND (nome LIKE '" . $searchTerm . "' OR descricao_historico LIKE '" . $searchTerm . "')
+                  ORDER BY " . $sidx . " " . $sord);
+
+            } catch (Exception $e)
+            {
+                echo $e->getMessage();
+            }
         }
 
         try{
-            $rows = $dbAdapter->fetchAll($select);
 
             $response = (object) array();
             $response->page = $page;

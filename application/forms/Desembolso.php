@@ -20,10 +20,11 @@ class Application_Form_Desembolso extends Zend_Form
         $this->setMethod('post');
 
         //Empenho a liquidar input type text
-        $this->addElement('textarea', 'empenho', array(
+        $this->addElement('select', 'empenho', array(
             'label'      => 'Empenho a liquidar:',
             'required'   => true,
-            'style'      => 'height: 70px',
+            'multiOptions' => Application_Model_Desembolso::getOptions(),
+      //      'style'      => 'height: 70px',
         ));
 
         //Código do documento hábil input type text

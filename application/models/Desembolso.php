@@ -142,6 +142,69 @@ class Application_Model_Desembolso
             echo $e->getMessage();
         }
     }
+
+    public function selectSaldoEmpenho($eid)
+    {
+        try{
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $colunas = array(
+                0 => 'SUM( valor_desembolso )',
+            );
+
+            $select = $db->select()
+                ->from(array('d' => 'desembolso'),array())
+                ->where('d.empenho_id = ?', $eid)
+                ->columns($colunas);
+
+            $stmt = $select->query();
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public static function getOptions()
+    {
+        try{
+            $options = array();
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $desembolso = $db->fetchAll("SELECT processo_administrativo, empenho_id, valor_empenho, descricao_historico, nome,
+
+                  (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                    FROM desembolso AS des
+                    WHERE
+                            IF (e.empenho_id = des.empenho_id)
+                                e.empenho_id = des.empenho_id
+                            ELSE
+                                e.empenho_id = e.empenho_id
+                  ) AS saldo_empenho
+
+                  FROM empenho AS e
+                  LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                  LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+                  WHERE o.projeto_id = 1 AND (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                  FROM desembolso AS des
+                  WHERE e.empenho_id = des.empenho_id
+                  ) > 0 ");
+
+            foreach($desembolso as $item){
+                $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+                                              " - Saldo de R$" . $item['saldo_empenho'];
+            }
+
+
+            return $options;
+        } catch(Exception $e){
+
+        }
+    }
 }
 
 

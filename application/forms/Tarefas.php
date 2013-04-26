@@ -37,6 +37,7 @@ class Application_Form_Tarefas extends Zend_Form
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
             ),
         ));
+        
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
         $emt->setLabel('Projeto:');
         $emt->setRequired(true);
@@ -45,6 +46,15 @@ class Application_Form_Tarefas extends Zend_Form
             'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id); atualizarTarefas1(ui.item.id)}')
         ));
         $this->addElement($emt);
+        
+       /* $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
+        $this->addElement('text', 'projeto', array(
+            'label'      => 'Projeto:',
+            'value'      => $nomeProjeto['0']['nome'],
+            'required'   => true,
+            'readonly'   => true,
+            'ignore'     => true,
+        )); */
 
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
