@@ -44,20 +44,20 @@
             }
         <?php }?>
 
-
-
         var frm = document.getElementById("formu");
-        var pat = /detalhes/;
+        var marcador=0;
         for(i=0;i< arreglo.length; i++)
         {
              for (j=0;j<frm.elements.length;j++)
              {
                  if(frm.elements[j].type=='checkbox')
                  {
-                     if(frm.elements[j].value == arreglo[i])
-                       frm.elements[j].checked=true;
-
-
+                     if(frm.elements[j].value == arreglo[i]){
+                         frm.elements[j].checked=true;
+                         enable_cb(frm.elements[j].id);
+                     }else{
+                         enable_cb(frm.elements[j].id)
+                     }
                  }
             }
         }
@@ -74,12 +74,11 @@
 
     function agregar($id,$nome){
 
-        var ProAl="proAl";
-        var branches = $("<li><input id='" + $id + "' name='datostree[]' type='checkbox' value='projetos|index|" + $id + "' checked >" + $nome + " <button type='button' onclick='apagar(" + $id + ")'>apagar</button><ul>" +
-                "<li><input name='datostree[]' type='checkbox' id='"+$id+"Vi' onclick=habilitar('"+$id+"Vi','"+$id+"Al') value='projetos|detalhes|"+$id+"' >Visualizar</li>" +
-                "<li><input name='datostree[]' type='checkbox' id='proAd' value='projetos|adicionar|*'  >Adicionar</li>" +
-                "<li><input name='datostree[]' type='checkbox' id='"+$id+"Al' value='projetos|adicionar|"+$id+"' disabled='true'>Alterar</li>" +
-                "<li><input name='datostree[]' type='checkbox' id='proAp' value='projetos|excluir|"+$id+"' >Apagar</li></ul></li>").appendTo("#proj");
+        var branches = $("<li><input id='" + $id + "' name='datostree[]' type='checkbox' value='projetos|index|" + $id + "' checked onclick=apagar(" + $id + ")>" + $nome + "<ul>" +
+                "<li><input name='datostree[]' class='" + $id + "' type='checkbox' id='"+$id+"Vi' value='projetos|detalhes|"+$id+"' onclick=checked_cb_Vi('"+$id+"Vi','"+$id+"Al')>Visualizar</li>" +
+                "<li><input name='datostree[]' class='"+$id+"' type='checkbox' id='proAd' value='projetos|adicionar|*'  >Adicionar</li>" +
+                "<li><input name='datostree[]' class='" + $id + "' type='checkbox' id='"+$id+"Al' value='projetos|adicionar|"+$id+"' onclick=checked_cb_Al('"+$id+"Vi','"+$id+"Al')>Alterar</li>" +
+                "<li><input name='datostree[]' class='" + $id + "' type='checkbox' id='proAp' value='projetos|excluir|"+$id+"' >Apagar</li></ul></li>").appendTo("#proj");
         $("#browser").treeview({
             add: branches
         });
@@ -101,14 +100,27 @@
         $("#browser3").treeview();
     })
 
-    function habilitar($id_check, $id_disabled)
+    function checked_cb_Al($idVi,$idAl)
     {
-        if(document.getElementById($id_check).checked==true)
-            document.getElementById($id_disabled).disabled=false;
-        else
-        {
-            document.getElementById($id_disabled).disabled=true;
-            document.getElementById($id_disabled).checked=false;
+        if(document.getElementById($idAl).checked){
+            document.getElementById($idVi).checked=true;
+        }
+    }
+    function checked_cb_Vi($idVi,$idAl){
+        if(document.getElementById($idVi).checked==false){
+        document.getElementById($idAl).checked=false;}
+    }
+
+
+    function enable_cb($id) {
+
+        if (document.getElementById($id).checked) {
+            $("input."+$id+"").removeAttr("disabled");
+
+        } else {
+            $("input."+$id+"").attr("disabled", true);
+
+            $("input."+$id+"").attr("checked", false);
         }
     }
 
@@ -118,36 +130,36 @@
 
     <div id="main">
         <ul id="browser" class="filetree">
-            <li id="proj"><input name="datostree[]" type="checkbox" id="proAc" value="projetos|index|*">Projetos <button id="pesquisarprojetos" type="button">Adicionar</button></li>
+            <li id="proj">Projetos <button id="pesquisarprojetos" type="button">Adicionar</button></li>
         </ul>
     </div>
 
     <div id="main1">
         <ul id="browser1" class="filetree">
 
-            <li><input name="datostree[]" type="checkbox" id="tarAc" value="tarefas|index|*">Tarefas
-                <ul id="tarefas">
-                    <li><input name="datostree[]" type="checkbox" id="tarVi" value="tarefas|detalhes|*"  onclick='habilitar("tarVi","tarAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAd" value="tarefas|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAl" value="tarefas|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAp" value="tarefas|excluir|*">Apagar</li>
+            <li><input name="datostree[]" type="checkbox" id="tarefas" value="tarefas|index|*" onclick="enable_cb('tarefas')">Tarefas
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="tarVi" value="tarefas|detalhes|*" class="tarefas" onclick='checked_cb_Vi("tarVi","tarAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAd" value="tarefas|adicionar|*" class="tarefas" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAl" value="tarefas|adicionar|#" class="tarefas" onclick='checked_cb_Al("tarVi","tarAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAp" value="tarefas|excluir|*" class="tarefas">Apagar</li>
                 </ul>
             </li>
 
-            <li><input  name="datostree[]" type="checkbox" id="arqAc" value="arquivos|index|*">Arquivos
-                <ul id="arquivos">
-                    <li><input name="datostree[]" type="checkbox" id="arqVi" value="arquivos|detalhes|*" onclick='habilitar("arqVi","arqAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAd" value="arquivos|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAl" value="arquivos|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAp" value="arquivos|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="arquivos" value="arquivos|index|*" onclick="enable_cb('arquivos')">Arquivos
+                <ul>
+                    <li><input name="datostree[]" type="checkbox" id="arqVi" value="arquivos|detalhes|*" class="arquivos" onclick='checked_cb_Vi("arqVi","arqAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAd" value="arquivos|adicionar|*" class="arquivos">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAl" value="arquivos|adicionar|#" class="arquivos" onclick='checked_cb_Al("arqVi","arqAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAp" value="arquivos|excluir|*" class="arquivos">Apagar</li>
                 </ul>
             </li>
-            <li><input  name="datostree[]" type="checkbox" id="benAc" value="beneficiarios|index|*">Beneficiario
-                <ul id="beneficiarios">
-                    <li><input name="datostree[]" type="checkbox" id="benVi" value="beneficiarios|detalhes|*" onclick='habilitar("benVi","benAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="benAd" value="beneficiarios|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="benAl" value="beneficiarios|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="benAp" value="beneficiarios|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="beneficiarios" value="beneficiarios|index|*" onclick="enable_cb('beneficiarios')">Beneficiario
+                <ul>
+                    <li><input name="datostree[]" type="checkbox" id="benVi" value="beneficiarios|detalhes|*" class="beneficiarios" onclick='checked_cb_Vi("benVi","benAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="benAd" value="beneficiarios|adicionar|*" class="beneficiarios">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="benAl" value="beneficiarios|adicionar|#" class="beneficiarios" onclick='checked_cb_Al("benVi","benAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="benAp" value="beneficiarios|excluir|*" class="beneficiarios">Apagar</li>
                 </ul>
             </li>
         </ul>
@@ -155,28 +167,28 @@
 
     <div id="main2">
         <ul id="browser2" class="filetree">
-            <li><input  name="datostree[]" type="checkbox" id="usuAc" value="usuarios|index|*">Usuario
-                <ul id="usuarios">
-                    <li><input name="datostree[]" type="checkbox" id="usuVi" value="usuarios|detalhes|*" onclick='habilitar("usuVi","usuAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAd" value="usuarios|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAl" value="usuarios|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAp" value="usuarios|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="usuarios" value="usuarios|index|*" onclick="enable_cb('usuario')">Usuario
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="usuVi" value="usuarios|detalhes|*" class="usuario" onclick='checked_cb_Vi("usuVi","usuAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAd" value="usuarios|adicionar|*" class="usuario">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAl" value="usuarios|adicionar|#" class="usuario" onclick='checked_cb_Al("usuVi","usuAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAp" value="usuarios|excluir|*" class="usuario">Apagar</li>
                 </ul>
             </li>
-            <li><input  name="datostree[]" type="checkbox" id="empAc" value="empenhos|index|*">Empenho
-                <ul id="empenhos">
-                    <li><input name="datostree[]" type="checkbox" id="empVi" value="empenhos|detalhes|*" onclick='habilitar("empVi","empAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAd" value="empenhos|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAl" value="empenhos|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAp" value="empenhos|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="empenhos" value="empenhos|index|*" onclick="enable_cb('empenhos')">Empenho
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="empVi" value="empenhos|detalhes|*" class="empenhos" onclick='checked_cb_Vi("empVi","empAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAd" value="empenhos|adicionar|*" class="empenhos">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAl" value="empenhos|adicionar|#" class="empenhos" onclick='checked_cb_Al("empVi","empAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAp" value="empenhos|excluir|*" class="empenhos">Apagar</li>
                 </ul>
             </li>
-            <li><input  name="datostree[]" type="checkbox" id="insAc" value="instituicoes|index|*">Instituições
-                <ul id="instituicoes">
-                    <li><input name="datostree[]" type="checkbox" id="insVi" value="instituicoes|detalhes|*" onclick='habilitar("insVi","insAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="insAd" value="instituicoes|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="insAl" value="instituicoes|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="insAp" value="instituicoes|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="instituicoes" value="instituicoes|index|*" onclick="enable_cb('instituicoes')">Instituições
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="insVi" value="instituicoes|detalhes|*" class="instituicoes" onclick='checked_cb_Vi("insVi","insAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="insAd" value="instituicoes|adicionar|*" class="instituicoes">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="insAl" value="instituicoes|adicionar|#" class="instituicoes" onclick='checked_cb_Al("insVi","insAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="insAp" value="instituicoes|excluir|*" class="instituicoes">Apagar</li>
                 </ul>
             </li>
         </ul>
@@ -184,28 +196,28 @@
 
     <div id="main3">
         <ul id="browser3" class="filetree">
-            <li><input  name="datostree[]" type="checkbox" id="orcAc" value="orcamentario|index|*">Orçamento
-                <ul id="orcamentario">
-                    <li><input name="datostree[]" type="checkbox" id="orcVi" value="orcamentario|detalhes|*" onclick='habilitar("orcVi","orcAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="orcAd" value="orcamentario|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="orcAl" value="orcamentario|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="orcAp" value="orcamentario|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="orcamentario" value="orcamentario|index|*" onclick="enable_cb('orcamentario')">Orçamento
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="orcVi" value="orcamentario|detalhes|*" class="orcamentario" onclick='checked_cb_Vi("orcVi","orcAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="orcAd" value="orcamentario|adicionar|*" class="orcamentario" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="orcAl" value="orcamentario|adicionar|#" class="orcamentario" onclick='checked_cb_Al("orcVi","orcAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="orcAp" value="orcamentario|excluir|*" class="orcamentario">Apagar</li>
                 </ul>
             </li>
-            <li><input  name="datostree[]" type="checkbox" id="solAc" value="solicitacoes|index|*">Solicitações
-                <ul id="solicitacoes">
-                    <li><input name="datostree[]" type="checkbox" id="solVi" value="solicitacoes|detalhes|*" onclick='habilitar("solVi","solAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="solAd" value="solicitacoes|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="solAl" value="solicitacoes|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="solAp" value="solicitacoes|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="solicitacoes" value="solicitacoes|index|*" onclick="enable_cb('solicitacoes')">Solicitações
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="solVi" value="solicitacoes|detalhes|*" class="solicitacoes" onclick='checked_cb_Vi("solVi","solAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="solAd" value="solicitacoes|adicionar|*" class="solicitacoes">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="solAl" value="solicitacoes|adicionar|#" class="solicitacoes" onclick='checked_cb_Al("solVi","solAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="solAp" value="solicitacoes|excluir|*" class="solicitacoes">Apagar</li>
                 </ul>
             </li>
-            <li><input  name="datostree[]" type="checkbox" id="tadAc" value="termoaditivo|index|*">Termo Aditivo
-                <ul id="termoaditivo">
-                    <li><input name="datostree[]" type="checkbox" id="tadVi" value="termoaditivo|detalhes|*" onclick='habilitar("tadVi","tadAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAd" value="termoaditivo|adicionar|*" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAl" value="termoaditivo|adicionar|#" disabled="true">Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAp" value="termoaditivo|excluir|*" >Apagar</li>
+            <li><input  name="datostree[]" type="checkbox" id="termoaditivo" value="termoaditivo|index|*" onclick="enable_cb('termoaditivo')">Termo Aditivo
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="tadVi" value="termoaditivo|detalhes|*" class="termoaditivo" onclick='checked_cb_Vi("tadVi","tadAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAd" value="termoaditivo|adicionar|*" class="termoaditivo">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAl" value="termoaditivo|adicionar|#" class="termoaditivo"onclick='checked_cb_Al("tadVi","tadAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAp" value="termoaditivo|excluir|*" class="termoaditivo">Apagar</li>
                 </ul>
             </li>
         </ul>
