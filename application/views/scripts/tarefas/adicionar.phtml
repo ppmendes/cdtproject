@@ -25,8 +25,20 @@ echo $this->form;
                 }
             })
         }
+    }
 
+    function atualizarTarefas1(valor) {
 
+        if(valor!=0){
+            $.ajax({
+                url: '/tarefas/selecttarefas/id/'+valor,
+                dataType:'html',
+                type:'GET',
+                success: function(data){
+                    $('select#tarefas-tarefa_id_pai').html(data);
+                }
+            })
+        }
     }
 
     function atualizarUsuarios(valor) {
@@ -42,8 +54,6 @@ echo $this->form;
                 }
             })
         }
-
-
     }
 
     function calcular_dias_habiles(dia_inicio,nro_dias)
