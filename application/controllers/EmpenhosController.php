@@ -11,19 +11,23 @@ class EmpenhosController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $model = new Application_Model_Empenho();
-        $this->view->resultado = $model->selectAll();
-        $this->view->resultado = array();
+        $pid = $this->_getParam('projeto_id');
+        $this->view->resultado = $model->selectAll($pid);
+        $this->view->soma = $model->selectAllSoma($pid);
+        $this->view->pid = $pid;
     }
 
-    public function indexajaxAction(){
-        $model = new Application_Model_Empenho();
-        echo '{"aaData":'.json_encode($model->selectAll()).'}';
-        exit;
-    }
+//    public function indexajaxAction(){
+//        $model = new Application_Model_Empenho();
+//        $id = $this->_getParam('projeto_id');
+//        echo '{"aaData":'.json_encode($model->selectAll($id)).'}';
+//        exit;
+//    }
 
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Empenhos();
+        $form->startform();
         $model = new Application_Model_Empenho;
         $id = $this->_getParam('id');
 

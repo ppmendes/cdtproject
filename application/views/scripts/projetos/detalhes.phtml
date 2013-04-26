@@ -37,6 +37,14 @@
     {
         top.location.href= '/../cronogramaorcamentario/index/projeto_id/'+id;
     }
+    function empenhos(id)
+    {
+        top.location.href = '/../empenhos/index/projeto_id/'+id;
+    }
+    function desembolso(id)
+    {
+        top.location.href = '/../desembolso/index/projeto_id/'+id;
+    }
 </script>
 
 <?php
@@ -52,5 +60,7 @@ echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'>
 echo "<button class='' onclick='tarefasProjeto($id)'>Tarefas</button>";
 echo "<button class='' onclick='orcamentos($id)'>Orcamento</button>";
 echo "<button class='' onclick='cronogramaOrcamentario($id)'>Cronograma Orçamentário</button>";
+echo "<button class='' onclick='empenhos($id)'>Empenho</button>";
+echo "<button class='' onclick='desembolso($id)'>Desembolso</button>";
 
 ?>

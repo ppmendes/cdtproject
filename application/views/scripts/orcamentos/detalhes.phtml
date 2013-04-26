@@ -1,3 +1,19 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
+<script>
+    $(document).ready(function() {
+        $('.fancybox').fancybox();
+        $('button.menu_financeiro').click(function() {
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/<?php echo $projeto_id; ?>">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
+    });
+
+</script>
+
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
     function confirmarExclusao(id)

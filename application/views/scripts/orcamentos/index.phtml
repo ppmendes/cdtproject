@@ -1,3 +1,7 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
 <script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     $(document).ready(function() {
         $('#table_id').dataTable({
@@ -31,6 +35,12 @@
 //                null,
 //            ]
         });
+        $('.fancybox').fancybox();
+        $('button.menu_financeiro').click(function() {
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
     });
 </script>
 <script>
@@ -39,6 +49,7 @@
         top.location.href = '/../orcamentos/adicionar/projeto_id/'+projeto_id;
 
     }
+
 </script>
 <style>
     table * *{
@@ -50,7 +61,8 @@
 </style>
 
 <?php
-$projeto_id = $this->pid;
+
+echo "<button class='menu_financeiro'>Menu Financeiro</button>";
 echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Novo Orçamento</button>";
 ?>
 
@@ -80,6 +92,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     $somaDesembolso = 0;
     $decimalfilter = new Zend_Filter_DecimalFilter();
     $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['p.orcamento']);
+    $valor_cronograma_financeiro = number_format(0 + $this->orcamentos[0]['valor_recebido'], 2, '.', '');
 
     foreach($this->orcamentos as $row)
     {
@@ -90,6 +103,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     $somaEmpenho = $somaEmpenho + $valor_empenho;
     $somaSaldoOrc = $somaSaldoOrc + $saldo_orcamentario;
     $somaDesembolso = $somaDesembolso + $valor_desembolso;
+
 
         //$row = $row->toArray();
     echo "<tr id='".$row['orcamento_id']."'>";
@@ -119,6 +133,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<th> Total Empenhado</th>";
     echo "<th> Saldo Orçamentário</th>";
     echo "<th> Total Desembolsado</th>";
+    echo "<th> Saldo Financeiro</th>";
     echo "</tr>";
     echo "</thead>";
 
@@ -130,6 +145,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter($valor_cronograma_financeiro - $valor_desembolso) . "</td>";
 
     echo "</tr>";
     echo "</tbody>";

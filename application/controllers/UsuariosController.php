@@ -54,6 +54,7 @@ class UsuariosController extends Zend_Controller_Action
                         unset($data['usuario']['password']);
                     }
 
+                    $newdata['usuario']['password']=$passwordcriptografado;
                     // finalmente atualizamos o banco de dados
                     $model->update($newdata, $id);
                 }else{
@@ -95,10 +96,15 @@ class UsuariosController extends Zend_Controller_Action
 
             if(is_array($data)){
                 $idinstituicao=$data['instituicao_id'];
+                $idestado=$data['estados_id'];
+                $idcidade=$data['cidade_id'];
                 $form->setAction('/usuarios/detalhes/usuario_id/' . $id);
+                $form->setIdCidade($idcidade);
+                $form->setIdEstado($idestado);
                 $form->startform();
                 $db = Zend_Db_Table::getDefaultAdapter();
                 $nome_instituicao=$db->fetchRow("select nome from instituicao where instituicao_id=$idinstituicao");
+
                 $data['ac']=$nome_instituicao['nome'];
                 $form->populate(array("usuario" => $data));
             }
@@ -287,9 +293,9 @@ class UsuariosController extends Zend_Controller_Action
 
         if($this->getRequest()->isPost())
         {
-            echo 'entro!!';
             $datos=$this->getRequest()->getParams();
             $datostreeview=$datos['datostree'];
+            print_r($datostreeview);
             $modelpermissões->delete($id_usuario);
 
             foreach($datostreeview as $item)
@@ -301,13 +307,13 @@ class UsuariosController extends Zend_Controller_Action
                 $data['valor']=$dataexplode[2];
                 $modelpermissões->insert($data);
             }
+            $this->_redirect('/usuarios/');
         }else
         {
             //verificamos se o usuario é novinho ou já é um usuario registrado, por o numeros de projeto cadastrado
             $db = Zend_Db_Table::getDefaultAdapter();
             $result = $db->fetchAll("SELECT controller, action, valor FROM `permissao-usuario` WHERE usuario_id=$id_usuario");
             $nomeprojeto= $db->fetchAll("SELECT distinct PU.valor, P.nome FROM `permissao-usuario` as PU inner join projeto as P on PU.valor=P.projeto_id where PU.usuario_id=$id_usuario ");
-
 
             $permissoes=null;
             //concatenamos os valores da consulta

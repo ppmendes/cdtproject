@@ -1,3 +1,7 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
 <script>
     $(document).ready(function() {
         $('#table_id').dataTable({
@@ -20,10 +24,10 @@
                     "sNext":     " > ",
                     "sLast":     " >> "
                 }
-            },
-            "bProcessing": true,
-            "sAjaxSource": 'empenhos/indexajax',
-            "bDeferRender": true
+            }
+          //  "bProcessing": true,
+          //  "sAjaxSource": 'empenhos/indexajax/projeto_id/'+id,
+          //  "bDeferRender": true
             //"bSort": false,
 //            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
 //            "aoColumns": [
@@ -34,13 +38,19 @@
 //                null,
 //            ]
         });
+        $('.fancybox').fancybox();
+        $('button.menu_financeiro').click(function() {
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
 
     });
 </script>
 <script>
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = '/../empenhos/adicionar/';
+        top.location.href = '/../empenhos/adicionar/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -52,15 +62,19 @@
         float:right;
     }
 </style>
-    <button class='novoprojeto btn_add' onclick='adicionar()'>Novo Empenho</button>
+
+
+<?php
+    echo "<button class='menu_financeiro'>Menu Financeiro</button>";
+    echo "<button class='novoprojeto btn_add' onclick='adicionar($projeto_id)'>Novo Empenho</button>";
+?>
 
 <table id='table_id'>
     <thead>
     <tr>
-        <th>Descrição</th>
+        <th>Código Rubrica</th>
         <th>Data</th>
         <th>Beneficiário</th>
-        <th>Projeto</th>
         <th>Valor</th>
         <th>Número de Parcelas</th>
         <th>Data de Início da Bolsa</th>
@@ -73,22 +87,64 @@
     <tbody>
 
     <?php
+    $somaRubrica = 0;
+    $somaEmpenho = 0;
+    $somaSaldoOrc = 0;
+    $somaDesembolso = 0;
+    $datefilter = new Zend_Filter_DateFilter();
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+
+
+    $orcamentoProjeto = $decimalfilter->filter($this->soma[0]['orcamento']);
+    $somaRubrica = number_format(0 + $this->soma[0]['valor_orcamento'], 2, '.', '');
+    $somaDesembolso = number_format(0 + $this->soma[0]['valor_desembolso'], 2, '.', '');
+    $somaEmpenho = number_format(0 + ($this->soma[0]['SUM( e.valor_empenho )'] + $this->soma[0]['valor_pre_empenho']), 2, '.', '');
+    $somaSaldoFin =  number_format(0 + ($this->soma[0]['valor_recebido'] - $somaDesembolso), 2, '.', '');
+    $somaSaldoOrc = number_format(0 + $somaRubrica - $somaEmpenho , 2, '.', '');
+
     foreach($this->resultado as $row)
     {
     //$row = $row->toArray();
     echo "<tr id='".$row['empenho_id']."'>";
-    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['descricao'] . "</a></td>";
+    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['codigo_rubrica'] . "</a></td>";
     echo "<td>" .   $row['data'] . "</td>";
     echo "<td >" .  $row['beneficiario_id'] . "</td>";
-    echo "<td >" .  $row['projeto_id'] . "</td>";
     echo "<td >" .  $row['valor_empenho'] . "</td>";
     echo "<td >" .  $row['numero_parcelas'] . "</td>";
-    echo "<td >" .  $row['data_inicio_bolsa'] . "</td>";
-    echo "<td >" .  $row['data_fim_bolsa'] . "</td>";
+    echo "<td >" .  $row['data_inicio'] . "</td>";
+    echo "<td >" .  $row['data_fim'] . "</td>";
     echo "<td >" .  $row['orcamento_id'] . "</td>";
     echo "<td >" .  $row['usuario_id'] . "</td>";
     echo "<td >" .  $row['pre_empenho_id'] . "</td>";
     echo "</tr>";
     }
     echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Orçamento Previsto</th>";
+    echo "<th> Total Rubrica</th>";
+    echo "<th> Orçamento Disponibilizado</th>";
+    echo "<th> Total Empenhado</th>";
+    echo "<th> Saldo Orçamentário</th>";
+    echo "<th> Saldo Financeiro</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $orcamentoProjeto . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
+    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoFin) . "</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
 ?>
+

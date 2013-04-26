@@ -1,3 +1,20 @@
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var pid = $("#desembolso-projeto_id").val();
+        $( "#desembolso-empenho").combogrid({
+            debug:false,
+            colModel: [{'columnName':'nome','width':'45','label':'Beneficiário'},{'columnName':'descricao_historico','width':'55','label':'Descrição'}],
+            url: 'desembolso/combogridempenho/projeto_id/'+pid,
+            select: function( event, ui ) {
+                $("#desembolso-empenho").val( ui.item.nome + ' - ' +  ui.item.descricao_historico );
+                return false;
+            }
+        });
+    });
+
+</script>
+
 <?php
     $this->form->setAction($this->url());
     echo $this->form;

@@ -99,6 +99,11 @@ class Application_Model_Orcamento
             $resultado = $db->fetchAll("SELECT o.orcamento_id, o.rubrica_id, SUM( o.valor_orcamento ) , o.destinatario_id,
                                         o.projeto_id, dt.nome_destinatario, r.codigo_rubrica, r.descricao,
 
+                                        (SELECT SUM( valor_recebido )
+                                         FROM cronograma_financeiro AS cf
+                                         WHERE cf.projeto_id = " . $id . "
+                                         ) AS valor_recebido,
+
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e
                                          WHERE e.orcamento_id = o.orcamento_id
@@ -119,6 +124,7 @@ class Application_Model_Orcamento
                                          FROM orcamento AS o
                                          LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
                                          LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                         LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
                                          WHERE o.projeto_id = ". $id . "
                                          GROUP BY o.rubrica_id, o.destinatario_id
                                          ORDER BY o.data_registro_orcamento");
