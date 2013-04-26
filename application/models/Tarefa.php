@@ -42,22 +42,14 @@ class Application_Model_Tarefa
         return (int)$result;
     }
 
-    public function selectAll()
+    public function selectAll($idusuario)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
-            $select = $db->select()
-                ->from(array('t' => 'tarefa'))
-                ->where('t.deletado = ?', false)
-                ->joinLeft(array('us' => 'usuario'), 't.criador = us.usuario_id',array('us.usuario_id'=>'us.usuario_id','us.username'=>'us.username'))
-                ->joinLeft(array('pr' => 'projeto'), 't.projeto_id = pr.projeto_id',array('pr.projeto_id'=>'pr.projeto_id','pr.nome'=>'pr.nome'));
-//                ->joinLeft(array('ct' => 'usuario'), 'p.coordenador_tecnico = ct.usuario_id',array('ct.usuario_id'=>'ct.usuario_id','ct.nome'=>'ct.nome','ct.sobrenome'=>'ct.sobrenome'))
-//                ->joinLeft(array('ga' => 'instituicao_gerencia'), 'p.instituicao_gerencia_id = ga.instituicao_gerencia_id',array(
-//                'ga.instituicao_gerencia_id'=>'ga.instituicao_gerencia_id','ga.nome_instituicao_gerencia'=>'ga.nome_instituicao_gerencia'));
-            $stmt = $select->query();
-
-            $result = $stmt->fetchAll();
+            $result=$db->fetchAll("select t.tarefa_id, t.percentagem_completo, p.nome as nomeprojeto, t.nome, u.username, t.dono, t.data_inicio, t.data_final, t.duracao from tarefa_usuario as tu inner join tarefa as t on tu.tarefa_id=t.tarefa_id
+inner join projeto as p on p.projeto_id=t.projeto_id
+inner join usuario as u on u.usuario_id=tu.usuario_id where tu.usuario_id=$idusuario");
 
             return $result;
         }catch(Exception $e){
@@ -74,6 +66,31 @@ class Application_Model_Tarefa
                 $options[$item['projeto_id']] = $item['nome'];
             }
             return $options;
+        } catch(Exception $e){
+
+        }
+
+    }
+
+    public static function getTarefasByIdProjeto($id_projeto_form=null){
+        try{
+           if($id_projeto_form!=null)
+           {
+
+               $db = Zend_Db_Table::getDefaultAdapter();
+               $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where projeto_id = $id_projeto_form");
+               $options = array(''=>'Nenhum');
+
+               foreach($resultado as $item){
+                   $options[$item['tarefa_id']] = $item['nome'];
+               }
+
+               return $options;
+           }else
+           {
+               $options=array();
+               return $options;
+           }
         } catch(Exception $e){
 
         }
@@ -99,22 +116,22 @@ class Application_Model_Tarefa
     public static function getOptions1($id_projeto_form = null){
 
         try{
-            if($id_projeto_form == null)
+            if($id_projeto_form == null || $id_projeto_form == "")
             {
-                $options = array(''=>'Nenhum');
-                $table = new Application_Model_DbTable_Tarefa();
+                $options = array('0'=>'Nenhum');
+                /*$table = new Application_Model_DbTable_Tarefa();
                 $resultado = $table->fetchAll();
 
 
                 foreach($resultado as $item){
 
                    $options[$item['tarefa_id']] = $item['nome'];
-                }
+                }*/
                 return $options;
             }
             else
             {
-                $options = array(''=>'Nenhum');
+                $optionNenhum = array('0' =>'Nenhum');
 
                 $db = Zend_Db_Table::getDefaultAdapter();
                 $resultado = $db->fetchAll("select tarefa_id, nome from tarefa where projeto_id = $id_projeto_form");
@@ -124,6 +141,7 @@ class Application_Model_Tarefa
 
                     $options[$item['tarefa_id']] = $item['nome'];
                 }
+                $options = array_merge($optionNenhum, $options);
                 return $options;
             }
         } catch(Exception $e){
@@ -131,6 +149,7 @@ class Application_Model_Tarefa
         }
 
     }
+
     public static function getOptions3($id_projeto_form = null,$id_tarefa_form = null){
 
         try{

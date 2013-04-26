@@ -26,7 +26,6 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             //array com as permissões do usuário
             $permissoes = $data->permissoes;
 
-            $permissoes['*']['*']['*'] = true;
 
             //controlador, ação e parâmetros da url acessada
             $controller = $request->getControllerName();
@@ -43,12 +42,20 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             if($controller == 'index'){
                 $permitirAcesso = true;
             }
+            if($acao=='treeview' || $acao=='treeviewpermissoes')
+            {
+                $permitirAcesso=true;
+            }
+
             if(isset($permissoes[$controller][$acao][$projeto_id])
                 && $permissoes[$controller][$acao][$projeto_id] === true){
                 $permitirAcesso = true;
             }else if(isset($permissoes[$controller][$acao]['*'])
                 && $permissoes[$controller][$acao]['*'] === true){
                 $permitirAcesso = true;
+            }else if(isset($permissoes[$controller][$acao]['#'])
+                && $permissoes[$controller][$acao]['#']==true){
+                $permitirAcesso=true;
             }else if(isset($permissoes[$controller]['*']['*'])
                 && $permissoes[$controller]['*']['*'] === true){
                 $permitirAcesso = true;
