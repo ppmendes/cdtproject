@@ -30,14 +30,14 @@ h1 { font-size: large }
     float: left;
     overflow: auto;
     padding: 1em;
-    width: 35%;
+    width: 30%;
 }
 
 #main1, #main2, #main3  {
     float: left;
     overflow: auto;
     padding: 1em;
-    width: 18%; }
+    width: 20%; }
 #but{
     overflow: hidden;
     width: 100%;

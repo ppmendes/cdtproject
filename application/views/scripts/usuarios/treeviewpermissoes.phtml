@@ -136,22 +136,12 @@
 
     <div id="main1">
         <ul id="browser1" class="filetree">
-
-            <li><input name="datostree[]" type="checkbox" id="tarefas" value="tarefas|index|*" onclick="enable_cb('tarefas')">Tarefas
+            <li><input  name="datostree[]" type="checkbox" id="termoaditivo" value="termoaditivo|index|*" onclick="enable_cb('termoaditivo')">Termo Aditivo
                 <ul >
-                    <li><input name="datostree[]" type="checkbox" id="tarVi" value="tarefas|detalhes|*" class="tarefas" onclick='checked_cb_Vi("tarVi","tarAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAd" value="tarefas|adicionar|*" class="tarefas" >Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAl" value="tarefas|adicionar|#" class="tarefas" onclick='checked_cb_Al("tarVi","tarAl")'>Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tarAp" value="tarefas|excluir|*" class="tarefas">Apagar</li>
-                </ul>
-            </li>
-
-            <li><input  name="datostree[]" type="checkbox" id="arquivos" value="arquivos|index|*" onclick="enable_cb('arquivos')">Arquivos
-                <ul>
-                    <li><input name="datostree[]" type="checkbox" id="arqVi" value="arquivos|detalhes|*" class="arquivos" onclick='checked_cb_Vi("arqVi","arqAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAd" value="arquivos|adicionar|*" class="arquivos">Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAl" value="arquivos|adicionar|#" class="arquivos" onclick='checked_cb_Al("arqVi","arqAl")'>Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="arqAp" value="arquivos|excluir|*" class="arquivos">Apagar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadVi" value="termoaditivo|detalhes|*" class="termoaditivo" onclick='checked_cb_Vi("tadVi","tadAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAd" value="termoaditivo|adicionar|*" class="termoaditivo">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAl" value="termoaditivo|adicionar|#" class="termoaditivo"onclick='checked_cb_Al("tadVi","tadAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tadAp" value="termoaditivo|excluir|*" class="termoaditivo">Apagar</li>
                 </ul>
             </li>
             <li><input  name="datostree[]" type="checkbox" id="beneficiarios" value="beneficiarios|index|*" onclick="enable_cb('beneficiarios')">Beneficiario
@@ -162,27 +152,6 @@
                     <li><input name="datostree[]" type="checkbox" id="benAp" value="beneficiarios|excluir|*" class="beneficiarios">Apagar</li>
                 </ul>
             </li>
-        </ul>
-    </div>
-
-    <div id="main2">
-        <ul id="browser2" class="filetree">
-            <li><input  name="datostree[]" type="checkbox" id="usuario" value="usuarios|index|*" onclick="enable_cb('usuario')">Usuario
-                <ul >
-                    <li><input name="datostree[]" type="checkbox" id="usuVi" value="usuarios|detalhes|*" class="usuario" onclick='checked_cb_Vi("usuVi","usuAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAd" value="usuarios|adicionar|*" class="usuario">Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAl" value="usuarios|adicionar|#" class="usuario" onclick='checked_cb_Al("usuVi","usuAl")'>Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="usuAp" value="usuarios|excluir|*" class="usuario">Apagar</li>
-                </ul>
-            </li>
-            <li><input  name="datostree[]" type="checkbox" id="empenhos" value="empenhos|index|*" onclick="enable_cb('empenhos')">Empenho
-                <ul >
-                    <li><input name="datostree[]" type="checkbox" id="empVi" value="empenhos|detalhes|*" class="empenhos" onclick='checked_cb_Vi("empVi","empAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAd" value="empenhos|adicionar|*" class="empenhos">Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAl" value="empenhos|adicionar|#" class="empenhos" onclick='checked_cb_Al("empVi","empAl")'>Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="empAp" value="empenhos|excluir|*" class="empenhos">Apagar</li>
-                </ul>
-            </li>
             <li><input  name="datostree[]" type="checkbox" id="instituicoes" value="instituicoes|index|*" onclick="enable_cb('instituicoes')">Instituições
                 <ul >
                     <li><input name="datostree[]" type="checkbox" id="insVi" value="instituicoes|detalhes|*" class="instituicoes" onclick='checked_cb_Vi("insVi","insAl")'>Visualizar</li>
@@ -191,6 +160,56 @@
                     <li><input name="datostree[]" type="checkbox" id="insAp" value="instituicoes|excluir|*" class="instituicoes">Apagar</li>
                 </ul>
             </li>
+            <li><input  name="datostree[]" type="checkbox" id="usuarios" value="usuarios|index|*" onclick="enable_cb('usuarios')">Usuarios
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="usuVi" value="usuarios|detalhes|*" class="usuarios" onclick='checked_cb_Vi("usuVi","usuAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAd" value="usuarios|adicionar|*" class="usuarios">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAl" value="usuarios|adicionar|#" class="usuarios" onclick='checked_cb_Al("usuVi","usuAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="usuAp" value="usuarios|excluir|*" class="usuarios">Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" id="permissoes" value="usuarios|treeviewpermissoes|*" onclick="enable_cb('permissoes')">Permissoes
+            </li>
+        </ul>
+    </div>
+
+    <div id="main2">
+        <ul id="browser2" class="filetree">
+            <li><input name="datostree[]" type="checkbox" id="tarefas" value="tarefas|index|*" onclick="enable_cb('tarefas')">Tarefas
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="tarVi" value="tarefas|detalhes|*" class="tarefas" onclick='checked_cb_Vi("tarVi","tarAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAd" value="tarefas|adicionar|*" class="tarefas" >Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAl" value="tarefas|adicionar|#" class="tarefas" onclick='checked_cb_Al("tarVi","tarAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="tarAp" value="tarefas|excluir|*" class="tarefas">Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" id="arquivos" value="arquivos|index|*" onclick="enable_cb('arquivos')">Arquivos
+                <ul>
+                    <li><input name="datostree[]" type="checkbox" id="arqVi" value="arquivos|detalhes|*" class="arquivos" onclick='checked_cb_Vi("arqVi","arqAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAd" value="arquivos|adicionar|*" class="arquivos">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAl" value="arquivos|adicionar|#" class="arquivos" onclick='checked_cb_Al("arqVi","arqAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="arqAp" value="arquivos|excluir|*" class="arquivos">Apagar</li>
+                </ul>
+            </li>
+
+
+            <li><input  name="datostree[]" type="checkbox" id="empenhos" value="empenhos|index|*" onclick="enable_cb('empenhos')">Empenho
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="empVi" value="empenhos|detalhes|*" class="empenhos" onclick='checked_cb_Vi("empVi","empAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAd" value="empenhos|adicionar|*" class="empenhos">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAl" value="empenhos|adicionar|#" class="empenhos" onclick='checked_cb_Al("empVi","empAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="empAp" value="empenhos|excluir|*" class="empenhos">Apagar</li>
+                </ul>
+            </li>
+            <li><input  name="datostree[]" type="checkbox" id="desembolso" value="usuarios|index|*" onclick="enable_cb('desembolso')">Desembolso
+                <ul >
+                    <li><input name="datostree[]" type="checkbox" id="desVi" value="desembolso|detalhes|*" class="desembolso" onclick='checked_cb_Vi("desVi","desAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="desAd" value="desembolso|adicionar|*" class="desembolso">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="desAl" value="desembolso|adicionar|#" class="desembolso" onclick='checked_cb_Al("desVi","desAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="desAp" value="desembolso|excluir|*" class="desembolso">Apagar</li>
+                </ul>
+            </li>
+
         </ul>
     </div>
 
@@ -212,14 +231,25 @@
                     <li><input name="datostree[]" type="checkbox" id="solAp" value="solicitacoes|excluir|*" class="solicitacoes">Apagar</li>
                 </ul>
             </li>
-            <li><input  name="datostree[]" type="checkbox" id="termoaditivo" value="termoaditivo|index|*" onclick="enable_cb('termoaditivo')">Termo Aditivo
-                <ul >
-                    <li><input name="datostree[]" type="checkbox" id="tadVi" value="termoaditivo|detalhes|*" class="termoaditivo" onclick='checked_cb_Vi("tadVi","tadAl")'>Visualizar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAd" value="termoaditivo|adicionar|*" class="termoaditivo">Adicionar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAl" value="termoaditivo|adicionar|#" class="termoaditivo"onclick='checked_cb_Al("tadVi","tadAl")'>Alterar</li>
-                    <li><input name="datostree[]" type="checkbox" id="tadAp" value="termoaditivo|excluir|*" class="termoaditivo">Apagar</li>
+
+
+            <li><input  name="datostree[]" type="checkbox" id="cfinanceiro" value="cronogramafinanceiro|index|*" onclick="enable_cb('cfinanceiro')">Cronograma Financeiro
+                <ul>
+                    <li><input name="datostree[]" type="checkbox" id="cfinVi" value="cronogramafinanceiro|detalhes|*" class="cfinanceiro" onclick='checked_cb_Vi("cfinVi","cfinAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="cfinAd" value="cronogramafinanceiro|adicionar|*" class="cfinanceiro">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="cfinAl" value="cronogramafinanceiro|adicionar|#" class="cfinanceiro" onclick='checked_cb_Al("cfinVi","cfinAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="cfinAp" value="cronogramafinanceiro|excluir|*" class="cfinanceiro">Apagar</li>
                 </ul>
             </li>
+            <li><input  name="datostree[]" type="checkbox" id="corcamentario" value="cronogramaorcamentario|index|*" onclick="enable_cb('corcamentario')">Cronograma Orçamentario
+                <ul>
+                    <li><input name="datostree[]" type="checkbox" id="corVi" value="cronogramaorcamentario|detalhes|*" class="corcamentario" onclick='checked_cb_Vi("corVi","corAl")'>Visualizar</li>
+                    <li><input name="datostree[]" type="checkbox" id="corAd" value="cronogramaorcamentario|adicionar|*" class="corcamentario">Adicionar</li>
+                    <li><input name="datostree[]" type="checkbox" id="corAl" value="cronogramaorcamentario|adicionar|#" class="corcamentario" onclick='checked_cb_Al("corVi","corAl")'>Alterar</li>
+                    <li><input name="datostree[]" type="checkbox" id="corAp" value="cronogramaorcamentario|excluir|*" class="corcamentario">Apagar</li>
+                </ul>
+            </li>
+
         </ul>
     </div>
     <div id="but">
