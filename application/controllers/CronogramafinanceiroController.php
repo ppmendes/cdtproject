@@ -43,7 +43,8 @@ class CronogramafinanceiroController extends Zend_Controller_Action
 
 
         if($this->getRequest()->isPost()){
-            $tipo_form = $request->getPost()['cronograma_financeiro']['tipo_form'];
+            $tipo_form_aux = $request->getPost();
+            $tipo_form = $tipo_form_aux['cronograma_financeiro']['tipo_form'];
 
             if ($tipo_form == 1)
             {

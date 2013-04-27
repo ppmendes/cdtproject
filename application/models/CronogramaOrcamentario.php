@@ -145,6 +145,20 @@ class Application_Model_CronogramaOrcamentario
             $db->update($table, $data['cronograma_orcamentario'],$where);
         }
 
+    public function getSaldoDisponivel($id){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->select()
+                     ->from("cronograma_orcamentario", array('valor_recebido' => 'valor_recebido'))
+                     ->where("cronograma_orcamentario_id = ?", $id);
+
+        $stmt = $result->query();
+
+        $resultado = $stmt->fetchAll();
+
+        return $resultado;
+    }
+
 //        public function calculaTotal($cronogramaOrcamentario)
 //        {
 //            $total = 0;

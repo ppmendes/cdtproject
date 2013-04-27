@@ -38,7 +38,9 @@ $projeto_id = $this->pid;
 
                     if(value.match(/[^0-9]/) == null)
                     {
-                       // var id_pasta =  $(this).parent().find('td:last').html();
+                        var valor =  $(this).parent().find('td:last').html();
+                        alert(value);
+                        alert($("div .saldo").val());
                        // $.post('save.php',{id: id_pasta, value: value});
                         return value;
                     }
@@ -49,6 +51,7 @@ $projeto_id = $this->pid;
 
                 },
                     "aoColumns": [
+                            null,
                             null,
                             null,
                             null,
@@ -76,10 +79,18 @@ $projeto_id = $this->pid;
     table * *{
         text-align: center;
     }
+    .saldo {
+        display:inline;
+        position:absolute;
+        left:40%;
+        color:red;
+    }
 </style>
 
 <?php
 echo "<button class='menu_financeiro'>Menu Financeiro</button>";
+$saldoDisponivel = $this->saldoDisponivel[0]['valor_recebido'];
+echo "<div class='saldo'> SALDO DISPONÍVEL: R$$saldoDisponivel </div>";
 ?>
 
 <table id='table_id'>
@@ -92,7 +103,7 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
         <th>Natureza da Despesa</th>
         <th>Destinatário</th>
         <th>Valor da Rubrica</th>
-        <!--        <th>Orçamento Disponibilizado</th>-->
+        <th>Orçamento Disponibilizado</th>
         <th>Empenhado</th>
         <th>Saldo Orcam.</th>
         <th>Desembolsado</th>
@@ -103,6 +114,7 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
     <?php
     $i = 1;
     $somaRubrica = 0;
+    $somaOrcamentoDisponibilizado = 0;
     $somaEmpenho = 0;
     $somaSaldoOrc = 0;
     $somaDesembolso = 0;
@@ -113,22 +125,25 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
     foreach($this->orcamentos as $row)
     {
         $valor_empenho = number_format(0 + ($row['valor_empenho'] + $row['valor_pre_empenho']), 2, '.', '');
-        $saldo_orcamentario =  number_format(0 + ($row['SUM( o.valor_orcamento )'] - $valor_empenho), 2, '.', '');
+        $valor_cronograma_orcamentario = number_format(0 + $row['valor'], 2, '.', '');
+        $saldo_orcamentario =  number_format(0 + ($row['valor'] - $valor_empenho), 2, '.', '');
         $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
-        $somaRubrica = $somaRubrica + $row['SUM( o.valor_orcamento )'];
-        $somaEmpenho = $somaEmpenho + $valor_empenho;
-        $somaSaldoOrc = $somaSaldoOrc + $saldo_orcamentario;
-        $somaDesembolso = $somaDesembolso + $valor_desembolso;
+        $somaRubrica = number_format($somaRubrica + $row['SUM( o.valor_orcamento )'] + 0, 2, '.', '');
+        $somaOrcamentoDisponibilizado = number_format($somaOrcamentoDisponibilizado + $valor_cronograma_orcamentario + 0, 2, '.', '');
+        $somaEmpenho = number_format($somaEmpenho + $valor_empenho + 0, 2, '.', '');
+        $somaSaldoOrc = number_format($somaSaldoOrc + $saldo_orcamentario + 0, 2, '.', '');
+        $somaDesembolso = number_format($somaDesembolso + $valor_desembolso + 0, 2, '.', '');
 
 
         //$row = $row->toArray();
         echo "<tr id='".$row['orcamento_id']."'>";
         echo "<td>" .   $i . "</td>";
-        echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "'>" .  $row['codigo_rubrica'] . "</a></td>";
+        echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "/projeto_id/" . $projeto_id . "'>
+    " .  $row['codigo_rubrica'] . "</a></td>";
         echo "<td>" . $row['descricao'] . "</a></td>";
         echo "<td>" .   $row['nome_destinatario'] . "</td>";
         echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";
-        //  echo "<td >" .  $row[''] . "</td>";
+        echo "<td >" .  $decimalfilter->filter($valor_cronograma_orcamentario) . "</td>";
         echo "<td >" .  $decimalfilter->filter($valor_empenho) . "</td>";
         echo "<td >" .  $decimalfilter->filter($saldo_orcamentario) . "</td>";
         echo "<td >" .  $decimalfilter->filter($valor_desembolso) . "</td>";
@@ -157,11 +172,11 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
     echo "<tr>";
     echo "<td>" . $orcamentoProjeto . "</td>";
     echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
-    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaOrcamentoDisponibilizado) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
-    echo "<td>" . $decimalfilter->filter($valor_cronograma_financeiro - $valor_desembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $valor_cronograma_financeiro - $somaDesembolso, 2, '.', '')) . "</td>";
 
     echo "</tr>";
     echo "</tbody>";
@@ -169,4 +184,3 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
     echo "</br></br></br>";
 
     ?>
-

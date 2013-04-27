@@ -76,7 +76,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
         <th>Natureza da Despesa</th>
         <th>Destinatário</th>
         <th>Valor da Rubrica</th>
-<!--        <th>Orçamento Disponibilizado</th>-->
+        <th>Orçamento Disponibilizado</th>
         <th>Empenhado</th>
         <th>Saldo Orcam.</th>
         <th>Desembolsado</th>
@@ -87,6 +87,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     <?php
     $i = 1;
     $somaRubrica = 0;
+    $somaOrcamentoDisponibilizado = 0;
     $somaEmpenho = 0;
     $somaSaldoOrc = 0;
     $somaDesembolso = 0;
@@ -97,9 +98,11 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     foreach($this->orcamentos as $row)
     {
     $valor_empenho = number_format(0 + ($row['valor_empenho'] + $row['valor_pre_empenho']), 2, '.', '');
-    $saldo_orcamentario =  number_format(0 + ($row['SUM( o.valor_orcamento )'] - $valor_empenho), 2, '.', '');
+    $valor_cronograma_orcamentario = number_format(0 + $row['valor'], 2, '.', '');
+    $saldo_orcamentario =  number_format(0 + ($row['valor'] - $valor_empenho), 2, '.', '');
     $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
     $somaRubrica = number_format($somaRubrica + $row['SUM( o.valor_orcamento )'] + 0, 2, '.', '');
+    $somaOrcamentoDisponibilizado = number_format($somaOrcamentoDisponibilizado + $valor_cronograma_orcamentario + 0, 2, '.', '');
     $somaEmpenho = number_format($somaEmpenho + $valor_empenho + 0, 2, '.', '');
     $somaSaldoOrc = number_format($somaSaldoOrc + $saldo_orcamentario + 0, 2, '.', '');
     $somaDesembolso = number_format($somaDesembolso + $valor_desembolso + 0, 2, '.', '');
@@ -113,7 +116,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<td>" . $row['descricao'] . "</a></td>";
     echo "<td>" .   $row['nome_destinatario'] . "</td>";
     echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";
-  //  echo "<td >" .  $row[''] . "</td>";
+    echo "<td >" .  $decimalfilter->filter($valor_cronograma_orcamentario) . "</td>";
     echo "<td >" .  $decimalfilter->filter($valor_empenho) . "</td>";
     echo "<td >" .  $decimalfilter->filter($saldo_orcamentario) . "</td>";
     echo "<td >" .  $decimalfilter->filter($valor_desembolso) . "</td>";
@@ -142,7 +145,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<tr>";
     echo "<td>" . $orcamentoProjeto . "</td>";
     echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
-    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaOrcamentoDisponibilizado) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
