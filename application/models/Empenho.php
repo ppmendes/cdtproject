@@ -198,7 +198,69 @@ class Application_Model_Empenho
         $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
         return (int)$result;
     }
-    
+
+
+    public static function getOrcamentosNaoPagos($id)
+    {
+        $options = array();
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $orcamentoSaldo = $db->fetchAll("SELECT codigo_rubrica, descricao, nome_destinatario, orcamento_id,
+
+
+                                        (SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        FROM empenho AS emp
+                                        WHERE o.orcamento_id = emp.orcamento_id
+                                        ) AS saldo_orcamento
+
+
+                                        FROM orcamento AS o
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                        LEFT JOIN destinatario AS d ON o.destinatario_id = d.destinatario_id
+
+                                        WHERE o.projeto_id = " . $id . " AND ((SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        FROM empenho AS emp
+                                        WHERE o.orcamento_id = emp.orcamento_id
+                                        ) > 0 )");
+
+
+        $orcamentoSemEmpenho = $db->fetchAll("SELECT codigo_rubrica, descricao, nome_destinatario, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
+                                                  FROM orcamento
+                                                  LEFT JOIN empenho ON orcamento.orcamento_id = empenho.orcamento_id
+                                                  LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
+                                                  LEFT JOIN destinatario ON orcamento.destinatario_id = destinatario.destinatario_id
+                                                  WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id);
+
+        $orcamento = array_merge($orcamentoSaldo, $orcamentoSemEmpenho);
+
+        foreach($orcamento as $item){
+
+            $arrayCodigoRubrica = $item['codigo_rubrica'];
+
+            $rubrica = explode(".", $arrayCodigoRubrica);
+
+            if (!($rubrica[1] == '47' && !(isset($rubrica[2]))))
+            {
+
+                if (array_key_exists("saldo_orcamento", $item) == 1)
+                {
+
+                    $options[$item['orcamento_id']] = $item['codigo_rubrica'] . " : " . $item['descricao'] .
+                    " - " . $item['nome_destinatario'] . " / Saldo de R$" . $item['saldo_orcamento'];
+                }
+                else
+                {
+                    $options[$item['orcamento_id']] = $item['codigo_rubrica'] . " : " . $item['descricao'] .
+                    " - " . $item['nome_destinatario'] . " / Saldo de R$" . $item['valor_orcamento'];
+                }
+
+            }
+        }
+
+        return $options;
+
+        }
+
+
 }
 
         /* Esta parte é usada quando o módulo inteiro é carregado, podendo ser 40 mil registros.
