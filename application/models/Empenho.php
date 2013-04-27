@@ -52,6 +52,7 @@ class Application_Model_Empenho
             {
                 $imposto = array();
                 $imposto['empenhos'] = $data['empenhos'];
+                $imposto['empenhos']['orcamento_id'] = $data['empenhos']['orcamento_id'] + 1;
                 $imposto['empenhos']['descricao_historico'] = $data['empenhos']['descricao_historico']." - 20% INSS = R$ ".$valor;;
                 $imposto['empenhos']['empenho_rel'] = $embolso_rel;
                 $imposto['empenhos']['valor_empenho'] = $valor;
