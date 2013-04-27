@@ -13,18 +13,13 @@ class TarefasController extends Zend_Controller_Action
         $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
         $id_usuario=$usuario_logado->usuario_id;
         $tarefaModel = new Application_Model_Tarefa();
-        //$this->view->tarefas = $tarefaModel->selectAll();
-        $pid = $this->_getParam('projeto_id');
-        $this->view->pid = $pid;
         $this->view->tarefas = $tarefaModel->selectAll($id_usuario);
 
     }
 
     public function adicionarAction(){
-        $pid = $this->_getParam('projeto_id');
         $request = $this->getRequest();
         $form = new Application_Form_Tarefas();
-        $form->setIdProjeto($pid);
         $form->startform();
         $model = new Application_Model_Tarefa();
         $modeltarefadepen=new Application_Model_TarefasDependentes();
@@ -38,7 +33,6 @@ class TarefasController extends Zend_Controller_Action
 
                 $data = $form->getValues();
                 // obter datos de data final do projeto para comparação com a data final de tarefa
-
 
                 $data_final_tarefa=$data['tarefas']['data_final'];
                 $id_projeto=$data['tarefas']['projeto_id'];
@@ -98,8 +92,8 @@ class TarefasController extends Zend_Controller_Action
 
                 }else{ //insert
                     // datas finais de tarefas devem ser menores que datas finais de projetos
-                    //if($data_final_tarefa<$datafinalprojeto)
-                    //{
+                    if($data_final_tarefa<$datafinalprojeto)
+                    {
                         //insert na tabela tarefa
                         $model->insert($data);
 
@@ -132,9 +126,9 @@ class TarefasController extends Zend_Controller_Action
                             $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
                             $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
                         }
-                    //}else{
-                    //    echo "A data final da tarefa é maior que a data final do projeto!!!";
-                    //}
+                    }else{
+                        echo "A data final da tarefa é maior que a data final do projeto!!!";
+                    }
 
                 }
 
