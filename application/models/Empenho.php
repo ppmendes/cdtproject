@@ -10,9 +10,10 @@ class Application_Model_Empenho
         return $empenho;
     }
 
-    public function insert($empenho)
+    public function insert($data)
     {
-
+        $table = new Application_Model_DbTable_Empenho;
+        $table->insert($data['empenhos']);
     }
 
     public function delete($id)
@@ -20,9 +21,12 @@ class Application_Model_Empenho
 
     }
 
-    public function update($empenho)
+    public function update($data, $id)
     {
+        $table = new Application_Model_DbTable_Empenho;
+        $where = $table->getAdapter()->quoteInto('empenho_id = ?',$id);
 
+        $table->update($data['empenhos'],$where);
     }
 
     public static function getOptions(){

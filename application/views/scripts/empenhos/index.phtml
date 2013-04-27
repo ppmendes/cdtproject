@@ -106,7 +106,7 @@ $projeto_id = $this->pid;
     {
     //$row = $row->toArray();
     echo "<tr id='".$row['empenho_id']."'>";
-    echo "<td><a href='/projetos/detalhes/projeto_id/{$row['projeto_id']}'>" . $row['codigo_rubrica'] . "</a></td>";
+    echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}/projeto_id/{$row['projeto_id']}/beneficiario_id/{$row['beneficiario_id']}'>" . $row['codigo_rubrica'] . "</a></td>";
     echo "<td>" .   $row['data'] . "</td>";
     echo "<td >" .  $row['beneficiario_id'] . "</td>";
     echo "<td >" .  $row['valor_empenho'] . "</td>";

@@ -12,6 +12,7 @@ class Application_Form_Orcamentos extends Zend_Form
 
     private $valorParcelas;
     private $id_projeto;
+    private $id_rubrica;
 
     public function setValorParcelas($valor){
         $this->valorParcelas = $valor;
@@ -20,7 +21,11 @@ class Application_Form_Orcamentos extends Zend_Form
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
     }
-
+    
+    public function setRubricaId($id_rubrica){
+        $this->id_rubrica = $id_rubrica;
+    }
+    
     public function init() {}
 
     public function startform()
@@ -58,8 +63,11 @@ class Application_Form_Orcamentos extends Zend_Form
 //        ));
 
         //Código - Natureza da Despesa - Rubrica
+        $nomeRubrica = Application_Model_Rubrica::getNome($this->id_rubrica);
+        $valueRubrica = $nomeRubrica != "" ? $nomeRubrica['0']['codigo_rubrica'] . " - " . $nomeRubrica['0']['descricao'] : "";
         $this->addElement('text', 'rubrica', array(
             'label'      => 'Rúbrica (Código - Descrição):',
+            'value'      => $valueRubrica,
             'required'   => true,
         ));
 

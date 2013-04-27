@@ -172,38 +172,54 @@ class Application_Model_Desembolso
 
     public static function getOptions()
     {
-        try{
+            $id = 1;
             $options = array();
             $db = Zend_Db_Table::getDefaultAdapter();
-            $desembolso = $db->fetchAll("SELECT processo_administrativo, empenho_id, valor_empenho, descricao_historico, nome,
+            $desembolsoSaldo = $db->fetchAll("SELECT empenho_id, valor_empenho, processo_administrativo, nome,
 
-                  (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
-                    FROM desembolso AS des
-                    WHERE
-                            IF (e.empenho_id = des.empenho_id)
-                                e.empenho_id = des.empenho_id
-                            ELSE
-                                e.empenho_id = e.empenho_id
-                  ) AS saldo_empenho
 
-                  FROM empenho AS e
-                  LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
-                  LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
-                  WHERE o.projeto_id = 1 AND (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
-                  FROM desembolso AS des
-                  WHERE e.empenho_id = des.empenho_id
-                  ) > 0 ");
+                                        (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                                        FROM desembolso AS des
+                                        WHERE e.empenho_id = des.empenho_id
+                                        ) AS saldo_empenho
+
+
+                                        FROM empenho AS e
+                                        LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                                        LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+
+                                        WHERE o.projeto_id = " . $id . " AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                                        FROM desembolso AS des
+                                        WHERE e.empenho_id = des.empenho_id
+                                        ) > 0 )");
+
+
+            $desembolsoSemEmpenho = $db->fetchAll("SELECT processo_administrativo, nome, valor_empenho, empenho.empenho_id, orcamento.projeto_id
+                                                  FROM empenho
+                                                  LEFT JOIN desembolso ON empenho.empenho_id = desembolso.empenho_id
+                                                  LEFT JOIN beneficiario ON empenho.beneficiario_id = beneficiario.beneficiario_id
+                                                  LEFT JOIN orcamento ON empenho.orcamento_id = orcamento.orcamento_id
+                                                  WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $id);
+
+            $desembolso = array_merge($desembolsoSaldo, $desembolsoSemEmpenho);
 
             foreach($desembolso as $item){
-                $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+
+                if (array_key_exists("saldo_empenho", $item) == 1)
+                {
+                    $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
                                               " - Saldo de R$" . $item['saldo_empenho'];
+                }
+                else
+                {
+                    $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+                        " - Saldo de R$" . $item['valor_empenho'];
+                }
+
             }
 
-
             return $options;
-        } catch(Exception $e){
 
-        }
     }
 }
 
