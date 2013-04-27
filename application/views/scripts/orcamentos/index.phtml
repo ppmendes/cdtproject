@@ -99,16 +99,17 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     $valor_empenho = number_format(0 + ($row['valor_empenho'] + $row['valor_pre_empenho']), 2, '.', '');
     $saldo_orcamentario =  number_format(0 + ($row['SUM( o.valor_orcamento )'] - $valor_empenho), 2, '.', '');
     $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
-    $somaRubrica = $somaRubrica + $row['SUM( o.valor_orcamento )'];
-    $somaEmpenho = $somaEmpenho + $valor_empenho;
-    $somaSaldoOrc = $somaSaldoOrc + $saldo_orcamentario;
-    $somaDesembolso = $somaDesembolso + $valor_desembolso;
+    $somaRubrica = number_format($somaRubrica + $row['SUM( o.valor_orcamento )'] + 0, 2, '.', '');
+    $somaEmpenho = number_format($somaEmpenho + $valor_empenho + 0, 2, '.', '');
+    $somaSaldoOrc = number_format($somaSaldoOrc + $saldo_orcamentario + 0, 2, '.', '');
+    $somaDesembolso = number_format($somaDesembolso + $valor_desembolso + 0, 2, '.', '');
 
 
         //$row = $row->toArray();
     echo "<tr id='".$row['orcamento_id']."'>";
     echo "<td>" .   $i . "</td>";
-    echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "'>" .  $row['codigo_rubrica'] . "</a></td>";
+    echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "/projeto_id/" . $projeto_id . "'>
+    " .  $row['codigo_rubrica'] . "</a></td>";
     echo "<td>" . $row['descricao'] . "</a></td>";
     echo "<td>" .   $row['nome_destinatario'] . "</td>";
     echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";
@@ -145,7 +146,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
-    echo "<td>" . $decimalfilter->filter($valor_cronograma_financeiro - $valor_desembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $valor_cronograma_financeiro - $somaDesembolso, 2, '.', '')) . "</td>";
 
     echo "</tr>";
     echo "</tbody>";
