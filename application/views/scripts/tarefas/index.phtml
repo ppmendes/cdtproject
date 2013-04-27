@@ -37,18 +37,19 @@ $projeto_id = $this->pid;
         });
     });
 </script>
-<!--<script>-->
-<!--    function adicionar(projeto_id)-->
-<!--    {-->
-<!--        top.location.href = '/../tarefas/adicionar/projeto_id/'+projeto_id;-->
-<!--    }-->
-<!--</script>-->
 
 <script>
 
-    function adicionar(projeto_id)
+    function adicionar($projeto_id)
     {
-        top.location.href = "/../tarefas/adicionar/projeto_id/"+projeto_id;
+        if($projeto_id==null)
+        {
+            top.location.href = "/../tarefas/adicionar/";
+        }else
+        {
+            top.location.href = "/../tarefas/adicionar/projeto_id/"+$projeto_id;
+        }
+
     }
 
 </script>
