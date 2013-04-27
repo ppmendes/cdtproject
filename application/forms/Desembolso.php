@@ -20,7 +20,7 @@ class Application_Form_Desembolso extends Zend_Form
         $this->setMethod('post');
 
         //Empenho a liquidar input type text
-        $this->addElement('select', 'empenho', array(
+        $this->addElement('select', 'empenho_id', array(
             'label'      => 'Empenho a liquidar:',
             'required'   => true,
             'multiOptions' => Application_Model_Desembolso::getOptions(),
@@ -55,6 +55,7 @@ class Application_Form_Desembolso extends Zend_Form
         $this->addElement('text', 'valor_desembolso', array(
             'label'      => 'Valor do Desembolso:',
             'required'   => true,
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')"
         ));
 
         // Add the submit button
@@ -63,9 +64,6 @@ class Application_Form_Desembolso extends Zend_Form
             'label'    => 'Inserir Desembolso',
         ));
 
-        $this->addElement('hidden', 'empenho_id', array(
-            'value'      => '',
-        ));
 
         $this->addElement('hidden', 'projeto_id', array(
             'value'      => $this->id_projeto,

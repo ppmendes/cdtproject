@@ -176,6 +176,14 @@ class CronogramafinanceiroController extends Zend_Controller_Action
         $this->view->excluir = $excluir;
 
     }
+    
+    public function receberAction() {
+        $id = $this->_getParam('cronograma_financeiro_id');
+        $pid = $this->_getParam('projeto_id');
+        $model = new Application_Model_CronogramaFinanceiro();
+        $model->receber($id);
+        $this->_redirect('/cronogramafinanceiro/index/projeto_id/'.$pid);
+    }
 
 
 }

@@ -122,5 +122,24 @@ class Application_Model_CronogramaFinanceiro
             }
         return $total;
         }
+        
+        public function receber($id) {
+            $table = new Application_Model_DbTable_CronogramaFinanceiro();
+            $cronograma_financeiro = $table->find($id)->current();
+        
+            $decimalfilter = new Zend_Filter_DecimalFilter();
+
+            $data['cronograma_financeiro'] = array();
+            $aux = $decimalfilter->filter($cronograma_financeiro['valor_aplicado_a_rubrica']);
+            $data['cronograma_financeiro']['valor_aplicado_a_rubrica'] = $decimalfilter->filter(0);
+            $data['cronograma_financeiro']['valor_recebido'] = $aux;
+            
+            $data['cronograma_financeiro']['valor_recebido'] = $decimalfilter->filter($data['cronograma_financeiro']['valor_recebido']);
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $table = "cronograma_financeiro";
+            $where = $db->quoteInto('cronograma_financeiro_id = ?', $id);
+            $db->update($table, $data['cronograma_financeiro'],$where);
+        }
 }
 

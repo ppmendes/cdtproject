@@ -13,7 +13,43 @@ class Application_Model_Empenho
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Empenho;
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        //DIFF orc
+        
+        $orcamento = $data['empenhos']['orcamento_id'];
+        $tableorc = new Application_Model_DbTable_Orcamento();
+        $orcamentodata = $tableorc->find($orcamento)->current();
+        
+        $projeto_id = $orcamentodata['projeto_id'];
+        //EQUAL orc
+                
+        $arrayCodigoRubrica = $this->getCodigoRubrica($orcamentodata['rubrica_id']);
+        $codigoRubrica = $arrayCodigoRubrica[0]['r.codigo_rubrica'];
+
+        $rubrica = explode(".", $codigoRubrica);
+
+        $data['empenhos']['valor_empenho'] = $decimalfilter->filter($data['empenhos']['valor_empenho']);
+
+        $valor = 0.2 * $data['empenhos']['valor_empenho'];
+
+        unset($data['empenhos']['projeto_id']);
+        
         $table->insert($data['empenhos']);
+        $embolso_rel = $this->getLastInsertedId('empenho');
+        //print_r($rubrica); exit;
+        if ($rubrica[1] == '36')
+        {
+            if ($rubrica[2] != '02' && $rubrica[2] != '03' && $rubrica[2] != '07' && $rubrica[2] != '46' && $rubrica[2] != '80')
+            {
+                $imposto = array();
+                $imposto['empenhos'] = $data['empenhos'];
+                $imposto['empenhos']['descricao_historico'] = $data['empenhos']['descricao_historico']." - 20% INSS = R$ ".$valor;;
+                $imposto['empenhos']['empenho_rel'] = $embolso_rel;
+                $imposto['empenhos']['valor_empenho'] = $valor;
+
+                $table->insert($imposto['empenhos']);
+            }
+        }
     }
 
     public function delete($id)
@@ -136,6 +172,33 @@ class Application_Model_Empenho
             echo $e->getMessage();
         }
     }
+    
+    public function getCodigoRubrica ($rid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                         ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
+                         ->where('r.rubrica_id = ?', $rid);
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+            return $resultado;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+    
+    public function getLastInsertedId($table){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
+        return (int)$result;
+    }
+    
 }
 
         /* Esta parte é usada quando o módulo inteiro é carregado, podendo ser 40 mil registros.
