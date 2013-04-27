@@ -108,7 +108,7 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
         //$row = $row->toArray();
     echo "<tr id='".$row['orcamento_id']."'>";
     echo "<td>" .   $i . "</td>";
-    echo "<td>" .   $row['codigo_rubrica'] . "</td>";
+    echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "'>" .  $row['codigo_rubrica'] . "</a></td>";
     echo "<td>" . $row['descricao'] . "</a></td>";
     echo "<td>" .   $row['nome_destinatario'] . "</td>";
     echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";

@@ -101,6 +101,27 @@ class Application_Model_Beneficiario
         }
 
     }
+    
+    public static function getNome($id)
+    {
+        try
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('b' => 'beneficiario'),
+                        array('b.nome'))
+                ->where('b.beneficiario_id = ?', $id);
+            $stmt = $select->query();
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 
 }
 

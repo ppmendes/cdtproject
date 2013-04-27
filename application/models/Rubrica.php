@@ -58,4 +58,25 @@ class Application_Model_Rubrica
         }
 
     }
+    
+    public static function getNome($id)
+    {
+        try
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('r' => 'rubrica'),
+                        array('r.descricao', 'r.codigo_rubrica'))
+                ->where('r.rubrica_id = ?', $id);
+            $stmt = $select->query();
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }
+        catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 }
