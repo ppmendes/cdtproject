@@ -10,31 +10,43 @@ class TarefasController extends Zend_Controller_Action
 
     public function indexAction()
     {
+        $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+        $id_usuario=$usuario_logado->usuario_id;
         $tarefaModel = new Application_Model_Tarefa();
-        $this->view->tarefas = $tarefaModel->selectAll();
+        //$this->view->tarefas = $tarefaModel->selectAll();
+        //$pid = $this->_getParam('projeto_id');
+        //$this->view->pid = $pid;
+        $this->view->tarefas = $tarefaModel->selectAll($id_usuario);
 
     }
 
     public function adicionarAction(){
+       // $pid = $this->_getParam('projeto_id');
         $request = $this->getRequest();
         $form = new Application_Form_Tarefas();
+       // $form->setIdProjeto($pid);
         $form->startform();
         $model = new Application_Model_Tarefa();
         $modeltarefadepen=new Application_Model_TarefasDependentes();
         $modelusuarios=new Application_Model_UsuariosAssociadosTarefa();
         $modelrubricastarefas=new Application_Model_RubricaAssociadaTarefa();
-
+        $db = Zend_Db_Table::getDefaultAdapter();
         $id = $this->_getParam('tarefa_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-//                echo "<pre>";
-                //print_r($form->getValues());
-                //exit;
-//                echo "</pre>";
 
                 $data = $form->getValues();
+                // obter datos de data final do projeto para comparação com a data final de tarefa
+                print_r($data);
 
+                $data_final_tarefa=$data['tarefas']['data_final'];
+                $id_projeto=$data['tarefas']['projeto_id'];
+                $result = $db->fetchRow("select data_final from projeto where projeto_id=$id_projeto");
+                $datafinalprojeto=$result['data_final'];
+
+
+                // obtendo id do usuario para armazenar no criador de tarefa
                 $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
                 $data['tarefas']['criador']=$usuario_logado->usuario_id;
 
@@ -48,70 +60,82 @@ class TarefasController extends Zend_Controller_Action
                 unset($data['tarefas']['outros_recursos'],$data['tarefas']['percentagem_recurso'],$data['tarefas']['asociado_tarefa1']);
 
                 if($id){ //update
-                    $model->update($data, $id);
-                    // update na tabela tarefas_dependentes;
-                    $modeltarefadepen->delete($id);
-                    for($i=0;$i < count($tarefaDependencia); $i++)
+                    if($data_final_tarefa<$datafinalprojeto)
                     {
-                        $datatd['tarefa_id']=$id;
-                        $datatd['tarefa_dependente']=$tarefaDependencia[$i];
-                        $modeltarefadepen->insert($datatd);
+                        $model->update($data, $id);
+                        // update na tabela tarefas_dependentes;
+                        $modeltarefadepen->delete($id);
+                        for($i=0;$i < count($tarefaDependencia); $i++)
+                        {
+                            $datatd['tarefa_id']=$id;
+                            $datatd['tarefa_dependente']=$tarefaDependencia[$i];
+                            $modeltarefadepen->insert($datatd);
+                        }
+                        //update na tabela usuarios dependentes
+                        $modelusuarios->delete($id);
+                        for($i=0;$i<count($rhAssociados); $i++)
+                        {
+                            $datarh['tarefa_id']=$id;
+                            $dataexplode=explode('|',$rhAssociados[$i]);
+                            $datarh['usuario_id']=$dataexplode[0];
+                            $datarh['porcentagem']=$dataexplode[1];
+                            $modelusuarios->insert($datarh);
+                        }
+                        //update na tabela rubrica associada a tarefas
+                        $modelrubricastarefas->delete($id);
+                        for($i=0;$i<count($rubricasAssociadasTarefas);$i++)
+                        {
+                            $dataRubricaAssociadaTarefa['tarefa_id']=$id;
+                            $dataexplode=explode('|',$rubricasAssociadasTarefas[$i]);
+                            $dataRubricaAssociadaTarefa['rubrica_id']=$dataexplode[0];
+                            $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
+                            $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
+                        }
+                    }else{
+                        echo "A data final da tarefa é maior que a data final do projeto!!!";
                     }
-                    //update na tabela usuarios dependentes
-                    $modelusuarios->delete($id);
-                    for($i=0;$i<count($rhAssociados); $i++)
-                    {
-                        $datarh['tarefa_id']=$id;
-                        $dataexplode=explode('|',$rhAssociados[$i]);
-                        $datarh['usuario_id']=$dataexplode[0];
-                        $datarh['porcentagem']=$dataexplode[1];
-                        $modelusuarios->insert($datarh);
-                    }
-                    //update na tabela rubrica associada a tarefas
-                    $modelrubricastarefas->delete($id);
-                    for($i=0;$i<count($rubricasAssociadasTarefas);$i++)
-                    {
-                        $dataRubricaAssociadaTarefa['tarefa_id']=$id;
-                        $dataexplode=explode('|',$rubricasAssociadasTarefas[$i]);
-                        $dataRubricaAssociadaTarefa['rubrica_id']=$dataexplode[0];
-                        $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
-                        $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
-                    }
+
 
                 }else{ //insert
-
-                    //insert na tabela tarefa
-                    $model->insert($data);
-
-                    // insert na tabela tarefas_dependentes;
-                    //determinado o ide da tarefa
-                    $idtarefa= $model->getLastInsertedId();
-                    for($i=0;$i < count($tarefaDependencia); $i++)
+                    // datas finais de tarefas devem ser menores que datas finais de projetos
+                    if($data_final_tarefa<$datafinalprojeto)
                     {
-                        $datatd['tarefa_id']=$idtarefa;
-                        $datatd['tarefa_dependente']=$tarefaDependencia[$i];
-                        $modeltarefadepen->insert($datatd);
+                        //insert na tabela tarefa
+                        $model->insert($data);
+
+                        // insert na tabela tarefas_dependentes;
+                        //determinado o ide da tarefa
+                        $idtarefa= $model->getLastInsertedId();
+                        for($i=0;$i < count($tarefaDependencia); $i++)
+                        {
+                            $datatd['tarefa_id']=$idtarefa;
+                            $datatd['tarefa_dependente']=$tarefaDependencia[$i];
+                            $modeltarefadepen->insert($datatd);
+                        }
+
+                        //insert tabela usuarios associados
+                        for($i=0;$i<count($rhAssociados); $i++)
+                        {
+                            $datarh['tarefa_id']=$idtarefa;
+                            $dataexplode=explode('|',$rhAssociados[$i]);
+                            $datarh['usuario_id']=$dataexplode[0];
+                            $datarh['porcentagem']=$dataexplode[1];
+                            $modelusuarios->insert($datarh);
+                        }
+
+                        //insert tabela rubricas associadas a tarefas
+                        for($i=0;$i<count($rubricasAssociadasTarefas); $i++)
+                        {
+                            $dataRubricaAssociadaTarefa['tarefa_id']=$idtarefa;
+                            $dataexplode=explode('|',$rubricasAssociadasTarefas[$i]);
+                            $dataRubricaAssociadaTarefa['rubrica_id']=$dataexplode[0];
+                            $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
+                            $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
+                        }
+                    }else{
+                        echo "A data final da tarefa é maior que a data final do projeto!!!";
                     }
 
-                    //insert tabela usuarios associados
-                    for($i=0;$i<count($rhAssociados); $i++)
-                    {
-                        $datarh['tarefa_id']=$idtarefa;
-                        $dataexplode=explode('|',$rhAssociados[$i]);
-                        $datarh['usuario_id']=$dataexplode[0];
-                        $datarh['porcentagem']=$dataexplode[1];
-                        $modelusuarios->insert($datarh);
-                    }
-
-                    //insert tabela rubricas associadas a tarefas
-                    for($i=0;$i<count($rubricasAssociadasTarefas); $i++)
-                    {
-                        $dataRubricaAssociadaTarefa['tarefa_id']=$idtarefa;
-                        $dataexplode=explode('|',$rubricasAssociadasTarefas[$i]);
-                        $dataRubricaAssociadaTarefa['rubrica_id']=$dataexplode[0];
-                        $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
-                        $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
-                    }
                 }
 
                 $this->_redirect('/tarefas/');
@@ -149,9 +173,11 @@ class TarefasController extends Zend_Controller_Action
             $filhos = new Application_Model_DbTable_Tarefa();
             $rows = $filhos->fetchAll('projeto_id = ' . (int) $id);
 
+            echo '<option value="">Nenhum</option>';
             foreach ($rows as $row) {
                 echo '<option value="' . $row->tarefa_id . '">' . $row->nome . '</option>';
             }
+
         } else {
 
             echo '<option value="">Nenhum</option>';

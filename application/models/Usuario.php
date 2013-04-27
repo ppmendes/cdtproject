@@ -49,7 +49,6 @@ class Application_Model_Usuario
         }
 
     }
-
     public static function getOptions2($id_projeto_form = null, $id_tarefa_form=null){
         try{
             if($id_projeto_form == null)

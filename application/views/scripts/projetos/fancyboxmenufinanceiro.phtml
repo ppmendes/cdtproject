@@ -1,0 +1,50 @@
+<script type="text/javascript" src='js/detalhes.js'></script>
+<script>
+    $('a.fancybox-item.fancybox-close').click(function (){
+        parent.$.fancybox.close();
+    });
+
+
+    function termoAditivo(id)
+    {
+        top.location.href = '/../termoaditivo/index/projeto_id/'+id;
+
+    }
+    function cronogramaFinanceiro(id)
+    {
+        top.location.href = '/../cronogramafinanceiro/index/projeto_id/'+id;
+    }
+    function tarefasProjeto(id)
+    {
+        top.location.href= '/../tarefas/index/projeto_id/'+id;
+    }
+    function orcamentos(id)
+    {
+        top.location.href = '/../orcamentos/index/projeto_id/'+id;
+    }
+    function cronogramaOrcamentario(id)
+    {
+        top.location.href= '/../cronogramaorcamentario/index/projeto_id/'+id;
+    }
+    function empenhos(id)
+    {
+        top.location.href = '/../empenhos/index/projeto_id/'+id;
+    }
+    function desembolso(id)
+    {
+        top.location.href = '/../desembolso/index/projeto_id/'+id;
+    }
+</script>
+
+<?php
+$id = $this->id;
+
+echo "<button class='' onclick='termoAditivo($id)'>Termo Aditivo do Projeto</button>";
+echo "<button class='' onclick='cronogramaFinanceiro($id)'>Cronograma Financeiro</button>";
+echo "<button class='' onclick='tarefasProjeto($id)'>Tarefas</button>";
+echo "<button class='' onclick='orcamentos($id)'>Orcamento</button>";
+echo "<button class='' onclick='cronogramaOrcamentario($id)'>Cronograma Orçamentário</button>";
+echo "<button class='' onclick='empenhos($id)'>Empenho</button>";
+echo "<button class='' onclick='desembolso($id)'>Desembolso</button>";
+
+?>

@@ -33,12 +33,20 @@
         });
     });
 </script>
+<!--<script>-->
+<!--    function adicionar(projeto_id)-->
+<!--    {-->
+<!--        top.location.href = '/../tarefas/adicionar/projeto_id/'+projeto_id;-->
+<!--    }-->
+<!--</script>-->
+
 <script>
+
     function adicionar()
     {
-        top.location.href = '/../tarefas/adicionar/';
-
+        top.location.href = "/../tarefas/adicionar/";
     }
+
 </script>
 <style>
     table * *{
@@ -48,6 +56,12 @@
         float:right;
     }
 </style>
+<?php
+//$projeto_id = $this->pid;
+//
+//echo "<button class='novatarefa btn_add' onclick='adicionar($projeto_id)'>Nova Tarefa</button>";
+//
+//?>
 
 <button class='novatarefa btn_add' onclick='adicionar()'>Nova Tarefa</button>
 
@@ -58,10 +72,10 @@
         <th>Porcentagem Completa</th>
         <th>Projeto</th>
         <th>Nome da Tarefa</th>
-        <th>Dono</th>
+        <th>Responsável da Tarefa</th>
         <th>Data de início</th>
         <th>Data de final</th>
-        <th>Duração</th>
+        <th>Duração(dias)</th>
     </tr>
     </thead>
     <tbody>
@@ -71,27 +85,38 @@
     foreach($this->tarefas as $row)
     {
         $dataAtual=date("Y-m-d H:i:s ");
-
-        if($dataAtual<$row['data_final'])
+        if(($dataAtual>$row['data_final']) && ($row['percentagem_completo']='100'))
         {
-            $cor='green';
+            // vermelho, já terminou
+            $cor='#CC6666';
+            $corletra='#ffffff';
         }else{
-            $cor='red';
+            //verde, ainda esta sendo desenvolvido
+            $cor='#AADDAA';
+            $corletra='#000000';
         }
 
         //$row = $row->toArray();
         echo "<tr id='".$row['tarefa_id']."'>";
         echo "<td>" .   $row['tarefa_id'] . "</td>";
         echo "<td >" .  $row['percentagem_completo'] . "</td>";
-        echo "<td>" .   $row['pr.nome'] . "</td>";
+        echo "<td>" .   $row['nomeprojeto'] . "</td>";
         echo "<td><a href='/tarefas/detalhes/tarefa_id/{$row['tarefa_id']}'>" . $row['nome'] . "</a></td>";
-        echo "<td>" .   $row['us.username'] . "</td>";
-        echo "<td style='background: $cor;'>" .   $filter->filter($row['data_inicio']) . "</td>";
-        echo "<td>" .   $filter->filter($row['data_final']) . "</td>";
-        echo "<td >" .  $row['duracao'] . "</td>";
+        echo "<td>" .   $row['username'] . "</td>";
+        echo "<td style='background: $cor; color:$corletra'>" .   $filter->filter($row['data_inicio']) . "</td>";
+        echo "<td style='background: $cor; color:$corletra'>" .   $filter->filter($row['data_final']) . "</td>";
+        echo "<td style='background: $cor; color:$corletra'>" .  $row['duracao'] . "</td>";
         echo "</tr>";
     }
-
-
     echo "</tbody></table>";
 ?>
+    <table>
+        <tbody>
+            <tr>
+                <td width="15" style="background-color:#AADDAA;"></td>
+                <td>Em desenvolvimento</td>
+                <td width="15" style="background-color:#CC6666;"></td>
+                <td>Finalizado</td>
+            </tr>
+        </tbody>
+    </table>

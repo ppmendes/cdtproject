@@ -13,12 +13,45 @@ class Application_Model_Orcamento
     public function insert($data)
     {
         $decimalfilter = new Zend_Filter_DecimalFilter();
+        $table = new Application_Model_DbTable_Orcamento();
+
+        $projeto_id = $data['orcamento']['projeto_id'];
+        $destinatario_id = $data['orcamento']['destinatario_id'];
+
+        $arrayCodigoRubrica = $this->getCodigoRubrica($data['orcamento']['rubrica_id']);
+
+        $codigoRubrica = $arrayCodigoRubrica[0]['r.codigo_rubrica'];
+
+        $rubrica = explode(".", $codigoRubrica);
+
         $data['orcamento']['valor_orcamento'] = $decimalfilter->filter($data['orcamento']['valor_orcamento']);
+
+        $valor = 0.2 * $data['orcamento']['valor_orcamento'];
+
         unset($data['orcamento']['rubrica']);
         unset($data['orcamento']['saldo']);
 
-        $table = new Application_Model_DbTable_Orcamento();
+
         $table->insert($data['orcamento']);
+        $orcamento_rel = $this->getLastInsertedId('orcamento');
+
+        if ($rubrica[1] == '36')
+        {
+            if ($rubrica[2] != '02' && $rubrica[2] != '03' && $rubrica[2] != '07' && $rubrica[2] != '46' && $rubrica[2] != '80')
+            {
+                $imposto = Array();
+                $imposto['orcamento']['projeto_id'] = $projeto_id;
+                $imposto['orcamento']['rubrica_id'] = 44;
+                $imposto['orcamento']['orcamento_rel'] = $orcamento_rel;
+                $imposto['orcamento']['descricao_orcamento'] = "Obrigações tributárias e contributivas referentes à pagamento de
+                pessoa física";
+                $imposto['orcamento']['objetivo_orcamento'] = "Execução do Projeto";
+                $imposto['orcamento']['valor_orcamento'] = $valor;
+                $imposto['orcamento']['destinatario_id'] = $destinatario_id;
+
+                $table->insert($imposto['orcamento']);
+            }
+        }
     }
 
     public function delete($id)
@@ -99,6 +132,11 @@ class Application_Model_Orcamento
             $resultado = $db->fetchAll("SELECT o.orcamento_id, o.rubrica_id, SUM( o.valor_orcamento ) , o.destinatario_id,
                                         o.projeto_id, dt.nome_destinatario, r.codigo_rubrica, r.descricao,
 
+                                        (SELECT SUM( valor_recebido )
+                                         FROM cronograma_financeiro AS cf
+                                         WHERE cf.projeto_id = " . $id . "
+                                         ) AS valor_recebido,
+
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e
                                          WHERE e.orcamento_id = o.orcamento_id
@@ -119,8 +157,9 @@ class Application_Model_Orcamento
                                          FROM orcamento AS o
                                          LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
                                          LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                         LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
                                          WHERE o.projeto_id = ". $id . "
-                                         GROUP BY o.rubrica_id, o.destinatario_id
+                                         GROUP BY o.rubrica_id, o.destinatario_id, o.orcamento_id
                                          ORDER BY o.data_registro_orcamento");
 
 
@@ -163,6 +202,32 @@ class Application_Model_Orcamento
         }catch(Exception $e){
             echo $e->getMessage();
         }
+    }
+
+    public function getCodigoRubrica ($rid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                         ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
+                         ->where('r.rubrica_id = ?', $rid);
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+            return $resultado;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function getLastInsertedId($table){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
+        return (int)$result;
     }
 
 }

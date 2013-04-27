@@ -11,10 +11,10 @@ class EmpenhosController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $model = new Application_Model_Empenho();
-        $id = $this->_getParam('projeto_id');
-        $this->view->resultado = $model->selectAll($id);
-        $this->view->soma = $model->selectAllSoma($id);
-        $this->view->id = $id;
+        $pid = $this->_getParam('projeto_id');
+        $this->view->resultado = $model->selectAll($pid);
+        $this->view->soma = $model->selectAllSoma($pid);
+        $this->view->pid = $pid;
     }
 
 //    public function indexajaxAction(){
@@ -27,6 +27,7 @@ class EmpenhosController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Empenhos();
+        $form->startform();
         $model = new Application_Model_Empenho;
         $id = $this->_getParam('projeto_id');
 

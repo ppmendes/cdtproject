@@ -16,6 +16,7 @@ class Application_Form_Tarefas extends Zend_Form
     public function setIdProjeto($id_projeto_controller){
         $this->id_projeto = $id_projeto_controller;
     }
+
     public function setIdTarefa($id_tarefa_controller){
         $this->id_tarefa = $id_tarefa_controller;
     }
@@ -36,13 +37,24 @@ class Application_Form_Tarefas extends Zend_Form
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
             ),
         ));
+        
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
         $emt->setLabel('Projeto:');
+        $emt->setRequired(true);
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id)}')
+            'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id); atualizarTarefas1(ui.item.id)}')
         ));
         $this->addElement($emt);
+        
+       /* $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
+        $this->addElement('text', 'projeto', array(
+            'label'      => 'Projeto:',
+            'value'      => $nomeProjeto['0']['nome'],
+            'required'   => true,
+            'readonly'   => true,
+            'ignore'     => true,
+        )); */
 
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
@@ -153,6 +165,12 @@ class Application_Form_Tarefas extends Zend_Form
             'required' => false,
             'label'     => 'Pesquisar',
         ));
+
+        $this->addElement('select', 'tarefa_id_pai', array(
+            'label'      => 'Tarefa Pai:',
+            'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
+            'required'   => false,
+        ));
         /******************************** LABEL DATAS **************************************/
         $this->addElement('hidden', 'label_datas', array(
             'description' => 'Datas',
@@ -171,6 +189,8 @@ class Application_Form_Tarefas extends Zend_Form
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
         $emtDatePicker->setLabel('Data Término:');
         $emtDatePicker->setFilters(array('DateFilter'));
+        $emtDatePicker->setAttribs(array('onchange' => 'validarDatas()'));
+
 
         $this->addElement($emtDatePicker);
 
@@ -301,7 +321,7 @@ class Application_Form_Tarefas extends Zend_Form
             'RegisterInArrayValidator'=>false,
         ));
 
-        $this->addElement('textarea', 'comentario_email', array(
+        /*$this->addElement('textarea', 'comentario_email', array(
             'label'      => 'Comentários Adicionais do E-mail:',
             'required'   => false,
         ));
@@ -309,7 +329,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('checkbox', 'tarefa_notificacao', array(
             'label'      => 'Notificar associados da tarefa por e-mail:',
             'required'   => true,
-        ));
+        ));*/
 
         /******************************** LABEL OUTROS RECURSOS **************************************/
         $this->addElement('hidden', 'outros', array(
@@ -363,5 +383,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('hidden', 'instituicao_id', array(
             'value'      => ''
         ));
+
+
     }
 }

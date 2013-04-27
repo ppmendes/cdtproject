@@ -1,3 +1,41 @@
+<script type="text/javascript">
+    function validarDatas()
+    {
+
+        var inicio = $('#projetos-data_inicio').val().split("/");
+        var data_inicio = new Date(inicio[2], parseFloat(inicio[1])-1, parseFloat(inicio[0]));
+        var final = $('#projetos-data_final').val().split("/");
+        var data_final = new Date(final[2], parseFloat(final[1])-1, parseFloat(final[0]));
+
+        if(data_final<data_inicio)
+        {
+            alert('[Erro] a DATA FINAL não pode ser menor que a DATA INICIAL');
+        }
+    }
+
+    function validarDatasReal()
+    {
+        var inicio = $('#projetos-data_inicio').val().split("/");
+        var data_inicio = new Date(inicio[2], parseFloat(inicio[1])-1, parseFloat(inicio[0]));
+
+        var final = $('#projetos-data_final').val().split("/");
+        var data_final = new Date(final[2], parseFloat(final[1])-1, parseFloat(final[0]));
+
+        var final_real = $('#projetos-data_final_real').val().split("/");
+        var data_final_real = new Date(final_real[2], parseFloat(final_real[1])-1, parseFloat(final_real[0]));
+
+
+        if(data_final_real<data_inicio)
+        {
+            alert('[Erro] a DATA FINAL REAL não pode ser menor que a DATA INICIAL');
+        }
+        if(data_final_real<data_final)
+        {
+            alert('[Erro] a DATA FINAL REAL não pode ser menor que a DATA FINAL');
+        }
+    }
+</script>
+
 <?php
     $this->form->setAction($this->url());
     echo $this->form;
