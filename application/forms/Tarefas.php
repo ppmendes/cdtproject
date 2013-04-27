@@ -264,6 +264,7 @@ class Application_Form_Tarefas extends Zend_Form
             'multiOptions' => Application_Model_Tarefa::getOptions3($this->id_projeto,$this->id_tarefa),
             'required'   => false,
             'size'=>10,
+            'RegisterInArrayValidator'=>false
         ));
 
         $this->addElement('button', 'botao_Adicionar_Tarefa', array(

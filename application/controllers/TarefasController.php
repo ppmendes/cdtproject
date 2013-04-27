@@ -53,6 +53,7 @@ class TarefasController extends Zend_Controller_Action
                 unset($data['tarefas']['comentario_email'],$data['tarefas']['aca']);
                 unset($data['tarefas']['outros_recursos'],$data['tarefas']['percentagem_recurso'],$data['tarefas']['asociado_tarefa1']);
 
+                //comentario absurdo
                 if($id){ //update
                     if($data_final_tarefa<$datafinalprojeto)
                     {
