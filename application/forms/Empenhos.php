@@ -48,7 +48,7 @@ class Application_Form_Empenhos extends Zend_Form
 
         $this->addElement('select', 'orcamento_id', array(
             'label'      => 'Rubrica: ',
-            'multiOptions' => Application_Model_Orcamento::getOptions(),
+            'multiOptions' => Application_Model_Empenho::getOrcamentosNaoPagos($this->id_projeto),
             'required'   => true
         ));
         
@@ -61,7 +61,6 @@ class Application_Form_Empenhos extends Zend_Form
         //input type text
         $this->addElement('text', 'processo_administrativo', array(
             'label'      => 'Processo Administrativo: ',
-            'required'   => true,
         ));
 
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data');
@@ -72,7 +71,6 @@ class Application_Form_Empenhos extends Zend_Form
         $nomeBeneficiario = Application_Model_Beneficiario::getNome($this->id_beneficiario);
         $this->addElement('text', 'beneficiario', array(
             'label'      => 'Beneficiário: ',
-            'required'   => true,
             'ignore'     => true,
             'value'      => $nomeBeneficiario['0']['nome'],
         ));
@@ -97,7 +95,7 @@ class Application_Form_Empenhos extends Zend_Form
         //input type text
         $this->addElement('text', 'numero_parcelas', array(
             'label'      => 'Número de Parcelas: ',
-            'required'   => true,
+            
         ));
 
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');

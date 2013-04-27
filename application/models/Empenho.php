@@ -13,7 +13,52 @@ class Application_Model_Empenho
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Empenho;
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        //DIFF orc
+        
+        $orcamento = $data['empenhos']['orcamento_id'];
+        $tableorc = new Application_Model_DbTable_Orcamento();
+        $orcamentodata = $tableorc->find($orcamento)->current();
+        
+        $projeto_id = $orcamentodata['projeto_id'];
+        //EQUAL orc
+                
+        $arrayCodigoRubrica = $this->getCodigoRubrica($orcamentodata['rubrica_id']);
+        $codigoRubrica = $arrayCodigoRubrica[0]['r.codigo_rubrica'];
+
+        $rubrica = explode(".", $codigoRubrica);
+
+        $data['empenhos']['valor_empenho'] = $decimalfilter->filter($data['empenhos']['valor_empenho']);
+
+        $valor = 0.2 * $data['empenhos']['valor_empenho'];
+        
+        if ($data['empenhos']['pre_empenho_id'] == 1) {
+            $data['empenhos']['processo_administrativo'] = "Pre-empenho";
+            $data['empenhos']['data'] = "0000-00-00";
+            unset($data['empenhos']['beneficiario_id']);
+            unset($data['empenhos']['pre_empenho_id']);
+        } else {            
+            unset($data['empenhos']['pre_empenho_id']);
+        }
+        
+        unset($data['empenhos']['projeto_id']);
+        
         $table->insert($data['empenhos']);
+        $embolso_rel = $this->getLastInsertedId('empenho');
+        //print_r($rubrica); exit;
+        if ($rubrica[1] == '36')
+        {
+            if ($rubrica[2] != '02' && $rubrica[2] != '03' && $rubrica[2] != '07' && $rubrica[2] != '46' && $rubrica[2] != '80')
+            {
+                $imposto = array();
+                $imposto['empenhos'] = $data['empenhos'];
+                $imposto['empenhos']['descricao_historico'] = $data['empenhos']['descricao_historico']." - 20% INSS = R$ ".$valor;;
+                $imposto['empenhos']['empenho_rel'] = $embolso_rel;
+                $imposto['empenhos']['valor_empenho'] = $valor;
+
+                $table->insert($imposto['empenhos']);
+            }
+        }
     }
 
     public function delete($id)
@@ -136,6 +181,95 @@ class Application_Model_Empenho
             echo $e->getMessage();
         }
     }
+    
+    public function getCodigoRubrica ($rid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                         ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
+                         ->where('r.rubrica_id = ?', $rid);
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+            return $resultado;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+    
+    public function getLastInsertedId($table){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
+        return (int)$result;
+    }
+
+
+    public static function getOrcamentosNaoPagos($id)
+    {
+        $options = array();
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $orcamentoSaldo = $db->fetchAll("SELECT codigo_rubrica, descricao, nome_destinatario, orcamento_id,
+
+
+                                        (SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        FROM empenho AS emp
+                                        WHERE o.orcamento_id = emp.orcamento_id
+                                        ) AS saldo_orcamento
+
+
+                                        FROM orcamento AS o
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                        LEFT JOIN destinatario AS d ON o.destinatario_id = d.destinatario_id
+
+                                        WHERE o.projeto_id = " . $id . " AND ((SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        FROM empenho AS emp
+                                        WHERE o.orcamento_id = emp.orcamento_id
+                                        ) > 0 )");
+
+
+        $orcamentoSemEmpenho = $db->fetchAll("SELECT codigo_rubrica, descricao, nome_destinatario, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
+                                                  FROM orcamento
+                                                  LEFT JOIN empenho ON orcamento.orcamento_id = empenho.orcamento_id
+                                                  LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
+                                                  LEFT JOIN destinatario ON orcamento.destinatario_id = destinatario.destinatario_id
+                                                  WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id);
+
+        $orcamento = array_merge($orcamentoSaldo, $orcamentoSemEmpenho);
+
+        foreach($orcamento as $item){
+
+            $arrayCodigoRubrica = $item['codigo_rubrica'];
+
+            $rubrica = explode(".", $arrayCodigoRubrica);
+
+            if (!($rubrica[1] == '47' && !(isset($rubrica[2]))))
+            {
+
+                if (array_key_exists("saldo_orcamento", $item) == 1)
+                {
+
+                    $options[$item['orcamento_id']] = $item['codigo_rubrica'] . " : " . $item['descricao'] .
+                    " - " . $item['nome_destinatario'] . " / Saldo de R$" . $item['saldo_orcamento'];
+                }
+                else
+                {
+                    $options[$item['orcamento_id']] = $item['codigo_rubrica'] . " : " . $item['descricao'] .
+                    " - " . $item['nome_destinatario'] . " / Saldo de R$" . $item['valor_orcamento'];
+                }
+
+            }
+        }
+
+        return $options;
+
+        }
+
+
 }
 
         /* Esta parte é usada quando o módulo inteiro é carregado, podendo ser 40 mil registros.

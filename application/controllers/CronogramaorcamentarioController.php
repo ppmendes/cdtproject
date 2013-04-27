@@ -100,41 +100,15 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
         $request = $this->getRequest();
         $id = $this->_getParam('cronograma_orcamentario_id');
         $pid= $this->_getParam('projeto_id');
-        $detalhes = new Application_Form_Cronogramaorcamentario_Cronogramaorcamentario1();
-        //$detalhes->startform();
-        $detalhes2= new Application_Form_Cronogramaorcamentario_Cronogramaorcamentario2();
-        //$detalhes2->startform();
         $model = new Application_Model_CronogramaOrcamentario();
+        $modelOrcamento = new Application_Model_Orcamento();
         $cronogramaOrcamentario = $model->selectAll($pid);
+        $orcamentos = $modelOrcamento->selectAll($pid);
         //$totalParcelas = $model->calculaTotal($cronogramaOrcamentario);
         $this->view->id = $id;
         $this->view->pid= $pid;
-
-
-        $data = $model->find($id)->toArray();
-
-
-        if(is_array($data)){
-            if($data['tipo']== 1){
-                $detalhes->setAction('/cronogramaorcamentario/detalhes/cronograma_orcamentario_id/' . $id . '/projeto_id/' .$pid);
-                $detalhes->setProjetoId($pid);
-                $detalhes->startform();
-                $data['valor_a_receber'] = $decimalfilter->filter($data['valor_a_receber']);
-                $data['valor_recebido'] = $decimalfilter->filter($data['valor_recebido']);
-                $detalhes->populate(array("cronograma_orcamentario" => $data));
-                $this->view->detalhes = $detalhes;
-            }
-            else if($data['tipo']== 2){
-                $detalhes2->setAction('/cronogramaorcamentario/detalhes/cronograma_orcamentario_id/' . $id . '/projeto_id/' .$pid);
-                $detalhes2->setProjetoId($pid);
-                $detalhes2->startform();
-                $data['valor_a_receber'] = $decimalfilter->filter($data['valor_a_receber']);
-                $data['valor_recebido'] = $decimalfilter->filter($data['valor_recebido']);
-                $detalhes2->populate(array("cronograma_orcamentario" => $data));
-                $this->view->detalhes = $detalhes2;
-            }
-
-        }
+        $this->view->orcamentos = $orcamentos;
+        $this->view->orcamentoProjeto = $modelOrcamento->getOrcamentoProjeto($pid);
 
     }
 
@@ -151,6 +125,14 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
 
         $this->view->excluir = $excluir;
 
+    }
+    
+    public function receberAction() {
+        $id = $this->_getParam('cronograma_orcamentario_id');
+        $pid = $this->_getParam('projeto_id');
+        $model = new Application_Model_CronogramaOrcamentario();
+        $model->receber($id);
+        $this->_redirect('/cronogramaorcamentario/index/projeto_id/'.$pid);
     }
 
 

@@ -12,7 +12,51 @@ class Application_Model_Desembolso
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Desembolso;
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        //DIFF orc
+        
+        $empenho = $data['desembolso']['empenho_id'];
+        $tableemp = new Application_Model_DbTable_Empenho();
+        $empenhodata = $tableemp->find($empenho)->current();
+        //print_r($empenhodata);
+        //exit;
+        $orcamento = $empenhodata['orcamento_id'];
+        $tableorc = new Application_Model_DbTable_Orcamento();
+        $orcamentodata = $tableorc->find($orcamento)->current();
+        
+        $projeto_id = $orcamentodata['projeto_id'];
+        //EQUAL orc
+                
+        $arrayCodigoRubrica = $this->getCodigoRubrica($orcamentodata['rubrica_id']);
+        $codigoRubrica = $arrayCodigoRubrica[0]['r.codigo_rubrica'];
+
+        $rubrica = explode(".", $codigoRubrica);
+
+        $data['desembolso']['valor_desembolso'] = $decimalfilter->filter($data['desembolso']['valor_desembolso']);
+
+        $valor = 0.2 * $data['desembolso']['valor_desembolso'];
+
+        unset($data['desembolso']['projeto_id']);
+        
         $table->insert($data['desembolso']);
+        $desembolso_rel = $this->getLastInsertedId('desembolso');
+
+        if ($rubrica[1] == '36')
+        {
+            if ($rubrica[2] != '02' && $rubrica[2] != '03' && $rubrica[2] != '07' && $rubrica[2] != '46' && $rubrica[2] != '80')
+            {
+                $imposto = Array();
+                $imposto['desembolso']['desembolso_rel'] = $desembolso_rel;
+                $imposto['desembolso']['codigo_documento_habil'] = $data['desembolso']['codigo_documento_habil'];
+                $imposto['desembolso']['data_documento_habil'] = $data['desembolso']['data_documento_habil'];
+                $imposto['desembolso']['order_dinheiro'] = $data['desembolso']['order_dinheiro'];
+                $imposto['desembolso']['data_pagamento'] = $data['desembolso']['data_pagamento'];
+                $imposto['desembolso']['valor_desembolso'] = $valor;
+                $imposto['desembolso']['empenho_id'] = $data['desembolso']['empenho_id']+1;
+
+                $table->insert($imposto['desembolso']);
+            }
+        }
     }
 
     public function delete($id)
@@ -220,6 +264,32 @@ class Application_Model_Desembolso
 
             return $options;
 
+    }
+    
+    public function getCodigoRubrica ($rid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                         ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
+                         ->where('r.rubrica_id = ?', $rid);
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+            return $resultado;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+    
+    public function getLastInsertedId($table){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
+        return (int)$result;
     }
 }
 

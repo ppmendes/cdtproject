@@ -51,7 +51,7 @@ class DesembolsoController extends Zend_Controller_Action
 
                 $model->insert($data);
 
-                $this->_redirect('/desembolso/');
+                $this->_redirect('/desembolso/index/projeto_id/'.$pid);
             }
         }
 

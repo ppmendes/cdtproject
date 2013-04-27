@@ -129,6 +129,21 @@ class Application_Model_CronogramaOrcamentario
             echo $e->getMessage();
         }
     }
+    
+    public function receber($id) {
+            $table = new Application_Model_DbTable_CronogramaOrcamentario();
+            $cronograma_orcamentario = $table->find($id)->current();
+
+            $data['cronograma_orcamentario'] = array();
+            $aux = $cronograma_orcamentario['valor_a_receber'];
+            $data['cronograma_orcamentario']['valor_a_receber'] = 0;
+            $data['cronograma_orcamentario']['valor_recebido'] = $aux + $cronograma_orcamentario['valor_recebido'];
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $table = "cronograma_orcamentario";
+            $where = $db->quoteInto('cronograma_orcamentario_id = ?', $id);
+            $db->update($table, $data['cronograma_orcamentario'],$where);
+        }
 
 //        public function calculaTotal($cronogramaOrcamentario)
 //        {
