@@ -39,6 +39,12 @@ class Application_Form_Empenhos extends Zend_Form
         // Setar metodo
         $this->setMethod('post');
 
+        $this->addElement('checkbox', 'pre_empenho_id', array(
+            'label'      => 'Pré Empenho? ',
+            //'multiOptions' => Application_Model_PreEmpenho::getOptions(),
+            
+        ));
+        
         //input type text
         $this->addElement('text', 'descricao_historico', array(
             'label'      => 'Descrição: ',
@@ -113,12 +119,6 @@ class Application_Form_Empenhos extends Zend_Form
             'disabled'   => true,
             
             'value'     => $usuario_logado->nome
-        ));
-
-        $this->addElement('checkbox', 'pre_empenho_id', array(
-            'label'      => 'Pré Empenho? ',
-            //'multiOptions' => Application_Model_PreEmpenho::getOptions(),
-            
         ));
 
         // Add the submit button
