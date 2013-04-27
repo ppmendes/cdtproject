@@ -41,8 +41,15 @@ class Application_Form_Empenhos extends Zend_Form
 
         $this->addElement('checkbox', 'pre_empenho_id', array(
             'label'      => 'Pré Empenho? ',
+            'onchange'  =>  'desabilitaTudo()'
             //'multiOptions' => Application_Model_PreEmpenho::getOptions(),
             
+        ));
+
+        $this->addElement('select', 'orcamento_id', array(
+            'label'      => 'Rubrica: ',
+            'multiOptions' => Application_Model_Orcamento::getOptions(),
+            'required'   => true
         ));
         
         //input type text
@@ -102,12 +109,6 @@ class Application_Form_Empenhos extends Zend_Form
         $emtDatePicker3->setLabel('Data do Fim da Bolsa: ');
         $emtDatePicker3->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker3);
-
-        $this->addElement('select', 'orcamento_id', array(
-            'label'      => 'Rubrica: ',
-            'multiOptions' => Application_Model_Orcamento::getOptions(),
-            'required'   => true
-        ));
 
         $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
         

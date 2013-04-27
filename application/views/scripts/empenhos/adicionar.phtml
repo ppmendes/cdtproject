@@ -47,6 +47,24 @@
 
         return maskPre(val, msk, '')
     }
+    
+    function desabilitaTudo() {
+        if ($("#empenhos-pre_empenho_id").is(':checked')) {
+            $("#empenhos-processo_administrativo").attr('disabled', 'disabled');
+            $("#empenhos-data").attr('disabled', 'disabled');
+            $("#empenhos-beneficiario").attr('disabled', 'disabled');
+            $("#empenhos-numero_parcelas").attr('disabled', 'disabled');
+            $("#empenhos-data_inicio").attr('disabled', 'disabled');
+            $("#empenhos-data_fim").attr('disabled', 'disabled');
+        } else {
+            $("#empenhos-processo_administrativo").attr('disabled', false);
+            $("#empenhos-data").attr('disabled', false);
+            $("#empenhos-beneficiario").attr('disabled', false);
+            $("#empenhos-numero_parcelas").attr('disabled', false);
+            $("#empenhos-data_inicio").attr('disabled', false);
+            $("#empenhos-data_fim").attr('disabled', false);
+        }
+    }
 
 </script>
 
