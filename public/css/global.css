@@ -118,4 +118,12 @@ table.dataTable + div{
     background-image: url('../imagens/icones/delete.png');
 }
 
-
+.btn_receive{
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-indent: -9999px;
+    width: 32px;
+    height: 32px;
+    background-image: url('../imagens/icones/receive.png');
+}
