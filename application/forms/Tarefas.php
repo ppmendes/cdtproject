@@ -189,6 +189,7 @@ class Application_Form_Tarefas extends Zend_Form
         $emtDatePicker = new ZendX_JQuery_Form_Element_DatePicker('data_final');
         $emtDatePicker->setLabel('Data Término:');
         $emtDatePicker->setFilters(array('DateFilter'));
+        $emtDatePicker->setAttribs(array('onchange' => 'validarDatas()'));
 
 
         $this->addElement($emtDatePicker);
@@ -320,7 +321,7 @@ class Application_Form_Tarefas extends Zend_Form
             'RegisterInArrayValidator'=>false,
         ));
 
-        $this->addElement('textarea', 'comentario_email', array(
+        /*$this->addElement('textarea', 'comentario_email', array(
             'label'      => 'Comentários Adicionais do E-mail:',
             'required'   => false,
         ));
@@ -328,7 +329,7 @@ class Application_Form_Tarefas extends Zend_Form
         $this->addElement('checkbox', 'tarefa_notificacao', array(
             'label'      => 'Notificar associados da tarefa por e-mail:',
             'required'   => true,
-        ));
+        ));*/
 
         /******************************** LABEL OUTROS RECURSOS **************************************/
         $this->addElement('hidden', 'outros', array(
