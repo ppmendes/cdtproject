@@ -31,7 +31,16 @@ class Application_Model_Empenho
         $data['empenhos']['valor_empenho'] = $decimalfilter->filter($data['empenhos']['valor_empenho']);
 
         $valor = 0.2 * $data['empenhos']['valor_empenho'];
-
+        
+        if ($data['empenhos']['pre_empenho_id'] == 1) {
+            $data['empenhos']['processo_administrativo'] = "Pre-empenho";
+            $data['empenhos']['data'] = "0000-00-00";
+            unset($data['empenhos']['beneficiario_id']);
+            unset($data['empenhos']['pre_empenho_id']);
+        } else {            
+            unset($data['empenhos']['pre_empenho_id']);
+        }
+        
         unset($data['empenhos']['projeto_id']);
         
         $table->insert($data['empenhos']);
