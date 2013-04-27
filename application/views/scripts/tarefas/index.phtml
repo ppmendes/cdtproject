@@ -1,3 +1,7 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
 <script>
     $(document).ready(function() {
         $('#table_id').dataTable({
@@ -42,9 +46,9 @@
 
 <script>
 
-    function adicionar()
+    function adicionar(projeto_id)
     {
-        top.location.href = "/../tarefas/adicionar/";
+        top.location.href = "/../tarefas/adicionar/projeto_id/"+projeto_id;
     }
 
 </script>
@@ -63,7 +67,7 @@
 //
 //?>
 
-<button class='novatarefa btn_add' onclick='adicionar()'>Nova Tarefa</button>
+<button class='novatarefa btn_add' onclick='adicionar(<?php echo $projeto_id; ?>)'>Nova Tarefa</button>
 
 <table id='table_id' border='0'>
     <thead>

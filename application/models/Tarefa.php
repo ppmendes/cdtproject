@@ -153,7 +153,7 @@ inner join usuario as u on u.usuario_id=tu.usuario_id where tu.usuario_id=$idusu
     public static function getOptions3($id_projeto_form = null,$id_tarefa_form = null){
 
         try{
-            if($id_projeto_form == null)
+            if($id_projeto_form == null || $id_tarefa_form == null)
             {
                 $options = array();
                 return $options;

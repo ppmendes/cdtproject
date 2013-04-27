@@ -26,28 +26,19 @@ class EmpenhosController extends Zend_Controller_Action
 
     public function adicionarAction(){
         $request = $this->getRequest();
+        $pid = $this->_getParam('projeto_id');
         $form = new Application_Form_Empenhos();
+        $form->setProjetoId($pid);
         $form->startform();
         $model = new Application_Model_Empenho;
-        $id = $this->_getParam('projeto_id');
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
-                if($id){
-                    $model->update($data['empenhos'], $id);
-                }else{
-                    $model->insert($data['empenhos']);
-                }
-
-                $this->_redirect('/empenhos/');
-            }
-        }elseif ($id){
-            //$data = $model->find($id)->toArray();
-            $form->startForm();
-            if(is_array($data)){
-                $form->populate(array("empenhos" => $data));
+                
+                $model->insert($data);
+                $this->_redirect('/empenhos/index/projeto_id/'.$pid);
             }
         }
 
@@ -58,15 +49,21 @@ class EmpenhosController extends Zend_Controller_Action
 
     public function detalhesAction(){
         $request = $this->getRequest();
+        $id = $this->_getParam('empenho_id');
+        $pid = $this->_getParam('projeto_id');
+        $bid = $this->_getParam('beneficiario_id');
         $detalhes = new Application_Form_Empenhos();
+        $detalhes->setProjetoId($pid);
+        $detalhes->setBeneficiarioId($bid);
+        $detalhes->startform();
         $model = new Application_Model_Empenho;
-        $id = $this->_getParam('id');
         $this->view->id = $id;
 
 
         $data = $model->find($id)->toArray();
 
         if(is_array($data)){
+            $detalhes->setAction('/empenhos/detalhes/empenho_id/' . $id);
             $detalhes->populate(array("empenhos" => $data));
         }
 
@@ -127,12 +124,12 @@ class EmpenhosController extends Zend_Controller_Action
 
         if($total_pages!=0)
         {
-            $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('nome'))
+            $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome'))
                                           ->where($where,$searchTerm)
                                           ->order(array("$sidx $sord"))->limit($limit,$start);
         }
         else{
-            $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('nome'))
+            $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('beneficiario_id', 'nome'))
                                           ->where($where,$searchTerm)
                                           ->order(array("$sidx $sord"));
         }

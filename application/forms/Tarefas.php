@@ -38,14 +38,14 @@ class Application_Form_Tarefas extends Zend_Form
             ),
         ));
         
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
+        /*$emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
         $emt->setLabel('Projeto:');
         $emt->setRequired(true);
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
             'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id); atualizarTarefas1(ui.item.id)}')
         ));
-        $this->addElement($emt);
+        $this->addElement($emt);*/
         
        /* $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'projeto', array(
@@ -55,6 +55,15 @@ class Application_Form_Tarefas extends Zend_Form
             'readonly'   => true,
             'ignore'     => true,
         )); */
+        
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
+        $this->addElement('text', 'projeto', array(
+            'label'      => 'Projeto: ',
+             'value'      => $nomeProjeto['0']['nome'],
+            'required'   => true,
+            'readonly'   => true,
+            'ignore'     => true
+        ));
 
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
@@ -375,15 +384,15 @@ class Application_Form_Tarefas extends Zend_Form
             'label'    => 'Inserir Tarefa',
         ));
 
+        
         //set hidden projeto
         $this->addElement('hidden', 'projeto_id', array(
-            'value'      => ''
+            'value'      => $this->id_projeto,
         ));
 
         $this->addElement('hidden', 'instituicao_id', array(
             'value'      => ''
         ));
-
 
     }
 }
