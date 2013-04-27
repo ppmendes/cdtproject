@@ -88,7 +88,7 @@ class UsuariosController extends Zend_Controller_Action
                         $modelPermissoes->insert($datapermissoes);
                     }
                 }
-                $this->_redirect('/usuarios/');
+                $this->_redirect('/usuarios/treeviewpermissoes/usuario_id/'.$IDusuario);
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();

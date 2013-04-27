@@ -78,27 +78,27 @@ class Application_Form_Tarefas extends Zend_Form
 
         // array para progresso da tarefas
         $array_progresso_tarefa = array(
-            1 => '0',
-            2 => '5',
-            3 => '10',
-            4 => '15',
-            5 => '20',
-            6 => '25',
-            7 => '30',
-            8 => '35',
-            9 => '40',
-            10 => '45',
-            11 => '50',
-            12 => '55',
-            13 => '60',
-            14 => '65',
-            15 => '70',
-            16 => '75',
-            17 => '80',
-            18 => '85',
-            19 => '90',
-            20 => '95',
-            21 => '100',
+            0 => '0',
+            5 => '5',
+            10 => '10',
+            15 => '15',
+            20 => '20',
+            25 => '25',
+            30 => '30',
+            35 => '35',
+            40 => '40',
+            45 => '45',
+            50 => '50',
+            55 => '55',
+            60 => '60',
+            65 => '65',
+            70 => '70',
+            75 => '75',
+            80 => '80',
+            85 => '85',
+            90 => '90',
+            95 => '95',
+            100 => '100',
         );
 
         //progresso da tarefa select type
@@ -170,6 +170,7 @@ class Application_Form_Tarefas extends Zend_Form
             'label'      => 'Tarefa Pai:',
             'multiOptions' => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
+            'RegisterInArrayValidator'=>false
         ));
         /******************************** LABEL DATAS **************************************/
         $this->addElement('hidden', 'label_datas', array(

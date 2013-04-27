@@ -49,7 +49,22 @@ class Application_Model_Tarefa
 
             $result=$db->fetchAll("select t.tarefa_id, t.percentagem_completo, p.nome as nomeprojeto, t.nome, u.username, t.dono, t.data_inicio, t.data_final, t.duracao from tarefa_usuario as tu inner join tarefa as t on tu.tarefa_id=t.tarefa_id
 inner join projeto as p on p.projeto_id=t.projeto_id
-inner join usuario as u on u.usuario_id=tu.usuario_id where tu.usuario_id=$idusuario");
+inner join usuario as u on u.usuario_id=tu.usuario_id where tu.usuario_id=$idusuario and t.deletado=0");
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectAllporprojeto($idusuario,$idprojeto)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $result=$db->fetchAll("select t.tarefa_id, t.percentagem_completo, p.nome as nomeprojeto, t.nome, u.username, t.dono, t.data_inicio, t.data_final, t.duracao from tarefa_usuario as tu inner join tarefa as t on tu.tarefa_id=t.tarefa_id
+inner join projeto as p on p.projeto_id=t.projeto_id
+inner join usuario as u on u.usuario_id=tu.usuario_id where tu.usuario_id=$idusuario and p.projeto_id=$idprojeto and t.deletado=0");
 
             return $result;
         }catch(Exception $e){

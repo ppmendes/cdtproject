@@ -1,6 +1,6 @@
 <?php
 
-class TarefasController extends Zend_Controller_Action
+class TarefasPorProjetoController extends Zend_Controller_Action
 {
 
     public function init()
@@ -14,9 +14,9 @@ class TarefasController extends Zend_Controller_Action
         $id_usuario=$usuario_logado->usuario_id;
         $tarefaModel = new Application_Model_Tarefa();
         //$this->view->tarefas = $tarefaModel->selectAll();
-        //$pid = $this->_getParam('projeto_id');
+        $projeto_id = $this->_getParam('projeto_id');
         //$this->view->pid = $pid;
-        $this->view->tarefas = $tarefaModel->selectAll($id_usuario);
+        $this->view->tarefas = $tarefaModel->selectAllporprojeto($id_usuario,$projeto_id);
 
     }
 
@@ -38,7 +38,7 @@ class TarefasController extends Zend_Controller_Action
 
                 $data = $form->getValues();
                 // obter datos de data final do projeto para comparação com a data final de tarefa
-
+                print_r($data);
 
                 $data_final_tarefa=$data['tarefas']['data_final'];
                 $id_projeto=$data['tarefas']['projeto_id'];
@@ -98,8 +98,8 @@ class TarefasController extends Zend_Controller_Action
 
                 }else{ //insert
                     // datas finais de tarefas devem ser menores que datas finais de projetos
-                    //if($data_final_tarefa<$datafinalprojeto)
-                    //{
+                    if($data_final_tarefa<$datafinalprojeto)
+                    {
                         //insert na tabela tarefa
                         $model->insert($data);
 
@@ -132,9 +132,9 @@ class TarefasController extends Zend_Controller_Action
                             $dataRubricaAssociadaTarefa['porcentagem']=$dataexplode[1];
                             $modelrubricastarefas->insert($dataRubricaAssociadaTarefa);
                         }
-                    //}else{
-                    //    echo "A data final da tarefa é maior que a data final do projeto!!!";
-                    //}
+                    }else{
+                        echo "A data final da tarefa é maior que a data final do projeto!!!";
+                    }
 
                 }
 
@@ -239,7 +239,7 @@ class TarefasController extends Zend_Controller_Action
         $id = $this->_getParam('tarefa_id');
 
         $model->delete($id);
-        $this->_redirect('/tarefas/');
+        $this->_redirect('/tarefasporprojeto/');
 
         $this->view->excluir = $excluir;
     }
