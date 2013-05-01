@@ -20,7 +20,7 @@ $projeto_id = $this->pid;
     {
         var answer = confirm("Deseja realmente excluir o orçamento?");
         if (answer) {
-            top.location.href = '/../orcamento/excluir/orcamento_id/'+id;
+            top.location.href = '/../orcamentos/excluir/orcamento_id/'+ id + '/projeto_id/' + 467;
         }
         else {
             alert("O orçamento não foi excluído!");
@@ -30,7 +30,7 @@ $projeto_id = $this->pid;
 <script>
     function editar(id)
     {
-        top.location.href = '/../orcamento/adicionar/orcamento_id/'+id;
+        top.location.href = '/../orcamentos/adicionar/orcamento_id/'+id;
 
     }
 </script>
@@ -38,8 +38,8 @@ $projeto_id = $this->pid;
 <?php
  $id = $this->id;
 
-//echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
-//echo "<button onclick='editar($id)'>Editar</button>";
+echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
+echo "<button onclick='editar($id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;

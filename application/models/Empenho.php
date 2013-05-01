@@ -52,6 +52,7 @@ class Application_Model_Empenho
             {
                 $imposto = array();
                 $imposto['empenhos'] = $data['empenhos'];
+                $imposto['empenhos']['orcamento_id'] = $data['empenhos']['orcamento_id'] + 1;
                 $imposto['empenhos']['descricao_historico'] = $data['empenhos']['descricao_historico']." - 20% INSS = R$ ".$valor;;
                 $imposto['empenhos']['empenho_rel'] = $embolso_rel;
                 $imposto['empenhos']['valor_empenho'] = $valor;
@@ -213,7 +214,7 @@ class Application_Model_Empenho
     {
         $options = array();
         $db = Zend_Db_Table::getDefaultAdapter();
-        $orcamentoSaldo = $db->fetchAll("SELECT codigo_rubrica, descricao, nome_destinatario, orcamento_id,
+        $orcamentoSaldo = $db->fetchAll("SELECT o.rubrica_id, codigo_rubrica, descricao, nome_destinatario, orcamento_id,
 
 
                                         (SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
@@ -232,7 +233,7 @@ class Application_Model_Empenho
                                         ) > 0 )");
 
 
-        $orcamentoSemEmpenho = $db->fetchAll("SELECT codigo_rubrica, descricao, nome_destinatario, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
+        $orcamentoSemEmpenho = $db->fetchAll("SELECT orcamento.rubrica_id, codigo_rubrica, descricao, nome_destinatario, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
                                                   FROM orcamento
                                                   LEFT JOIN empenho ON orcamento.orcamento_id = empenho.orcamento_id
                                                   LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
@@ -243,11 +244,9 @@ class Application_Model_Empenho
 
         foreach($orcamento as $item){
 
-            $arrayCodigoRubrica = $item['codigo_rubrica'];
+            $rubrica_id = $item['rubrica_id'];
 
-            $rubrica = explode(".", $arrayCodigoRubrica);
-
-            if (!($rubrica[1] == '47' && !(isset($rubrica[2]))))
+            if ( $rubrica_id != '44')
             {
 
                 if (array_key_exists("saldo_orcamento", $item) == 1)

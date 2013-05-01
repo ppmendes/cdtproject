@@ -219,7 +219,7 @@ class Application_Model_Desembolso
             $id = 1;
             $options = array();
             $db = Zend_Db_Table::getDefaultAdapter();
-            $desembolsoSaldo = $db->fetchAll("SELECT empenho_id, valor_empenho, processo_administrativo, nome,
+            $desembolsoSaldo = $db->fetchAll("SELECT o.rubrica_id, empenho_id, valor_empenho, processo_administrativo, nome,
 
 
                                         (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
@@ -231,6 +231,7 @@ class Application_Model_Desembolso
                                         FROM empenho AS e
                                         LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                         LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
 
                                         WHERE o.projeto_id = " . $id . " AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
                                         FROM desembolso AS des
@@ -238,29 +239,37 @@ class Application_Model_Desembolso
                                         ) > 0 )");
 
 
-            $desembolsoSemEmpenho = $db->fetchAll("SELECT processo_administrativo, nome, valor_empenho, empenho.empenho_id, orcamento.projeto_id
+            $desembolsoSemEmpenho = $db->fetchAll("SELECT orcamento.rubrica_id, processo_administrativo, nome, valor_empenho, empenho.empenho_id, orcamento.projeto_id
                                                   FROM empenho
                                                   LEFT JOIN desembolso ON empenho.empenho_id = desembolso.empenho_id
                                                   LEFT JOIN beneficiario ON empenho.beneficiario_id = beneficiario.beneficiario_id
                                                   LEFT JOIN orcamento ON empenho.orcamento_id = orcamento.orcamento_id
+                                                  LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
                                                   WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $id);
 
             $desembolso = array_merge($desembolsoSaldo, $desembolsoSemEmpenho);
 
             foreach($desembolso as $item){
 
-                if (array_key_exists("saldo_empenho", $item) == 1)
-                {
-                    $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
-                                              " - Saldo de R$" . $item['saldo_empenho'];
-                }
-                else
-                {
-                    $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
-                        " - Saldo de R$" . $item['valor_empenho'];
-                }
+            $rubrica_id = $item['rubrica_id'];
 
+                if ($rubrica_id != '44')
+                {
+
+                    if (array_key_exists("saldo_empenho", $item) == 1)
+                    {
+                        $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+                                              " - Saldo de R$" . $item['saldo_empenho'];
+                    }
+                    else
+                    {
+                        $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+                        " - Saldo de R$" . $item['valor_empenho'];
+                    }
+
+                }
             }
+
 
             return $options;
 

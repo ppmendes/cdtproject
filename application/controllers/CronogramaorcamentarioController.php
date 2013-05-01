@@ -109,6 +109,7 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
         $this->view->pid= $pid;
         $this->view->orcamentos = $orcamentos;
         $this->view->orcamentoProjeto = $modelOrcamento->getOrcamentoProjeto($pid);
+        $this->view->saldoDisponivel = $model->getSaldoDisponivel($id);
 
     }
 
