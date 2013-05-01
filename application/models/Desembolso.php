@@ -113,7 +113,8 @@ class Application_Model_Desembolso
             10=> 'p.orcamento',
             11=> 'r.codigo_rubrica',
             12=> 'r.descricao',
-
+            13=> 'e.processo_administrativo',
+            14=> 'e.descricao_historico'
         );
 
             $select = $db->select()
@@ -152,6 +153,11 @@ class Application_Model_Desembolso
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $resultado = $db->fetchAll("SELECT o.projeto_id, SUM( d.valor_desembolso ), p.orcamento,
+
+                                        (SELECT SUM( valor )
+                                         FROM orcamento_cronograma AS oc, orcamento AS orc
+                                         WHERE oc.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         ) AS valor,
 
                                         (SELECT SUM( valor_orcamento )
                                         FROM orcamento AS orc
@@ -200,6 +206,33 @@ class Application_Model_Desembolso
             $select = $db->select()
                 ->from(array('d' => 'desembolso'),array())
                 ->where('d.empenho_id = ?', $eid)
+                ->columns($colunas);
+
+            $stmt = $select->query();
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function selectOrcamentoProjeto($pid){
+
+        try{
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $colunas = array(
+                0 => 'orcamento',
+            );
+
+            $select = $db->select()
+                ->from(array('p' => 'projeto'),array())
+                ->where('p.projeto_id = ?', $pid)
                 ->columns($colunas);
 
             $stmt = $select->query();
