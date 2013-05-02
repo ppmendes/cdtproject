@@ -72,14 +72,13 @@ $projeto_id = $this->pid;
     <tr>
         <th>Código</th>
         <th>Natureza da Despesa</th>
-        <th>Desembolso_Rel</th>
-        <th>Empenho</th>
+        <th>Processo Administrativo</th>
+        <th>Histórico</th>
         <th>Código do Documento Hábil</th>
         <th>Data do Documento</th>
         <th>Ordem Bancária</th>
         <th>Data do Pagamento</th>
         <th>Valor</th>
-        <th>Extornado</th>
     </tr>
     </thead>
     <tbody>
@@ -94,8 +93,9 @@ $projeto_id = $this->pid;
     $decimalfilter = new Zend_Filter_DecimalFilter();
 
 
-    $orcamentoProjeto = $decimalfilter->filter($this->soma[0]['orcamento']);
+    $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['orcamento']);
     $somaEmpenho = number_format(0 + ($this->soma[0]['valor_empenho'] + $this->soma[0]['valor_pre_empenho']), 2, '.', '');
+    $somaOrcamentoDisponiblizado = number_format(0 + ($this->soma[0]['valor']), 2, '.', '');
     $somaDesembolso = number_format(0 + $this->soma[0]['SUM( d.valor_desembolso )'], 2, '.', '');
     $somaRubrica = number_format(0 + $this->soma[0]['valor_orcamento'], 2, '.', '');
     $somaSaldoFin =  number_format(0 + ($this->soma[0]['valor_recebido'] - $somaDesembolso), 2, '.', '');
@@ -106,23 +106,14 @@ $projeto_id = $this->pid;
         echo "<tr id='".$row['desembolso_id']."'>";
         echo "<td>" . $row['codigo_rubrica'] . "</td>";
         echo "<td>" . $row['descricao'] . "</td>";
-        echo "<td>" .   $row['desembolso_rel'] . "</td>";
-        echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}'>" .   $row['empenho_id'] . "</td>";
-        echo "<td ><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}'>" .  $row['codigo_documento_habil'] . "</td>";
+        echo "<td>" .   $row['processo_administrativo'] . "</td>";
+        echo "<td>" .   $row['descricao_historico'] . "</td>";
+        echo "<td ><a href='/desembolso/detalhes/desembolso_id/{$row['desembolso_id']}/projeto_id/$projeto_id'>" .  $row['codigo_documento_habil'] . "</td>";
         echo "<td >" .  $datefilter->filter($row['data_documento_habil']) . "</td>";
         echo "<td >" .  $row['order_dinheiro'] . "</td>";
         echo "<td >" .  $datefilter->filter($row['data_pagamento']) . "</td>";
         echo "<td >" .  $decimalfilter->filter($row['valor_desembolso']) . "</td>";
 
-        if ($row['extornado'] == true)
-        {
-            echo "<td> Sim </td>";
-        }
-        else
-        {
-            echo "<td> Não </td>";
-        }
-        //echo "<td >" .  $row['extornado'] . "</td>";
         echo "</tr>";
     }
     echo "</tbody></table>";
@@ -135,6 +126,7 @@ $projeto_id = $this->pid;
     echo "<th> Total Rubrica</th>";
     echo "<th> Orçamento Disponibilizado</th>";
     echo "<th> Total Empenhado</th>";
+    echo "<th> Saldo Orçamentário</th>";
     echo "<th> Total Desembolsado</th>";
     echo "<th> Saldo Financeiro</th>";
     echo "</tr>";
@@ -144,8 +136,9 @@ $projeto_id = $this->pid;
     echo "<tr>";
     echo "<td>" . $orcamentoProjeto . "</td>";
     echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
-    echo "<td> TODO </td>";
+    echo "<td>" . $decimalfilter->filter($somaOrcamentoDisponiblizado) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaOrcamentoDisponiblizado - $somaEmpenho) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
     echo "<td>" . $decimalfilter->filter($somaSaldoFin) . "</td>";
 

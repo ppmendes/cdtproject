@@ -37,10 +37,13 @@ class Application_Form_Tarefas extends Zend_Form
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
             ),
         ));
-        
+
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
+
         $emt = new ZendX_JQuery_Form_Element_AutoComplete('ac');
         $emt->setLabel('Projeto:');
         $emt->setRequired(true);
+        $emt->setValue($nomeProjeto['0']['nome']);
         $emt->setJQueryParam('data', Application_Model_Projeto::getOptions())
             ->setJQueryParams(array("select" => new Zend_Json_Expr(
             'function(event,ui) { $("#tarefas-projeto_id").val(ui.item.id); atualizarUsuarios(ui.item.id); atualizarTarefas(ui.item.id); atualizarTarefas1(ui.item.id)}')

@@ -13,6 +13,7 @@ class DesembolsoController extends Zend_Controller_Action
         $model = new Application_Model_Desembolso();
         $pid = $this->_getParam('projeto_id');
         $this->view->resultado = $model->selectAll($pid);
+        $this->view->orcamentoProjeto = $model->selectOrcamentoProjeto($pid);
         $this->view->soma = $model->selectAllSoma($pid);
         $this->view->pid = $pid;
     }
@@ -51,7 +52,7 @@ class DesembolsoController extends Zend_Controller_Action
 
                 $model->insert($data);
 
-                $this->_redirect('/desembolso/');
+                $this->_redirect('/desembolso/index/projeto_id/'.$pid);
             }
         }
 

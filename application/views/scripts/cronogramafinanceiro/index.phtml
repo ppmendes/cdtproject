@@ -49,6 +49,13 @@ $projeto_id = $this->pid;
         top.location.href = '/../cronogramafinanceiro/adicionar/projeto_id/'+projeto_id;
 
     }
+    
+    function receber(id, pid)
+    {
+        if (confirm("O valor previsto será transformado em valor recebido. Confirmar?")) {
+            top.location.href = '/../cronogramafinanceiro/receber/cronograma_financeiro_id/'+id+'/projeto_id/'+pid;
+        }
+    }
 
     function editar(id, pid)
     {
@@ -82,13 +89,13 @@ $projeto_id = $this->pid;
 <table id='table_id' border='0'>
     <thead>
     <tr>
-        <th>Id</th>
         <th>Data Prevista</th>
         <th>Valor Previsto</th>
         <th>Valor Recebido</th>
         <th>Tipo</th>
         <th>Fatura/PF</th>
         <th>Data Pagamento</th>
+        <th>Receber valor</th>
         <th>Editar</th>
         <th>Excluir</th>
 <!--        <th>Data final real</th>-->
@@ -118,11 +125,9 @@ $projeto_id = $this->pid;
     $totalRecebido += $row['valor_recebido'];
     //$row = $row->toArray();
     echo "<tr id='".$row['cronograma_financeiro_id']."'>";
-    echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}/projeto_id/{$projeto_id}'>"
-        .$row['cronograma_financeiro_id']. "</a></td>";
         echo "<td>" .   $datefilter->filter($row['data_previa']) . "</td>";
         echo "<td>" .   $decimalfilter->filter($row['valor_aplicado_a_rubrica']) . "</td>";
-        echo "<td>" .   $decimalfilter->filter($row['valor_recebido']) . "</td>";
+        echo "<td><a href='/cronogramafinanceiro/detalhes/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}/projeto_id/{$projeto_id}'>" .   $decimalfilter->filter($row['valor_recebido']) . "</a></td>";
 
         if($row['tipo'] == 1)
         {
@@ -146,6 +151,7 @@ $projeto_id = $this->pid;
 //    echo "<td><a class='\right btn_edit\' href='/cronogramafinanceiro/adicionar/projeto_id/".$projeto_id."/cronograma_financeiro_id/"
 //    ."{$row['cronograma_financeiro_id']}'>aa</a></td>";
 //    echo "<td><a class='\right btn_delete\' href='/cronogramafinanceiro/excluir/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}'>bb</a></td>";
+    echo "<td><button class=\"center btn_receive\" onclick='receber(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Receber</button>";
     echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Editar</button>";
     echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Editar</button>";
 

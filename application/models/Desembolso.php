@@ -12,7 +12,51 @@ class Application_Model_Desembolso
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Desembolso;
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        //DIFF orc
+        
+        $empenho = $data['desembolso']['empenho_id'];
+        $tableemp = new Application_Model_DbTable_Empenho();
+        $empenhodata = $tableemp->find($empenho)->current();
+        //print_r($empenhodata);
+        //exit;
+        $orcamento = $empenhodata['orcamento_id'];
+        $tableorc = new Application_Model_DbTable_Orcamento();
+        $orcamentodata = $tableorc->find($orcamento)->current();
+        
+        $projeto_id = $orcamentodata['projeto_id'];
+        //EQUAL orc
+                
+        $arrayCodigoRubrica = $this->getCodigoRubrica($orcamentodata['rubrica_id']);
+        $codigoRubrica = $arrayCodigoRubrica[0]['r.codigo_rubrica'];
+
+        $rubrica = explode(".", $codigoRubrica);
+
+        $data['desembolso']['valor_desembolso'] = $decimalfilter->filter($data['desembolso']['valor_desembolso']);
+
+        $valor = 0.2 * $data['desembolso']['valor_desembolso'];
+
+        unset($data['desembolso']['projeto_id']);
+        
         $table->insert($data['desembolso']);
+        $desembolso_rel = $this->getLastInsertedId('desembolso');
+
+        if ($rubrica[1] == '36')
+        {
+            if ($rubrica[2] != '02' && $rubrica[2] != '03' && $rubrica[2] != '07' && $rubrica[2] != '46' && $rubrica[2] != '80')
+            {
+                $imposto = Array();
+                $imposto['desembolso']['desembolso_rel'] = $desembolso_rel;
+                $imposto['desembolso']['codigo_documento_habil'] = $data['desembolso']['codigo_documento_habil'];
+                $imposto['desembolso']['data_documento_habil'] = $data['desembolso']['data_documento_habil'];
+                $imposto['desembolso']['order_dinheiro'] = $data['desembolso']['order_dinheiro'];
+                $imposto['desembolso']['data_pagamento'] = $data['desembolso']['data_pagamento'];
+                $imposto['desembolso']['valor_desembolso'] = $valor;
+                $imposto['desembolso']['empenho_id'] = $data['desembolso']['empenho_id']+1;
+
+                $table->insert($imposto['desembolso']);
+            }
+        }
     }
 
     public function delete($id)
@@ -69,7 +113,8 @@ class Application_Model_Desembolso
             10=> 'p.orcamento',
             11=> 'r.codigo_rubrica',
             12=> 'r.descricao',
-
+            13=> 'e.processo_administrativo',
+            14=> 'e.descricao_historico'
         );
 
             $select = $db->select()
@@ -108,6 +153,11 @@ class Application_Model_Desembolso
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $resultado = $db->fetchAll("SELECT o.projeto_id, SUM( d.valor_desembolso ), p.orcamento,
+
+                                        (SELECT SUM( valor )
+                                         FROM orcamento_cronograma AS oc, orcamento AS orc
+                                         WHERE oc.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         ) AS valor,
 
                                         (SELECT SUM( valor_orcamento )
                                         FROM orcamento AS orc
@@ -170,12 +220,39 @@ class Application_Model_Desembolso
         }
     }
 
+    public function selectOrcamentoProjeto($pid){
+
+        try{
+
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $colunas = array(
+                0 => 'orcamento',
+            );
+
+            $select = $db->select()
+                ->from(array('p' => 'projeto'),array())
+                ->where('p.projeto_id = ?', $pid)
+                ->columns($colunas);
+
+            $stmt = $select->query();
+
+            $result = $stmt->fetchAll();
+
+            return $result;
+
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
     public static function getOptions()
     {
             $id = 1;
             $options = array();
             $db = Zend_Db_Table::getDefaultAdapter();
-            $desembolsoSaldo = $db->fetchAll("SELECT empenho_id, valor_empenho, processo_administrativo, nome,
+            $desembolsoSaldo = $db->fetchAll("SELECT o.rubrica_id, empenho_id, valor_empenho, processo_administrativo, nome,
 
 
                                         (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
@@ -187,6 +264,7 @@ class Application_Model_Desembolso
                                         FROM empenho AS e
                                         LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                         LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
 
                                         WHERE o.projeto_id = " . $id . " AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
                                         FROM desembolso AS des
@@ -194,32 +272,66 @@ class Application_Model_Desembolso
                                         ) > 0 )");
 
 
-            $desembolsoSemEmpenho = $db->fetchAll("SELECT processo_administrativo, nome, valor_empenho, empenho.empenho_id, orcamento.projeto_id
+            $desembolsoSemEmpenho = $db->fetchAll("SELECT orcamento.rubrica_id, processo_administrativo, nome, valor_empenho, empenho.empenho_id, orcamento.projeto_id
                                                   FROM empenho
                                                   LEFT JOIN desembolso ON empenho.empenho_id = desembolso.empenho_id
                                                   LEFT JOIN beneficiario ON empenho.beneficiario_id = beneficiario.beneficiario_id
                                                   LEFT JOIN orcamento ON empenho.orcamento_id = orcamento.orcamento_id
+                                                  LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
                                                   WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $id);
 
             $desembolso = array_merge($desembolsoSaldo, $desembolsoSemEmpenho);
 
             foreach($desembolso as $item){
 
-                if (array_key_exists("saldo_empenho", $item) == 1)
-                {
-                    $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
-                                              " - Saldo de R$" . $item['saldo_empenho'];
-                }
-                else
-                {
-                    $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
-                        " - Saldo de R$" . $item['valor_empenho'];
-                }
+            $rubrica_id = $item['rubrica_id'];
 
+                if ($rubrica_id != '44')
+                {
+
+                    if (array_key_exists("saldo_empenho", $item) == 1)
+                    {
+                        $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+                                              " - Saldo de R$" . $item['saldo_empenho'];
+                    }
+                    else
+                    {
+                        $options[$item['empenho_id']] = $item['processo_administrativo'] . " - " . $item['nome'] .
+                        " - Saldo de R$" . $item['valor_empenho'];
+                    }
+
+                }
             }
+
 
             return $options;
 
+    }
+    
+    public function getCodigoRubrica ($rid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                         ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
+                         ->where('r.rubrica_id = ?', $rid);
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
+
+            return $resultado;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+    
+    public function getLastInsertedId($table){
+
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
+        return (int)$result;
     }
 }
 

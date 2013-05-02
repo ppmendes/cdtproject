@@ -15,6 +15,7 @@ class TarefasPorProjetoController extends Zend_Controller_Action
         $tarefaModel = new Application_Model_Tarefa();
         //$this->view->tarefas = $tarefaModel->selectAll();
         $projeto_id = $this->_getParam('projeto_id');
+        print_r($projeto_id);
         //$this->view->pid = $pid;
         $this->view->tarefas = $tarefaModel->selectAllporprojeto($id_usuario,$projeto_id);
 

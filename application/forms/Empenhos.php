@@ -38,43 +38,37 @@ class Application_Form_Empenhos extends Zend_Form
 
         // Setar metodo
         $this->setMethod('post');
-
-        $this->addElement('checkbox', 'pre_empenho_id', array(
-            'label'      => 'Pré Empenho? ',
-            'onchange'  =>  'desabilitaTudo()'
-            //'multiOptions' => Application_Model_PreEmpenho::getOptions(),
-            
-        ));
-
+        
         $this->addElement('select', 'orcamento_id', array(
             'label'      => 'Rubrica: ',
-            'multiOptions' => Application_Model_Orcamento::getOptions(),
+            'multiOptions' => Application_Model_Empenho::getOrcamentosNaoPagos($this->id_projeto),
             'required'   => true
         ));
         
         //input type text
         $this->addElement('text', 'descricao_historico', array(
-            'label'      => 'Descrição: ',
+            'label'      => '*Descrição: ',
             'required'   => true,
         ));
 
         //input type text
         $this->addElement('text', 'processo_administrativo', array(
-            'label'      => 'Processo Administrativo: ',
+            'label'      => '*Processo Administrativo: ',
+            'class'      => 'mask_processoadministrativo',
             'required'   => true,
         ));
 
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data');
-        $emtDatePicker1->setLabel('Data: ');
+        $emtDatePicker1->setLabel('*Data: ');
         $emtDatePicker1->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker1);
-
+        
         $nomeBeneficiario = Application_Model_Beneficiario::getNome($this->id_beneficiario);
         $this->addElement('text', 'beneficiario', array(
-            'label'      => 'Beneficiário: ',
-            'required'   => true,
-            'ignore'     => true,
+            'label'      => '*Beneficiário: ',
             'value'      => $nomeBeneficiario['0']['nome'],
+            'ignore'     => true,
+            'required'   => true,
         ));
         
         $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
@@ -88,7 +82,7 @@ class Application_Form_Empenhos extends Zend_Form
 
         //input type text
         $this->addElement('text', 'valor_empenho', array(
-            'label'      => 'Valor: ',
+            'label'      => '*Valor: ',
             'required'   => true,
             'attribs'    => array('maxLength' => 13),
             'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
@@ -97,7 +91,8 @@ class Application_Form_Empenhos extends Zend_Form
         //input type text
         $this->addElement('text', 'numero_parcelas', array(
             'label'      => 'Número de Parcelas: ',
-            'required'   => true,
+            'class'      => 'positive-integer',
+            
         ));
 
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
@@ -117,7 +112,6 @@ class Application_Form_Empenhos extends Zend_Form
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'readonly'   => true,
             'ignore'   => true,
-            'disabled'   => true,
             
             'value'     => $usuario_logado->nome
         ));

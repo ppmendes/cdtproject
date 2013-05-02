@@ -46,7 +46,7 @@ from projeto as P inner join estado_projeto as EP on P.estado_projeto_id=EP.esta
      inner join prioridade as PRI on P.prioridade_id=PRI.prioridade_id
      inner join instituicao_gerencia as IG on P.instituicao_gerencia_id=IG.instituicao_gerencia_id
      inner join usuario as U on P.coordenador_tecnico=U.usuario_id
-     inner join projeto_usuario as PU on P.projeto_id=PU.projeto_id where PU.usuario_id=$usuario_logado");
+     inner join projeto_usuario as PU on P.projeto_id=PU.projeto_id where PU.usuario_id=$usuario_logado and p.deletado=0");
 
 
             return $select;

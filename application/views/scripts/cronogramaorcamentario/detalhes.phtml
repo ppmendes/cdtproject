@@ -1,47 +1,186 @@
 <?php
+$id = $this->id;
 $projeto_id = $this->pid;
+
+//$this->detalhes->setAction($this->url());
+//echo $this->detalhes;
 ?>
 
-<script>
+<script type="text/javascript" src="js/jquery.dataTables.editable.js"></script>
+<script type="text/javascript" src="js/jquery.jeditable.js"></script>
+<script type="text/javascript">
     $(document).ready(function() {
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+
+            }).makeEditable({
+
+                sUpdateURL: function(value,settings){
+
+                    if(value.match(/[^0-9]/) == null)
+                    {
+                        var valor =  $(this).parent().find('td:last').html();
+                        alert(value);
+                        alert($("div .saldo").val());
+                       // $.post('save.php',{id: id_pasta, value: value});
+                        return value;
+                    }
+                    else
+                    {
+                        return 'Insira somente Dígitos!';
+                    }
+
+                },
+                    "aoColumns": [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                    {
+                        event: 'click'
+                    },
+                        null,
+                        null,
+                        null
+                    ]
+         });
         $('.fancybox').fancybox();
         $('button.menu_financeiro').click(function() {
-            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/<?php echo $projeto_id; ?>">pesquisar</a>').fancybox({
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
                 overlayShow: true
             }).click();
         });
     });
 
+
 </script>
 
-<script type="text/javascript" src='js/detalhes.js'></script>
-<script>
-    function confirmarExclusao(id, pid)
-    {
-        var answer = confirm("Deseja realmente excluir o cronograma?");
-        if (answer) {
-            top.location.href = '/../cronogramaorcamentario/excluir/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid;
-        }
-        else {
-            alert("O cronograma não foi excluído!");
-        }
+<style>
+    table * *{
+        text-align: center;
     }
-</script>
-<script>
-    function editar(id, pid)
-    {
-        top.location.href = '/../cronogramaorcamentario/adicionar/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid;
-
+    .saldo {
+        display:inline;
+        position:absolute;
+        left:40%;
+        color:red;
     }
-</script>
+</style>
 
 <?php
- $id = $this->id;
-$pid = $this->pid;
-
-echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id, $pid)'>Excluir</button>";
-echo "<button class=\"right btn_edit\" onclick='editar($id, $pid)'>Editar</button>";
-
-$this->detalhes->setAction($this->url());
-echo $this->detalhes;
+echo "<button class='menu_financeiro'>Menu Financeiro</button>";
+$saldoDisponivel = $this->saldoDisponivel[0]['valor_recebido'];
+echo "<div class='saldo'> SALDO DISPONÍVEL: R$$saldoDisponivel </div>";
 ?>
+
+<table id='table_id'>
+    <thead>
+    <tr>
+        <!-- Código; Rubrica; Natureza da despesa; Destinação; Valor da Rubrica; Valor empenhado; Saldo orçamentário Valor desembolsado; Valor total;
+        Valor estimado, Total empenhado, Saldo orçamentário, saldo financeiro -->
+        <th> </th>
+        <th>Código</th>
+        <th>Natureza da Despesa</th>
+        <th>Destinatário</th>
+        <th>Valor da Rubrica</th>
+        <th>Orçamento Disponibilizado</th>
+        <th>Empenhado</th>
+        <th>Saldo Orcam.</th>
+        <th>Desembolsado</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    $i = 1;
+    $somaRubrica = 0;
+    $somaOrcamentoDisponibilizado = 0;
+    $somaEmpenho = 0;
+    $somaSaldoOrc = 0;
+    $somaDesembolso = 0;
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+    $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['p.orcamento']);
+    $valor_cronograma_financeiro = number_format(0 + $this->orcamentos[0]['valor_recebido'], 2, '.', '');
+
+    foreach($this->orcamentos as $row)
+    {
+        $valor_empenho = number_format(0 + ($row['valor_empenho'] + $row['valor_pre_empenho']), 2, '.', '');
+        $valor_cronograma_orcamentario = number_format(0 + $row['valor'], 2, '.', '');
+        $saldo_orcamentario =  number_format(0 + ($row['valor'] - $valor_empenho), 2, '.', '');
+        $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
+        $somaRubrica = number_format($somaRubrica + $row['SUM( o.valor_orcamento )'] + 0, 2, '.', '');
+        $somaOrcamentoDisponibilizado = number_format($somaOrcamentoDisponibilizado + $valor_cronograma_orcamentario + 0, 2, '.', '');
+        $somaEmpenho = number_format($somaEmpenho + $valor_empenho + 0, 2, '.', '');
+        $somaSaldoOrc = number_format($somaSaldoOrc + $saldo_orcamentario + 0, 2, '.', '');
+        $somaDesembolso = number_format($somaDesembolso + $valor_desembolso + 0, 2, '.', '');
+
+
+        //$row = $row->toArray();
+        echo "<tr id='".$row['orcamento_id']."'>";
+        echo "<td>" .   $i . "</td>";
+        echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "/projeto_id/" . $projeto_id . "'>
+    " .  $row['codigo_rubrica'] . "</a></td>";
+        echo "<td>" . $row['descricao'] . "</a></td>";
+        echo "<td>" .   $row['nome_destinatario'] . "</td>";
+        echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";
+        echo "<td >" .  $decimalfilter->filter($valor_cronograma_orcamentario) . "</td>";
+        echo "<td >" .  $decimalfilter->filter($valor_empenho) . "</td>";
+        echo "<td >" .  $decimalfilter->filter($saldo_orcamentario) . "</td>";
+        echo "<td >" .  $decimalfilter->filter($valor_desembolso) . "</td>";
+        echo "</tr>";
+        $i++;
+
+
+    }
+    echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Orçamento Previsto</th>";
+    echo "<th> Total Rubrica</th>";
+    echo "<th> Orçamento Disponibilizado</th>";
+    echo "<th> Total Empenhado</th>";
+    echo "<th> Saldo Orçamentário</th>";
+    echo "<th> Total Desembolsado</th>";
+    echo "<th> Saldo Financeiro</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $orcamentoProjeto . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaOrcamentoDisponibilizado) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
+    echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $valor_cronograma_financeiro - $somaDesembolso, 2, '.', '')) . "</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
+
+    ?>

@@ -137,6 +137,11 @@ class Application_Model_Orcamento
                                          WHERE cf.projeto_id = " . $id . "
                                          ) AS valor_recebido,
 
+                                         (SELECT SUM( valor )
+                                         FROM orcamento_cronograma AS oc
+                                         WHERE oc.orcamento_id = o.orcamento_id
+                                         ) AS valor,
+
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e
                                          WHERE e.orcamento_id = o.orcamento_id
@@ -158,7 +163,7 @@ class Application_Model_Orcamento
                                          LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
                                          LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
-                                         WHERE o.projeto_id = ". $id . "
+                                         WHERE o.projeto_id = " . $id . "
                                          GROUP BY o.rubrica_id, o.destinatario_id, o.orcamento_id
                                          ORDER BY o.data_registro_orcamento");
 

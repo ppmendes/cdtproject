@@ -31,6 +31,7 @@ class OrcamentosController extends Zend_Controller_Action
         $totalParcelas = $model->calculaTotal($orcamento);
         $form->setValorParcelas($totalParcelas);
         $form->setProjetoId($pid);
+        $form->setRubricaId(0);
         $form->startform();
 
         if($this->getRequest()->isPost()){
@@ -230,17 +231,13 @@ class OrcamentosController extends Zend_Controller_Action
     }
 
     public function excluirAction(){
-        //$request = $this->getRequest();
-        $excluir = new Application_Form_Orcamentos();
-        $excluir->startform();
-        $model = new Application_Model_Projeto;
+        $request = $this->getRequest();
+        $model = new Application_Model_Orcamento;
         $id = $this->_getParam('orcamento_id');
+        $pid = $this->_getParam('projeto_id');
 
         $model->delete($id);
-        $this->_redirect('/orcamentos/');
-
-        $this->view->excluir = $excluir;
-
+        $this->_redirect('/orcamentos/index/projeto_id/' . $pid);
     }
 
 }

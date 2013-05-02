@@ -3,7 +3,7 @@
     $(document).ready(function(){
         $( "#empenhos-beneficiario").combogrid({
             debug:false,
-            colModel: [{'columnName':'nome','width':'45','label':'Beneficiário'}],
+            colModel: [{'columnName':'nome','width':'45','label':'Beneficiário'},{'columnName':'cpf_cnpj','width':'45','label':'CPF/CNPJ'}],
             url: 'empenhos/combogridbeneficiario/',
             select: function( event, ui ) {
                 $("#empenhos-beneficiario").val( ui.item.nome );

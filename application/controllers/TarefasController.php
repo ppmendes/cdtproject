@@ -12,14 +12,26 @@ class TarefasController extends Zend_Controller_Action
     {
         $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
         $id_usuario=$usuario_logado->usuario_id;
+        $projetoid = $this->_getParam('projeto_id');
+        $this->view->pid=$projetoid;
         $tarefaModel = new Application_Model_Tarefa();
-        $this->view->tarefas = $tarefaModel->selectAll($id_usuario);
 
+        if(isset($projetoid))
+        {
+            $this->view->tarefas = $tarefaModel->selectAllporprojeto($id_usuario,$projetoid);
+        }else
+        {
+            $this->view->tarefas = $tarefaModel->selectAll($id_usuario);
+        }
     }
 
     public function adicionarAction(){
         $request = $this->getRequest();
         $form = new Application_Form_Tarefas();
+        $id_projeto = $this->_getParam('projeto_id');
+
+
+        $form->setIdProjeto($id_projeto);
         $form->startform();
         $model = new Application_Model_Tarefa();
         $modeltarefadepen=new Application_Model_TarefasDependentes();

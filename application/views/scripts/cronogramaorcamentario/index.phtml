@@ -55,6 +55,13 @@ $projeto_id = $this->pid;
         top.location.href = '/../cronogramaorcamentario/adicionar/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid;
     }
 
+    function receber(id, pid)
+    {
+        if (confirm("O valor previsto será transformado em valor recebido. Confirmar?")) {
+            top.location.href = '/../cronogramaorcamentario/receber/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid;
+        }
+    }
+
     function confirmarExclusao(id, pid)
     {
         var answer = confirm("Deseja realmente excluir o cronograma?");
@@ -88,6 +95,7 @@ $projeto_id = $this->pid;
         <th>Orçamento disponibilizado</th>
         <th>Tipo</th>
         <th>Fatura</th>
+        <th>Receber valor</th>
         <th>Editar</th>
         <th>Excluir</th>
 <!--        <th>Data final real</th>-->
@@ -121,6 +129,7 @@ $projeto_id = $this->pid;
 //    echo "<td><a class='\right btn_edit\' href='/cronogramaorcamentario/adicionar/projeto_id/".$projeto_id."/cronograma_orcamentario_id/"
 //    ."{$row['cronograma_orcamentario_id']}'>aa</a></td>";
 //    echo "<td><a class='\right btn_delete\' href='/cronogramaorcamentario/excluir/cronograma_orcamentario_id/{$row['cronograma_orcamentario_id']}'>bb</a></td>";
+    echo "<td><button class=\"center btn_receive\" onclick='receber(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Receber</button>";
     echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
     echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
     $i++;
