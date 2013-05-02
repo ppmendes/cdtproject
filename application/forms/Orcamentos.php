@@ -64,7 +64,7 @@ class Application_Form_Orcamentos extends Zend_Form
 
         //Código - Natureza da Despesa - Rubrica
         $nomeRubrica = Application_Model_Rubrica::getNome($this->id_rubrica);
-        $valueRubrica = $nomeRubrica != "" ? $nomeRubrica['0']['codigo_rubrica'] . " - " . $nomeRubrica['0']['descricao'] : "";
+        $valueRubrica = $nomeRubrica != null ? $nomeRubrica['0']['codigo_rubrica'] . " - " . $nomeRubrica['0']['descricao'] : "";
         $this->addElement('text', 'rubrica', array(
             'label'      => 'Rúbrica (Código - Descrição):',
             'value'      => $valueRubrica,

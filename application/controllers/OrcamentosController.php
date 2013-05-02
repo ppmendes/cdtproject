@@ -31,6 +31,7 @@ class OrcamentosController extends Zend_Controller_Action
         $totalParcelas = $model->calculaTotal($orcamento);
         $form->setValorParcelas($totalParcelas);
         $form->setProjetoId($pid);
+        $form->setRubricaId(0);
         $form->startform();
 
         if($this->getRequest()->isPost()){

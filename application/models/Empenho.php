@@ -116,7 +116,8 @@ class Application_Model_Empenho
             14 => 'e.empenho_id',
             15 => 'e.orcamento_id',
             16 => 'e.usuario_id',
-            17 => 'r.codigo_rubrica'
+            17 => 'r.codigo_rubrica',
+            18 => 'e.processo_administrativo'
 
         );
 
