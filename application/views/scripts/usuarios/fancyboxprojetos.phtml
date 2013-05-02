@@ -99,6 +99,11 @@
             <tbody>
 
             <?php
+            //adicionando a fila todos os projetos
+            echo "<tr id='0'>";
+            echo "<td><input type='checkbox' name='projetosselecionados[]' value='0'></td>";
+            echo "<td>TODOS OS PROJETOS</td>";
+            echo "</tr>";
 
             foreach($this->fancy as $row) // "$this->usuarios" nome da variável definida no controller
             {
