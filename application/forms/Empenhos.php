@@ -18,15 +18,11 @@ class Application_Form_Empenhos extends Zend_Form
 {
 
     private $id_projeto;
-    private $id_beneficiario;
 
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
     }
-    
-    public function setBeneficiarioId($id_beneficiario){
-        $this->id_beneficiario = $id_beneficiario;
-    }
+
 
     public function init() {}
 
@@ -63,10 +59,8 @@ class Application_Form_Empenhos extends Zend_Form
         $emtDatePicker1->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker1);
         
-        $nomeBeneficiario = Application_Model_Beneficiario::getNome($this->id_beneficiario);
         $this->addElement('text', 'beneficiario', array(
             'label'      => '*Beneficiário: ',
-            'value'      => $nomeBeneficiario['0']['nome'],
             'ignore'     => true,
             'required'   => true,
         ));

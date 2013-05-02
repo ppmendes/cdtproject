@@ -46,7 +46,7 @@ class EmpenhosController extends Zend_Controller_Action
         $pid = $this->_getParam('projeto_id');
         $form = new Application_Form_Empenhos();
         $form->setProjetoId($pid);
-        $form->setBeneficiarioId(0);
+        //$form->setBeneficiarioId(0);
         $form->startform();
         $model = new Application_Model_Empenho;
 
@@ -69,19 +69,20 @@ class EmpenhosController extends Zend_Controller_Action
         $request = $this->getRequest();
         $id = $this->_getParam('empenho_id');
         $pid = $this->_getParam('projeto_id');
-        $bid = $this->_getParam('beneficiario_id');
         $detalhes = new Application_Form_Empenhos();
         $detalhes->setProjetoId($pid);
-        $detalhes->setBeneficiarioId($bid);
         $detalhes->startform();
         $model = new Application_Model_Empenho;
-        $this->view->id = $id;
+        $beneficiarioModel = new Application_Model_Beneficiario();
 
+        $this->view->id = $id;
 
         $data = $model->find($id)->toArray();
 
+        $data['beneficiario'] = $beneficiarioModel->getNome($data['beneficiario_id'])[0]['nome'];
+
         if(is_array($data)){
-            $detalhes->setAction('/empenhos/detalhes/empenho_id/' . $id);
+            $detalhes->setAction('/empenhos/detalhes/empenho_id/' . $id . '/projeto_id/' . $pid);
             $detalhes->populate(array("empenhos" => $data));
         }
 

@@ -23,7 +23,7 @@ class Application_Form_Desembolso extends Zend_Form
         $this->addElement('select', 'empenho_id', array(
             'label'      => 'Empenho a liquidar:',
             'required'   => true,
-            'multiOptions' => Application_Model_Desembolso::getOptions(),
+            'multiOptions' => Application_Model_Desembolso::getOptions($this->id_projeto),
       //      'style'      => 'height: 70px',
         ));
 

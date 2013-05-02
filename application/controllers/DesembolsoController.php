@@ -38,10 +38,16 @@ class DesembolsoController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $pid = $this->_getParam('projeto_id');
+
+        $model = new Application_Model_Desembolso;
+
+        //$this->view->somaRubricas = $model->selectTotalTiposRubrica($pid);
+        $this->view->soma = $model->selectAllSoma($pid);
+
         $form = new Application_Form_Desembolso();
         $form->setProjetoId($pid);
         $form->startform();
-        $model = new Application_Model_Desembolso;
+
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){

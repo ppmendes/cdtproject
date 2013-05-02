@@ -49,7 +49,45 @@ function maskPre(val, msk, pre) {
     }
 </script>
 
+<style>
+    table * *{
+        text-align: center;
+    }
+</style>
+
 <?php
     $this->form->setAction($this->url());
     echo $this->form;
+
+$somaDespesasCorrentes = 0;
+$somaDespesasCapitais = 0;
+$somaDesembolso = 0;
+$datefilter = new Zend_Filter_DateFilter();
+$decimalfilter = new Zend_Filter_DecimalFilter();
+
+//$somaDespesasCorrentes = number_format(0 + $this->somaRubricas[0], 2, '.', '');
+//$somaDespesasCapitais = number_format(0 + $this->somaRubricas[1], 2, '.', '');
+$somaDesembolso = number_format(0 + $this->soma[0]['SUM( d.valor_desembolso )'], 2, '.', '');
+$somaSaldoFin =  number_format(0 + ($this->soma[0]['valor_recebido'] - $somaDesembolso), 2, '.', '');
+
+echo "</br>";
+echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+echo "<thead style='background-color: #E2E4FF;'>";
+echo "<tr>";
+echo "<th> Total Desembolsado</th>";
+echo "<th> Saldo Financeiro</th>";
+echo "</tr>";
+echo "</thead>";
+
+echo "<tbody style='color:green;'>";
+echo "<tr>";
+//echo "<td>" . $decimalfilter->filter($somaDespesasCorrentes) . "</td>";
+//echo "<td>" . $decimalfilter->filter($somaDespesasCapitais) . "</td>";
+echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+echo "<td>" . $decimalfilter->filter($somaSaldoFin) . "</td>";
+
+echo "</tr>";
+echo "</tbody>";
+echo "</table>";
+echo "</br></br></br>";
 ?>

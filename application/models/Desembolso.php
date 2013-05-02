@@ -247,9 +247,72 @@ class Application_Model_Desembolso
         }
     }
 
-    public static function getOptions()
+    public function selectTotalTiposRubrica($pid){
+
+        try
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $despesasCorrentes = $db->fetchAll("SELECT SUM( valor_desembolso ),
+
+                                        (SELECT SUM( valor_empenho )
+                                         FROM empenho AS e1, orcamento AS orc, rubrica AS rub
+                                         WHERE e1.orcamento_id = orc.orcamento_id AND orc.rubrica_id = rub.rubrica_id AND orc.projeto_id = " . $pid . "
+                                         AND rub.codigo_rubrica LIKE '%33390%'
+                                         ) AS valor_empenho,
+
+                                         (SELECT SUM( pe.valor_pre_empenho )
+                                         FROM pre_empenho AS pe, empenho as e1, orcamento as orc, rubrica AS rub
+                                         WHERE pe.pre_empenho_id = e1.pre_empenho_id AND orc.rubrica_id = rub.rubrica_id AND
+                                         e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $pid . " AND rub.codigo_rubrica LIKE '%33390%'
+                                         ) AS valor_pre_empenho
+
+
+                                        FROM desembolso AS d
+                                        LEFT JOIN empenho AS e ON d.empenho_id = e.empenho_id
+                                        LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                        LEFT JOIN projeto AS p ON o.projeto_id = p.projeto_id
+                                        WHERE o.projeto_id = " . $pid . " AND codigo_rubrica LIKE '%33390%'");
+
+            $despesasCapitais = $db->fetchAll("SELECT SUM( valor_desembolso ),
+
+                                        (SELECT SUM( valor_empenho )
+                                         FROM empenho AS e1, orcamento AS orc, rubrica AS rub
+                                         WHERE e1.orcamento_id = orc.orcamento_id AND orc.rubrica_id = rub.rubrica_id AND orc.projeto_id = " . $pid . "
+                                         AND rub.codigo_rubrica LIKE '%34490%'
+                                         ) AS valor_empenho,
+
+                                         (SELECT SUM( pe.valor_pre_empenho )
+                                         FROM pre_empenho AS pe, empenho as e1, orcamento as orc, rubrica AS rub
+                                         WHERE pe.pre_empenho_id = e1.pre_empenho_id AND orc.rubrica_id = rub.rubrica_id AND
+                                         e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $pid . " AND rub.codigo_rubrica LIKE '%34490%'
+                                         ) AS valor_pre_empenho
+
+
+                                        FROM desembolso AS d
+                                        LEFT JOIN empenho AS e ON d.empenho_id = e.empenho_id
+                                        LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                        LEFT JOIN projeto AS p ON o.projeto_id = p.projeto_id
+                                        WHERE o.projeto_id = " . $pid . " AND codigo_rubrica LIKE '%34490%'");
+
+            $result = array();
+            $result[0] = ($despesasCorrentes[0]['valor_empenho'] + $despesasCorrentes[0]['valor_pre_empenho']) -
+                $despesasCorrentes[0]['SUM( valor_desembolso )'];
+            $result[1] = ($despesasCapitais[0]['valor_empenho'] + $despesasCapitais[0]['valor_pre_empenho']) -
+                $despesasCapitais[0]['SUM( valor_desembolso )'];
+
+            return $result;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public static function getOptions($pid)
     {
-            $id = 1;
+
             $options = array();
             $db = Zend_Db_Table::getDefaultAdapter();
             $desembolsoSaldo = $db->fetchAll("SELECT o.rubrica_id, empenho_id, valor_empenho, processo_administrativo, nome,
@@ -266,7 +329,7 @@ class Application_Model_Desembolso
                                         LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
 
-                                        WHERE o.projeto_id = " . $id . " AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                                        WHERE o.projeto_id = " . $pid . " AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
                                         FROM desembolso AS des
                                         WHERE e.empenho_id = des.empenho_id
                                         ) > 0 )");
@@ -278,7 +341,7 @@ class Application_Model_Desembolso
                                                   LEFT JOIN beneficiario ON empenho.beneficiario_id = beneficiario.beneficiario_id
                                                   LEFT JOIN orcamento ON empenho.orcamento_id = orcamento.orcamento_id
                                                   LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
-                                                  WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $id);
+                                                  WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $pid);
 
             $desembolso = array_merge($desembolsoSaldo, $desembolsoSemEmpenho);
 

@@ -102,10 +102,8 @@ class Application_Model_Beneficiario
 
     }
     
-    public static function getNome($id)
+    public function getNome($id)
     {
-        try
-        {
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
@@ -117,10 +115,6 @@ class Application_Model_Beneficiario
             $result = $stmt->fetchAll();
 
             return $result;
-        }
-        catch(Exception $e){
-            echo $e->getMessage();
-        }
     }
 
 }
