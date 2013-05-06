@@ -138,7 +138,9 @@ class InstituicoesController extends Zend_Controller_Action
         }
         $this->view->tree = $model->retornaPais();
 
+        // parte do treeview do lado direito
         $result=$model->paeFilhos($id);
+        print_r($result);
         $model->criarTreeview($result);
 
         $this->view->treeview;

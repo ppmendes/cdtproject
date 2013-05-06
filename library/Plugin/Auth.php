@@ -55,6 +55,9 @@ class Plugin_Auth extends Zend_Controller_Plugin_Abstract{
             }else if(isset($permissoes[$controller][$acao]['#'])
                 && $permissoes[$controller][$acao]['#']==true){
                 $permitirAcesso=true;
+            }else if(isset($permissoes[$controller][$acao]['0'])
+                    && $permissoes[$controller][$acao]['0']==true){
+                    $permitirAcesso=true;
             }else if(isset($permissoes[$controller]['*']['*'])
                 && $permissoes[$controller]['*']['*'] === true){
                 $permitirAcesso = true;

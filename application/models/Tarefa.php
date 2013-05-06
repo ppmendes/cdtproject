@@ -156,8 +156,8 @@ inner join usuario as u on u.usuario_id=tu.usuario_id where tu.usuario_id=$idusu
 
                     $options[$item['tarefa_id']] = $item['nome'];
                 }
-                $options = array_merge($optionNenhum, $options);
-                return $options;
+                $result = $optionNenhum + $options;
+                return $result;
             }
         } catch(Exception $e){
 

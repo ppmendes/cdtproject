@@ -87,8 +87,9 @@ class UsuariosController extends Zend_Controller_Action
                         $datapermissoes['valor']=$permissoes[$i]['valor'];
                         $modelPermissoes->insert($datapermissoes);
                     }
+                    $this->_redirect('/usuarios/treeviewpermissoes/usuario_id/'.$IDusuario);
                 }
-                $this->_redirect('/usuarios/treeviewpermissoes/usuario_id/'.$IDusuario);
+                $this->_redirect('/usuarios/');
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
@@ -295,16 +296,28 @@ class UsuariosController extends Zend_Controller_Action
         {
             $datos=$this->getRequest()->getParams();
             $datostreeview=$datos['datostree'];
-            print_r($datostreeview);
             $modelpermissões->delete($id_usuario);
+
 
             foreach($datostreeview as $item)
             {
+                if($item=='usuarios|detalhes|*')
+                {
+                    $data['usuario_id']=$id_usuario;
+                    $dataexplode=explode('|',$item);
+                    $data['controller']=$dataexplode[0];
+                    $data['action']='detalhescontatos';
+                    $data['valor']=$dataexplode[2];
+                    $modelpermissões->insert($data);
+                }
+
                 $data['usuario_id']=$id_usuario;
                 $dataexplode=explode('|',$item);
                 $data['controller']=$dataexplode[0];
                 $data['action']=$dataexplode[1];
                 $data['valor']=$dataexplode[2];
+
+
                 $modelpermissões->insert($data);
             }
             $this->_redirect('/usuarios/');
@@ -324,8 +337,7 @@ class UsuariosController extends Zend_Controller_Action
 
             $this->view->permissoes=$permissoes;
             $this->view->nomeprojetos=$nomeprojeto;
-            echo 'nao entro :(';
-            //huihu
+            //huihui
         }
     }
 
