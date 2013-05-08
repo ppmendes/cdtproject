@@ -58,8 +58,11 @@ class Application_Model_Orcamento
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "orcamento";
+        $deletado = true;
         $where = $db->quoteInto('orcamento_id = ?', $id);
-        $db->delete($table, $where);
+        $data = array('deletado' => $deletado);
+
+        $db->update($table, $data, $where);
     }
 
     public function update($data, $id)
@@ -97,7 +100,7 @@ class Application_Model_Orcamento
 
             $select = $db->select()
                 ->from(array('o' => 'orcamento'), array('o.orcamento_id'=>'o.orcamento_id', 'o.valor_orcamento'=>'o.valor_orcamento', 'r.rubrica_id' => 'r.rubrica_id'))
-                ->where('p.projeto_id = ?' , $id)
+                ->where('p.projeto_id = ' . $id . ' AND o.deletado = 0')
                 ->joinInner(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica'=>'r.codigo_rubrica', 'r.descricao'=>'r.descricao'))
                 ->joinInner(array('d' => 'destinatario'), 'o.destinatario_id = d.destinatario_id', array('d.nome_destinatario'=>'d.nome_destinatario'))
                 ->joinInner(array('p' => 'projeto'), 'o.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id'));
@@ -163,7 +166,7 @@ class Application_Model_Orcamento
                                          LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
                                          LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
-                                         WHERE o.projeto_id = " . $id . "
+                                         WHERE o.projeto_id = " . $id . " AND o.deletado = 0
                                          GROUP BY o.rubrica_id, o.destinatario_id, o.orcamento_id
                                          ORDER BY o.data_registro_orcamento");
 

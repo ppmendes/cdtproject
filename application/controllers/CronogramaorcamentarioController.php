@@ -115,16 +115,12 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
 
     public function excluirAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Cronogramaorcamentario_Cronogramaorcamentario1();
-        $excluir->startform();
         $model = new Application_Model_CronogramaOrcamentario();
         $id = $this->_getParam('cronograma_orcamentario_id');
         $pid = $this->_getParam('projeto_id');
 
         $model->delete($id);
         $this->_redirect('/cronogramaorcamentario/index/projeto_id/'.$pid);
-
-        $this->view->excluir = $excluir;
 
     }
     

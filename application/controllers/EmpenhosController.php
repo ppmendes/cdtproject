@@ -76,6 +76,7 @@ class EmpenhosController extends Zend_Controller_Action
         $beneficiarioModel = new Application_Model_Beneficiario();
 
         $this->view->id = $id;
+        $this->view->pid = $pid;
 
         $data = $model->find($id)->toArray();
 
@@ -92,14 +93,12 @@ class EmpenhosController extends Zend_Controller_Action
     }
 
     public function excluirAction(){
-        $excluir = new Application_Form_Empenhos();
         $model = new Application_Model_Empenho;
-        $id = $this->_getParam('id');
+        $id = $this->_getParam('empenho_id');
+        $pid = $this->_getParam('projeto_id');
 
         $model->delete($id);
-        $this->_redirect('/empenhos/');
-
-        $this->view->excluir = $excluir;
+        $this->_redirect('/empenhos/index/projeto_id/'.$pid);
 
     }
 

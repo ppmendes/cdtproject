@@ -75,7 +75,9 @@ class DesembolsoController extends Zend_Controller_Action
         $detalhes->setProjetoId($pid);
         $detalhes->startform();
         $model = new Application_Model_Desembolso;
+
         $this->view->id = $id;
+        $this->view->pid = $pid;
 
 
         $data = $model->find($id)->toArray();
@@ -92,14 +94,12 @@ class DesembolsoController extends Zend_Controller_Action
 
     public function extornarAction(){
         //$request = $this->getRequest();
-        $extorno = new Application_Form_Desembolso();
         $model = new Application_Model_Desembolso;
         $id = $this->_getParam('desembolso_id');
+        $pid = $this->_getParam('projeto_id');
 
         $model->delete($id);
-        $this->_redirect('/desembolso/');
-
-        $this->view->extornar = $extorno;
+        $this->_redirect('/desembolso/index/projeto_id/' . $pid);
 
     }
 

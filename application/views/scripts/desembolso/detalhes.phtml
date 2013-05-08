@@ -16,11 +16,11 @@ $projeto_id = $this->pid;
 
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
-    function confirmarExtorno(id)
+    function confirmarExtorno(id, pid)
     {
         var answer = confirm("Deseja realmente extornar o desembolso?");
         if (answer) {
-            top.location.href = '/../desembolso/extornar/desembolso_id/'+id;
+            top.location.href = '/../desembolso/extornar/desembolso_id/'+id+ '/projeto_id/'+pid;
         }
         else {
             alert("O desembolso não foi extornado!");
@@ -31,7 +31,7 @@ $projeto_id = $this->pid;
 <?php
  $id = $this->id;
 
-echo "<button onclick='confirmarExtorno($id)'>Extornar</button>";
+echo "<button onclick='confirmarExtorno($id, $projeto_id)'>Extornar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;

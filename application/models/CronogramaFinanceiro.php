@@ -28,13 +28,11 @@ class Application_Model_CronogramaFinanceiro
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "cronograma_financeiro";
-        //$deletado = true;
+        $deletado = true;
         $where = $db->quoteInto('cronograma_financeiro_id = ?', $id);
-        //$data = array('deletado' => $deletado);
+        $data = array('deletado' => $deletado);
 
-        //$db->update($table, $data, $where);
-        $db->delete($table, $where);
-
+        $db->update($table, $data, $where);
     }
 
     public function update($data, $id)
@@ -59,7 +57,7 @@ class Application_Model_CronogramaFinanceiro
 
             $select = $db->select()
                 ->from(array('c' => 'cronograma_financeiro'))
-                ->where('p.projeto_id = ?', $id)
+                ->where('p.projeto_id = ' . $id . ' AND c.deletado = 0')
              ->joinLeft(array('p' => 'projeto'), 'c.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id',
              'p.nome'=>'p.nome'));
                //->joinLeft(array('d' => 'desembolso'), 'c.prioridade_id = pr.prioridade_id');

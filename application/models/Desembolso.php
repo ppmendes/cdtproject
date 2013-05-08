@@ -119,7 +119,7 @@ class Application_Model_Desembolso
 
             $select = $db->select()
             ->from(array('d' => 'desembolso'),array())
-            ->where('p.projeto_id = ?', $id)
+            ->where('p.projeto_id = ' . $id . ' AND d.extornado = 0')
             ->joinLeft(array('e'=>'empenho'), 'd.empenho_id = e.empenho_id', array())
             ->joinLeft(array('pe'=>'pre_empenho'), 'e.pre_empenho_id = pe.pre_empenho_id', array())
             ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
@@ -152,6 +152,9 @@ class Application_Model_Desembolso
         {
             $db = Zend_Db_Table::getDefaultAdapter();
 
+            //VER COMO FICA A PARTE DA CONSULTA QUE TRATA DO orcamento_cronograma, POIS PRECISA SOMAR SOMENTE AS PARCELAS DO
+            //CRONOGRAMA ORÇAMENTÁRIO QUE NÃO POSSUEM DELETADO = 1
+
             $resultado = $db->fetchAll("SELECT o.projeto_id, SUM( d.valor_desembolso ), p.orcamento,
 
                                         (SELECT SUM( valor )
@@ -161,29 +164,30 @@ class Application_Model_Desembolso
 
                                         (SELECT SUM( valor_orcamento )
                                         FROM orcamento AS orc
-                                        WHERE orc.projeto_id = " . $id . "
+                                        WHERE orc.projeto_id = " . $id . " AND orc.deletado = 0
                                         ) AS valor_orcamento,
 
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e1, orcamento AS orc
-                                         WHERE e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                         WHERE e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . " AND e1.deletado = 0
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM pre_empenho AS pe, empenho as e1, orcamento as orc
                                          WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                          AND pe.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( valor_recebido )
                                          FROM cronograma_financeiro AS cf
-                                         WHERE cf.projeto_id = " . $id . "
+                                         WHERE cf.projeto_id = " . $id . " AND cf.deletado = 0
                                          ) AS valor_recebido
 
                                          FROM desembolso AS d
                                          LEFT JOIN empenho AS e ON d.empenho_id = e.empenho_id
                                          LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
-                                         WHERE o.projeto_id = ". $id);
+                                         WHERE o.projeto_id = ". $id . " AND d.extornado = 0");
 
 
             return $resultado;
@@ -258,13 +262,14 @@ class Application_Model_Desembolso
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e1, orcamento AS orc, rubrica AS rub
                                          WHERE e1.orcamento_id = orc.orcamento_id AND orc.rubrica_id = rub.rubrica_id AND orc.projeto_id = " . $pid . "
-                                         AND rub.codigo_rubrica LIKE '%33390%'
+                                         AND rub.codigo_rubrica LIKE '%33390%' AND e1.deletado = 0
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM pre_empenho AS pe, empenho as e1, orcamento as orc, rubrica AS rub
                                          WHERE pe.pre_empenho_id = e1.pre_empenho_id AND orc.rubrica_id = rub.rubrica_id AND
                                          e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $pid . " AND rub.codigo_rubrica LIKE '%33390%'
+                                          AND pe.deletado = 0
                                          ) AS valor_pre_empenho
 
 
@@ -273,20 +278,21 @@ class Application_Model_Desembolso
                                         LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                         LEFT JOIN projeto AS p ON o.projeto_id = p.projeto_id
-                                        WHERE o.projeto_id = " . $pid . " AND codigo_rubrica LIKE '%33390%'");
+                                        WHERE o.projeto_id = " . $pid . " AND codigo_rubrica LIKE '%33390%' AND d.extornado = 0");
 
             $despesasCapitais = $db->fetchAll("SELECT SUM( valor_desembolso ),
 
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e1, orcamento AS orc, rubrica AS rub
                                          WHERE e1.orcamento_id = orc.orcamento_id AND orc.rubrica_id = rub.rubrica_id AND orc.projeto_id = " . $pid . "
-                                         AND rub.codigo_rubrica LIKE '%34490%'
+                                         AND rub.codigo_rubrica LIKE '%34490%' AND e1.deletado = 0
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM pre_empenho AS pe, empenho as e1, orcamento as orc, rubrica AS rub
                                          WHERE pe.pre_empenho_id = e1.pre_empenho_id AND orc.rubrica_id = rub.rubrica_id AND
                                          e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $pid . " AND rub.codigo_rubrica LIKE '%34490%'
+                                          AND pe.deletado = 0
                                          ) AS valor_pre_empenho
 
 
@@ -295,7 +301,7 @@ class Application_Model_Desembolso
                                         LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                         LEFT JOIN projeto AS p ON o.projeto_id = p.projeto_id
-                                        WHERE o.projeto_id = " . $pid . " AND codigo_rubrica LIKE '%34490%'");
+                                        WHERE o.projeto_id = " . $pid . " AND codigo_rubrica LIKE '%34490%' AND d.extornado = 0");
 
             $result = array();
             $result[0] = ($despesasCorrentes[0]['valor_empenho'] + $despesasCorrentes[0]['valor_pre_empenho']) -
@@ -320,7 +326,7 @@ class Application_Model_Desembolso
 
                                         (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
                                         FROM desembolso AS des
-                                        WHERE e.empenho_id = des.empenho_id
+                                        WHERE e.empenho_id = des.empenho_id AND des.extornado = 0
                                         ) AS saldo_empenho
 
 
@@ -329,9 +335,9 @@ class Application_Model_Desembolso
                                         LEFT JOIN beneficiario AS b ON e.beneficiario_id = b.beneficiario_id
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
 
-                                        WHERE o.projeto_id = " . $pid . " AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                                        WHERE o.projeto_id = " . $pid . " AND e.deletado = 0 AND ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
                                         FROM desembolso AS des
-                                        WHERE e.empenho_id = des.empenho_id
+                                        WHERE e.empenho_id = des.empenho_id AND des.extornado = 0
                                         ) > 0 )");
 
 
@@ -341,7 +347,8 @@ class Application_Model_Desembolso
                                                   LEFT JOIN beneficiario ON empenho.beneficiario_id = beneficiario.beneficiario_id
                                                   LEFT JOIN orcamento ON empenho.orcamento_id = orcamento.orcamento_id
                                                   LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
-                                                  WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $pid);
+                                                  WHERE desembolso.empenho_id IS NULL AND orcamento.projeto_id = " . $pid . "
+                                                   AND empenho.deletado = 0");
 
             $desembolso = array_merge($desembolsoSaldo, $desembolsoSemEmpenho);
 

@@ -64,7 +64,13 @@ class Application_Model_Empenho
 
     public function delete($id)
     {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "empenho";
+        $deletado = true;
+        $where = $db->quoteInto('empenho_id = ?', $id);
+        $data = array('deletado' => $deletado);
 
+        $db->update($table, $data, $where);
     }
 
     public function update($data, $id)
@@ -123,7 +129,7 @@ class Application_Model_Empenho
 
         $select = $db->select()
             ->from(array('e' => 'empenho'),array())
-            ->where('p.projeto_id = ?', $id)
+            ->where('p.projeto_id = ' . $id . ' AND e.deletado = 0')
             ->joinLeft(array('b'=>'beneficiario'),'e.beneficiario_id = b.beneficiario_id',array())
             ->joinLeft(array('o'=>'orcamento'),'e.orcamento_id = o.orcamento_id',array())
             ->joinLeft(array('u'=>'usuario'),'e.usuario_id = u.usuario_id',array())
@@ -154,29 +160,31 @@ class Application_Model_Empenho
 
                                         (SELECT SUM( valor_orcamento )
                                         FROM orcamento AS orc
-                                        WHERE orc.projeto_id = " . $id . "
+                                        WHERE orc.projeto_id = " . $id . " AND orc.deletado = 0
                                         ) AS valor_orcamento,
 
                                         (SELECT SUM( valor_desembolso )
                                          FROM desembolso AS des, empenho AS emp, orcamento AS orc
                                          WHERE des.empenho_id = emp.empenho_id AND emp.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                          AND des.extornado = 0
                                          ) AS valor_desembolso,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM pre_empenho AS pe, empenho as e1, orcamento as orc
                                          WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
+                                          AND pe.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( valor_recebido )
                                          FROM cronograma_financeiro AS cf
-                                         WHERE cf.projeto_id = " . $id . "
+                                         WHERE cf.projeto_id = " . $id . " AND cf.deletado = 0
                                          ) AS valor_recebido
 
                                          FROM empenho AS e
                                          LEFT JOIN pre_empenho AS pe ON e.pre_empenho_id = pe.pre_empenho_id
                                          LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
-                                         WHERE o.projeto_id = ". $id);
+                                         WHERE o.projeto_id = ". $id . " AND e.deletado = 0");
             return $resultado;
 
         }catch(Exception $e){
@@ -220,7 +228,7 @@ class Application_Model_Empenho
 
                                         (SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
                                         FROM empenho AS emp
-                                        WHERE o.orcamento_id = emp.orcamento_id
+                                        WHERE o.orcamento_id = emp.orcamento_id AND emp.deletado = 0
                                         ) AS saldo_orcamento
 
 
@@ -228,9 +236,9 @@ class Application_Model_Empenho
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                         LEFT JOIN destinatario AS d ON o.destinatario_id = d.destinatario_id
 
-                                        WHERE o.projeto_id = " . $id . " AND ((SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        WHERE o.projeto_id = " . $id . " AND o.deletado = 0 AND ((SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
                                         FROM empenho AS emp
-                                        WHERE o.orcamento_id = emp.orcamento_id
+                                        WHERE o.orcamento_id = emp.orcamento_id AND emp.deletado = 0
                                         ) > 0 )");
 
 
@@ -239,7 +247,7 @@ class Application_Model_Empenho
                                                   LEFT JOIN empenho ON orcamento.orcamento_id = empenho.orcamento_id
                                                   LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
                                                   LEFT JOIN destinatario ON orcamento.destinatario_id = destinatario.destinatario_id
-                                                  WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id);
+                                                  WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id . " AND orcamento.deletado = 0");
 
         $orcamento = array_merge($orcamentoSaldo, $orcamentoSemEmpenho);
 

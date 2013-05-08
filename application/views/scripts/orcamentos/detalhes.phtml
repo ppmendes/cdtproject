@@ -2,6 +2,7 @@
 $projeto_id = $this->pid;
 ?>
 
+
 <script>
     $(document).ready(function() {
         $('.fancybox').fancybox();
@@ -10,17 +11,18 @@ $projeto_id = $this->pid;
                 overlayShow: true
             }).click();
         });
+        var projeto_id = <?php echo $projeto_id; ?>;
     });
 
 </script>
 
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
-    function confirmarExclusao(id)
+    function confirmarExclusao(id, projeto_id)
     {
         var answer = confirm("Deseja realmente excluir o orçamento?");
         if (answer) {
-            top.location.href = '/../orcamentos/excluir/orcamento_id/'+ id + '/projeto_id/' + 467;
+            top.location.href = '/../orcamentos/excluir/orcamento_id/'+ id + '/projeto_id/' + projeto_id ;
         }
         else {
             alert("O orçamento não foi excluído!");
@@ -28,9 +30,9 @@ $projeto_id = $this->pid;
     }
 </script>
 <script>
-    function editar(id)
+    function editar(id, pid)
     {
-        top.location.href = '/../orcamentos/adicionar/orcamento_id/'+id;
+        top.location.href = '/../orcamentos/adicionar/orcamento_id/'+id+ '/projeto_id/' + pid ;
 
     }
 </script>
@@ -38,8 +40,8 @@ $projeto_id = $this->pid;
 <?php
  $id = $this->id;
 
-echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
-echo "<button onclick='editar($id)'>Editar</button>";
+echo "<button onclick='confirmarExclusao($id, $projeto_id)'>Excluir</button>";
+echo "<button onclick='editar($id, $projeto_id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;

@@ -165,16 +165,12 @@ class CronogramafinanceiroController extends Zend_Controller_Action
 
     public function excluirAction(){
         //$request = $this->getRequest();
-        $excluir = new Application_Form_Cronogramafinanceiro_Cronogramafinanceiro1();
-        $excluir->startform();
         $model = new Application_Model_CronogramaFinanceiro();
         $id = $this->_getParam('cronograma_financeiro_id');
         $pid = $this->_getParam('projeto_id');
 
         $model->delete($id);
         $this->_redirect('/cronogramafinanceiro/index/projeto_id/'.$pid);
-
-        $this->view->excluir = $excluir;
 
     }
     

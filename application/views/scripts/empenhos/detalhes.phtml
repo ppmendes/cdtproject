@@ -16,11 +16,11 @@ $projeto_id = $this->pid;
 
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
-    function confirmarExclusao(id)
+    function confirmarExclusao(id, pid)
     {
         var answer = confirm("Deseja realmente excluir o projeto?");
         if (answer) {
-            top.location.href = '/../empenhos/excluir/projeto_id/'+id;
+            top.location.href = '/../empenhos/excluir/empenho_id/ '+ id + '/projeto_id/'+ pid;
         }
         else {
             alert("O empenho não foi excluído!");
@@ -28,17 +28,17 @@ $projeto_id = $this->pid;
     }
 </script>
 <script>
-    function editar(id)
+    function editar(id, pid)
     {
-        top.location.href = '/../empenhos/adicionar/projeto_id/'+id;
+        top.location.href = '/../empenhos/adicionar/empenho_id/' + id + '/projeto_id/'+ pid;
     }
 </script>
 
 <?php
  $id = $this->id;
 
-//echo "<button onclick='confirmarExclusao($id)'>Excluir</button>";
-//echo "<button onclick='editar($id)'>Editar</button>";
+echo "<button onclick='confirmarExclusao($id, $projeto_id)'>Excluir</button>";
+echo "<button onclick='editar($id, $projeto_id)'>Editar</button>";
 
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;

@@ -24,9 +24,11 @@ class Application_Model_CronogramaOrcamentario
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $table = "cronograma_orcamentario";
+        $deletado = true;
         $where = $db->quoteInto('cronograma_orcamentario_id = ?', $id);
-        $db->delete($table, $where);
+        $data = array('deletado' => $deletado);
 
+        $db->update($table, $data, $where);
     }
 
     public function update($data, $id)
@@ -50,7 +52,7 @@ class Application_Model_CronogramaOrcamentario
 
             $select = $db->select()
                 ->from(array('c' => 'cronograma_orcamentario'))
-                ->where('p.projeto_id = ?', $id)
+                ->where('p.projeto_id = ' . $id . ' AND c.deletado = 0')
              ->joinLeft(array('p' => 'projeto'), 'c.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id',
              'p.nome'=>'p.nome'));
             $stmt = $select->query();
@@ -70,7 +72,7 @@ class Application_Model_CronogramaOrcamentario
 
             $resultado = $db->fetchAll("SELECT SUM( c.valor_recebido ), SUM( c.valor_a_receber )
                                         FROM cronograma_orcamentario AS c
-                                        WHERE c.projeto_id = " . $id . ";");
+                                        WHERE c.projeto_id = " . $id . " AND c.deletado = 0;");
 
             return $resultado;
         }catch(Exception $e){
@@ -85,7 +87,7 @@ class Application_Model_CronogramaOrcamentario
 
             $resultado = $db->fetchAll("SELECT SUM( valor_orcamento ) AS valor_orcamento
                                          FROM orcamento
-                                         WHERE projeto_id = ". $id);
+                                         WHERE projeto_id = ". $id . " AND deletado = 0;");
 
             return $resultado;
         }catch(Exception $e){
@@ -150,7 +152,7 @@ class Application_Model_CronogramaOrcamentario
         $db = Zend_Db_Table::getDefaultAdapter();
         $result = $db->select()
                      ->from("cronograma_orcamentario", array('valor_recebido' => 'valor_recebido'))
-                     ->where("cronograma_orcamentario_id = ?", $id);
+                     ->where("cronograma_orcamentario_id = " . $id . " AND deletado = 0");
 
         $stmt = $result->query();
 
