@@ -102,6 +102,7 @@ class Application_Model_Solicitacao
                 ->where('s.tipo_solicitacao_id = ?', 1)
                 ->orWhere('s.tipo_solicitacao_id = ?', 4)
                 ->orWhere('s.tipo_solicitacao_id = ?', 5)
+                ->orWhere('s.tipo_solicitacao_id = ?', 6)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
                 ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
                 'cp.nome'=>'cp.nome', 'cp.username' => 'cp.username'))
@@ -125,7 +126,6 @@ class Application_Model_Solicitacao
                 ->from(array('s' => 'solicitacao'))
                 ->where('s.deletado = ?', false)
                 ->where('s.tipo_solicitacao_id = ?', 2)
-                ->orWhere('s.tipo_solicitacao_id = ?', 6)
                 ->orWhere('s.tipo_solicitacao_id = ?', 7)
                 ->orWhere('s.tipo_solicitacao_id = ?', 8)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
@@ -187,17 +187,15 @@ class Application_Model_Solicitacao
         $table_bensServicos = new Application_Model_DbTable_BensServicos();
 
 
-        $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
-        $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
-        $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
-        unset($data['solicitacoes']['valor_estimado']);
-
-        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'];
+        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
         unset($data['solicitacoes']['quantidade']);
-        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'];
+
+        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'] . $nome;
         unset($data['solicitacoes']['nome']);
-        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'];
+
+        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
         unset($data['solicitacoes']['valor_unitario']);
+
 
         $table_solicitacao->insert($data['solicitacoes']);
 
@@ -206,24 +204,19 @@ class Application_Model_Solicitacao
         $table_bensServicos->insert($data['bens_servicos']);
     }
 
+
     public function insertContratacao($data, $descricao, $produto, $quantidade, $inicio_atividades,$fim_atividades)
     {
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_servicos = new Application_Model_DbTable_Servicos();
         $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
 
-        $data['solicitacoes']['descricao'] .= $descricao;
-        $data['solicitacoes']['produto'] .= $produto;
-        $data['solicitacoes']['quantidade'] .= $quantidade;
-        $data['solicitacoes']['inicio_atividades'] .= $inicio_atividades;
-        $data['solicitacoes']['fim_atividades'] .= $fim_atividades;
 
-
-        $data['cronograma_atividades']['descricao'] = $data['solicitacoes']['descricao'];
-        $data['cronograma_atividades']['produto'] = $data['solicitacoes']['produto'];
-        $data['cronograma_atividades']['quantidade'] = $data['solicitacoes']['quantidade'];
-        $data['cronograma_atividades']['inicio_atividades'] = $data['solicitacoes']['inicio_atividades'];
-        $data['cronograma_atividades']['fim_atividades'] = $data['solicitacoes']['fim_atividades'];
+        $data['cronograma_atividades']['descricao'] .= $descricao;
+        $data['cronograma_atividades']['produto'] .= $produto;
+        $data['cronograma_atividades']['quantidade'] .= $quantidade;
+        $data['cronograma_atividades']['inicio_atividades'] .= $inicio_atividades;
+        $data['cronograma_atividades']['fim_atividades'] .= $fim_atividades;
 
 
         $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
@@ -306,17 +299,16 @@ class Application_Model_Solicitacao
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_bensServicos = new Application_Model_DbTable_BensServicos();
 
-        $data['solicitacoes']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
-        $data['solicitacoes']['nome'] = $data['solicitacoes']['nome'] . $nome;
-        $data['solicitacoes']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
-        unset($data['solicitacoes']['valor_estimado']);
 
-        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'];
+        $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
         unset($data['solicitacoes']['quantidade']);
-        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'];
+
+        $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'] . $nome;
         unset($data['solicitacoes']['nome']);
-        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'];
+
+        $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
         unset($data['solicitacoes']['valor_unitario']);
+
 
         $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
         $where_bensServicos = $table_bensServicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
@@ -326,24 +318,19 @@ class Application_Model_Solicitacao
         $table_bensServicos->update($data['bens_servicos'], $where_bensServicos);
     }
 
+
     public function updateContratacao($data, $id, $descricao, $produto, $quantidade, $inicio_atividades, $fim_atividades)
     {
         $table_solicitacao = new Application_Model_DbTable_Solicitacao;
         $table_servicos = new Application_Model_DbTable_Servicos();
         $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
 
-        $data['solicitacoes']['descricao'] .= $descricao;
-        $data['solicitacoes']['produto'] .= $produto;
-        $data['solicitacoes']['quantidade'] .= $quantidade;
-        $data['solicitacoes']['inicio_atividades'] .= $inicio_atividades;
-        $data['solicitacoes']['fim_atividades'] .= $fim_atividades;
 
-
-        $data['cronograma_atividades']['descricao'] = $data['solicitacoes']['descricao'];
-        $data['cronograma_atividades']['produto'] = $data['solicitacoes']['produto'];
-        $data['cronograma_atividades']['quantidade'] = $data['solicitacoes']['quantidade'];
-        $data['cronograma_atividades']['inicio_atividades'] = $data['solicitacoes']['inicio_atividades'];
-        $data['cronograma_atividades']['fim_atividades'] = $data['solicitacoes']['fim_atividades'];
+        $data['cronograma_atividades']['descricao'] .= $descricao;
+        $data['cronograma_atividades']['produto'] .= $produto;
+        $data['cronograma_atividades']['quantidade'] .= $quantidade;
+        $data['cronograma_atividades']['inicio_atividades'] .= $inicio_atividades;
+        $data['cronograma_atividades']['fim_atividades'] .= $fim_atividades;
 
 
         $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
@@ -367,10 +354,12 @@ class Application_Model_Solicitacao
 
         $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
         $where_servicos = $table_servicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
-        //$where_cronograma_atividades = $table_cronograma_atividades->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $where_cronograma_atividades = $table_cronograma_atividades->getAdapter()->quoteInto('solicitacao_id = ?',$id);
 
         $table_solicitacao->update($data['solicitacoes'],$where_solicitacao);
         $table_servicos->update($data['servicos'],$where_servicos);
+        $table_cronograma_atividades->update($data['cronograma_atividades'],$where_cronograma_atividades);
+
     }
 
     public function updatePassagens($data, $id)

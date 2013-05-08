@@ -39,6 +39,7 @@ class SolicitacoesController extends Zend_Controller_Action
                 unset($data['solicitacoes']['local']);
                 unset($data['solicitacoes']['hidden_teste']);
                 unset($data['solicitacoes']['projeto']);
+                unset($data['solicitacoes']['valor_estimado']);
                 $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
                 unset($data['solicitacoes']['coordenador_tecnico_id']);
 
@@ -167,25 +168,14 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 $data = $form->getValues();
 
-               // unset($data['solicitacoes']['data_solicitacao_view']);
 
-                //Unset nos campos de beneficário, pois só armazena em solicitações o ID
-//                unset($data['solicitacoes']['cpf_cnpj']);
-//                unset($data['solicitacoes']['rg_ie']);
-//                unset($data['solicitacoes']['pis_inss']);
-//                unset($data['solicitacoes']['endereco_contratado']);
-//                unset($data['solicitacoes']['telefone_contratado']);
-//                unset($data['solicitacoes']['email_ccontratado']);
-//                unset($data['solicitacoes']['banco_id']);
-//                unset($data['solicitacoes']['agencia_banco']);
-//                unset($data['solicitacoes']['conta_bancaria']);
-                unset($data['solicitacoes']['hidden_teste']);
-                unset($data['solicitacoes']['hidden_teste2']);
-
-               // unset($data['solicitacoes']['projeto']);
+                unset($data['solicitacoes']['data_solicitacao_view']);
+                unset($data['solicitacoes']['projeto']);
                 $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
                 unset($data['solicitacoes']['coordenador_tecnico_id']);
-               // unset($data['solicitacoes']['beneficiario']);
+                unset($data['solicitacoes']['beneficiario']);
+                unset($data['solicitacoes']['hidden_teste']);
+                unset($data['solicitacoes']['hidden_teste2']);
 
                 $data['solicitacoes']['tipo_solicitacao_id'] = 2;
 

@@ -258,12 +258,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             ),
         ));
 
-        $this->addElement('text', 'beneficiario_id', array(
-            'label'      => 'teste:',
-            'required'   => true,
-            'order'          => 111
-        ));
-
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,

@@ -212,7 +212,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
             ),
         ));
 
-        $this->addElement('select', 'tipo_diarias_passagens', array(
+        $this->addElement('select', 'tipo_diarias_passagens_id', array(
             'label'      => 'Emissão do Bilhete da Passagem:',
             'multiOptions' => Application_Model_TipoDiariasPassagens::getOptions(),
             'required'   => true
