@@ -313,9 +313,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 $data = $form->getValues();
 
-                unset($data['solicitacoes']['projeto']);
-                $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
-                unset($data['solicitacoes']['coordenador_tecnico_id']);
+
 
                 if($id){
                     $model->updatePassagens($data, $id);
@@ -326,9 +324,12 @@ class SolicitacoesController extends Zend_Controller_Action
                 $this->_redirect('/solicitacoes/');
             }
         }elseif ($id){
+
             $data = $model->find($id)->toArray();
 
-            //Preencher dados de projeto e coordenador
+            if(is_array($data)){
+
+                //Preencher dados de projeto e coordenador
             $dadosProjeto = $model->buscaProjetoNome($id);
 
             $data['coordenador_projeto_id'] = $data['coordenador_projeto'];
@@ -371,13 +372,11 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['data'] = '';
             $data['valor'] = '';
 
-        }
+            $form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
+            $form->populate(array("solicitacoes" => $data));
 
-
-            if(is_array($data)){
-                $form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
-                $form->populate(array("solicitacoes" => $data));
             }
+        }
 
         $this->view->form = $form;
 

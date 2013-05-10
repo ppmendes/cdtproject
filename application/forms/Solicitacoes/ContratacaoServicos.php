@@ -252,19 +252,35 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'class'         => 'campos'
         ));
 
-        $this->addElement('text', 'inicio_atividades', array(
-            'label'      => 'Início do Cronograma:',
-            'required'   => true,
-            'order'          => 27,
-            'class'         => 'campos'
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('inicio_atividades');
+        $emtDatePicker1->setOrder(27);
+        $emtDatePicker1->setRequired(true);
+        $emtDatePicker1->setLabel('Início do Cronograma:');
+        $emtDatePicker1->setFilters(array('DateFilter'));
+        $emtDatePicker1->setAttrib('class', 'campos');
+        $this->addElement($emtDatePicker1);
 
-        $this->addElement('text', 'fim_atividades', array(
-            'label'      => 'Fim do Cronograma:',
-            'required'   => true,
-            'order'          => 28,
-            'class'         => 'campos'
-        ));
+//        $this->addElement('text', 'inicio_atividades', array(
+//            'label'      => 'Início do Cronograma:',
+//            'required'   => true,
+//            'order'          => 27,
+//            'class'         => 'campos'
+//        ));
+
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('fim_atividades');
+        $emtDatePicker2->setOrder(28);
+        $emtDatePicker2->setRequired(true);
+        $emtDatePicker2->setLabel('Fim do Cronograma:');
+        $emtDatePicker2->setFilters(array('DateFilter'));
+        $emtDatePicker2->setAttrib('class', 'campos');
+        $this->addElement($emtDatePicker2);
+
+//        $this->addElement('text', 'fim_atividades', array(
+//            'label'      => 'Fim do Cronograma:',
+//            'required'   => true,
+//            'order'          => 28,
+//            'class'         => 'campos'
+//        ));
 
         $this->addDisplayGroup(array('descricao','produto','quantidade', 'inicio_atividades', 'fim_atividades'), 'individual');
 
@@ -309,19 +325,19 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 103,
         ));
 
-        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('inicio_execucao');
-        $emtDatePicker1->setOrder(104);
-        $emtDatePicker1->setRequired(true);
-        $emtDatePicker1->setLabel('Início: ');
-        $emtDatePicker1->setFilters(array('DateFilter'));
-        $this->addElement($emtDatePicker1);
+        $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('inicio_execucao');
+        $emtDatePicker3->setOrder(104);
+        $emtDatePicker3->setRequired(true);
+        $emtDatePicker3->setLabel('Início: ');
+        $emtDatePicker3->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker3);
 
-        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('fim_execucao');
-        $emtDatePicker2->setOrder(105);
-        $emtDatePicker2->setRequired(true);
-        $emtDatePicker2->setLabel('Término: ');
-        $emtDatePicker2->setFilters(array('DateFilter'));
-        $this->addElement($emtDatePicker2);
+        $emtDatePicker4 = new ZendX_JQuery_Form_Element_DatePicker('fim_execucao');
+        $emtDatePicker4->setOrder(105);
+        $emtDatePicker4->setRequired(true);
+        $emtDatePicker4->setLabel('Término: ');
+        $emtDatePicker4->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker4);
 
 
         $this->addElement('text', 'quantidade_parcelas', array(
@@ -338,12 +354,12 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'order'          => 107
         ));
 
-        $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('data_pagamento');
-        $emtDatePicker3->setOrder(108);
-        $emtDatePicker3->setRequired(true);
-        $emtDatePicker3->setLabel('Data(s) Pagamento: ');
-        $emtDatePicker3->setFilters(array('DateFilter'));
-        $this->addElement($emtDatePicker3);
+        $emtDatePicker5 = new ZendX_JQuery_Form_Element_DatePicker('data_pagamento');
+        $emtDatePicker5->setOrder(108);
+        $emtDatePicker5->setRequired(true);
+        $emtDatePicker5->setLabel('Data(s) Pagamento: ');
+        $emtDatePicker5->setFilters(array('DateFilter'));
+        $this->addElement($emtDatePicker5);
 
         $this->addDisplayGroup(array('valor_real','inicio_execucao','fim_execucao', 'quantidade_parcelas', 'valor_parcelas', 'data_pagamento'), 'individual2');
 
@@ -488,23 +504,39 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 
         $order++;
 
-        $this->addElement('text', $name4, array(
-            'required'       => true,
-            'label'          => 'Início do Cronograma:',
-            'value'          => $value4,
-            'class'          => 'campos',
-            'order'          => $order
-        ));
+        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker($name4);
+        $emtDatePicker1->setOrder($order);
+        $emtDatePicker1->setRequired(true);
+        $emtDatePicker1->setLabel('Início do Cronograma:');
+        $emtDatePicker1->setFilters(array('DateFilter'));
+        $emtDatePicker1->setAttrib('class', 'campos');
+        $this->addElement($emtDatePicker1);
+
+//        $this->addElement('text', $name4, array(
+//            'required'       => true,
+//            'label'          => 'Início do Cronograma:',
+//            'value'          => $value4,
+//            'class'          => 'campos',
+//            'order'          => $order
+//        ));
 
         $order++;
 
-        $this->addElement('text', $name5, array(
-            'required'       => true,
-            'label'          => 'Fim do Cronograma',
-            'value'          => $value5,
-            'class'          => 'campos',
-            'order'          => $order
-        ));
+        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker($name5);
+        $emtDatePicker2->setOrder($order);
+        $emtDatePicker2->setRequired(true);
+        $emtDatePicker2->setLabel('Fim do Cronograma:');
+        $emtDatePicker2->setFilters(array('DateFilter'));
+        $emtDatePicker2->setAttrib('class', 'campos');
+        $this->addElement($emtDatePicker2);
+
+//        $this->addElement('text', $name5, array(
+//            'required'       => true,
+//            'label'          => 'Fim do Cronograma',
+//            'value'          => $value5,
+//            'class'          => 'campos',
+//            'order'          => $order
+//        ));
 
 
         $individual = $this->getDisplayGroup('individual');
@@ -606,11 +638,11 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $('#cronograma').append("<dt id='solicitacoes-inicio_atividades-label'><label for='solicitacoes-inicio_atividades_" + num + "' " +
                 "class='required'>Início do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-inicio_atividades-element'><input type='text' " +
-                "name='solicitacoes[inicio_atividades_"+ num + "]' id='solicitacoes-inicio_atividades' value='' class='campos'></dd>");
+                "name='solicitacoes[inicio_atividades_"+ num + "]' id='solicitacoes-inicio_atividades' value='' class='campos hasDatepicker'></dd>");
         $('#cronograma').append("<dt id='solicitacoes-fim_atividades-label'><label for='solicitacoes-fim_atividades_" + num + "' " +
                 "class='required'>Fim do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-fim_atividades-element'><input type='text' " +
-                "name='solicitacoes[fim_atividades_"+ num + "]' id='solicitacoes-fim_atividades' value='' class='campos'></dd>");
+                "name='solicitacoes[fim_atividades_"+ num + "]' id='solicitacoes-fim_atividades' value='' class='campos hasDatepicker'></dd>");
 
         $('#solicitacoes-hidden_teste').attr('value', num);
 

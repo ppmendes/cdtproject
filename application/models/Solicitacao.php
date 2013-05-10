@@ -186,21 +186,17 @@ class Application_Model_Solicitacao
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_bensServicos = new Application_Model_DbTable_BensServicos();
 
-
         $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
-        unset($data['solicitacoes']['quantidade']);
-
         $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'] . $nome;
-        unset($data['solicitacoes']['nome']);
-
         $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
-        unset($data['solicitacoes']['valor_unitario']);
 
+        unset($data['solicitacoes']['quantidade']);
+        unset($data['solicitacoes']['nome']);
+        unset($data['solicitacoes']['valor_unitario']);
 
         $table_solicitacao->insert($data['solicitacoes']);
 
         $data['bens_servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
-
         $table_bensServicos->insert($data['bens_servicos']);
     }
 
@@ -211,13 +207,11 @@ class Application_Model_Solicitacao
         $table_servicos = new Application_Model_DbTable_Servicos();
         $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
 
-
         $data['cronograma_atividades']['descricao'] .= $descricao;
         $data['cronograma_atividades']['produto'] .= $produto;
         $data['cronograma_atividades']['quantidade'] .= $quantidade;
         $data['cronograma_atividades']['inicio_atividades'] .= $inicio_atividades;
         $data['cronograma_atividades']['fim_atividades'] .= $fim_atividades;
-
 
         $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
         $data['servicos']['inicio_execucao'] = $data['solicitacoes']['inicio_execucao'];
@@ -241,56 +235,68 @@ class Application_Model_Solicitacao
         $table_solicitacao->insert($data['solicitacoes']);
 
         $data['servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
-
         $table_servicos->insert($data['servicos']);
 
         $data['cronograma_atividades']['servicos_id'] = $this->getLastInsertedId('servicos');
-
         $table_cronograma_atividades->insert($data['cronograma_atividades']);
     }
 
     public function insertPassagens($data)
     {
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
-        $table_diarias = new Application_Model_DbTable_DiariasPassagens();
-
-        $data['diarias_passagens']['motivos'] = $data['solicitacoes']['motivos'];
-        unset($data['solicitacoes']['motivos']);
-        $data['diarias_passagens']['tipo_diarias_passagens_id'] = $data['solicitacoes']['tipo_diarias_passagens'];
-        unset($data['solicitacoes']['tipo_diarias_passagens']);
-        $data['diarias_passagens']['data_saida'] = $data['solicitacoes']['data_saida'];
-        unset($data['solicitacoes']['data_saida']);
-        $data['diarias_passagens']['data_volta'] = $data['solicitacoes']['data_volta'];
-        unset($data['solicitacoes']['data_volta']);
-        $data['diarias_passagens']['hora_saida'] = $data['solicitacoes']['hora_saida'];
-        unset($data['solicitacoes']['hora_saida']);
-        $data['diarias_passagens']['hora_chegada'] = $data['solicitacoes']['hora_chegada'];
-        unset($data['solicitacoes']['hora_chegada']);
-        $data['diarias_passagens']['tipo_detalhe'] = $data['solicitacoes']['tipo_detalhe'];
-        unset($data['solicitacoes']['tipo_detalhe']);
-        $data['diarias_passagens']['valor_passagens'] = $data['solicitacoes']['valor_passagens'];
-        unset($data['solicitacoes']['valor_passagens']);
-        $data['diarias_passagens']['local'] = $data['solicitacoes']['local'];
-        unset($data['solicitacoes']['local']);
-        $data['diarias_passagens']['data'] = $data['solicitacoes']['data'];
-        unset($data['solicitacoes']['data']);
-        $data['diarias_passagens']['valor'] = $data['solicitacoes']['valor'];
-        unset($data['solicitacoes']['valor']);
+        $table_diarias_passagens = new Application_Model_DbTable_DiariasPassagens();
+        $table_viagem_detalhe = new Application_Model_DbTable_ViagemDetalhe();
 
         $data['solicitacoes']['tipo_solicitacao_id'] = 3;
+        $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
 
-        unset($data['diarias_passagens']['hora_saida']);
-        unset($data['diarias_passagens']['hora_chegada']);
-        unset($data['diarias_passagens']['tipo_detalhe']);
-        unset($data['diarias_passagens']['valor']);
-        unset($data['diarias_passagens']['data']);
-        unset($data['diarias_passagens']['local']);
+        $data['diarias_passagens']['motivos'] = $data['solicitacoes']['motivos'];
+        $data['diarias_passagens']['tipo_diarias_passagens_id'] = $data['solicitacoes']['tipo_diarias_passagens_id'];
+        $data['diarias_passagens']['data_saida'] = $data['solicitacoes']['data_saida'];
+        $data['diarias_passagens']['data_volta'] = $data['solicitacoes']['data_volta'];
+        $data['diarias_passagens']['codigo_reservacao'] = $data['solicitacoes']['codigo_reservacao'];
+        $data['diarias_passagens']['valor_passagens'] = $data['solicitacoes']['valor_passagens'];
+        $data['diarias_passagens']['valor_voo'] = $data['solicitacoes']['valor_voo'];
+        $data['diarias_passagens']['numero_dias'] = $data['solicitacoes']['numero_dias'];
+        $data['diarias_passagens']['pais_origem_id'] = $data['solicitacoes']['pais_origem_id'];
+        $data['diarias_passagens']['pais_destino_id'] = $data['solicitacoes']['pais_destino_id'];
+
+        $data['viagem_detalhe']['hora_saida'] = $data['solicitacoes']['hora_saida'];
+        $data['viagem_detalhe']['hora_chegada'] = $data['solicitacoes']['hora_chegada'];
+        $data['viagem_detalhe']['cidade_origem'] = $data['solicitacoes']['cidade_origem'];
+        $data['viagem_detalhe']['cidade_destino'] = $data['solicitacoes']['cidade_destino'];
+        $data['viagem_detalhe']['tipo_detalhe'] = $data['solicitacoes']['tipo_detalhe'];
+        $data['viagem_detalhe']['numero_voo'] = $data['solicitacoes']['numero_voo'];
+        $data['viagem_detalhe']['data'] = $data['solicitacoes']['data'];
+
+        unset($data['solicitacoes']['coordenador_tecnico_id']);
+        unset($data['solicitacoes']['beneficiario']);
+        unset($data['solicitacoes']['projeto']);
+        unset($data['solicitacoes']['motivos']);
+        unset($data['solicitacoes']['tipo_diarias_passagens_id']);
+        unset($data['solicitacoes']['data_saida']);
+        unset($data['solicitacoes']['data_volta']);
+        unset($data['solicitacoes']['hora_saida']);
+        unset($data['solicitacoes']['hora_chegada']);
+        unset($data['solicitacoes']['pais_origem_id']);
+        unset($data['solicitacoes']['pais_destino_id']);
+        unset($data['solicitacoes']['cidade_origem']);
+        unset($data['solicitacoes']['cidade_destino']);
+        unset($data['solicitacoes']['tipo_detalhe']);
+        unset($data['solicitacoes']['numero_voo']);
+        unset($data['solicitacoes']['codigo_reservacao']);
+        unset($data['solicitacoes']['valor_passagens']);
+        unset($data['solicitacoes']['valor_voo']);
+        unset($data['solicitacoes']['numero_dias']);
+        unset($data['solicitacoes']['data']);
 
         $table_solicitacao->insert($data['solicitacoes']);
 
         $data['diarias_passagens']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
+        $table_diarias_passagens->insert($data['diarias_passagens']);
 
-        $table_diarias->insert($data['diarias_passagens']);
+        $data['viagem_detalhe']['diarias_passagens_id'] = $this->getLastInsertedId('diarias_passagens');
+        $table_viagem_detalhe->insert($data['viagem_detalhe']);
 
     }
 
@@ -299,22 +305,18 @@ class Application_Model_Solicitacao
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_bensServicos = new Application_Model_DbTable_BensServicos();
 
-
         $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
-        unset($data['solicitacoes']['quantidade']);
-
         $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'] . $nome;
-        unset($data['solicitacoes']['nome']);
-
         $data['bens_servicos']['valor_unitario'] = $data['solicitacoes']['valor_unitario'] . $valor_unitario;
-        unset($data['solicitacoes']['valor_unitario']);
 
+        unset($data['solicitacoes']['quantidade']);
+        unset($data['solicitacoes']['nome']);
+        unset($data['solicitacoes']['valor_unitario']);
 
         $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
         $where_bensServicos = $table_bensServicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
 
         $table_solicitacao->update($data['solicitacoes'], $where_solicitacao);
-
         $table_bensServicos->update($data['bens_servicos'], $where_bensServicos);
     }
 
@@ -325,13 +327,11 @@ class Application_Model_Solicitacao
         $table_servicos = new Application_Model_DbTable_Servicos();
         $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
 
-
         $data['cronograma_atividades']['descricao'] .= $descricao;
         $data['cronograma_atividades']['produto'] .= $produto;
         $data['cronograma_atividades']['quantidade'] .= $quantidade;
         $data['cronograma_atividades']['inicio_atividades'] .= $inicio_atividades;
         $data['cronograma_atividades']['fim_atividades'] .= $fim_atividades;
-
 
         $data['servicos']['valor_real'] = $data['solicitacoes']['valor_real'];
         $data['servicos']['inicio_execucao'] = $data['solicitacoes']['inicio_execucao'];
@@ -354,7 +354,9 @@ class Application_Model_Solicitacao
 
         $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
         $where_servicos = $table_servicos->getAdapter()->quoteInto('solicitacao_id = ?',$id);
-        $where_cronograma_atividades = $table_cronograma_atividades->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $sid = $this->getServicosId($id);
+        $where_cronograma_atividades = $table_cronograma_atividades->getAdapter()->quoteInto('servicos_id = ?',$sid);
 
         $table_solicitacao->update($data['solicitacoes'],$where_solicitacao);
         $table_servicos->update($data['servicos'],$where_servicos);
@@ -364,44 +366,63 @@ class Application_Model_Solicitacao
 
     public function updatePassagens($data, $id)
     {
-        $table_solicitacao = new Application_Model_DbTable_Solicitacao;
-        $table_passagens = new Application_Model_DbTable_DiariasPassagens();
+
+        $table_solicitacao = new Application_Model_DbTable_Solicitacao();
+        $table_diarias_passagens = new Application_Model_DbTable_DiariasPassagens();
+        $table_viagem_detalhe = new Application_Model_DbTable_ViagemDetalhe();
+
+        $data['solicitacoes']['tipo_solicitacao_id'] = 3;
+        $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
 
         $data['diarias_passagens']['motivos'] = $data['solicitacoes']['motivos'];
-        unset($data['solicitacoes']['motivos']);
-        $data['diarias_passagens']['tipo_diarias_passagens_id'] = $data['solicitacoes']['tipo_diarias_passagens'];
-        unset($data['solicitacoes']['tipo_diarias_passagens']);
+        $data['diarias_passagens']['tipo_diarias_passagens_id'] = $data['solicitacoes']['tipo_diarias_passagens_id'];
         $data['diarias_passagens']['data_saida'] = $data['solicitacoes']['data_saida'];
-        unset($data['solicitacoes']['data_saida']);
         $data['diarias_passagens']['data_volta'] = $data['solicitacoes']['data_volta'];
-        unset($data['solicitacoes']['data_volta']);
-        $data['diarias_passagens']['hora_saida'] = $data['solicitacoes']['hora_saida'];
-        unset($data['solicitacoes']['hora_saida']);
-        $data['diarias_passagens']['hora_chegada'] = $data['solicitacoes']['hora_chegada'];
-        unset($data['solicitacoes']['hora_chegada']);
-        $data['diarias_passagens']['tipo_detalhe'] = $data['solicitacoes']['tipo_detalhe'];
-        unset($data['solicitacoes']['tipo_detalhe']);
+        $data['diarias_passagens']['codigo_reservacao'] = $data['solicitacoes']['codigo_reservacao'];
         $data['diarias_passagens']['valor_passagens'] = $data['solicitacoes']['valor_passagens'];
-        unset($data['solicitacoes']['valor_passagens']);
-        $data['diarias_passagens']['local'] = $data['solicitacoes']['local'];
-        unset($data['solicitacoes']['local']);
-        $data['diarias_passagens']['data'] = $data['solicitacoes']['data'];
-        unset($data['solicitacoes']['data']);
-        $data['diarias_passagens']['valor'] = $data['solicitacoes']['valor'];
-        unset($data['solicitacoes']['valor']);
+        $data['diarias_passagens']['valor_voo'] = $data['solicitacoes']['valor_voo'];
+        $data['diarias_passagens']['numero_dias'] = $data['solicitacoes']['numero_dias'];
+        $data['diarias_passagens']['pais_origem_id'] = $data['solicitacoes']['pais_origem_id'];
+        $data['diarias_passagens']['pais_destino_id'] = $data['solicitacoes']['pais_destino_id'];
 
-        unset($data['diarias_passagens']['hora_saida']);
-        unset($data['diarias_passagens']['hora_chegada']);
-        unset($data['diarias_passagens']['tipo_detalhe']);
-        unset($data['diarias_passagens']['valor']);
-        unset($data['diarias_passagens']['data']);
-        unset($data['diarias_passagens']['local']);
+        $data['viagem_detalhe']['hora_saida'] = $data['solicitacoes']['hora_saida'];
+        $data['viagem_detalhe']['hora_chegada'] = $data['solicitacoes']['hora_chegada'];
+        $data['viagem_detalhe']['cidade_origem'] = $data['solicitacoes']['cidade_origem'];
+        $data['viagem_detalhe']['cidade_destino'] = $data['solicitacoes']['cidade_destino'];
+        $data['viagem_detalhe']['tipo_detalhe'] = $data['solicitacoes']['tipo_detalhe'];
+        $data['viagem_detalhe']['numero_voo'] = $data['solicitacoes']['numero_voo'];
+        $data['viagem_detalhe']['data'] = $data['solicitacoes']['data'];
+
+        unset($data['solicitacoes']['coordenador_tecnico_id']);
+        unset($data['solicitacoes']['beneficiario']);
+        unset($data['solicitacoes']['projeto']);
+        unset($data['solicitacoes']['motivos']);
+        unset($data['solicitacoes']['tipo_diarias_passagens_id']);
+        unset($data['solicitacoes']['data_saida']);
+        unset($data['solicitacoes']['data_volta']);
+        unset($data['solicitacoes']['hora_saida']);
+        unset($data['solicitacoes']['hora_chegada']);
+        unset($data['solicitacoes']['pais_origem_id']);
+        unset($data['solicitacoes']['pais_destino_id']);
+        unset($data['solicitacoes']['cidade_origem']);
+        unset($data['solicitacoes']['cidade_destino']);
+        unset($data['solicitacoes']['tipo_detalhe']);
+        unset($data['solicitacoes']['numero_voo']);
+        unset($data['solicitacoes']['codigo_reservacao']);
+        unset($data['solicitacoes']['valor_passagens']);
+        unset($data['solicitacoes']['valor_voo']);
+        unset($data['solicitacoes']['numero_dias']);
+        unset($data['solicitacoes']['data']);
 
         $where_solicitacao = $table_solicitacao->getAdapter()->quoteInto('solicitacao_id = ?',$id);
-        $where_passagens = $table_passagens->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+        $where_diarias_passagens = $table_diarias_passagens->getAdapter()->quoteInto('solicitacao_id = ?',$id);
+
+        $vid = $this->getDiariasPassagensId($id);
+        $where_viagem_detalhe = $table_viagem_detalhe->getDefaultAdapter()->quoteInto('diarias_passagens = ?', $vid);
 
         $table_solicitacao->update($data['solicitacoes'],$where_solicitacao);
-        $table_passagens->update($data['diarias_passagens'],$where_passagens);
+        $table_diarias_passagens->update($data['diarias_passagens'],$where_diarias_passagens);
+        $table_viagem_detalhe->update($data['viagem_detalhe'], $where_viagem_detalhe);
     }
 
     public function deleteAquisicao($id)
@@ -423,12 +444,18 @@ class Application_Model_Solicitacao
         $db = Zend_Db_Table::getDefaultAdapter();
         $table_solicitacao = "solicitacao";
         $table_servicos = 'servicos';
+        $table_cronograma_atividades = 'cronograma_atividades';
         $deletado = true;
+
         $where = $db->quoteInto('solicitacao_id = ?', $id);
+        $sid = $this->getServicosId($id);
+        $where_cronograma_atividades = $db->quoteInto('servicos_id = ?', $sid);
+
         $data = array('deletado' => $deletado);
 
         $db->update($table_solicitacao, $data, $where);
         $db->update($table_servicos, $data, $where);
+        $db->update($table_cronograma_atividades, $data, $where_cronograma_atividades);
 
     }
 
@@ -436,13 +463,19 @@ class Application_Model_Solicitacao
     {
         $db = Zend_Db_Table::getDefaultAdapter();
         $table_solicitacao = "solicitacao";
-        $table_passagens = 'diarias_passagens';
+        $table_diarias_passagens = 'diarias_passagens';
+        $table_viagem_detalhe = 'viagem_detalhe';
         $deletado = true;
+
         $where = $db->quoteInto('solicitacao_id = ?', $id);
+        $vid = $this->getDiariasPassagensId($id);
+        $where_viagem_detalhe = $db->quoteInto('diarias_passagens_id = ?', $vid);
+
         $data = array('deletado' => $deletado);
 
         $db->update($table_solicitacao, $data, $where);
-        $db->update($table_passagens, $data, $where);
+        $db->update($table_diarias_passagens, $data, $where);
+        $db->update($table_viagem_detalhe, $data, $where_viagem_detalhe);
 
     }
 
@@ -512,5 +545,41 @@ class Application_Model_Solicitacao
         $db = Zend_Db_Table::getDefaultAdapter();
         $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
         return (int)$result;
+    }
+
+    public function getDiariasPassagensId($solicitacao_id){
+
+         try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('d' => 'diarias_passagens'), array('d.diarias_passagens_id' => 'd.diarias_passagens_id'))
+                ->where('d.solicitacao_id = ?', $solicitacao_id);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function getServicosId($solicitacao_id){
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('s' => 'servicos'), array('s.servicos_id' => 's.servicos_id'))
+                ->where('s.solicitacao_id = ?', $solicitacao_id);
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 }

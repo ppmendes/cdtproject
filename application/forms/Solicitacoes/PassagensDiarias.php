@@ -269,7 +269,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
             'required'   => true,
         ));
 
-        $this->addElement('text', 'tipo_detalhe', array(
+        $this->addElement('text', 'codigo_reservacao', array(
             'label'      => 'Trecho:',
             'required'   => true,
         ));
@@ -287,7 +287,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
             ),
         ));
 
-        $this->addElement('text', 'local', array(
+        $this->addElement('text', 'tipo_detalhe', array(
             'label'      => 'Local:',
             'required'   => true,
         ));
@@ -297,10 +297,16 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
         $emtDatePicker3->setFilters(array('DateFilter'));
         $this->addElement($emtDatePicker3);
 
-        $this->addElement('text', 'valor', array(
+        $this->addElement('text', 'valor_voo', array(
             'label'      => 'Valor estimado de diárias:',
             'required'   => true,
         ));
+
+        $this->addElement('text', 'numero_dias', array(
+            'label'      => 'Número de dias:',
+            'required'   => true,
+        ));
+
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
