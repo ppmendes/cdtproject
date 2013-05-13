@@ -69,15 +69,15 @@ class Application_Model_Solicitacao
     }
 
 
-    public function selectAll()
+    public function selectAll($pid)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
                 ->from(array('s' => 'solicitacao'))
-                ->where('s.deletado = ?', false)
-                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->where('s.deletado = false and p.projeto_id = ' . $pid)
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome', 'p.projeto_id' => 'p.projeto_id'))
                 ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
                 'cp.nome'=>'cp.nome', 'cp.username' => 'cp.username'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
@@ -91,19 +91,16 @@ class Application_Model_Solicitacao
         }
     }
 
-    public function selectAllAquisicao()
+    public function selectAllAquisicao($pid)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
                 ->from(array('s' => 'solicitacao'))
-                ->where('s.deletado = ?', false)
-                ->where('s.tipo_solicitacao_id = ?', 1)
-                ->orWhere('s.tipo_solicitacao_id = ?', 4)
-                ->orWhere('s.tipo_solicitacao_id = ?', 5)
-                ->orWhere('s.tipo_solicitacao_id = ?', 6)
-                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->where('s.deletado = false and p.projeto_id = ' . $pid)
+                ->where('s.tipo_solicitacao_id = 1 or s.tipo_solicitacao_id = 4 or s.tipo_solicitacao_id = 5 or s.tipo_solicitacao_id = 6')
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome', 'p.projeto_id' => 'p.projeto_id'))
                 ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
                 'cp.nome'=>'cp.nome', 'cp.username' => 'cp.username'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
@@ -117,18 +114,16 @@ class Application_Model_Solicitacao
         }
     }
 
-    public function selectAllContratacao()
+    public function selectAllContratacao($pid)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
                 ->from(array('s' => 'solicitacao'))
-                ->where('s.deletado = ?', false)
-                ->where('s.tipo_solicitacao_id = ?', 2)
-                ->orWhere('s.tipo_solicitacao_id = ?', 7)
-                ->orWhere('s.tipo_solicitacao_id = ?', 8)
-                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->where('s.deletado = false and p.projeto_id = ' . $pid)
+                ->where('s.tipo_solicitacao_id = 2 or s.tipo_solicitacao_id = 7 or s.tipo_solicitacao_id = 8')
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome', 'p.projeto_id' => 'p.projeto_id'))
                 ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
                 'cp.nome'=>'cp.nome', 'cp.username' => 'cp.username'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))
@@ -143,16 +138,16 @@ class Application_Model_Solicitacao
         }
     }
 
-    public function selectAllPassagens()
+    public function selectAllPassagens($pid)
     {
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
                 ->from(array('s' => 'solicitacao'))
-                ->where('s.deletado = ?', false)
+                ->where('s.deletado = false and p.projeto_id = ' . $pid)
                 ->where('s.tipo_solicitacao_id = ?', 3)
-                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome'))
+                ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome', 'p.projeto_id' => 'p.projeto_id'))
                 ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
                 'cp.nome'=>'cp.nome', 'cp.username' => 'cp.username'))
                 ->joinLeft(array('ts' => 'tipo_solicitacao'), 's.tipo_solicitacao_id = ts.tipo_solicitacao_id',array('ts.nome_tipo'=>'ts.nome_tipo'))

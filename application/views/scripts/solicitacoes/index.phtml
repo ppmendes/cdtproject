@@ -102,19 +102,19 @@
     });
 </script>
 <script>
-    function adicionaraquisicao()
+    function adicionaraquisicao(projeto_id)
     {
-        top.location.href = '/../solicitacoes/adicionaraquisicao/';
+        top.location.href = '/../solicitacoes/adicionaraquisicao/projeto_id/'+projeto_id;
 
     }
-    function adicionarcontratacao()
+    function adicionarcontratacao(projeto_id)
     {
-        top.location.href = '/../solicitacoes/adicionarcontratacao/';
+        top.location.href = '/../solicitacoes/adicionarcontratacao/projeto_id/'+projeto_id;
 
     }
-    function adicionarpassagens()
+    function adicionarpassagens(projeto_id)
     {
-        top.location.href = '/../solicitacoes/adicionarpassagens/';
+        top.location.href = '/../solicitacoes/adicionarpassagens/projeto_id/'+projeto_id;
 
     }
 </script>
@@ -136,10 +136,17 @@
         left: 46%;
     }
 </style>
+
+<?php
+$projeto_id = $this->pid;
+?>
+
 <div class="botoes_superiores">
-    <button class='passagens' onclick='adicionarpassagens()'>Adicionar Passagens e Diárias</button>
-    <button class='contratacao' onclick='adicionarcontratacao()'>Adicionar Contratação de Serviços de Pessoa Física</button>
-    <button class='aquisicao' onclick='adicionaraquisicao()'>Adicionar Aquisições de Bens e Serviços de Pessoa Jurídica</button>
+    <?php
+    echo "<button class='passagens' onclick='adicionarpassagens($projeto_id)'>Adicionar Passagens e Diárias</button>";
+    echo "<button class='contratacao' onclick='adicionarcontratacao($projeto_id)'>Adicionar Contratação de Serviços de Pessoa Física</button>";
+    echo "<button class='aquisicao' onclick='adicionaraquisicao($projeto_id)'>Adicionar Aquisições de Bens e Serviços de Pessoa Jurídica</button>";
+    ?>
 </div>
 <div id="tabs">
     <ul>
@@ -177,7 +184,8 @@
         //$row = $row->toArray();
         echo "<tr id='".$row['solicitacao_id']."'>";
         echo "<td>" .   $row['solicitacao_id'] . "</td>";
-        echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+        echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/" .  $row['solicitacao_id'] . "/projeto_id/" . $projeto_id . "'>
+        " .  $row['solicitacao_nome'] . "</a></td>";
         echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
         echo "<td>" .   $row['p.nome'] . "</td>";
         echo "<td >" .  $row['cp.username'] . "</td>";
@@ -222,7 +230,8 @@
                 //$row = $row->toArray();
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
-                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/" .  $row['solicitacao_id'] . "/projeto_id/" . $projeto_id . "'>
+                " .  $row['solicitacao_nome'] . "</a></td>";
                 echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
                 echo "<td>" .   $row['p.nome'] . "</td>";
                 echo "<td >" .  $row['cp.username'] . "</td>";
@@ -267,7 +276,8 @@
                 //$row = $row->toArray();
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
-                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/" .  $row['solicitacao_id'] . "/projeto_id/" . $projeto_id . "'>
+                " .  $row['solicitacao_nome'] . "</a></td>";
                 echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
                 echo "<td>" .   $row['p.nome'] . "</td>";
                 echo "<td >" .  $row['cp.username'] . "</td>";
@@ -312,7 +322,8 @@
                 //$row = $row->toArray();
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
-                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/{$row['solicitacao_id']}'>" . $row['solicitacao_nome'] . "</a></td>";
+                echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/" .  $row['solicitacao_id'] . "/projeto_id/" . $projeto_id . "'>
+                " .  $row['solicitacao_nome'] . "</a></td>";
                 echo "<td>" .   $filter->filter($row['data_solicitacao']) . "</td>";
                 echo "<td>" .   $row['p.nome'] . "</td>";
                 echo "<td >" .  $row['cp.username'] . "</td>";

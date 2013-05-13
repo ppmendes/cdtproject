@@ -3,7 +3,13 @@
 class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 {
 
-    public function init()
+    private $id_projeto;
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');

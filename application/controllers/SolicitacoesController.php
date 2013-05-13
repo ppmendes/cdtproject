@@ -11,21 +11,26 @@ class SolicitacoesController extends Zend_Controller_Action
     public function indexAction()
     {
         $solicitacaoModel = new Application_Model_Solicitacao();
-        $this->view->solicitacoes = $solicitacaoModel->selectAll();
-        $this->view->solicitacoesAquisicao =  $solicitacaoModel->selectAllAquisicao();
-        $this->view->solicitacoesContratacao = $solicitacaoModel->selectAllContratacao();
-        $this->view->solicitacoesPassagens = $solicitacaoModel->selectAllPassagens();
+        $pid = $this->_getParam('projeto_id');
+        $this->view->solicitacoes = $solicitacaoModel->selectAll($pid);
+        $this->view->solicitacoesAquisicao =  $solicitacaoModel->selectAllAquisicao($pid);
+        $this->view->solicitacoesContratacao = $solicitacaoModel->selectAllContratacao($pid);
+        $this->view->solicitacoesPassagens = $solicitacaoModel->selectAllPassagens($pid);
+        $this->view->pid = $pid;
 
     }
 
     public function adicionaraquisicaoAction(){
         $request = $this->getRequest();
+        $id = $this->_getParam('solicitacao_id');
+        $pid= $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_AquisicaoBens();
+        $form->setProjetoId($pid);
         $form->startform();
         $model = new Application_Model_Solicitacao();
-        $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
+            $form->setProjetoId($pid);
             $form->startform();
             $form->preValidation($_POST);
 
@@ -97,6 +102,7 @@ class SolicitacoesController extends Zend_Controller_Action
                 $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
 
                 $form = new Application_Form_Solicitacoes_AquisicaoBens();
+                $form->setProjetoId($pid);
                 $form->startform();
 
 
@@ -147,6 +153,8 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
+        $form->setProjetoId($pid);
+        $form->startform();
         $this->view->form = $form;
 
 
@@ -154,13 +162,16 @@ class SolicitacoesController extends Zend_Controller_Action
 
     public function adicionarcontratacaoAction(){
         $request = $this->getRequest();
+        $pid = $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_ContratacaoServicos();
+        $form->setProjetoId($pid);
         $form->startform();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
-
+            $form->setProjetoId($pid);
+            $form->startform();
             $form->preValidation($_POST);
 
 
@@ -247,6 +258,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
                 $form = new Application_Form_Solicitacoes_ContratacaoServicos();
+                $form->setProjetoId($pid);
                 $form->startform();
 
                 $data_servicos = $model->findContratacao($id);
@@ -297,6 +309,8 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
+        $form->setProjetoId($pid);
+        $form->startform();
         $this->view->form = $form;
 
 
@@ -304,13 +318,19 @@ class SolicitacoesController extends Zend_Controller_Action
 
     public function adicionarpassagensAction(){
         $request = $this->getRequest();
-        $form = new Application_Form_Solicitacoes_PassagensDiarias();
-        $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
+        $pid= $this->_getParam('projeto_id');
+        $form = new Application_Form_Solicitacoes_PassagensDiarias();
+        $form->setProjetoId($pid);
+        $form->startform();
+
+        $model = new Application_Model_Solicitacao();
+
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-
+                $form->setProjetoId($pid);
+                $form->startform();
                 $data = $form->getValues();
 
 
@@ -355,6 +375,8 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
 
             $form = new Application_Form_Solicitacoes_PassagensDiarias();
+                $form->setProjetoId($pid);
+                $form->startform();
 
             //Preencher os dados da passagem e diárias
             $dadosPassagens = $model->findPassagens($id);
@@ -378,6 +400,8 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
+        $form->setProjetoId($pid);
+        $form->startform();
         $this->view->form = $form;
 
 
@@ -387,14 +411,16 @@ class SolicitacoesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
-        $this->view->id = $id;
+        $pid = $this->_getParam('projeto_id');
 
+        $this->view->id = $id;
+        $this->view->pid = $pid;
 
         $data = $model->find($id)->toArray();
 
         $this->view->tipo = intval($data['tipo_solicitacao_id']);
 
-        if($data['tipo_solicitacao_id'] == 1 || $data['tipo_solicitacao_id'] == 4 || $data['tipo_solicitacao_id'] == 5)
+        if($data['tipo_solicitacao_id'] == 1 || $data['tipo_solicitacao_id'] == 4 || $data['tipo_solicitacao_id'] == 5 || $data['tipo_solicitacao_id'] == 6)
         {
 
             $dadosProjeto = $model->buscaProjetoNome($id);
@@ -410,6 +436,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
             $detalhes = new Application_Form_Solicitacoes_AquisicaoBens();
+            $detalhes->setProjetoId($pid);
             $detalhes->startform();
 
             $data_bens_servicos = $model->findAquisicao($id);
@@ -452,8 +479,7 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['valor_estimado'] = intval(intval($data['quantidade']) * intval($data['valor_unitario']));
 
 
-        }else if ($data['tipo_solicitacao_id'] == 2 || $data['tipo_solicitacao_id'] == 6 ||
-            $data['tipo_solicitacao_id'] == 7 || $data['tipo_solicitacao_id'] == 8)
+        }else if ($data['tipo_solicitacao_id'] == 2 ||  $data['tipo_solicitacao_id'] == 7 || $data['tipo_solicitacao_id'] == 8)
         {
 
             //Preencher dados de projeto e coordenador
@@ -485,6 +511,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
             $detalhes = new Application_Form_Solicitacoes_ContratacaoServicos();
+            $detalhes->setProjetoId($pid);
             $detalhes->startform();
 
             $data_servicos = $model->findContratacao($id);
@@ -557,10 +584,11 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
 
             $detalhes = new Application_Form_Solicitacoes_PassagensDiarias();
+            $detalhes->setProjetoId($pid);
+            $detalhes->startform();
 
             //Preencher os dados da passagem e diárias
             $dadosPassagens = $model->findPassagens($id);
-
 
             $data['motivos'] = $dadosPassagens[0]['motivos'];
             $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];

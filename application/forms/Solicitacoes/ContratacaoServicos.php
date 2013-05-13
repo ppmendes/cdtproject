@@ -19,6 +19,12 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         array()
     );
 
+    private $id_projeto;
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
     public function startform()
     {
         $this->setIsArray('true');

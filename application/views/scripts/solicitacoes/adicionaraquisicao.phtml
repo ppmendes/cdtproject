@@ -1,21 +1,21 @@
-<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $( "#solicitacoes-projeto").combogrid({
-            debug:false,
-            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
-            url: 'solicitacoes/combogridprojeto/',
-            select: function( event, ui ) {
-                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
-                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );
-                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);
-                preencher();
-                return false;
-            }
-        });
-    });
-
-</script>
+<!--<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>-->
+<!--<script type="text/javascript">-->
+<!--    $(document).ready(function(){-->
+<!--        $( "#solicitacoes-projeto").combogrid({-->
+<!--            debug:false,-->
+<!--            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],-->
+<!--            url: 'solicitacoes/combogridprojeto/',-->
+<!--            select: function( event, ui ) {-->
+<!--                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );-->
+<!--                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );-->
+<!--                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);-->
+<!--                preencher();-->
+<!--                return false;-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!---->
+<!--</script>-->
 
 <?php
 $this->form->setAction($this->url());

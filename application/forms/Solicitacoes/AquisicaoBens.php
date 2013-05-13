@@ -11,6 +11,12 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         array()
     );
 
+    private $id_projeto;
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
     public function startform()
     {
         $this->setIsArray('true');
@@ -57,9 +63,13 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         ));
 
         //Projeto input type text
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
             'required'   => true,
+            'value'      => $nomeProjeto[0]['nome'],
+            'readonly'   => true,
+            'ignore'     => true,
             'order' => 5,
         ));
 
@@ -210,10 +220,120 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         ));
 
 
+        $this->addElement('text', 'nome1', array(
+            'label'      => 'Nome da Empresa - 1:',
+            'required'   => true,
+            'order'          => 105,
+        ));
+
+        $this->addElement('text', 'cidade1', array(
+            'label'      => 'Cidade:',
+            'required'   => true,
+            'order'          => 106,
+        ));
+
+        $this->addElement('text', 'contato1', array(
+            'label'      => 'Contato:',
+            'required'   => true,
+            'order'          => 107,
+        ));
+
+        $this->addElement('text', 'telefone1', array(
+            'label'      => 'Tel/Fax:',
+            'required'   => true,
+            'order'          => 108,
+        ));
+
+        $this->addElement('text', 'cnpj1', array(
+            'label'      => 'CNPJ:',
+            'required'   => true,
+            'order'          => 109,
+        ));
+
+        $this->addElement('hidden', 'label_branco-1', array(
+            'description' => '_______________________',
+            'ignore' => true,
+            'order'          => 110,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id'=>'internasolicitacao')),
+            ),
+        ));
+
+        $this->addElement('text', 'nome2', array(
+            'label'      => 'Nome da Empresa - 2:',
+            'required'   => true,
+            'order'          => 111,
+        ));
+
+        $this->addElement('text', 'cidade2', array(
+            'label'      => 'Cidade:',
+            'required'   => true,
+            'order'          => 112,
+        ));
+
+        $this->addElement('text', 'contato2', array(
+            'label'      => 'Contato:',
+            'required'   => true,
+            'order'          => 113,
+        ));
+
+        $this->addElement('text', 'telefone2', array(
+            'label'      => 'Tel/Fax:',
+            'required'   => true,
+            'order'          => 114,
+        ));
+
+        $this->addElement('text', 'cnpj2', array(
+            'label'      => 'CNPJ:',
+            'required'   => true,
+            'order'          => 115,
+        ));
+
+        $this->addElement('hidden', 'label_branco-2', array(
+            'description' => '_______________________',
+            'ignore' => true,
+            'order'          => 116,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id'=>'internasolicitacao')),
+            ),
+        ));
+
+        $this->addElement('text', 'nome3', array(
+            'label'      => 'Nome da Empresa - 3:',
+            'required'   => true,
+            'order'          => 117,
+        ));
+
+        $this->addElement('text', 'cidade3', array(
+            'label'      => 'Cidade:',
+            'required'   => true,
+            'order'          => 118,
+        ));
+
+        $this->addElement('text', 'contato3', array(
+            'label'      => 'Contato:',
+            'required'   => true,
+            'order'          => 119,
+        ));
+
+        $this->addElement('text', 'telefone3', array(
+            'label'      => 'Tel/Fax:',
+            'required'   => true,
+            'order'          => 120,
+        ));
+
+        $this->addElement('text', 'cnpj3', array(
+            'label'      => 'CNPJ:',
+            'required'   => true,
+            'order'          => 121,
+        ));
+
+
+
         $this->addElement('hidden', 'label_local', array(
             'description' => '6 - Local de Entrega para Bens (Padrão: CDT)',
             'ignore' => true,
-            'order'          => 105,
+            'order'          => 122,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -221,7 +341,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
         $this->addElement('checkbox','local',array(
             'required' => false,
-            'order'          => 106,
+            'order'          => 123,
             'label' => 'Outro Endereço:',
             'uncheckedValue' => 'cdt',
             'checkedValue' => 'outro',
@@ -233,26 +353,26 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'required'   => false,
             'value'      => 'CDT',
             'disabled'   => true,
-            'order'          => 107,
+            'order'          => 124,
             'attribs'    => array('onblur' => 'setLocal(this.value)')
         ));
 
         $this->addElement('text', 'responsavel_entrega', array(
             'label'      => 'Responsável:',
             'required'   => true,
-            'order'          => 108,
+            'order'          => 125,
         ));
 
         $this->addElement('text', 'telefone_entrega', array(
             'label'      => 'Telefone:',
             'required'   => true,
-            'order'          => 109,
+            'order'          => 126,
         ));
 
         $this->addElement('hidden', 'label_solicito', array(
             'description' => 'Solicito a aquisição dos bens/serviços na forma acima descrita.',
             'ignore' => true,
-            'order'          => 110,
+            'order'          => 127,
             'decorators' => array(
                 array('Description', array('escape'=>false, 'id'=>'internasolicitacao')),
             ),
@@ -261,32 +381,32 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         // Add the submit button
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
-            'order'          => 112,
+            'order'          => 128,
             'label'    => 'Enviar',
         ));
 
         $this->addElement('hidden', 'data_solicitacao', array(
             'value' =>  date('Y-m-d', time()),
-            'order'          => 113,
+            'order'          => 129,
         ));
 
         $this->addElement('hidden', 'local_entrega_solicitacao', array(
             'value' =>  'CDT',
-            'order'          => 114
+            'order'          => 130
         ));
 
         $this->addElement('hidden', 'hidden_teste', array(
             'value'      => '',
-            'order'          => 115,
+            'order'          => 131,
         ));
         $this->addElement('hidden', 'projeto_id', array(
             'value'      => '',
-            'order' =>116,
+            'order' =>132,
         ));
 
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
             'value'      => '',
-            'order' =>117,
+            'order' =>133,
         ));
 
 

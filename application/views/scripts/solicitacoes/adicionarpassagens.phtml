@@ -1,18 +1,18 @@
 <script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        $( "#solicitacoes-projeto").combogrid({
-            debug:true,
-            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
-            url: 'solicitacoes/combogridprojeto/',
-            select: function( event, ui ) {
-                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
-                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );
-                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);
-                preencherCoordenador();
-                return false;
-            }
-        });
+//        $( "#solicitacoes-projeto").combogrid({
+//            debug:true,
+//            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
+//            url: 'solicitacoes/combogridprojeto/',
+//            select: function( event, ui ) {
+//                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
+//                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );
+//                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);
+//                preencherCoordenador();
+//                return false;
+//            }
+//        });
         $( "#solicitacoes-beneficiario").combogrid({
             debug:true,
             colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cpf_cnpj','width':'45','label':'CPF'}],
