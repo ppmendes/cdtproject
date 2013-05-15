@@ -163,16 +163,21 @@ class Application_Model_Empenho
                                         WHERE orc.projeto_id = " . $id . " AND orc.deletado = 0
                                         ) AS valor_orcamento,
 
+                                        (SELECT SUM( valor )
+                                         FROM orcamento_cronograma AS oc, orcamento AS orc
+                                         WHERE oc.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . " AND orc.deletado = 0
+                                         ) AS valor,
+
                                         (SELECT SUM( valor_desembolso )
                                          FROM desembolso AS des, empenho AS emp, orcamento AS orc
                                          WHERE des.empenho_id = emp.empenho_id AND emp.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
-                                          AND des.extornado = 0
+                                          AND des.extornado = 0 AND emp.deletado = 0 AND orc.deletado = 0
                                          ) AS valor_desembolso,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM pre_empenho AS pe, empenho as e1, orcamento as orc
                                          WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
-                                          AND pe.deletado = 0
+                                          AND pe.deletado = 0 AND e1.deletado = 0 AND orc.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( valor_recebido )
@@ -184,7 +189,9 @@ class Application_Model_Empenho
                                          LEFT JOIN pre_empenho AS pe ON e.pre_empenho_id = pe.pre_empenho_id
                                          LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
-                                         WHERE o.projeto_id = ". $id . " AND e.deletado = 0");
+                                         WHERE o.projeto_id = ". $id . " AND e.deletado = 0 AND o.deletado = 0");
+
+
             return $resultado;
 
         }catch(Exception $e){
