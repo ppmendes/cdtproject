@@ -38,7 +38,8 @@ class Application_Form_Empenhos extends Zend_Form
         $this->addElement('select', 'orcamento_id', array(
             'label'      => 'Rubrica: ',
             'multiOptions' => Application_Model_Empenho::getOrcamentosNaoPagos($this->id_projeto),
-            'required'   => true
+            'required'   => true,
+            'attribs'    => array('onchange' => 'saldoOrcamentoDisponibilizado(this.value)'),
         ));
         
         //input type text
@@ -130,6 +131,9 @@ class Application_Form_Empenhos extends Zend_Form
             'value'      => $this->id_projeto,
         ));
 
+        $this->addElement('hidden', 'saldo_orcamento_disponibilizado', array(
+            'value'      => '',
+        ));
 
     }
 }

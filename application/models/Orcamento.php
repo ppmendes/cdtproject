@@ -238,4 +238,28 @@ class Application_Model_Orcamento
         return (int)$result;
     }
 
+    public function saldoOrcamentoDisponibilizado ($id) {
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT SUM( valor ),
+
+                                      (SELECT SUM( valor_empenho )
+                                      FROM empenho AS e
+                                      WHERE e.orcamento_id = oc.orcamento_id AND e.deletado = 0)
+                                      AS valor_empenho
+
+                                      FROM orcamento_cronograma AS oc
+                                      WHERE oc.orcamento_id = " . $id . ";");
+
+            $saldo = $resultado[0]['SUM( valor )'] - $resultado[0]['valor_empenho'];
+
+            return $saldo;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
 }
