@@ -1,11 +1,11 @@
 <?php
 
-class Application_Model_Destino
+class Application_Model_Destinatario
 {
 
     public function find($id){
         //DB TABLE
-        $table = new Application_Model_Destino();
+        $table = new Application_Model_Destinatario();
         $destino = $table->find($id)->current();
         return $destino;
     }
@@ -28,7 +28,7 @@ class Application_Model_Destino
     public static function getOptions(){
         try{
             $options = array();
-            $table = new Application_Model_DbTable_Destino();
+            $table = new Application_Model_DbTable_Destinatario();
             $resultado = $table->fetchAll();
 
             foreach($resultado as $item){

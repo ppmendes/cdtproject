@@ -577,4 +577,67 @@ class Application_Model_Solicitacao
             echo $e->getMessage();
         }
     }
+
+    public function selectSaldoRubrica($id, $rid)
+    {
+        $ridSQL = "(";
+
+        foreach ($rid as $r)
+        {
+            $ridSQL .= $r.",";
+        }
+        $ridSQL = substr($ridSQL, 0, -1);
+        $ridSQL .= ")";
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT o.orcamento_id, o.rubrica_id, SUM( o.valor_orcamento ) , o.destinatario_id,
+                                        o.projeto_id, dt.nome_destinatario, r.codigo_rubrica, r.descricao, r.rubrica_id_pai,
+
+                                        (SELECT SUM( valor_recebido )
+                                         FROM cronograma_financeiro AS cf
+                                         WHERE cf.projeto_id = " . $id . " AND cf.deletado = 0
+                                         ) AS valor_recebido,
+
+                                         (SELECT SUM( valor )
+                                         FROM orcamento_cronograma AS oc
+                                         WHERE oc.orcamento_id = o.orcamento_id
+                                         ) AS valor,
+
+                                        (SELECT SUM( valor_empenho )
+                                         FROM empenho AS e
+                                         WHERE e.orcamento_id = o.orcamento_id AND e.deletado = 0
+                                         ) AS valor_empenho,
+
+                                         (SELECT SUM( pe.valor_pre_empenho )
+                                         FROM empenho AS e2
+                                         LEFT JOIN pre_empenho AS pe ON e2.pre_empenho_id = pe.pre_empenho_id
+                                         WHERE e2.orcamento_id = o.orcamento_id AND e2.deletado = 0
+                                         ) AS valor_pre_empenho,
+
+                                         (SELECT SUM( d.valor_desembolso )
+                                         FROM desembolso AS d
+                                         LEFT JOIN empenho AS e3 ON d.empenho_id = e3.empenho_id
+                                         WHERE e3.orcamento_id = o.orcamento_id AND d.extornado = 0 AND e3.deletado = 0
+                                         ) AS valor_desembolso
+
+                                         FROM orcamento AS o
+                                         LEFT JOIN destinatario AS dt ON o.destinatario_id = dt.destinatario_id
+                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                         LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
+                                         WHERE o.projeto_id = " . $id . " AND o.deletado = 0 AND
+                                         (o.rubrica_id IN " . $ridSQL. " OR r.rubrica_id_pai IN " . $ridSQL . ")
+                                         GROUP BY o.rubrica_id, o.destinatario_id, o.orcamento_id
+                                         ORDER BY o.data_registro_orcamento");
+
+
+
+
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
 }

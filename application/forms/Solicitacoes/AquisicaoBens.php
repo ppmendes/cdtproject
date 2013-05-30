@@ -1,3 +1,4 @@
+<meta charset='utf-8'>
 <?php
 
 class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
@@ -12,13 +13,19 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
     );
 
     private $id_projeto;
+    private $array_orcamento = array();
 
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
     }
 
+    public function setArrayOrcamento($array_orcamento){
+        $this->array_orcamento = $array_orcamento;
+    }
+
     public function startform()
     {
+        $i = 1;
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('solicitacoes');
@@ -82,8 +89,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'order'          => 6
         ));
 
-
-
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
             'required'   => false,
@@ -108,10 +113,27 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'order'          => 9
         ));
 
+        $array = array();
+        $array[0] = 'Selecione';
+        for ($i == 1 ; $i <= sizeof($this->array_orcamento) ; $i++) {
+            $array[$this->array_orcamento[$i - 1]['orcamento_id']] = $this->array_orcamento[$i - 1]['nome_destinatario'] .
+            " - Saldo: " . ($this->array_orcamento[$i - 1]['valor'] - $this->array_orcamento[$i - 1]['valor_empenho']
+            - $this->array_orcamento[$i - 1]['valor_pre_empenho']);
+        }
+
+        $this->addElement('select', 'destinatario', array(
+            'label'      => 'Destinatário:',
+            'multiOptions' => $array,
+            'required'   => false,
+            'ignore'         => true,
+            'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
+            'order'          => 10
+        ));
+
         $this->addElement('hidden', 'label_tipo', array(
             'description' => '2 - Tipo de Solicitação',
             'ignore' => true,
-            'order'          => 10,
+            'order'          => 11,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -121,14 +143,14 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'label'      => 'Tipo:',
             'multiOptions' => Application_Model_TipoSolicitacao::getOptionsAquisicao(),
             'required'   => true,
-            'order'          => 11,
+            'order'          => 12,
             'id'         => 'radiobutton',
         ));
 
         $this->addElement('hidden', 'label_descricao', array(
             'description' => '3 - Descrição Detalhada dos Bens/Serviços',
             'ignore' => true,
-            'order'          => 12,
+            'order'          => 13,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -137,7 +159,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('text', 'quantidade', array(
             'label'      => 'Quantidade:',
             'required'   => true,
-            'order'          => 13,
+            'order'          => 14,
             'class'         => 'campos',
             //'attribs' => array('onblur' => 'calcularTotal(1)'),
         ));
@@ -145,14 +167,14 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('textarea', 'nome', array(
             'label'      => 'Descrição:',
             'required'   => true,
-            'order'          => 14,
+            'order'          => 15,
             'class'         => 'campos',
         ));
 
         $this->addElement('text', 'valor_unitario', array(
             'label'      => 'Preço Unitário:',
             'required'   => true,
-            'order'          => 15,
+            'order'          => 16,
             'class'         => 'campos',
             'attribs' => array('onblur' => 'calcularTotal(1)'),
         ));
@@ -160,7 +182,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('text', 'valor_estimado', array(
             'label'      => 'Valor Estimado:',
             'required'   => true ,
-            'order'          => 16,
+            'order'          => 17,
             'class'         => 'campos',
         ));
 
@@ -174,7 +196,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
 
         ));
 
-        $individual->setOrder(17);
+        $individual->setOrder(18);
 
         $this->addElement('button', 'add_item_mais', array(
             'label'      => 'Mais',
@@ -407,6 +429,11 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
             'value'      => '',
             'order' =>133,
+        ));
+
+        $this->addElement('hidden', 'saldo_orcamento', array(
+            'value'     => '',
+            'order'     =>134,
         ));
 
 

@@ -16,11 +16,6 @@ class Application_Model_DbTable_ProjetoUsuario extends Zend_Db_Table_Abstract
             'refTableClass'     => 'Application_Model_DbTable_Usuario',
             'refColumns'        => 'usuario_id'
         ),
-        'Application_Model_DbTable_Acoes' => array(
-            'columns'           => 'acoes_id',
-            'refTableClass'     => 'Application_Model_DbTable_Acoes',
-            'refColumns'        => 'acoes_id'
-        ),
     );
 }
 

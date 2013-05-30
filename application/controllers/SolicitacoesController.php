@@ -25,9 +25,19 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
         $pid= $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_AquisicaoBens();
+        $model = new Application_Model_Solicitacao();
+        $rid = array();
+        $rid[0] = 38;
+        $arrayOrcamentos = $model->selectSaldoRubrica($pid, $rid );
+        if (empty($arrayOrcamentos) == true)
+        {
+            echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
+                "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+            exit;
+        }
+        $form->setArrayOrcamento($arrayOrcamentos);
         $form->setProjetoId($pid);
         $form->startform();
-        $model = new Application_Model_Solicitacao();
 
         if($this->getRequest()->isPost()){
             $form->setProjetoId($pid);
@@ -164,9 +174,19 @@ class SolicitacoesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $pid = $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_ContratacaoServicos();
+        $model = new Application_Model_Solicitacao();
+        $rid = array();
+        $rid[0] = 35;
+        $arrayOrcamentos = $model->selectSaldoRubrica($pid,$rid );
+        if (empty($arrayOrcamentos) == true)
+        {
+            echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
+                "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+            exit;
+        }
+        $form->setArrayOrcamento($arrayOrcamentos);
         $form->setProjetoId($pid);
         $form->startform();
-        $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
@@ -321,6 +341,18 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
         $pid= $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_PassagensDiarias();
+        $model = new Application_Model_Solicitacao();
+        $rid = array();
+        $rid[0] = 15;
+        $rid[1] = 16;
+        $arrayOrcamentos = $model->selectSaldoRubrica($pid,$rid );
+        if (empty($arrayOrcamentos) == true)
+        {
+            echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
+            "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+            exit;
+        }
+        $form->setArrayOrcamento($arrayOrcamentos);
         $form->setProjetoId($pid);
         $form->startform();
 

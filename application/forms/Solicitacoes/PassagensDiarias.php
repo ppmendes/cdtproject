@@ -1,14 +1,19 @@
+<meta charset='utf-8'>
 <?php
 
 class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 {
 
     private $id_projeto;
+    private $array_orcamento = array();
 
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
     }
 
+    public function setArrayOrcamento($array_orcamento){
+        $this->array_orcamento = $array_orcamento;
+    }
     public function startform()
     {
         $this->setIsArray('true');
@@ -83,6 +88,23 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
+        ));
+
+        $i = 1;
+        $array = array();
+        $array[0] = 'Selecione';
+        for ($i == 1 ; $i <= sizeof($this->array_orcamento) ; $i++) {
+            $array[$this->array_orcamento[$i - 1]['orcamento_id']] = $this->array_orcamento[$i - 1]['nome_destinatario'] .
+                " - Saldo: " . ($this->array_orcamento[$i - 1]['valor'] - $this->array_orcamento[$i - 1]['valor_empenho']
+                - $this->array_orcamento[$i - 1]['valor_pre_empenho']);
+        }
+
+        $this->addElement('select', 'destinatario', array(
+            'label'      => 'Destinatário:',
+            'multiOptions' => $array,
+            'required'   => false,
+            'ignore'         => true,
+            'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
         ));
 
         $this->addElement('hidden', 'label_beneficiario', array(
