@@ -101,7 +101,7 @@ class Application_Form_Orcamentos extends Zend_Form
         $this->addElement('select', 'destinatario_id', array(
             'label'      => 'Destinatário:',
             'class'      => 'combobox ui-widget',
-            'multiOptions' => Application_Model_Destino::getOptions(),
+            'multiOptions' => Application_Model_Destinatario::getOptions(),
             'required'   => true
         ));
 

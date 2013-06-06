@@ -84,6 +84,7 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('text', 'coordenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
             'required'   => false,
+            'value'      => $nomeProjeto[0]['coordenador_tecnico'],
             'readonly'   => true,
             'ignore'         => true,
             'order'          => 6

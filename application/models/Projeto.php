@@ -122,7 +122,7 @@ from projeto as P inner join estado_projeto as EP on P.estado_projeto_id=EP.esta
 
             $select = $db->select()
                 ->from(array('p' => 'projeto'),
-                        array('p.nome'))
+                        array('p.nome', 'p.coordenador_tecnico'))
                 ->where('p.projeto_id = ?', $id);
             $stmt = $select->query();
 
