@@ -180,6 +180,7 @@ class Application_Model_Solicitacao
     {
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_bensServicos = new Application_Model_DbTable_BensServicos();
+        $table_companhiasSugeridas = new Application_Model_DbTable_CompanhiasSugeridas();
 
         $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
         $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'] . $nome;
@@ -189,10 +190,36 @@ class Application_Model_Solicitacao
         unset($data['solicitacoes']['nome']);
         unset($data['solicitacoes']['valor_unitario']);
 
+        $companhia_id_1 = $data['solicitacoes']['companhia_id_1'];
+        unset($data['solicitacoes']['companhia_id_1']);
+
+        $companhia_id_2 = $data['solicitacoes']['companhia_id_2'];
+        unset($data['solicitacoes']['companhia_id_2']);
+
+        $companhia_id_3 = $data['solicitacoes']['companhia_id_3'];
+        unset($data['solicitacoes']['companhia_id_3']);
+
         $table_solicitacao->insert($data['solicitacoes']);
 
         $data['bens_servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
         $table_bensServicos->insert($data['bens_servicos']);
+
+        $data['companhias_sugeridas']['bens_servicos_id'] = $this->getLastInsertedId('bens_servicos');
+
+        $data['companhias_sugeridas']['companhia_id'] = $companhia_id_1;
+        $table_companhiasSugeridas->insert($data['companhias_sugeridas']);
+
+        if($companhia_id_2 != null)
+        {
+            $data['companhias_sugeridas']['companhia_id'] = $companhia_id_2;
+            $table_companhiasSugeridas->insert($data['companhias_sugeridas']);
+        }
+
+        if($companhia_id_3 != null)
+        {
+            $data['companhias_sugeridas']['companhia_id'] = $companhia_id_3;
+            $table_companhiasSugeridas->insert($data['companhias_sugeridas']);
+        }
     }
 
 

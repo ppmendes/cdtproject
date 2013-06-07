@@ -41,7 +41,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
         $this->addElement('text', 'data_solicitacao_view', array(
             'label'      => 'Data da Solicitação:',
             'value'      => date('Y-m-d', time()),
-            'disabled'   => true,
+            'readonly'   => true,
             'required'   => false,
             'ignore'     => true,
         ));
@@ -56,14 +56,19 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
         ));
 
         //Projeto input type text
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
-            'required'   => true
+            'value'      => $nomeProjeto[0]['nome'],
+            'required'   => true,
+            'ignore'     => true,
+            'readonly'   => true,
         ));
 
         //Coordenador do projeto input type text
         $this->addElement('text', 'coordenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
+            'value'      => $nomeProjeto[0]['u.username'],
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
@@ -71,6 +76,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 
         $this->addElement('text', 'email', array(
             'label'      => 'E-mail:',
+            'value'      => $nomeProjeto[0]['u.email'],
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
@@ -78,6 +84,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 
         $this->addElement('text', 'telefone_coordenador', array(
             'label'      => 'Telefone:',
+            'value'      => $nomeProjeto[0]['u.telefone'],
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,
@@ -85,6 +92,7 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 
         $this->addElement('text', 'celular_coordenador', array(
             'label'      => 'Celular:',
+            'value'      => $nomeProjeto[0]['u.celular'],
             'required'   => false,
             'readonly'   => true,
             'ignore'         => true,

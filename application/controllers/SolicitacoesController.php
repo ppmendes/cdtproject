@@ -40,8 +40,8 @@ class SolicitacoesController extends Zend_Controller_Action
         $form->startform();
 
         if($this->getRequest()->isPost()){
-            $form->setProjetoId($pid);
-            $form->startform();
+            //$form->setProjetoId($pid);
+            //$form->startform();
             $form->preValidation($_POST);
 
             if($form->isValid($request->getPost())){
@@ -49,30 +49,20 @@ class SolicitacoesController extends Zend_Controller_Action
                 $data = $form->getValues();
 
 
-                unset($data['solicitacoes']['data_solicitacao_view']);
-                unset($data['solicitacoes']['local_entrega_solicitacao_view']);
-                unset($data['solicitacoes']['local']);
-                unset($data['solicitacoes']['hidden_teste']);
-                unset($data['solicitacoes']['projeto']);
-                unset($data['solicitacoes']['valor_estimado']);
+                //unset($data['solicitacoes']['data_solicitacao_view']);
+                //unset($data['solicitacoes']['local_entrega_solicitacao_view']);
+                //unset($data['solicitacoes']['local']);
+                //unset($data['solicitacoes']['hidden_teste']);
+                //unset($data['solicitacoes']['projeto']);
+                //unset($data['solicitacoes']['valor_estimado']);
+                $data['solicitacoes']['projeto_id'] = $pid;
                 $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
                 unset($data['solicitacoes']['coordenador_tecnico_id']);
-
-                //$data['solicitacoes']['valor_real'] = intval($data['solicitacoes']['valor_estimado']);
-
-//                for ($i=2 ; $i<11 ; $i++)
-//                {
-//                    if (array_key_exists("quantidade_" . $i, $data['solicitacoes']) == 1)
-//                    {
-//                        $data['solicitacoes']['valor_real'] += intval($data['solicitacoes']['valor_estimado_' . $i]);
-//                    }
-//                }
+                unset($data['solicitacoes']['saldo_orcamento']);
 
                 $quantidade = $model->concatenaCampos("quantidade_", $data);
                 $nome = $model->concatenaCampos("nome_", $data);
                 $valor_unitario = $model->concatenaCampos("valor_unitario_", $data);
-               // $valor_estimado = $model->concatenaCampos("valor_estimado_", $data);
-
 
                 for ($i=2 ; $i<11 ; $i++)
                 {
@@ -93,7 +83,7 @@ class SolicitacoesController extends Zend_Controller_Action
                     $model->insertAquisicao($data, $quantidade, $nome, $valor_unitario);
                 }
 
-                $this->_redirect('/solicitacoes/');
+                $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
@@ -163,8 +153,6 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
-        $form->setProjetoId($pid);
-        $form->startform();
         $this->view->form = $form;
 
 
@@ -841,6 +829,83 @@ class SolicitacoesController extends Zend_Controller_Action
         echo json_encode($row[0]);
     }
 
+
+    public function combogridcompanhiaAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'c.companhia_id';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'nome like ? or cnpj like ?';
+        $where2 = 'c.nome like ? or c.cnpj like ?';
+
+        $select = $dbAdapter->select()->from('companhia',array('count(*) as count'))->where($where,$searchTerm)
+            ->where('deletado = ?', 0);
+
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from(array('c' => 'companhia'),array('c.companhia_id','c.nome','c.cnpj', 'c.cidade_id', 'c.representante_id', 'c.telefone'))
+                ->where($where2,$searchTerm)
+                ->where('c.deletado = ?', 0)
+                ->joinLeft(array('u' => 'usuario'), 'c.representante_id = u.usuario_id',array('nome2'=>'u.nome','sobrenome'=>'u.sobrenome'))
+                ->joinLeft(array('ci' => 'cidade'), 'c.cidade_id = ci.cidade_id',array('cidade_nome'=>'ci.cidade_nome'))
+                ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from('companhia',array('c.companhia_id','c.nome','c.cnpj', 'c.cidade_id', 'c.representante_id', 'c.telefone'))
+                ->where($where2,$searchTerm)
+                ->where('c.deletado = ?', 0)
+                ->joinLeft(array('u' => 'usuario'), 'c.representante_id = u.usuario_id',array('nome2'=>'u.nome','sobrenome'=>'u.sobrenome'))
+                ->joinLeft(array('ci' => 'cidade'), 'c.cidade_id = ci.cidade_id',array('cidade_nome'=>'ci.cidade_nome'))
+                ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+            $response = (object) array();
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
 
     public function preenchebeneficiarioAction() {
         $this->_helper->layout->disableLayout();

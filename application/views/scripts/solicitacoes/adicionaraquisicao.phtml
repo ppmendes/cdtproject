@@ -1,21 +1,54 @@
-<!--<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>-->
-<!--<script type="text/javascript">-->
-<!--    $(document).ready(function(){-->
-<!--        $( "#solicitacoes-projeto").combogrid({-->
-<!--            debug:false,-->
-<!--            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],-->
-<!--            url: 'solicitacoes/combogridprojeto/',-->
-<!--            select: function( event, ui ) {-->
-<!--                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );-->
-<!--                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );-->
-<!--                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);-->
-<!--                preencher();-->
-<!--                return false;-->
-<!--            }-->
-<!--        });-->
-<!--    });-->
-<!---->
-<!--</script>-->
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $( "#solicitacoes-nome1").combogrid({
+            debug:false,
+            colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cnpj','width':'45','label':'CNPJ'}],
+            url: 'solicitacoes/combogridcompanhia/',
+            select: function( event, ui ) {
+                $("#solicitacoes-nome1").val( ui.item.nome );
+                $("#solicitacoes-cidade1").val( ui.item.cidade_nome );
+                $('#solicitacoes-contato1').val(ui.item.nome2 + " " + ui.item.sobrenome);
+                $("#solicitacoes-telefone1").val( ui.item.telefone );
+                $("#solicitacoes-cnpj1").val( ui.item.cnpj );
+                $("#solicitacoes-companhia_id_1").val( ui.item.companhia_id );
+
+                return false;
+            }
+        });
+        $( "#solicitacoes-nome2").combogrid({
+            debug:false,
+            colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cnpj','width':'45','label':'CNPJ'}],
+            url: 'solicitacoes/combogridcompanhia/',
+            select: function( event, ui ) {
+                $("#solicitacoes-nome2").val( ui.item.nome );
+                $("#solicitacoes-cidade2").val( ui.item.cidade_nome );
+                $('#solicitacoes-contato2').val(ui.item.nome2 + " " + ui.item.sobrenome);
+                $("#solicitacoes-telefone2").val( ui.item.telefone );
+                $("#solicitacoes-cnpj2").val( ui.item.cnpj );
+                $("#solicitacoes-companhia_id_2").val( ui.item.companhia_id );
+
+                return false;
+            }
+        });
+        $( "#solicitacoes-nome3").combogrid({
+            debug:false,
+            colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cnpj','width':'45','label':'CNPJ'}],
+            url: 'solicitacoes/combogridcompanhia/',
+            select: function( event, ui ) {
+                $("#solicitacoes-nome3").val( ui.item.nome );
+                $("#solicitacoes-cidade3").val( ui.item.cidade_nome );
+                $('#solicitacoes-contato3').val(ui.item.nome2 + " " + ui.item.sobrenome);
+                $("#solicitacoes-telefone3").val( ui.item.telefone );
+                $("#solicitacoes-cnpj3").val( ui.item.cnpj );
+                $("#solicitacoes-companhia_id_3").val( ui.item.companhia_id );
+
+                return false;
+            }
+        });
+    });
+
+</script>
 
 <?php
 $this->form->setAction($this->url());

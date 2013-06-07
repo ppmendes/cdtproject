@@ -52,10 +52,10 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'data_solicitacao_view', array(
             'label'      => 'Data da Solicitação:',
             'value'      => date('Y-m-d', time()),
-            'disabled'   => true,
+            'ignore'   => true,
             'required'   => false,
+            'readonly'   => true,
             'order'          => 1,
-            'ignore'     => true,
         ));
 
         $this->addElement('hidden', 'label_projeto', array(
@@ -68,18 +68,23 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         ));
 
         //Projeto input type text
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
             'required'   => true,
+            'value'      => $nomeProjeto[0]['nome'],
             'order'          => 3,
             'ignore'     => true,
+            'readonly'   => true,
         ));
 
         //Coordenador do projeto input type text
         $this->addElement('text', 'coordenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
             'required'   => false,
+            'value'      => $nomeProjeto[0]['u.username'],
             'readonly'   => true,
+            'ignore'     => true,
             'order'          => 4,
         ));
 
@@ -87,6 +92,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'E-mail:',
             'required'   => false,
             'readonly'   => true,
+            'value'      => $nomeProjeto[0]['u.email'],
             'order'          => 5,
             'ignore'         => true,
         ));
@@ -95,6 +101,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => false,
             'readonly'   => true,
+            'value'      => $nomeProjeto[0]['u.telefone'],
             'order'          => 6,
             'ignore'         => true,
         ));
@@ -103,6 +110,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Celular:',
             'required'   => false,
             'readonly'   => true,
+            'value'      => $nomeProjeto[0]['u.celular'],
             'order'          => 7,
             'ignore'         => true,
         ));
