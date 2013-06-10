@@ -4,37 +4,8 @@ $projeto_id = $this->pid;
 
 <script>
     $(document).ready(function() {
-        $('#table_id').dataTable({
-            "sDom": 'R<"H"lfr>t<"F"ip<',
-            "bJQueryUI": true,
-            "sPaginationType": "full_numbers",
-            "oLanguage": {
-                "sProcessing": "Processando...",
-                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
-                "sZeroRecords": "Nada Encontrado",
-                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
-                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
-                "sLoadingRecords": "Carregando...",
-                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
-                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
-                "sSearch": "BUSCA",
-                "oPaginate": {
-                    "sFirst":    " <<  ",
-                    "sPrevious": " < ",
-                    "sNext":     " > ",
-                    "sLast":     " >> "
-                }
-            }
-            //"bSort": false,
-//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
-//            "aoColumns": [
-//                { "sType": 'string-case' },
-//                null,
-//                null,
-//                null,
-//                null,
-//            ]
-        });
+        //jQuery('#table_id').treetable('expandAll');
+        $("#table_id").treetable({ expandable: false });
     });
 </script>
 
@@ -55,7 +26,7 @@ $projeto_id = $this->pid;
 </script>
 <style>
     table * *{
-        text-align: center;
+        text-align: left;
     }
     .novatarefa {
         float:right;
@@ -73,10 +44,9 @@ $projeto_id = $this->pid;
 <table id='table_id' border='0'>
     <thead>
     <tr>
-        <th>Id</th>
+        <th>Nome da Tarefa</th>
         <th>Porcentagem Completa</th>
         <th>Projeto</th>
-        <th>Nome da Tarefa</th>
         <th>Responsável da Tarefa</th>
         <th>Data de início</th>
         <th>Data de final</th>
@@ -87,6 +57,7 @@ $projeto_id = $this->pid;
 
     <?php
     $filter = new Zend_Filter_DateFilter();
+
     foreach($this->tarefas as $row)
     {
         $dataAtual=date("Y-m-d H:i:s ");
@@ -101,13 +72,19 @@ $projeto_id = $this->pid;
             $corletra='#000000';
         }
 
-        //$row = $row->toArray();
-        echo "<tr id='".$row['tarefa_id']."'>";
-        echo "<td>" .   $row['tarefa_id'] . "</td>";
-        echo "<td >" .  $row['percentagem_completo'] . "</td>";
-        echo "<td>" .   $row['nomeprojeto'] . "</td>";
-        echo "<td><a href='/tarefas/detalhes/tarefa_id/{$row['tarefa_id']}'>" . $row['nome'] . "</a></td>";
-        echo "<td>" .   $row['username'] . "</td>";
+        //configura ids de tarefas hierarquicas
+        if($row['tarefa_id_pai']=='0')
+        {
+            echo "<tr data-tt-id='".$row['tarefa_id']."'>";
+        }else
+        {
+            echo "<tr data-tt-id='".$row['tarefa_id']."' data-tt-parent-id='".$row['tarefa_id_pai']."'>";
+        }
+        echo "<td><a href='/tarefas/detalhes/tarefa_id/{$row['tarefa_id']}'>" . $row['nome_tarefa'] . "</a></td>";
+        //echo "<td>" .   $row['tarefa_id'] . "</td>";
+        echo "<td >" .  $row['porcentagem'] . "</td>";
+        echo "<td>" .   $row['nome_projeto'] . "</td>";
+        echo "<td>" .   $row['responsavel_tarefa'] . "</td>";
         echo "<td style='background: $cor; color:$corletra'>" .   $filter->filter($row['data_inicio']) . "</td>";
         echo "<td style='background: $cor; color:$corletra'>" .   $filter->filter($row['data_final']) . "</td>";
         echo "<td style='background: $cor; color:$corletra'>" .  $row['duracao'] . "</td>";
