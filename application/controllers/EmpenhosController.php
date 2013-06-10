@@ -15,6 +15,7 @@ class EmpenhosController extends Zend_Controller_Action
         $aux = $model->selectAll($pid);
         $beneModel = new Application_Model_Beneficiario();
         $orcModel = new Application_Model_Orcamento();
+        $orcModel->saldoOrcamentoDisponibilizado(952);
         $rubModel = new Application_Model_Rubrica();
         
         $desModel = new Application_Model_Desembolso();
@@ -54,6 +55,12 @@ class EmpenhosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                print_r($data);
+                exit;
+                if ($data['saldo_orcamento_disponibilizado'] < $data['valor_empenho']) {
+                    echo "<script> alert('Saldo menor que o valor do empenho'); </script>";
+                    $this->_redirect('/empenhos/adicionar/projeto_id/'.$pid);
+                }
                 
                 $model->insert($data);
                 $this->_redirect('/empenhos/index/projeto_id/'.$pid);
@@ -170,6 +177,18 @@ class EmpenhosController extends Zend_Controller_Action
 
 
         exit;
+    }
+
+    public function saldoorcamentodisponibilizadoAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('orcamento_id', 0)) {
+            $id = (int) $this->_request->getParam('orcamento_id', 0);
+            $model = new Application_Model_Orcamento();
+            $saldo = $model->saldoOrcamentoDisponibilizado($id);
+            echo $saldo;
+        }
     }
 
 }

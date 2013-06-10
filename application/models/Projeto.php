@@ -122,8 +122,11 @@ from projeto as P inner join estado_projeto as EP on P.estado_projeto_id=EP.esta
 
             $select = $db->select()
                 ->from(array('p' => 'projeto'),
-                        array('p.nome'))
-                ->where('p.projeto_id = ?', $id);
+                        array('p.nome', 'p.coordenador_tecnico'))
+                ->where('p.projeto_id = ?', $id)
+                ->joinLeft(array('u' => 'usuario'), 'p.coordenador_tecnico = u.usuario_id',array('u.usuario_id' => 'u.usuario_id',
+                'u.username'=>'u.username', 'u.email'=>'u.email', 'u.telefone' => 'u.telefone', 'u.celular'=> 'u.celular'));
+
             $stmt = $select->query();
 
             $result = $stmt->fetchAll();

@@ -137,7 +137,7 @@ class Application_Model_Orcamento
 
                                         (SELECT SUM( valor_recebido )
                                          FROM cronograma_financeiro AS cf
-                                         WHERE cf.projeto_id = " . $id . "
+                                         WHERE cf.projeto_id = " . $id . " AND cf.deletado = 0
                                          ) AS valor_recebido,
 
                                          (SELECT SUM( valor )
@@ -147,19 +147,19 @@ class Application_Model_Orcamento
 
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e
-                                         WHERE e.orcamento_id = o.orcamento_id
+                                         WHERE e.orcamento_id = o.orcamento_id AND e.deletado = 0
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM empenho AS e2
                                          LEFT JOIN pre_empenho AS pe ON e2.pre_empenho_id = pe.pre_empenho_id
-                                         WHERE e2.orcamento_id = o.orcamento_id
+                                         WHERE e2.orcamento_id = o.orcamento_id AND e2.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( d.valor_desembolso )
                                          FROM desembolso AS d
                                          LEFT JOIN empenho AS e3 ON d.empenho_id = e3.empenho_id
-                                         WHERE e3.orcamento_id = o.orcamento_id
+                                         WHERE e3.orcamento_id = o.orcamento_id AND d.extornado = 0 AND e3.deletado = 0
                                          ) AS valor_desembolso
 
                                          FROM orcamento AS o
@@ -236,6 +236,30 @@ class Application_Model_Orcamento
         $db = Zend_Db_Table::getDefaultAdapter();
         $result = $db->fetchOne("SELECT max(" . $table . "_id) FROM " . $table . "");
         return (int)$result;
+    }
+
+    public function saldoOrcamentoDisponibilizado ($id) {
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $resultado = $db->fetchAll("SELECT SUM( valor ),
+
+                                      (SELECT SUM( valor_empenho )
+                                      FROM empenho AS e
+                                      WHERE e.orcamento_id = oc.orcamento_id AND e.deletado = 0)
+                                      AS valor_empenho
+
+                                      FROM orcamento_cronograma AS oc
+                                      WHERE oc.orcamento_id = " . $id . ";");
+
+            $saldo = $resultado[0]['SUM( valor )'] - $resultado[0]['valor_empenho'];
+
+            return $saldo;
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+        }
     }
 
 }

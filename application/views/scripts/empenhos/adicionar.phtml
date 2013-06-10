@@ -12,6 +12,20 @@
             }
         });
     });
+
+
+    function saldoOrcamentoDisponibilizado(id) {
+        $.ajax({
+            url: '/empenhos/saldoorcamentodisponibilizado/orcamento_id/'+id,
+            dataType:'html',
+            type:'GET',
+            success: function(data){
+                alert(data);
+                $('#empenhos-saldo_orcamento_disponibilizado').val(data);
+                $('#empenhos-valor_empenho').attr('validators', array("Zend_Validate_Between2(array('min' => '0,00', 'max' => " + data + ")"))
+            }
+        })
+    }
     
     function maskPre(val, msk, pre) {
 

@@ -170,12 +170,13 @@ class Application_Model_Desembolso
                                         (SELECT SUM( valor_empenho )
                                          FROM empenho AS e1, orcamento AS orc
                                          WHERE e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . " AND e1.deletado = 0
+                                         AND orc.deletado = 0
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
                                          FROM pre_empenho AS pe, empenho as e1, orcamento as orc
                                          WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
-                                          AND pe.deletado = 0
+                                          AND pe.deletado = 0 AND e1.deletado = 0 AND orc.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( valor_recebido )
@@ -187,7 +188,7 @@ class Application_Model_Desembolso
                                          LEFT JOIN empenho AS e ON d.empenho_id = e.empenho_id
                                          LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
-                                         WHERE o.projeto_id = ". $id . " AND d.extornado = 0");
+                                         WHERE o.projeto_id = ". $id . " AND d.extornado = 0 AND e.deletado = 0 AND o.deletado = 0");
 
 
             return $resultado;

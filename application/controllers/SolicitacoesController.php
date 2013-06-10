@@ -11,22 +11,37 @@ class SolicitacoesController extends Zend_Controller_Action
     public function indexAction()
     {
         $solicitacaoModel = new Application_Model_Solicitacao();
-        $this->view->solicitacoes = $solicitacaoModel->selectAll();
-        $this->view->solicitacoesAquisicao =  $solicitacaoModel->selectAllAquisicao();
-        $this->view->solicitacoesContratacao = $solicitacaoModel->selectAllContratacao();
-        $this->view->solicitacoesPassagens = $solicitacaoModel->selectAllPassagens();
+        $pid = $this->_getParam('projeto_id');
+        $this->view->solicitacoes = $solicitacaoModel->selectAll($pid);
+        $this->view->solicitacoesAquisicao =  $solicitacaoModel->selectAllAquisicao($pid);
+        $this->view->solicitacoesContratacao = $solicitacaoModel->selectAllContratacao($pid);
+        $this->view->solicitacoesPassagens = $solicitacaoModel->selectAllPassagens($pid);
+        $this->view->pid = $pid;
 
     }
 
     public function adicionaraquisicaoAction(){
         $request = $this->getRequest();
-        $form = new Application_Form_Solicitacoes_AquisicaoBens();
-        $form->startform();
-        $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
+        $pid= $this->_getParam('projeto_id');
+        $form = new Application_Form_Solicitacoes_AquisicaoBens();
+        $model = new Application_Model_Solicitacao();
+        $rid = array();
+        $rid[0] = 38;
+        $arrayOrcamentos = $model->selectSaldoRubrica($pid, $rid );
+        if (empty($arrayOrcamentos) == true)
+        {
+            echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
+                "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+            exit;
+        }
+        $form->setArrayOrcamento($arrayOrcamentos);
+        $form->setProjetoId($pid);
+        $form->startform();
 
         if($this->getRequest()->isPost()){
-            $form->startform();
+            //$form->setProjetoId($pid);
+            //$form->startform();
             $form->preValidation($_POST);
 
             if($form->isValid($request->getPost())){
@@ -34,30 +49,20 @@ class SolicitacoesController extends Zend_Controller_Action
                 $data = $form->getValues();
 
 
-                unset($data['solicitacoes']['data_solicitacao_view']);
-                unset($data['solicitacoes']['local_entrega_solicitacao_view']);
-                unset($data['solicitacoes']['local']);
-                unset($data['solicitacoes']['hidden_teste']);
-                unset($data['solicitacoes']['projeto']);
-                unset($data['solicitacoes']['valor_estimado']);
+                //unset($data['solicitacoes']['data_solicitacao_view']);
+                //unset($data['solicitacoes']['local_entrega_solicitacao_view']);
+                //unset($data['solicitacoes']['local']);
+                //unset($data['solicitacoes']['hidden_teste']);
+                //unset($data['solicitacoes']['projeto']);
+                //unset($data['solicitacoes']['valor_estimado']);
+                $data['solicitacoes']['projeto_id'] = $pid;
                 $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
                 unset($data['solicitacoes']['coordenador_tecnico_id']);
-
-                //$data['solicitacoes']['valor_real'] = intval($data['solicitacoes']['valor_estimado']);
-
-//                for ($i=2 ; $i<11 ; $i++)
-//                {
-//                    if (array_key_exists("quantidade_" . $i, $data['solicitacoes']) == 1)
-//                    {
-//                        $data['solicitacoes']['valor_real'] += intval($data['solicitacoes']['valor_estimado_' . $i]);
-//                    }
-//                }
+                unset($data['solicitacoes']['saldo_orcamento']);
 
                 $quantidade = $model->concatenaCampos("quantidade_", $data);
                 $nome = $model->concatenaCampos("nome_", $data);
                 $valor_unitario = $model->concatenaCampos("valor_unitario_", $data);
-               // $valor_estimado = $model->concatenaCampos("valor_estimado_", $data);
-
 
                 for ($i=2 ; $i<11 ; $i++)
                 {
@@ -78,7 +83,7 @@ class SolicitacoesController extends Zend_Controller_Action
                     $model->insertAquisicao($data, $quantidade, $nome, $valor_unitario);
                 }
 
-                $this->_redirect('/solicitacoes/');
+                $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
             }
         }elseif ($id){
             $data = $model->find($id)->toArray();
@@ -97,6 +102,7 @@ class SolicitacoesController extends Zend_Controller_Action
                 $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
 
                 $form = new Application_Form_Solicitacoes_AquisicaoBens();
+                $form->setProjetoId($pid);
                 $form->startform();
 
 
@@ -154,13 +160,26 @@ class SolicitacoesController extends Zend_Controller_Action
 
     public function adicionarcontratacaoAction(){
         $request = $this->getRequest();
+        $pid = $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_ContratacaoServicos();
-        $form->startform();
         $model = new Application_Model_Solicitacao();
+        $rid = array();
+        $rid[0] = 35;
+        $arrayOrcamentos = $model->selectSaldoRubrica($pid,$rid );
+        if (empty($arrayOrcamentos) == true)
+        {
+            echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
+                "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+            exit;
+        }
+        $form->setArrayOrcamento($arrayOrcamentos);
+        $form->setProjetoId($pid);
+        $form->startform();
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
-
+            $form->setProjetoId($pid);
+            $form->startform();
             $form->preValidation($_POST);
 
 
@@ -247,6 +266,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
                 $form = new Application_Form_Solicitacoes_ContratacaoServicos();
+                $form->setProjetoId($pid);
                 $form->startform();
 
                 $data_servicos = $model->findContratacao($id);
@@ -297,6 +317,8 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
+        $form->setProjetoId($pid);
+        $form->startform();
         $this->view->form = $form;
 
 
@@ -304,13 +326,31 @@ class SolicitacoesController extends Zend_Controller_Action
 
     public function adicionarpassagensAction(){
         $request = $this->getRequest();
+        $id = $this->_getParam('solicitacao_id');
+        $pid= $this->_getParam('projeto_id');
         $form = new Application_Form_Solicitacoes_PassagensDiarias();
         $model = new Application_Model_Solicitacao();
-        $id = $this->_getParam('solicitacao_id');
+        $rid = array();
+        $rid[0] = 15;
+        $rid[1] = 16;
+        $arrayOrcamentos = $model->selectSaldoRubrica($pid,$rid );
+        if (empty($arrayOrcamentos) == true)
+        {
+            echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
+            "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+            exit;
+        }
+        $form->setArrayOrcamento($arrayOrcamentos);
+        $form->setProjetoId($pid);
+        $form->startform();
+
+        $model = new Application_Model_Solicitacao();
+
 
         if($this->getRequest()->isPost()){
             if($form->isValid($request->getPost())){
-
+                $form->setProjetoId($pid);
+                $form->startform();
                 $data = $form->getValues();
 
 
@@ -355,6 +395,8 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
 
             $form = new Application_Form_Solicitacoes_PassagensDiarias();
+                $form->setProjetoId($pid);
+                $form->startform();
 
             //Preencher os dados da passagem e diárias
             $dadosPassagens = $model->findPassagens($id);
@@ -378,6 +420,8 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
+        $form->setProjetoId($pid);
+        $form->startform();
         $this->view->form = $form;
 
 
@@ -387,14 +431,16 @@ class SolicitacoesController extends Zend_Controller_Action
         $request = $this->getRequest();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
-        $this->view->id = $id;
+        $pid = $this->_getParam('projeto_id');
 
+        $this->view->id = $id;
+        $this->view->pid = $pid;
 
         $data = $model->find($id)->toArray();
 
         $this->view->tipo = intval($data['tipo_solicitacao_id']);
 
-        if($data['tipo_solicitacao_id'] == 1 || $data['tipo_solicitacao_id'] == 4 || $data['tipo_solicitacao_id'] == 5)
+        if($data['tipo_solicitacao_id'] == 1 || $data['tipo_solicitacao_id'] == 4 || $data['tipo_solicitacao_id'] == 5 || $data['tipo_solicitacao_id'] == 6)
         {
 
             $dadosProjeto = $model->buscaProjetoNome($id);
@@ -410,6 +456,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
             $detalhes = new Application_Form_Solicitacoes_AquisicaoBens();
+            $detalhes->setProjetoId($pid);
             $detalhes->startform();
 
             $data_bens_servicos = $model->findAquisicao($id);
@@ -452,8 +499,7 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['valor_estimado'] = intval(intval($data['quantidade']) * intval($data['valor_unitario']));
 
 
-        }else if ($data['tipo_solicitacao_id'] == 2 || $data['tipo_solicitacao_id'] == 6 ||
-            $data['tipo_solicitacao_id'] == 7 || $data['tipo_solicitacao_id'] == 8)
+        }else if ($data['tipo_solicitacao_id'] == 2 ||  $data['tipo_solicitacao_id'] == 7 || $data['tipo_solicitacao_id'] == 8)
         {
 
             //Preencher dados de projeto e coordenador
@@ -485,6 +531,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
             $detalhes = new Application_Form_Solicitacoes_ContratacaoServicos();
+            $detalhes->setProjetoId($pid);
             $detalhes->startform();
 
             $data_servicos = $model->findContratacao($id);
@@ -557,10 +604,11 @@ class SolicitacoesController extends Zend_Controller_Action
             $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
 
             $detalhes = new Application_Form_Solicitacoes_PassagensDiarias();
+            $detalhes->setProjetoId($pid);
+            $detalhes->startform();
 
             //Preencher os dados da passagem e diárias
             $dadosPassagens = $model->findPassagens($id);
-
 
             $data['motivos'] = $dadosPassagens[0]['motivos'];
             $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];
@@ -781,6 +829,83 @@ class SolicitacoesController extends Zend_Controller_Action
         echo json_encode($row[0]);
     }
 
+
+    public function combogridcompanhiaAction()
+    {
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'c.companhia_id';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'nome like ? or cnpj like ?';
+        $where2 = 'c.nome like ? or c.cnpj like ?';
+
+        $select = $dbAdapter->select()->from('companhia',array('count(*) as count'))->where($where,$searchTerm)
+            ->where('deletado = ?', 0);
+
+
+        $qtdRubrica = $dbAdapter->fetchAll($select);
+        $count = $qtdRubrica[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from(array('c' => 'companhia'),array('c.companhia_id','c.nome','c.cnpj', 'c.cidade_id', 'c.representante_id', 'c.telefone'))
+                ->where($where2,$searchTerm)
+                ->where('c.deletado = ?', 0)
+                ->joinLeft(array('u' => 'usuario'), 'c.representante_id = u.usuario_id',array('nome2'=>'u.nome','sobrenome'=>'u.sobrenome'))
+                ->joinLeft(array('ci' => 'cidade'), 'c.cidade_id = ci.cidade_id',array('cidade_nome'=>'ci.cidade_nome'))
+                ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from('companhia',array('c.companhia_id','c.nome','c.cnpj', 'c.cidade_id', 'c.representante_id', 'c.telefone'))
+                ->where($where2,$searchTerm)
+                ->where('c.deletado = ?', 0)
+                ->joinLeft(array('u' => 'usuario'), 'c.representante_id = u.usuario_id',array('nome2'=>'u.nome','sobrenome'=>'u.sobrenome'))
+                ->joinLeft(array('ci' => 'cidade'), 'c.cidade_id = ci.cidade_id',array('cidade_nome'=>'ci.cidade_nome'))
+                ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+            $response = (object) array();
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
 
     public function preenchebeneficiarioAction() {
         $this->_helper->layout->disableLayout();

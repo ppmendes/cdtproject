@@ -1,3 +1,4 @@
+<meta charset='utf-8'>
 <?php
 
 class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
@@ -19,8 +20,20 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         array()
     );
 
+    private $id_projeto;
+    private $array_orcamento = array();
+
+    public function setProjetoId($id_projeto){
+        $this->id_projeto = $id_projeto;
+    }
+
+    public function setArrayOrcamento($array_orcamento){
+        $this->array_orcamento = $array_orcamento;
+    }
+
     public function startform()
     {
+        $i = 1;
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('solicitacoes');
@@ -39,10 +52,10 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'data_solicitacao_view', array(
             'label'      => 'Data da Solicitação:',
             'value'      => date('Y-m-d', time()),
-            'disabled'   => true,
+            'ignore'   => true,
             'required'   => false,
+            'readonly'   => true,
             'order'          => 1,
-            'ignore'     => true,
         ));
 
         $this->addElement('hidden', 'label_projeto', array(
@@ -55,18 +68,23 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         ));
 
         //Projeto input type text
+        $nomeProjeto = Application_Model_Projeto::getNome($this->id_projeto);
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
             'required'   => true,
+            'value'      => $nomeProjeto[0]['nome'],
             'order'          => 3,
             'ignore'     => true,
+            'readonly'   => true,
         ));
 
         //Coordenador do projeto input type text
         $this->addElement('text', 'coordenador_projeto', array(
             'label'      => 'Coordenador do Projeto:',
             'required'   => false,
+            'value'      => $nomeProjeto[0]['u.username'],
             'readonly'   => true,
+            'ignore'     => true,
             'order'          => 4,
         ));
 
@@ -74,6 +92,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'E-mail:',
             'required'   => false,
             'readonly'   => true,
+            'value'      => $nomeProjeto[0]['u.email'],
             'order'          => 5,
             'ignore'         => true,
         ));
@@ -82,6 +101,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => false,
             'readonly'   => true,
+            'value'      => $nomeProjeto[0]['u.telefone'],
             'order'          => 6,
             'ignore'         => true,
         ));
@@ -90,15 +110,33 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Celular:',
             'required'   => false,
             'readonly'   => true,
+            'value'      => $nomeProjeto[0]['u.celular'],
             'order'          => 7,
             'ignore'         => true,
+        ));
+
+        $array = array();
+        $array[0] = 'Selecione';
+        for ($i == 1 ; $i <= sizeof($this->array_orcamento) ; $i++) {
+            $array[$this->array_orcamento[$i - 1]['orcamento_id']] = $this->array_orcamento[$i - 1]['nome_destinatario'] .
+                " - Saldo: " . ($this->array_orcamento[$i - 1]['valor'] - $this->array_orcamento[$i - 1]['valor_empenho']
+                - $this->array_orcamento[$i - 1]['valor_pre_empenho']);
+        }
+
+        $this->addElement('select', 'destinatario', array(
+            'label'      => 'Destinatário:',
+            'multiOptions' => $array,
+            'required'   => false,
+            'ignore'         => true,
+            'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
+            'order'          => 8
         ));
 
 
         $this->addElement('hidden', 'label_beneficiario', array(
             'description' => 'Dados do Contratado',
             'ignore' => true,
-            'order'          => 8,
+            'order'          => 9,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -108,7 +146,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'beneficiario', array(
             'label'      => 'Beneficiário:',
             'required'   => true,
-            'order'      => 9,
+            'order'      => 10,
             'ignore'     => true,
         ));
 
@@ -117,7 +155,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'CPF:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 10,
+            'order'          => 11,
             'ignore'         => true,
         ));
 
@@ -126,7 +164,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'RG:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 11,
+            'order'          => 12,
             'ignore'         => true,
         ));
 
@@ -135,7 +173,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'PIS ou INSS:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 12,
+            'order'          => 13,
             'ignore'         => true,
         ));
 
@@ -144,7 +182,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Endereço:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 13,
+            'order'          => 14,
             'ignore'         => true,
         ));
 
@@ -153,7 +191,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Telefone:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 14,
+            'order'          => 15,
             'ignore'         => true,
         ));
 
@@ -162,14 +200,14 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'E-mail:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 15,
+            'order'          => 16,
             'ignore'         => true,
         ));
 
         $this->addElement('hidden', 'label_banco', array(
             'description' => 'Dados Bancários',
             'ignore' => true,
-            'order'          => 16,
+            'order'          => 17,
             'decorators' => array(
                 array('Description', array('escape'=>false, 'id' => 'interna')),
             ),
@@ -177,7 +215,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 
         $this->addElement('select', 'banco_id', array(
             'label'      => 'Banco:',
-            'order'          => 17,
+            'order'          => 18,
             'multiOptions' => Application_Model_Banco::getOptions(),
             'required'   => false,
             'readonly'   => true,
@@ -188,7 +226,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Agência:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 18,
+            'order'          => 19,
             'ignore'         => true,
         ));
 
@@ -197,14 +235,14 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Conta:',
             'required'   => false,
             'readonly'   => true,
-            'order'          => 19,
+            'order'          => 20,
             'ignore'         => true,
         ));
 
         $this->addElement('hidden', 'label_plano_trabalho', array(
             'description' => 'Plano de Trabalho de Execução de Serviço (Meta/Etapa/Atividade)',
             'ignore' => true,
-            'order'          => 20,
+            'order'          => 21,
             'decorators' => array(
                 array('Description', array('escape'=>false)),
             ),
@@ -213,19 +251,19 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('textarea', 'objetivo_solicitacao', array(
             'label'      => 'Objeto do Serviço:',
             'required'   => true,
-            'order'          => 21,
+            'order'          => 22,
         ));
 
         $this->addElement('textarea', 'justificativa', array(
             'label'      => 'Objeto do Serviço (justificativa/motivação):',
             'required'   => true,
-            'order'          => 22,
+            'order'          => 23,
         ));
 
         $this->addElement('hidden', 'label_cronograma', array(
             'description' => 'Cronograma de Atividades(descrição das ATIVIDADES a serem executadas (metodologia) e os PRODUTOS a serem entregues )',
             'ignore' => true,
-            'order'          => 23,
+            'order'          => 24,
             'decorators' => array(
                 array('Description', array('escape'=>false, 'id' => 'interna', 'style'=>'font-size: 13px;')),
             ),
@@ -234,26 +272,26 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $this->addElement('text', 'descricao', array(
             'label'      => 'Descricao:',
             'required'   => true,
-            'order'          => 24,
+            'order'          => 25,
             'class'         => 'campos',
         ));
 
         $this->addElement('text', 'produto', array(
             'label'      => 'Produto:',
             'required'   => true,
-            'order'          => 25,
+            'order'          => 26,
             'class'         => 'campos'
         ));
 
         $this->addElement('text', 'quantidade', array(
             'label'      => 'Qtde:',
             'required'   => true,
-            'order'          => 26,
+            'order'          => 27,
             'class'         => 'campos'
         ));
 
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('inicio_atividades');
-        $emtDatePicker1->setOrder(27);
+        $emtDatePicker1->setOrder(28);
         $emtDatePicker1->setRequired(true);
         $emtDatePicker1->setLabel('Início do Cronograma:');
         $emtDatePicker1->setFilters(array('DateFilter'));
@@ -268,7 +306,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 //        ));
 
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('fim_atividades');
-        $emtDatePicker2->setOrder(28);
+        $emtDatePicker2->setOrder(29);
         $emtDatePicker2->setRequired(true);
         $emtDatePicker2->setLabel('Fim do Cronograma:');
         $emtDatePicker2->setFilters(array('DateFilter'));
@@ -291,7 +329,7 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             array('HtmlTag',array('tag'=>'div','id'=>'cronograma'))
         ));
 
-        $individual->setOrder(29);
+        $individual->setOrder(30);
 
         $this->addElement('button', 'add_item_mais', array(
             'label'      => 'Mais',
