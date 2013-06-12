@@ -181,8 +181,8 @@ $projeto_id = $this->pid;
 
     echo "<tbody style='color:green;'>";
     echo "<tr>";
-    echo "<td>" . $decimalfilter->filter($totalPrevisto) . "</td>";
-    echo "<td>" . $decimalfilter->filter($totalRecebido) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $totalPrevisto, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $totalRecebido, 2, '.', '')) . "</td>";
     //echo "<td>" . number_format(0 + ($pagas/($i - 1)) * 100, 2, '.', '') . "%</td>";
 
     echo "</tr>";

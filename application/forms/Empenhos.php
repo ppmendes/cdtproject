@@ -83,6 +83,9 @@ class Application_Form_Empenhos extends Zend_Form
             'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
+        //$elemento = $this->getElement('valor_empenho');
+        //$elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => 20000)));
+
         //input type text
         $this->addElement('text', 'numero_parcelas', array(
             'label'      => 'Número de Parcelas: ',
@@ -133,6 +136,7 @@ class Application_Form_Empenhos extends Zend_Form
 
         $this->addElement('hidden', 'saldo_orcamento_disponibilizado', array(
             'value'      => '',
+            'ignore'     => true,
         ));
 
     }

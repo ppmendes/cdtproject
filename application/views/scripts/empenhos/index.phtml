@@ -120,7 +120,7 @@ $projeto_id = $this->pid;
     echo "<td >" .  $row['numero_parcelas'] . "</td>";
     echo "<td >" .  $datefilter->filter($row['data_inicio']) . "</td>";
     echo "<td >" .  $datefilter->filter($row['data_fim']) . "</td>";
-    echo "<td >" .  $decimalfilter->filter($row['valor_executado']) . "</td>";
+    echo "<td >" .  $decimalfilter->filter(number_format(0 + $row['valor_executado'], 2, '.', '')) . "</td>";
     echo "</tr>";
     }
     echo "</tbody></table>";

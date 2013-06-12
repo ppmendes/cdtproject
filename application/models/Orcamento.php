@@ -142,7 +142,7 @@ class Application_Model_Orcamento
 
                                          (SELECT SUM( valor )
                                          FROM orcamento_cronograma AS oc
-                                         WHERE oc.orcamento_id = o.orcamento_id
+                                         WHERE oc.orcamento_id = o.orcamento_id AND oc.deletado = 0
                                          ) AS valor,
 
                                         (SELECT SUM( valor_empenho )
@@ -172,6 +172,11 @@ class Application_Model_Orcamento
 
 
 
+
+//            echo "<pre>";
+//
+//            print_r($resultado);
+//            exit;
 
             return $resultado;
 

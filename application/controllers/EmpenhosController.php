@@ -55,8 +55,7 @@ class EmpenhosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
-                print_r($data);
-                exit;
+
                 if ($data['saldo_orcamento_disponibilizado'] < $data['valor_empenho']) {
                     echo "<script> alert('Saldo menor que o valor do empenho'); </script>";
                     $this->_redirect('/empenhos/adicionar/projeto_id/'.$pid);
