@@ -378,7 +378,50 @@ class Application_Model_Desembolso
             return $options;
 
     }
-    
+
+    public static function getSaldoEmpenho($eid)
+    {
+
+        $options = array();
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $desembolsoSaldo = $db->fetchAll("SELECT empenho_id,
+
+
+                                        (SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                                        FROM desembolso AS des
+                                        WHERE e.empenho_id = des.empenho_id AND des.extornado = 0
+                                        ) AS saldo_empenho
+
+                                        FROM empenho AS e
+
+                                        WHERE e.empenho_id = " . $eid . " AND e.deletado = 0 AND
+                                        ((SELECT (e.valor_empenho - SUM( des.valor_desembolso ))
+                                        FROM desembolso AS des
+                                        WHERE e.empenho_id = des.empenho_id AND des.extornado = 0
+                                        ) > 0 )");
+
+
+        $desembolsoSemEmpenho = $db->fetchAll("SELECT valor_empenho, empenho.empenho_id
+                                                  FROM empenho
+                                                  LEFT JOIN desembolso ON empenho.empenho_id = desembolso.empenho_id
+                                                  WHERE desembolso.empenho_id IS NULL AND
+                                                  empenho.empenho_id = " . $eid . "
+                                                   AND empenho.deletado = 0");
+
+        $saldo = 0;
+        if (empty($desembolsoSemEmpenho))
+        {
+            $saldo = $desembolsoSaldo[0]['saldo_empenho'];
+        }
+        else if (empty($desembolsoSaldo))
+        {
+            $saldo = $desembolsoSemEmpenho[0]['valor_empenho'];
+        }
+
+        return $saldo;
+
+    }
+
     public function getCodigoRubrica ($rid)
     {
         try{
