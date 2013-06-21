@@ -1,3 +1,8 @@
+<style>
+    .menufinanceiro {
+        float:none;
+    }
+</style>
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
     function confirmarExclusao(id)
@@ -57,15 +62,18 @@
 echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id)'>Excluir</button>";
 echo "<button class=\"right btn_edit\" onclick='editar($id)'>Editar</button>";
 
+echo "<div class='menufinanceiro'>";
+echo "<button class='' onclick='orcamentos($id)'><img src='imagens/icones/orcamento.png'>Orçamento</button>";
+echo "<button class='termo_aditivo' onclick='termoAditivo($id)'><img src='imagens/icones/termoaditivo.png'>Termo Aditivo do Projeto</button>";
+echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'><img src='imagens/icones/cronogramafinanceiro.png'>Cronograma Financeiro</button>";
+echo "<button class='' onclick='tarefasProjeto($id)'><img src='imagens/icones/tarefa.png'>Tarefas</button>";
+echo "<button class='' onclick='cronogramaOrcamentario($id)'><img src='imagens/icones/cronogramaorcamentario.png'>Cronograma Orçamentário</button>";
+echo "<button class='' onclick='empenhos($id)'><img src='imagens/icones/empenho.png'>Empenho</button>";
+echo "<button class='' onclick='desembolso($id)'><img src='imagens/icones/desembolso.png'>Desembolso</button>";
+echo "<button class='' onclick='solicitacoes($id)'><img src='imagens/icones/solicitacao.png'>Solicitações</button>";
+echo "</div>";
+
 $this->detalhes->setAction($this->url());
 echo $this->detalhes;
-echo "<button class='termo_aditivo' onclick='termoAditivo($id)'>Termo Aditivo do Projeto</button>";
-echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'>Cronograma Financeiro</button>";
-echo "<button class='' onclick='tarefasProjeto($id)'>Tarefas</button>";
-echo "<button class='' onclick='orcamentos($id)'>Orcamento</button>";
-echo "<button class='' onclick='cronogramaOrcamentario($id)'>Cronograma Orçamentário</button>";
-echo "<button class='' onclick='empenhos($id)'>Empenho</button>";
-echo "<button class='' onclick='desembolso($id)'>Desembolso</button>";
-echo "<button class='' onclick='solicitacoes($id)'>Solicitações</button>";
 
 ?>

@@ -1,3 +1,4 @@
+<button class='novoprojeto btn_back' onclick='voltar()'>Voltar</button>
 <?php
 $this->form->setAction($this->url());
 echo $this->form;
@@ -305,6 +306,17 @@ echo $this->form;
             alert('A data final não pode ser menor que a data Inicial');
         }
     }
+
+    function voltar()
+    {
+        top.location.href = '/../tarefas/';
+    }
 </script>
+
+<style>
+    .novoprojeto {
+        float:right;
+    }
+</style>
 
 

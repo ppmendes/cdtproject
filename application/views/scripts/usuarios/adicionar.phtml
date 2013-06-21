@@ -1,3 +1,4 @@
+<button class='novoprojeto btn_back' onclick='voltar()'>Voltar</button>
 <?php
 $this->form->setAction($this->url());
 $pais = $this->pais;
@@ -148,5 +149,14 @@ echo $this->form;
             $('#usuario-perfil_id').removeAttr('disabled');
         }
     }
+    function voltar()
+    {
+        top.location.href = '/../usuarios/';
+    }
 
 </script>
+<style>
+    .novoprojeto {
+        float:right;
+    }
+</style>

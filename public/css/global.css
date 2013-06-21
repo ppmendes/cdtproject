@@ -127,3 +127,13 @@ table.dataTable + div{
     height: 32px;
     background-image: url('../imagens/icones/receive.png');
 }
+
+.btn_back{
+    cursor: pointer;
+    border: none;
+    background: none;
+    text-indent: -9999px;
+    width: 32px;
+    height: 32px;
+    background-image: url('../imagens/icones/back.png');
+}
