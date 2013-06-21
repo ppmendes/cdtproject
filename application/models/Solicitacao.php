@@ -76,7 +76,7 @@ class Application_Model_Solicitacao
 
             $select = $db->select()
                 ->from(array('s' => 'solicitacao'))
-                ->where('s.deletado = false and p.projeto_id = ' . $pid)
+                ->where('s.deletado = 0 and p.projeto_id = ' . $pid)
                 ->joinLeft(array('p' => 'projeto'), 's.projeto_id = p.projeto_id',array('p.nome'=>'p.nome', 'p.projeto_id' => 'p.projeto_id'))
                 ->joinLeft(array('cp' => 'usuario'), 's.coordenador_projeto = cp.usuario_id',array('cp.usuario_id'=>'cp.usuario_id',
                 'cp.nome'=>'cp.nome', 'cp.username' => 'cp.username'))

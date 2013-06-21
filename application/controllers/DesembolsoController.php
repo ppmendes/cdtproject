@@ -42,9 +42,12 @@ class DesembolsoController extends Zend_Controller_Action
         $model = new Application_Model_Desembolso;
 
         //$this->view->somaRubricas = $model->selectTotalTiposRubrica($pid);
-        $this->view->soma = $model->selectAllSoma($pid);
 
+        $soma = $model->selectAllSoma($pid);
+        $this->view->soma = $soma;
+        $saldo_financeiro = $soma[0]['valor_recebido'] - $soma[0]['SUM( d.valor_desembolso )'];
         $form = new Application_Form_Desembolso();
+        $form->setSaldoFinanceiro($saldo_financeiro);
         $form->setProjetoId($pid);
         $form->startform();
 
@@ -222,6 +225,17 @@ class DesembolsoController extends Zend_Controller_Action
         exit;
     }
 
+    public function saldoempenhoAction() {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_request->getParam('empenho_id', 0)) {
+            $id = (int) $this->_request->getParam('empenho_id', 0);
+            $model = new Application_Model_Desembolso();
+            $saldo = $model->getSaldoEmpenho($id);
+            echo $saldo;
+        }
+    }
 
 }
 

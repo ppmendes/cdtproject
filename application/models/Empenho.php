@@ -230,31 +230,35 @@ class Application_Model_Empenho
     {
         $options = array();
         $db = Zend_Db_Table::getDefaultAdapter();
-        $orcamentoSaldo = $db->fetchAll("SELECT o.rubrica_id, codigo_rubrica, descricao, nome_destinatario, orcamento_id,
+        $orcamentoSaldo = $db->fetchAll("SELECT o.rubrica_id, codigo_rubrica, descricao, nome_destinatario, oc.orcamento_id,
 
 
-                                        (SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        (SELECT (oc.valor - SUM( emp.valor_empenho ))
                                         FROM empenho AS emp
-                                        WHERE o.orcamento_id = emp.orcamento_id AND emp.deletado = 0
+                                        WHERE oc.orcamento_id = emp.orcamento_id AND emp.deletado = 0
                                         ) AS saldo_orcamento
 
 
-                                        FROM orcamento AS o
+                                        FROM orcamento_cronograma AS oc
+                                        LEFT JOIN orcamento AS o ON oc.orcamento_id = o.orcamento_id
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                         LEFT JOIN destinatario AS d ON o.destinatario_id = d.destinatario_id
 
-                                        WHERE o.projeto_id = " . $id . " AND o.deletado = 0 AND ((SELECT (o.valor_orcamento - SUM( emp.valor_empenho ))
+                                        WHERE o.projeto_id = " . $id . " AND oc.deletado = 0 AND o.deletado = 0 AND
+                                        ((SELECT (oc.valor - SUM( emp.valor_empenho ))
                                         FROM empenho AS emp
-                                        WHERE o.orcamento_id = emp.orcamento_id AND emp.deletado = 0
+                                        WHERE oc.orcamento_id = emp.orcamento_id AND emp.deletado = 0
                                         ) > 0 )");
 
 
-        $orcamentoSemEmpenho = $db->fetchAll("SELECT orcamento.rubrica_id, codigo_rubrica, descricao, nome_destinatario, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
-                                                  FROM orcamento
+        $orcamentoSemEmpenho = $db->fetchAll("SELECT orcamento.rubrica_id, codigo_rubrica, descricao, nome_destinatario, valor, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
+                                                  FROM orcamento_cronograma
+                                                  LEFT JOIN orcamento ON orcamento_cronograma.orcamento_id = orcamento.orcamento_id
                                                   LEFT JOIN empenho ON orcamento.orcamento_id = empenho.orcamento_id
                                                   LEFT JOIN rubrica ON orcamento.rubrica_id = rubrica.rubrica_id
                                                   LEFT JOIN destinatario ON orcamento.destinatario_id = destinatario.destinatario_id
-                                                  WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id . " AND orcamento.deletado = 0");
+                                                  WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id . " AND orcamento.deletado = 0
+                                                  AND orcamento_cronograma.deletado = 0");
 
         $orcamento = array_merge($orcamentoSaldo, $orcamentoSemEmpenho);
 
@@ -274,7 +278,7 @@ class Application_Model_Empenho
                 else
                 {
                     $options[$item['orcamento_id']] = $item['codigo_rubrica'] . " : " . $item['descricao'] .
-                    " - " . $item['nome_destinatario'] . " / Saldo de R$" . $item['valor_orcamento'];
+                    " - " . $item['nome_destinatario'] . " / Saldo de R$" . $item['valor'];
                 }
 
             }

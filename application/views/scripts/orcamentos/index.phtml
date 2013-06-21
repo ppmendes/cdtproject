@@ -93,7 +93,14 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     $somaDesembolso = 0;
     $decimalfilter = new Zend_Filter_DecimalFilter();
     $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['p.orcamento']);
-    $valor_cronograma_financeiro = number_format(0 + $this->orcamentos[0]['valor_recebido'], 2, '.', '');
+    if (isset($this->orcamentos[0]['valor_recebido']))
+    {
+        $valor_cronograma_financeiro = number_format(0 + $this->orcamentos[0]['valor_recebido'], 2, '.', '');
+    }
+    else
+    {
+        $valor_cronograma_financeiro = 0;
+    }
 
     foreach($this->orcamentos as $row)
     {
@@ -144,11 +151,11 @@ echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Nov
     echo "<tbody style='color:green;'>";
     echo "<tr>";
     echo "<td>" . $orcamentoProjeto . "</td>";
-    echo "<td>" . $decimalfilter->filter($somaRubrica) . "</td>";
-    echo "<td>" . $decimalfilter->filter($somaOrcamentoDisponibilizado) . "</td>";
-    echo "<td>" . $decimalfilter->filter($somaEmpenho) . "</td>";
-    echo "<td>" . $decimalfilter->filter($somaSaldoOrc) . "</td>";
-    echo "<td>" . $decimalfilter->filter($somaDesembolso) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaRubrica, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaOrcamentoDisponibilizado, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 +$somaEmpenho, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaSaldoOrc, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaDesembolso, 2, '.', '')) . "</td>";
     echo "<td>" . $decimalfilter->filter(number_format(0 + $valor_cronograma_financeiro - $somaDesembolso, 2, '.', '')) . "</td>";
 
     echo "</tr>";

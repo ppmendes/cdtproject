@@ -13,6 +13,30 @@
         });
     });   */
 
+    function saldoEmpenho(id) {
+        $.ajax({
+            url: '/desembolso/saldoempenho/empenho_id/'+id,
+            dataType:'html',
+            type:'GET',
+            success: function(data){
+                $('#desembolso-saldo_empenho').val(data);
+                var saldo_financeiro = $('#desembolso-saldo_financeiro').val();
+                saldo_financeiro = parseFloat(saldo_financeiro);
+                data = parseFloat(data);
+                // $form->getInputFilter()->get('element_name')->getValidatorChain()->attach(new ValidatorClassName());
+                if (saldo_financeiro > data)
+                {
+                    $('#desembolso-valor_desembolso').attr('validators', array("Zend_Validate_Between2(array('min' => '0,00', 'max' => " + saldo_financeiro + ")"))
+                }
+                else
+                {
+                    alert('data maior ' + data);
+                    $('#desembolso-valor_desembolso').attr('validators', array("Zend_Validate_Between2(array('min' => '0,00', 'max' => " + data + ")"))
+                }
+            }
+        })
+    }
+
 function maskPre(val, msk, pre) {
 
         val = val.replace(RegExp('[' + msk.replace(/#/g, '') + ']', 'g'), '')

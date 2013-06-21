@@ -4,9 +4,14 @@ class Application_Form_Desembolso extends Zend_Form
 {
 
     private $id_projeto;
+    private $saldo_financeiro;
 
     public function setProjetoId($id_projeto){
         $this->id_projeto = $id_projeto;
+    }
+
+    public function setSaldoFinanceiro($saldo_financeiro){
+        $this->saldo_financeiro = $saldo_financeiro;
     }
 
     public function init() {}
@@ -24,6 +29,7 @@ class Application_Form_Desembolso extends Zend_Form
             'label'      => 'Empenho a liquidar:',
             'required'   => true,
             'multiOptions' => Application_Model_Desembolso::getOptions($this->id_projeto),
+            'attribs'    => array('onchange' => 'saldoEmpenho(this.value)'),
       //      'style'      => 'height: 70px',
         ));
 
@@ -55,7 +61,7 @@ class Application_Form_Desembolso extends Zend_Form
         $this->addElement('text', 'valor_desembolso', array(
             'label'      => 'Valor do Desembolso:',
             'required'   => true,
-            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')"
+           // 'onkeyup' => "this.value=mask(this.value, '###.###.###,##')"
         ));
 
         // Add the submit button
@@ -67,6 +73,16 @@ class Application_Form_Desembolso extends Zend_Form
 
         $this->addElement('hidden', 'projeto_id', array(
             'value'      => $this->id_projeto,
+        ));
+
+        $this->addElement('hidden', 'saldo_financeiro', array(
+            'value'      => $this->saldo_financeiro,
+            'ignore'     => true,
+        ));
+
+        $this->addElement('hidden', 'saldo_empenho', array(
+            'value'      => '',
+            'ignore'     => true,
         ));
 
     }

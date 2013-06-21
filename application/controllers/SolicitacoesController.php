@@ -178,8 +178,8 @@ class SolicitacoesController extends Zend_Controller_Action
         $id = $this->_getParam('solicitacao_id');
 
         if($this->getRequest()->isPost()){
-            $form->setProjetoId($pid);
-            $form->startform();
+            //$form->setProjetoId($pid);
+            //$form->startform();
             $form->preValidation($_POST);
 
 
@@ -228,7 +228,7 @@ class SolicitacoesController extends Zend_Controller_Action
                     $model->insertContratacao($data, $descricao, $produto, $quantidade, $inicio_atividades,$fim_atividades);
                 }
 
-                $this->_redirect('/solicitacoes/');
+                $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
 
 
             }

@@ -453,12 +453,12 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         ));
 
         $this->addElement('hidden', 'projeto_id', array(
-            'value'      => '',
+            'value'      => $this->id_projeto,
             'order' =>206,
         ));
 
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
-            'value'      => '',
+            'value'      => $nomeProjeto[0]['u.usuario_id'],
             'order' =>207,
         ));
 
