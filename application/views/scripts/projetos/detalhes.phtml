@@ -1,8 +1,4 @@
-<style>
-    .menufinanceiro {
-        float:none;
-    }
-</style>
+
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
     function confirmarExclusao(id)
@@ -63,14 +59,14 @@ echo "<button class=\"right btn_delete\" onclick='confirmarExclusao($id)'>Exclui
 echo "<button class=\"right btn_edit\" onclick='editar($id)'>Editar</button>";
 
 echo "<div class='menufinanceiro'>";
-echo "<button class='' onclick='orcamentos($id)'><img src='imagens/icones/orcamento.png'>Orçamento</button>";
-echo "<button class='termo_aditivo' onclick='termoAditivo($id)'><img src='imagens/icones/termoaditivo.png'>Termo Aditivo do Projeto</button>";
-echo "<button class='cronograma_financeiro' onclick='cronogramaFinanceiro($id)'><img src='imagens/icones/cronogramafinanceiro.png'>Cronograma Financeiro</button>";
-echo "<button class='' onclick='tarefasProjeto($id)'><img src='imagens/icones/tarefa.png'>Tarefas</button>";
-echo "<button class='' onclick='cronogramaOrcamentario($id)'><img src='imagens/icones/cronogramaorcamentario.png'>Cronograma Orçamentário</button>";
-echo "<button class='' onclick='empenhos($id)'><img src='imagens/icones/empenho.png'>Empenho</button>";
-echo "<button class='' onclick='desembolso($id)'><img src='imagens/icones/desembolso.png'>Desembolso</button>";
-echo "<button class='' onclick='solicitacoes($id)'><img src='imagens/icones/solicitacao.png'>Solicitações</button>";
+echo "<button class='btn_financeiro' onclick='orcamentos($id)'><img src='imagens/icones/orcamento.png'>Orçamento</button>";
+echo "<button class='btn_financeiro' onclick='termoAditivo($id)'><img src='imagens/icones/termoaditivo.png'>Termo Aditivo do Projeto</button>";
+echo "<button class='btn_financeiro' onclick='cronogramaFinanceiro($id)'><img src='imagens/icones/cronogramafinanceiro.png'>Cronograma Financeiro</button>";
+echo "<button class='btn_financeiro' onclick='tarefasProjeto($id)'><img src='imagens/icones/tarefa.png'>Tarefas</button>";
+echo "<button class='btn_financeiro' onclick='cronogramaOrcamentario($id)'><img src='imagens/icones/cronogramaorcamentario.png'>Cronograma Orçamentário</button>";
+echo "<button class='btn_financeiro' onclick='empenhos($id)'><img src='imagens/icones/empenho.png'>Empenho</button>";
+echo "<button class='btn_financeiro' onclick='desembolso($id)'><img src='imagens/icones/desembolso.png'>Desembolso</button>";
+echo "<button class='btn_financeiro' onclick='solicitacoes($id)'><img src='imagens/icones/solicitacao.png'>Solicitações</button>";
 echo "</div>";
 
 $this->detalhes->setAction($this->url());
