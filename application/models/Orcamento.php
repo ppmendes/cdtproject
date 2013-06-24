@@ -151,9 +151,8 @@ class Application_Model_Orcamento
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
-                                         FROM empenho AS e2
-                                         LEFT JOIN pre_empenho AS pe ON e2.pre_empenho_id = pe.pre_empenho_id
-                                         WHERE e2.orcamento_id = o.orcamento_id AND e2.deletado = 0
+                                         FROM pre_empenho AS pe
+                                         WHERE pe.projeto_id = " . $id . " AND pe.orcamento_id = o.orcamento_id AND pe.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( d.valor_desembolso )

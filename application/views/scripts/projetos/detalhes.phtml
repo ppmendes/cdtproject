@@ -1,4 +1,3 @@
-
 <script type="text/javascript" src='js/detalhes.js'></script>
 <script>
     function confirmarExclusao(id)
@@ -50,6 +49,10 @@
     {
         top.location.href = '../solicitacoes/index/projeto_id/'+id;
     }
+    function mapeamentoDeBeneficiarios(id)
+    {
+        top.location.href = '../beneficiarios/indexmapeamento/projeto_id/'+id;
+    }
 </script>
 
 <?php
@@ -67,6 +70,7 @@ echo "<button class='btn_financeiro' onclick='cronogramaOrcamentario($id)'><img 
 echo "<button class='btn_financeiro' onclick='empenhos($id)'><img src='imagens/icones/empenho.png'>Empenho</button>";
 echo "<button class='btn_financeiro' onclick='desembolso($id)'><img src='imagens/icones/desembolso.png'>Desembolso</button>";
 echo "<button class='btn_financeiro' onclick='solicitacoes($id)'><img src='imagens/icones/solicitacao.png'>Solicitações</button>";
+echo "<button class='' onclick='mapeamentoDeBeneficiarios($id)'>Mapeamento de Beneficiários</button>";
 echo "</div>";
 
 $this->detalhes->setAction($this->url());

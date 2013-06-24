@@ -1,0 +1,21 @@
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $( "#projeto_beneficiario-beneficiario").combogrid({
+            debug:false,
+            colModel: [{'columnName':'nome','width':'45','label':'Beneficiário'},{'columnName':'cpf_cnpj','width':'45','label':'CPF/CNPJ'}],
+            url: 'beneficiarios/combogridbeneficiario/',
+            select: function( event, ui ) {
+                $("#projeto_beneficiario-beneficiario").val( ui.item.nome );
+                $("#projeto_beneficiario-beneficiario_id").val( ui.item.beneficiario_id );
+                return false;
+            }
+        });
+    });
+
+</script>
+
+<?php
+    $this->form->setAction($this->url());
+    echo $this->form;
+?>

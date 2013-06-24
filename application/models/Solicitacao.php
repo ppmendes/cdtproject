@@ -181,6 +181,14 @@ class Application_Model_Solicitacao
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_bensServicos = new Application_Model_DbTable_BensServicos();
         $table_companhiasSugeridas = new Application_Model_DbTable_CompanhiasSugeridas();
+        $table_preEmpenho = new Application_Model_DbTable_PreEmpenho();
+
+        $data['pre_empenho']['orcamento_id'] = $data['solicitacoes']['destinatario'];
+        unset($data['solicitacoes']['destinatario']);
+        $data['pre_empenho']['valor_pre_empenho'] = $data['solicitacoes']['valor_estimado'];
+        $data['pre_empenho']['projeto_id'] = $data['solicitacoes']['projeto_id'];
+        $data['pre_empenho']['pre_empenho_historico'] = $data['solicitacoes']['justificativa'];
+        $data['pre_empenho']['data_pre_empenho'] = $data['solicitacoes']['data_solicitacao'];
 
         $data['bens_servicos']['quantidade'] = $data['solicitacoes']['quantidade'] . $quantidade;
         $data['bens_servicos']['nome'] = $data['solicitacoes']['nome'] . $nome;
@@ -189,6 +197,7 @@ class Application_Model_Solicitacao
         unset($data['solicitacoes']['quantidade']);
         unset($data['solicitacoes']['nome']);
         unset($data['solicitacoes']['valor_unitario']);
+        unset($data['solicitacoes']['valor_estimado']);
 
         $companhia_id_1 = $data['solicitacoes']['companhia_id_1'];
         unset($data['solicitacoes']['companhia_id_1']);
@@ -201,7 +210,8 @@ class Application_Model_Solicitacao
 
         $table_solicitacao->insert($data['solicitacoes']);
 
-        $data['bens_servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
+        $solicitacao_id = $this->getLastInsertedId('solicitacao');
+        $data['bens_servicos']['solicitacao_id'] = $solicitacao_id;
         $table_bensServicos->insert($data['bens_servicos']);
 
         $data['companhias_sugeridas']['bens_servicos_id'] = $this->getLastInsertedId('bens_servicos');
@@ -220,6 +230,10 @@ class Application_Model_Solicitacao
             $data['companhias_sugeridas']['companhia_id'] = $companhia_id_3;
             $table_companhiasSugeridas->insert($data['companhias_sugeridas']);
         }
+
+        $data['pre_empenho']['solicitacao_id'] = $solicitacao_id;
+        $table_preEmpenho->insert($data['pre_empenho']);
+
     }
 
 
@@ -228,6 +242,14 @@ class Application_Model_Solicitacao
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_servicos = new Application_Model_DbTable_Servicos();
         $table_cronograma_atividades = new Application_Model_DbTable_CronogramaAtividades();
+        $table_preEmpenho = new Application_Model_DbTable_PreEmpenho();
+
+        $data['pre_empenho']['orcamento_id'] = $data['solicitacoes']['destinatario'];
+        unset($data['solicitacoes']['destinatario']);
+        $data['pre_empenho']['valor_pre_empenho'] = $data['solicitacoes']['valor_real'];
+        $data['pre_empenho']['projeto_id'] = $data['solicitacoes']['projeto_id'];
+        $data['pre_empenho']['pre_empenho_historico'] = $data['solicitacoes']['justificativa'];
+        $data['pre_empenho']['data_pre_empenho'] = $data['solicitacoes']['data_solicitacao'];
 
         $data['cronograma_atividades']['descricao'] .= $descricao;
         $data['cronograma_atividades']['produto'] .= $produto;
@@ -255,12 +277,16 @@ class Application_Model_Solicitacao
         unset($data['solicitacoes']['data_pagamento']);
 
         $table_solicitacao->insert($data['solicitacoes']);
+        $solicitacao_id = $this->getLastInsertedId('solicitacao');
 
-        $data['servicos']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
+        $data['servicos']['solicitacao_id'] = $solicitacao_id;
         $table_servicos->insert($data['servicos']);
 
         $data['cronograma_atividades']['servicos_id'] = $this->getLastInsertedId('servicos');
         $table_cronograma_atividades->insert($data['cronograma_atividades']);
+
+        $data['pre_empenho']['solicitacao_id'] = $solicitacao_id;
+        $table_preEmpenho->insert($data['pre_empenho']);
     }
 
     public function insertPassagens($data)
@@ -268,6 +294,17 @@ class Application_Model_Solicitacao
         $table_solicitacao = new Application_Model_DbTable_Solicitacao();
         $table_diarias_passagens = new Application_Model_DbTable_DiariasPassagens();
         $table_viagem_detalhe = new Application_Model_DbTable_ViagemDetalhe();
+        $table_preEmpenho = new Application_Model_DbTable_PreEmpenho();
+
+        $valor_total_solicitacao = $data['solicitacoes']['valor_passagens'] +
+            $data['solicitacoes']['numero_dias'] * $data['solicitacoes']['valor_voo'];
+
+        $data['pre_empenho']['orcamento_id'] = $data['solicitacoes']['destinatario'];
+        unset($data['solicitacoes']['destinatario']);
+        $data['pre_empenho']['valor_pre_empenho'] = $valor_total_solicitacao;
+        $data['pre_empenho']['projeto_id'] = $data['solicitacoes']['projeto_id'];
+        $data['pre_empenho']['pre_empenho_historico'] = $data['solicitacoes']['motivos'];
+        $data['pre_empenho']['data_pre_empenho'] = $data['solicitacoes']['data_solicitacao'];
 
         $data['solicitacoes']['tipo_solicitacao_id'] = 3;
         $data['solicitacoes']['coordenador_projeto'] = $data['solicitacoes']['coordenador_tecnico_id'];
@@ -313,13 +350,16 @@ class Application_Model_Solicitacao
         unset($data['solicitacoes']['data']);
 
         $table_solicitacao->insert($data['solicitacoes']);
+        $solicitacao_id = $this->getLastInsertedId('solicitacao');
 
-        $data['diarias_passagens']['solicitacao_id'] = $this->getLastInsertedId('solicitacao');
+        $data['diarias_passagens']['solicitacao_id'] = $solicitacao_id;
         $table_diarias_passagens->insert($data['diarias_passagens']);
 
         $data['viagem_detalhe']['diarias_passagens_id'] = $this->getLastInsertedId('diarias_passagens');
         $table_viagem_detalhe->insert($data['viagem_detalhe']);
 
+        $data['pre_empenho']['solicitacao_id'] = $solicitacao_id;
+        $table_preEmpenho->insert($data['pre_empenho']);
     }
 
     public function updateaquisicao($data, $id, $quantidade, $nome, $valor_unitario)
@@ -638,9 +678,8 @@ class Application_Model_Solicitacao
                                          ) AS valor_empenho,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
-                                         FROM empenho AS e2
-                                         LEFT JOIN pre_empenho AS pe ON e2.pre_empenho_id = pe.pre_empenho_id
-                                         WHERE e2.orcamento_id = o.orcamento_id AND e2.deletado = 0
+                                         FROM pre_empenho AS pe
+                                         WHERE pe.orcamento_id = o.orcamento_id AND pe.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( d.valor_desembolso )
@@ -660,6 +699,25 @@ class Application_Model_Solicitacao
 
 
 
+
+            return $resultado;
+
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
+    public function getRubricaId($oid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('o' => 'orcamento'), array('rubrica_id' => 'rubrica_id'))
+                ->where('o.orcamento_id = ' . $oid . ' AND o.deletado = 0');
+
+            $stmt = $select->query();
+            $resultado = $stmt->fetchAll();
 
             return $resultado;
 

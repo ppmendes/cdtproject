@@ -127,7 +127,6 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Destinatário:',
             'multiOptions' => $array,
             'required'   => false,
-            'ignore'         => true,
             'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
             'order'          => 8
         ));

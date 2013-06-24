@@ -106,9 +106,25 @@ $projeto_id = $this->pid;
     $somaOrcamentoDisponibilizado = number_format($somaOrcamentoDisponibilizado + $valor_cronograma_orcamentario + 0, 2, '.', '');
     $somaSaldoOrc = number_format(0 + $somaOrcamentoDisponibilizado - $somaEmpenho , 2, '.', '');
 
+    foreach($this->pre_empenhos as $row)
+    {
+        echo "<tr>";
+        echo "<td>" . $row['codigo_rubrica'] . "</a></td>";
+        echo "<td >" . $row['descricao'] . "</td>";
+        echo "<td>" .  $datefilter->filter($row['data_pre_empenho']) . "</td>";
+        echo "<td > Pré-Empenho </td>";
+        echo "<td >" .  $row['pre_empenho_historico'] . "</td>";
+        echo "<td > - </td>";
+        echo "<td >" .  $decimalfilter->filter($row['valor_pre_empenho']) . "</td>";
+        echo "<td > - </td>";
+        echo "<td > - </td>";
+        echo "<td > - </td>";
+        echo "<td > 0,00 </td>";
+        echo "</tr>";
+    }
+
     foreach($this->resultado as $row)
     {
-    //$row = $row->toArray();
     echo "<tr id='".$row['empenho_id']."'>";
     echo "<td><a href='/empenhos/detalhes/empenho_id/{$row['empenho_id']}/projeto_id/{$row['projeto_id']}'>" . $row['codigo_rubrica'] . "</a></td>";
     echo "<td >" .  $row['rubrica_descricao'] . "</td>";
@@ -123,6 +139,7 @@ $projeto_id = $this->pid;
     echo "<td >" .  $decimalfilter->filter(number_format(0 + $row['valor_executado'], 2, '.', '')) . "</td>";
     echo "</tr>";
     }
+
     echo "</tbody></table>";
 
     echo "</br>";

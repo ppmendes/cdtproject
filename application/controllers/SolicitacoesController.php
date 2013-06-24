@@ -68,6 +68,7 @@ class SolicitacoesController extends Zend_Controller_Action
                 {
                     if (array_key_exists("quantidade_" . $i, $data['solicitacoes']) == 1)
                     {
+                        $data['solicitacoes']['valor_estimado'] += $data['solicitacoes']['valor_estimado_' . $i];
                         unset($data['solicitacoes']['quantidade_' . $i]);
                         unset($data['solicitacoes']['nome_' . $i]);
                         unset($data['solicitacoes']['valor_unitario_' . $i]);
@@ -75,6 +76,8 @@ class SolicitacoesController extends Zend_Controller_Action
                     }
                 }
 
+                //$rubrica_id = $model->getRubricaId($data['solicitacoes']['destinatario'])[0]['rubrica_id'];
+                //$data['solicitacoes']['destinatario'] = $rubrica_id;
 
                 if($id){
 
@@ -221,6 +224,9 @@ class SolicitacoesController extends Zend_Controller_Action
                     }
                 }
 
+                //$rubrica_id = $model->getRubricaId($data['solicitacoes']['destinatario'])[0]['rubrica_id'];
+                //$data['solicitacoes']['destinatario'] = $rubrica_id;
+
                 if($id){
                     $model->updateContratacao($data, $id, $descricao, $produto, $quantidade, $inicio_atividades,$fim_atividades );
                 }else{
@@ -348,12 +354,10 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
         if($this->getRequest()->isPost()){
+
             if($form->isValid($request->getPost())){
-                $form->setProjetoId($pid);
-                $form->startform();
+
                 $data = $form->getValues();
-
-
 
                 if($id){
                     $model->updatePassagens($data, $id);
@@ -361,7 +365,7 @@ class SolicitacoesController extends Zend_Controller_Action
                     $model->insertPassagens($data);
                 }
 
-                $this->_redirect('/solicitacoes/');
+                $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
             }
         }elseif ($id){
 
@@ -743,6 +747,7 @@ class SolicitacoesController extends Zend_Controller_Action
 
     public function combogridbeneficiarioAction()
     {
+        $pid = $this->_getParam('projeto_id');
         $page = $this->_getParam('page');
         $limit = $this->_getParam('rows');
         $sidx = $this->_getParam('sidx');
@@ -762,10 +767,12 @@ class SolicitacoesController extends Zend_Controller_Action
 
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
-        $where = 'nome like ? or cpf_cnpj like ?';
+        $where = '(nome like ? or cpf_cnpj like ?) and projeto_id = ' . $pid;
 
-        $select = $dbAdapter->select()->from('beneficiario',array('count(*) as count'))->where($where,$searchTerm)
-        ->where('tipo_beneficiario_id = ?', 1);
+        $select = $dbAdapter->select()->from(array('b' => 'beneficiario'),array('count(*) as count'))->where($where,$searchTerm)
+            ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array());
+
+        //->where('tipo_beneficiario_id = ?', 1);
 
 
         $qtdRubrica = $dbAdapter->fetchAll($select);
@@ -781,13 +788,17 @@ class SolicitacoesController extends Zend_Controller_Action
 
         if($total_pages!=0)
         {
-            $select = $dbAdapter->select()->from('beneficiario',array('beneficiario_id','nome','cpf_cnpj'))->where($where,$searchTerm)
-                ->where('tipo_beneficiario_id = ?', 1)
+            $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome', 'cpf_cnpj'))
+                ->where($where,$searchTerm)
+                //->where('tipo_beneficiario_id = ?', 1)
+                ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.projeto_id' => 'pb.projeto_id'))
                 ->order(array("$sidx $sord"))->limit($limit,$start);
         }
         else{
-            $select = $dbAdapter->select()->from('beneficiario',array('beneficiario_id','nome','cpf_cnpj'))->where($where,$searchTerm)
-                ->where('tipo_beneficiario_id = ?', 1)
+            $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome', 'cpf_cnpj'))
+                ->where($where,$searchTerm)
+                //->where('tipo_beneficiario_id = ?', 1)
+                ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.projeto_id' => 'pb.projeto_id'))
                 ->order(array("$sidx $sord"));
         }
 
