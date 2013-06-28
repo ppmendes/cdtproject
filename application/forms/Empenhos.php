@@ -146,7 +146,6 @@ class Application_Form_Empenhos extends Zend_Form
         $dados = $_POST;
         $valor_empenho = $this->getElement('valor_empenho');
         $saldo_orcamento_disponibilizado = $dados['empenhos']['saldo_orcamento_disponibilizado'];
-        var_dump($saldo_orcamento_disponibilizado);
 
         $valor_empenho->removeValidator('Zend_Validate_Between2');
         $valor_empenho->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $saldo_orcamento_disponibilizado)));
