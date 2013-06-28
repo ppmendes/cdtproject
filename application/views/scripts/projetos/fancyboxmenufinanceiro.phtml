@@ -38,6 +38,10 @@
     {
         top.location.href = '/../solicitacoes/index/projeto_id/'+id;
     }
+    function mapeamentoDeBeneficiarios(id)
+    {
+        top.location.href = '../beneficiarios/indexmapeamento/projeto_id/'+id;
+    }
 </script>
 
 <?php
@@ -51,6 +55,6 @@ echo "<button class='' onclick='cronogramaOrcamentario($id)'><img src='imagens/i
 echo "<button class='' onclick='empenhos($id)'><img src='imagens/icones/empenho.png'>Empenho</button>";
 echo "<button class='' onclick='desembolso($id)'><img src='imagens/icones/desembolso.png'>Desembolso</button>";
 echo "<button class='' onclick='solicitacoes($id)'><img src='imagens/icones/solicitacao.png'>Solicitações</button>";
-
+echo "<button class='' onclick='mapeamentoDeBeneficiarios($id)'><img src='imagens/icones/map_beneficiario.png'>Mapeamento de Beneficiários</button>";
 
 ?>

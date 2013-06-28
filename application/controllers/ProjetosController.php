@@ -10,8 +10,9 @@ class ProjetosController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+
         $projetoModel = new Application_Model_Projeto();
+        $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
         $id_usuario=$usuario_logado->usuario_id;
         $this->view->projetos = $projetoModel->selectAll($id_usuario);
 
