@@ -357,6 +357,8 @@ class Application_Model_Desembolso
 
             $rubrica_id = $item['rubrica_id'];
 
+                $options[0] = 'Selecione';
+
                 if ($rubrica_id != '44')
                 {
 

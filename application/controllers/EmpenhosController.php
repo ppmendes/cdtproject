@@ -54,6 +54,9 @@ class EmpenhosController extends Zend_Controller_Action
         $model = new Application_Model_Empenho;
 
         if($this->getRequest()->isPost()){
+
+            $form->preValidation($_POST);
+
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();

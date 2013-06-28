@@ -53,6 +53,9 @@ class DesembolsoController extends Zend_Controller_Action
 
 
         if($this->getRequest()->isPost()){
+
+            $form->preValidation($_POST);
+
             if($form->isValid($request->getPost())){
 //                echo "<pre>";
 //                print_r($form->getValues());

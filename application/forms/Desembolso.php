@@ -25,10 +25,12 @@ class Application_Form_Desembolso extends Zend_Form
         $this->setMethod('post');
 
         //Empenho a liquidar input type text
+        $array_empenhos_a_liquidar = Application_Model_Desembolso::getOptions($this->id_projeto);
+
         $this->addElement('select', 'empenho_id', array(
             'label'      => 'Empenho a liquidar:',
             'required'   => true,
-            'multiOptions' => Application_Model_Desembolso::getOptions($this->id_projeto),
+            'multiOptions' => $array_empenhos_a_liquidar,
             'attribs'    => array('onchange' => 'saldoEmpenho(this.value)'),
       //      'style'      => 'height: 70px',
         ));
@@ -61,8 +63,11 @@ class Application_Form_Desembolso extends Zend_Form
         $this->addElement('text', 'valor_desembolso', array(
             'label'      => 'Valor do Desembolso:',
             'required'   => true,
-           // 'onkeyup' => "this.value=mask(this.value, '###.###.###,##')"
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')"
         ));
+
+        $elemento = $this->getElement('valor_desembolso');
+        $elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $this->saldo_financeiro)));
 
         // Add the submit button
         $this->addElement('submit', 'submit', array(
@@ -84,6 +89,25 @@ class Application_Form_Desembolso extends Zend_Form
             'value'      => '',
             'ignore'     => true,
         ));
+
+    }
+
+
+    public function preValidation(array $data)
+    {
+        $dados = $_POST;
+        $valor_desembolso = $this->getElement('valor_desembolso');
+        $saldo_empenho = $dados['desembolso']['saldo_empenho'];
+        $saldo_financeiro = $dados['desembolso']['saldo_financeiro'];
+
+        $valor_desembolso->removeValidator('Zend_Validate_Between2');
+        if ($saldo_empenho > $saldo_financeiro)
+        {
+            $valor_desembolso->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $saldo_financeiro)));
+        }else
+        {
+            $valor_desembolso->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $saldo_empenho)));
+        }
 
     }
 }

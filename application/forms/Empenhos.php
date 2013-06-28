@@ -83,8 +83,8 @@ class Application_Form_Empenhos extends Zend_Form
             'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
-        //$elemento = $this->getElement('valor_empenho');
-        //$elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => 20000)));
+        $elemento = $this->getElement('valor_empenho');
+        $elemento->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => 1000)));
 
         //input type text
         $this->addElement('text', 'numero_parcelas', array(
@@ -139,5 +139,16 @@ class Application_Form_Empenhos extends Zend_Form
             'ignore'     => true,
         ));
 
+    }
+
+    public function preValidation(array $data)
+    {
+        $dados = $_POST;
+        $valor_empenho = $this->getElement('valor_empenho');
+        $saldo_orcamento_disponibilizado = $dados['empenhos']['saldo_orcamento_disponibilizado'];
+        var_dump($saldo_orcamento_disponibilizado);
+
+        $valor_empenho->removeValidator('Zend_Validate_Between2');
+        $valor_empenho->addValidator(new Zend_Validate_Between2(array('min' => '0,00', 'max' => $saldo_orcamento_disponibilizado)));
     }
 }

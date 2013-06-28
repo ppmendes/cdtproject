@@ -300,6 +300,8 @@ class Application_Model_Empenho
 
             $rubrica_id = $item['rubrica_id'];
 
+            $options[0] = "Selecione";
+
             if ( $rubrica_id != '44')
             {
 
