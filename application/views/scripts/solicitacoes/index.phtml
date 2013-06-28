@@ -330,10 +330,12 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
             </thead>
             <tbody>
 
+
+
             <?php
             foreach($this->solicitacoesPassagens as $row)
             {
-                //$row = $row->toArray();
+                //$row = $row->toArray();   gjsg
                 echo "<tr id='".$row['solicitacao_id']."'>";
                 echo "<td>" .   $row['solicitacao_id'] . "</td>";
                 echo "<td><a href='/solicitacoes/detalhes/solicitacao_id/" .  $row['solicitacao_id'] . "/projeto_id/" . $projeto_id . "'>
