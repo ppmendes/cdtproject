@@ -51,6 +51,8 @@ class Application_Form_Desembolso extends Zend_Form
         $this->addElement('text', 'order_dinheiro', array(
             'label'      => 'Ordem Bancária:',
             'required'   => true,
+            'class' => 'mask_ordem',
+            //'onkeyup' => "this.value=mask(this.value, '####OB######')"
         ));
 
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_pagamento');
@@ -63,7 +65,12 @@ class Application_Form_Desembolso extends Zend_Form
         $this->addElement('text', 'valor_desembolso', array(
             'label'      => 'Valor do Desembolso:',
             'required'   => true,
-            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')"
+            'attribs'    => array('maxLength' => 13),
+            //'class' => 'mask_valor',
+            'validators' => array(array('Digits')),
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
+
+
         ));
 
         $elemento = $this->getElement('valor_desembolso');
