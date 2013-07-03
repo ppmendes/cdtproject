@@ -40,6 +40,7 @@ class SolicitacoesController extends Zend_Controller_Action
         $form->startform();
 
         if($this->getRequest()->isPost()){
+
             //$form->setProjetoId($pid);
             //$form->startform();
             $form->preValidation($_POST);
@@ -323,8 +324,8 @@ class SolicitacoesController extends Zend_Controller_Action
             }
         }
 
-        $form->setProjetoId($pid);
-        $form->startform();
+        //$form->setProjetoId($pid);
+        //$form->startform();
         $this->view->form = $form;
 
 
@@ -343,15 +344,12 @@ class SolicitacoesController extends Zend_Controller_Action
         if (empty($arrayOrcamentos) == true)
         {
             echo "<script>alert('Esta solicitação não pode ser feita enquanto não existir o orçamento apropriado!'); " .
-            "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
+                "top.location.href = '/../solicitacoes/index/projeto_id/".$pid."'; </script>";
             exit;
         }
         $form->setArrayOrcamento($arrayOrcamentos);
         $form->setProjetoId($pid);
         $form->startform();
-
-        $model = new Application_Model_Solicitacao();
-
 
         if($this->getRequest()->isPost()){
 
@@ -374,58 +372,58 @@ class SolicitacoesController extends Zend_Controller_Action
             if(is_array($data)){
 
                 //Preencher dados de projeto e coordenador
-            $dadosProjeto = $model->buscaProjetoNome($id);
+                $dadosProjeto = $model->buscaProjetoNome($id);
 
-            $data['coordenador_projeto_id'] = $data['coordenador_projeto'];
-            $data['email'] = $dadosProjeto[0]['cp.email'];
-            $data['telefone_coordenador'] = $dadosProjeto[0]['cp.telefone'];
-            $data['fax_coordenador'] = $dadosProjeto[0]['cp.celular'];
-            $data['projeto'] = $dadosProjeto[0]['p.nome'];
-            $data['coordenador_projeto'] = $dadosProjeto[0]['cp.username'];
-            $data['projeto'] = $dadosProjeto[0]['p.nome'];
-            $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
+                $data['coordenador_projeto_id'] = $data['coordenador_projeto'];
+                $data['email'] = $dadosProjeto[0]['cp.email'];
+                $data['telefone_coordenador'] = $dadosProjeto[0]['cp.telefone'];
+                $data['fax_coordenador'] = $dadosProjeto[0]['cp.celular'];
+                $data['projeto'] = $dadosProjeto[0]['p.nome'];
+                $data['coordenador_projeto'] = $dadosProjeto[0]['cp.username'];
+                $data['projeto'] = $dadosProjeto[0]['p.nome'];
+                $data['coordenador_tecnico_id'] = $dadosProjeto[0]['cp.usuario_id'];
 
-            //Preencher dados do beneficiário
-            $dadosBeneficiario = $model->buscaBeneficiario($id);
+                //Preencher dados do beneficiário
+                $dadosBeneficiario = $model->buscaBeneficiario($id);
 
-            $data['beneficiario_id'] = $dadosBeneficiario[0]['b.beneficiario_id'];
-            $data['beneficiario'] = $dadosBeneficiario[0]['b.nome'];
-            $data['cpf_cnpj'] = $dadosBeneficiario[0]['b.cpf_cnpj'];
-            $data['rg_ie'] = $dadosBeneficiario[0]['b.rg_ie'];
-            $data['telefone_contratado'] = $dadosBeneficiario[0]['b.telefone'];
-            $data['email_contratado'] = $dadosBeneficiario[0]['b.email'];
-            $data['banco_id'] = $dadosBeneficiario[0]['ba.nome_banco'];
-            $data['agencia_banco'] = $dadosBeneficiario[0]['b.agencia_banco'];
-            $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
+                $data['beneficiario_id'] = $dadosBeneficiario[0]['b.beneficiario_id'];
+                $data['beneficiario'] = $dadosBeneficiario[0]['b.nome'];
+                $data['cpf_cnpj'] = $dadosBeneficiario[0]['b.cpf_cnpj'];
+                $data['rg_ie'] = $dadosBeneficiario[0]['b.rg_ie'];
+                $data['telefone_contratado'] = $dadosBeneficiario[0]['b.telefone'];
+                $data['email_contratado'] = $dadosBeneficiario[0]['b.email'];
+                $data['banco_id'] = $dadosBeneficiario[0]['ba.nome_banco'];
+                $data['agencia_banco'] = $dadosBeneficiario[0]['b.agencia_banco'];
+                $data['conta_bancaria'] = $dadosBeneficiario[0]['b.conta_bancaria'];
 
-            $form = new Application_Form_Solicitacoes_PassagensDiarias();
+                $form = new Application_Form_Solicitacoes_PassagensDiarias();
                 $form->setProjetoId($pid);
                 $form->startform();
 
-            //Preencher os dados da passagem e diárias
-            $dadosPassagens = $model->findPassagens($id);
+                //Preencher os dados da passagem e diárias
+                $dadosPassagens = $model->findPassagens($id);
 
 
-            $data['motivos'] = $dadosPassagens[0]['motivos'];
-            $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];
-            $data['data_saida'] = $dadosPassagens[0]['data_saida'];
-            $data['data_volta'] = $dadosPassagens[0]['data_volta'];
-            $data['hora_saida'] = '';
-            $data['hora_chegada'] = '';
-            $data['tipo_detalhe'] = '';
-            $data['valor_passagens'] = $dadosPassagens[0]['valor_passagens'];
-            $data['local'] = '';
-            $data['data'] = '';
-            $data['valor'] = '';
+                $data['motivos'] = $dadosPassagens[0]['motivos'];
+                $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];
+                $data['data_saida'] = $dadosPassagens[0]['data_saida'];
+                $data['data_volta'] = $dadosPassagens[0]['data_volta'];
+                $data['hora_saida'] = '';
+                $data['hora_chegada'] = '';
+                $data['tipo_detalhe'] = '';
+                $data['valor_passagens'] = $dadosPassagens[0]['valor_passagens'];
+                $data['local'] = '';
+                $data['data'] = '';
+                $data['valor'] = '';
 
-            $form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
-            $form->populate(array("solicitacoes" => $data));
+                $form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
+                $form->populate(array("solicitacoes" => $data));
 
             }
         }
 
-        $form->setProjetoId($pid);
-        $form->startform();
+        //$form->setProjetoId($pid);
+        //$form->startform();
         $this->view->form = $form;
 
 
@@ -615,16 +613,16 @@ class SolicitacoesController extends Zend_Controller_Action
             $dadosPassagens = $model->findPassagens($id);
 
             $data['motivos'] = $dadosPassagens[0]['motivos'];
-            $data['tipo_diarias_passagens'] = $dadosPassagens[0]['td.nome_tipo'];
+            $data['tipo_diarias_passagens'] = $dadosPassagens[0]['nome_tipo'];
             $data['data_saida'] = $dadosPassagens[0]['data_saida'];
             $data['data_volta'] = $dadosPassagens[0]['data_volta'];
-            $data['hora_saida'] = '';
-            $data['hora_chegada'] = '';
-            $data['tipo_detalhe'] = '';
+            $data['hora_saida'] = $dadosPassagens[0]['hora_saida'];
+            $data['hora_chegada'] = $dadosPassagens[0]['hora_chegada'];
+            $data['tipo_detalhe'] = $dadosPassagens[0]['tipo_detalhe'];
             $data['valor_passagens'] = $dadosPassagens[0]['valor_passagens'];
-            $data['local'] = '';
-            $data['data'] = '';
-            $data['valor'] = '';
+            $data['data'] = $dadosPassagens[0]['data'];
+//            $data['valor'] = $dadosPassagens[0]['valor'];
+
 
         }
 
@@ -790,14 +788,14 @@ class SolicitacoesController extends Zend_Controller_Action
         {
             $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome', 'cpf_cnpj'))
                 ->where($where,$searchTerm)
-                //->where('tipo_beneficiario_id = ?', 1)
+            //->where('tipo_beneficiario_id = ?', 1)
                 ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.projeto_id' => 'pb.projeto_id'))
                 ->order(array("$sidx $sord"))->limit($limit,$start);
         }
         else{
             $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome', 'cpf_cnpj'))
                 ->where($where,$searchTerm)
-                //->where('tipo_beneficiario_id = ?', 1)
+            //->where('tipo_beneficiario_id = ?', 1)
                 ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.projeto_id' => 'pb.projeto_id'))
                 ->order(array("$sidx $sord"));
         }

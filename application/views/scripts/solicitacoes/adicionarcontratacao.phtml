@@ -2,18 +2,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var projeto_id = $("#solicitacoes-projeto_id").val();
-//        $( "#solicitacoes-projeto").combogrid({
-//            debug:true,
-//            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
-//            url: 'solicitacoes/combogridprojeto/',
-//            select: function( event, ui ) {
-//                $("#solicitacoes-projeto").val( ui.item.apelido + ' - ' +  ui.item.nome );
-//                $("#solicitacoes-projeto_id").val( ui.item.projeto_id );
-//                $('#solicitacoes-coordenador_tecnico_id').val(ui.item.coordenador_tecnico);
-//                preencherCoordenador();
-//                return false;
-//            }
-//        });
         $( "#solicitacoes-beneficiario").combogrid({
             debug:true,
             colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cpf_cnpj','width':'45','label':'CPF'}],
@@ -44,12 +32,12 @@ echo $this->form;
             data: valor,
             success: function(data)
             {
-            $('#solicitacoes-coordenador_projeto').val(data.username);
-            $('#solicitacoes-email').val(data.email);
-            $('#solicitacoes-telefone_coordenador').val(data.telefone);
-            $('#solicitacoes-celular_coordenador').val(data.celular);
+                $('#solicitacoes-coordenador_projeto').val(data.username);
+                $('#solicitacoes-email').val(data.email);
+                $('#solicitacoes-telefone_coordenador').val(data.telefone);
+                $('#solicitacoes-celular_coordenador').val(data.celular);
             }
-            })
+        })
     }
 
     function preencherBeneficiario()
