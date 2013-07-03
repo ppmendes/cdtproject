@@ -75,7 +75,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('text', 'projeto', array(
             'label'      => 'Projeto:',
             'required'   => true,
-            'ignore'     => true,
             'value'      => $nomeProjeto[0]['nome'],
             'readonly'   => true,
             'ignore'     => true,
@@ -131,7 +130,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
             'label'      => 'Destinatário:',
             'multiOptions' => $array,
             'required'   => false,
-            'ignore'         => true,
             'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
             'order'          => 10
         ));
@@ -188,7 +186,6 @@ class Application_Form_Solicitacoes_AquisicaoBens extends Zend_Form
         $this->addElement('text', 'valor_estimado', array(
             'label'      => 'Valor Estimado:',
             'required'   => true ,
-            'ignore'     => true,
             'order'          => 17,
             'class'         => 'campos',
         ));

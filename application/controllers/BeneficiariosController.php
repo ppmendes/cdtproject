@@ -162,6 +162,41 @@ class BeneficiariosController extends Zend_Controller_Action
 
     }
 
+    public function indexmapeamentoAction()
+    {
+        $pid = $this->_getParam('projeto_id');
+        $beneficiariosModel = new Application_Model_Beneficiario();
+        $this->view->beneficiariospf = $beneficiariosModel->selectAllpf_projeto($pid);
+        $this->view->beneficiariospj = $beneficiariosModel->selectAllpj_projeto($pid);
+        $this->view->projeto_id = $pid;
+
+    }
+
+    public function mapeamentodebeneficiariosAction(){
+        $request = $this->getRequest();
+        $form = new Application_Form_Beneficiarios_MapeamentodeBeneficiarios();
+        $model = new Application_Model_Beneficiario();
+        $pid = $this->_getParam('projeto_id');
+        $form->setProjetoId($pid);
+        $form->startform();
+
+        if($this->getRequest()->isPost()){
+            if($form->isValid($request->getPost())){
+
+                $data = $form->getValues();
+
+                    $model->insertProjetoBeneficiario($data);
+
+
+                $this->_redirect('/../beneficiarios/indexmapeamento/projeto_id/' . $pid);
+            }
+        }
+
+        $this->view->form = $form;
+
+
+    }
+
     public function selectestadosAction() {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
@@ -197,5 +232,75 @@ class BeneficiariosController extends Zend_Controller_Action
     }
 
 
+    public function combogridbeneficiarioAction()
+    {
+        $pid = $this->_getParam('beneficiario_id');
+        $page = $this->_getParam('page');
+        $limit = $this->_getParam('rows');
+        $sidx = $this->_getParam('sidx');
+        $sord = $this->_getParam('sord');
+
+        $searchTerm = $this->_getParam('searchTerm');
+
+        if(!$sidx){
+            $sidx = 'nome';
+            $sord = 'ASC';
+        }
+        if ($searchTerm=="") {
+            $searchTerm="%";
+        } else {
+            $searchTerm = "%" . $searchTerm . "%";
+        }
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $where = 'nome like ? ';
+
+        $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('count(*) as count'))
+            ->where($where,$searchTerm);
+
+
+        $qtdBeneficiarios = $dbAdapter->fetchAll($select);
+        $count = $qtdBeneficiarios[0]['count'];
+
+        if( $count >0 ) {
+            $total_pages = ceil($count/$limit);
+        } else {
+            $total_pages = 0;
+        }
+        if ($page > $total_pages) $page=$total_pages;
+        $start = $limit*$page - $limit;
+
+        if($total_pages!=0)
+        {
+            $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome', 'cpf_cnpj'))
+                ->where($where,$searchTerm)
+                ->order(array("$sidx $sord"))->limit($limit,$start);
+        }
+        else{
+            $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('beneficiario_id', 'nome', 'cpf_cnpj'))
+                ->where($where,$searchTerm)
+                ->order(array("$sidx $sord"));
+        }
+
+        try{
+            $rows = $dbAdapter->fetchAll($select);
+
+            $response = (object) array();
+            $response->page = $page;
+            $response->total = $total_pages;
+            $response->records = $count;
+            $response->rows = $rows;
+
+            echo json_encode($response);
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+        }
+
+
+        exit;
+    }
 }
 

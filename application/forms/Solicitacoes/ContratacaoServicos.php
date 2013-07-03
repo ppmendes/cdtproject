@@ -127,7 +127,6 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'label'      => 'Destinatário:',
             'multiOptions' => $array,
             'required'   => false,
-            'ignore'         => true,
             'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
             'order'          => 8
         ));
@@ -474,39 +473,27 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
 
         $dados = $_POST;
         $num = $dados['solicitacoes']['hidden_teste'];
-        $num2= $dados['solicitacoes']['hidden_teste2'];
+        //$num2= $dados['solicitacoes']['hidden_teste2'];
         echo "<script>recuperaNum()</script>";
-        echo "<script>recuperaNum2()</script>";
+        //echo "<script>recuperaNum2()</script>";
         $order = 31;
-        $order2= 111;
+        //$order2= 111;
 
         for ( $i = 2; $i<=$num ; ++$i) {
-        $name1 = "descricao_". $i;
-        $name2 = "produto_". $i;
-        $name3 = "quantidade_". $i;
-        $name4 = "inicio_atividades_". $i;
-        $name5 = "fim_atividades_". $i;
-        $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
-            $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5], $order);
-        $order = $order + 5;
-        }
+            $name1 = "descricao_". $i;
+            $name2 = "produto_". $i;
+            $name3 = "quantidade_". $i;
+            $name4 = "inicio_atividades_". $i;
+            $name5 = "fim_atividades_". $i;
 
-//        for ( $j=2; $j<=$num2 ; ++$j) {
-//        $name1 = "valor_real_". $j;
-//        $name2 = "inicio_execucao_". $j;
-//        $name3 = "fim_execucao_". $j;
-//        $name4 = "quantidade_parcelas_". $j;
-//        $name5 = "valor_parcelas_". $j;
-//        $name6 = "data_pagamento_". $j;
-//        $this->addNewField2($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3,
-//            $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5],
-//            $name6, $dados['solicitacoes'][$name6], $order2);
-//        $order2 = $order2 + 6;
-//        }
+            $this->addNewField($name1, $dados['solicitacoes'][$name1], $name2 , $dados['solicitacoes'][$name2], $name3, $dados['solicitacoes'][$name3], $name4, $dados['solicitacoes'][$name4], $name5, $dados['solicitacoes'][$name5], $order);
+            $order = $order + 5;
+        }
 
     }
 
     public function addNewField($name1, $value1, $name2, $value2, $name3, $value3, $name4, $value4, $name5, $value5, $order) {
+
 
         $this->addElement('text', $name1, array(
             'required'       => true,
@@ -535,128 +522,62 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Qtde:',
             'value'          => $value3,
-            'class'          => 'campos_menor',
+            'class'          => 'campos',
             'order'          => $order,
-            'decorators'=> $this->decoratorMenor,
+            //'decorators'=> $this->decoratorMenor,
         ));
 
         $order++;
 
-        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker($name4);
-        $emtDatePicker1->setOrder($order);
-        $emtDatePicker1->setRequired(true);
-        $emtDatePicker1->setLabel('Início do Cronograma:');
-        $emtDatePicker1->setFilters(array('DateFilter'));
-        $emtDatePicker1->setAttrib('class', 'campos');
-        $this->addElement($emtDatePicker1);
+//        $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker($name4);
+//        $emtDatePicker1->setOrder($order);
+//        $emtDatePicker1->setRequired(true);
+//        $emtDatePicker1->setValue($value4);
+//        $emtDatePicker1->setLabel('Início do Cronograma:');
+//        $emtDatePicker1->setFilters(array('DateFilter'));
+//        $emtDatePicker1->setAttrib('class', 'campos');
+//        $this->addElement($emtDatePicker1);
 
-//        $this->addElement('text', $name4, array(
-//            'required'       => true,
-//            'label'          => 'Início do Cronograma:',
-//            'value'          => $value4,
-//            'class'          => 'campos',
-//            'order'          => $order
-//        ));
+        $this->addElement('text', $name4, array(
+            'required'       => true,
+            'label'          => 'Início do Cronograma:',
+            'value'          => $value4,
+            'class'          => 'campos',
+            'order'          => $order
+        ));
 
         $order++;
 
-        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker($name5);
-        $emtDatePicker2->setOrder($order);
-        $emtDatePicker2->setRequired(true);
-        $emtDatePicker2->setLabel('Fim do Cronograma:');
-        $emtDatePicker2->setFilters(array('DateFilter'));
-        $emtDatePicker2->setAttrib('class', 'campos');
-        $this->addElement($emtDatePicker2);
+//        $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker($name5);
+//        $emtDatePicker2->setOrder($order);
+//        $emtDatePicker2->setRequired(true);
+//        $emtDatePicker2->setValue($value5);
+//        $emtDatePicker2->setLabel('Fim do Cronograma:');
+//        $emtDatePicker2->setFilters(array('DateFilter'));
+//        $emtDatePicker2->setAttrib('class', 'campos');
+//        $this->addElement($emtDatePicker2);
 
-//        $this->addElement('text', $name5, array(
-//            'required'       => true,
-//            'label'          => 'Fim do Cronograma',
-//            'value'          => $value5,
-//            'class'          => 'campos',
-//            'order'          => $order
-//        ));
+        $this->addElement('text', $name5, array(
+            'required'       => true,
+            'label'          => 'Fim do Cronograma',
+            'value'          => $value5,
+            'class'          => 'campos',
+            'order'          => $order
+        ));
 
 
         $individual = $this->getDisplayGroup('individual');
 
-       $individual->addElements(array ($this->getElement($name1), $this->getElement($name2), $this->getElement($name3),
-           $this->getElement($name4), $this->getElement($name5)));
+        $individual->addElements(array ($this->getElement($name1), $this->getElement($name2), $this->getElement($name3),
+            $this->getElement($name4), $this->getElement($name5)));
 
         echo "<script>incNum()</script>";
     }
 
-//    public function addNewField2($name1, $value1, $name2, $value2, $name3, $value3, $name4, $value4, $name5, $value5, $name6, $value6, $order2) {
-//
-//        $this->addElement('text', $name1, array(
-//            'required'       => true,
-//            'label'          => 'Valor Total do Serviço:',
-//            'value'          => $value1,
-//            'class'          => 'pagamento_campos',
-//            'order'          => $order2
-//        ));
-//
-//        $order2++;
-//
-//        $this->addElement('text', $name2, array(
-//            'required'       => true,
-//            'label'          => 'Início:',
-//            'value'          => $value2,
-//            'class'          => 'pagamento_campos',
-//            'order'          => $order2
-//        ));
-//
-//        $order2++;
-//
-//        $this->addElement('text', $name3, array(
-//            'required'       => true,
-//            'label'          => 'Término:',
-//            'value'          => $value3,
-//            'class'          => 'pagamento_campos',
-//            'order'          => $order2
-//        ));
-//
-//        $order2++;
-//
-//        $this->addElement('text', $name4, array(
-//            'required'       => true,
-//            'label'          => 'Qtde de Parcelas:',
-//            'value'          => $value4,
-//            'class'          => 'pagamento_campos',
-//            'order'          => $order2
-//        ));
-//
-//        $order2++;
-//
-//        $this->addElement('text', $name5, array(
-//            'required'       => true,
-//            'label'          => 'Valor das Parcelas',
-//            'value'          => $value5,
-//            'class'          => 'pagamento_campos',
-//            'order'          => $order2
-//        ));
-//
-//        $order2++;
-//
-//        $this->addElement('text', $name6, array(
-//            'required'       => true,
-//            'label'          => 'Data(s) Pagamento',
-//            'value'          => $value6,
-//            'class'          => 'pagamento_campos',
-//            'order'          => $order2
-//        ));
-//
-//
-//        $individual2 = $this->getDisplayGroup('individual2');
-//
-//        $individual2->addElements(array ($this->getElement($name1), $this->getElement($name2), $this->getElement($name3),
-//            $this->getElement($name4), $this->getElement($name5), $this->getElement($name6)));
-//
-//        echo "<script>incNum2()</script>";
-//    }
 }
 ?>
 
-    <script>
+<script>
     var num = 1;
     var margem = 0;
     function adicionaCampo(){

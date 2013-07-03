@@ -111,7 +111,6 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
             'label'      => 'Destinatário:',
             'multiOptions' => $array,
             'required'   => false,
-            'ignore'         => true,
             'attribs'    => array('onchange' => 'setSaldoOrcamento(this.value)'),
         ));
 
@@ -146,20 +145,20 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
 
         $this->addElement('text', 'cargo', array(
             'label'      => 'Cargo/Profissão:',
-            'required'   => true,
+            'required'   => false,
             'ignore'     => true,
         ));
 
         $this->addElement('text', 'unidade', array(
             'label'      => 'Unidade/Departamento:',
-            'required'   => true,
+            'required'   => false,
             'ignore'     => true,
         ));
 
         //Telefone input type text
         $this->addElement('text', 'telefone_contratado', array(
             'label'      => 'Telefone:',
-            'required'   => true,
+            'required'   => false,
             'readonly'   => true,
             'ignore'     => true,
         ));
@@ -355,11 +354,12 @@ class Application_Form_Solicitacoes_PassagensDiarias extends Zend_Form
         ));
 
         $this->addElement('hidden', 'projeto_id', array(
-            'value'      => '',
+            'value'      => $this->id_projeto,
         ));
 
+
         $this->addElement('hidden', 'coordenador_tecnico_id', array(
-            'value'      => '',
+            'value'      => $nomeProjeto[0]['u.usuario_id'],
         ));
 
         $this->addElement('hidden', 'data_solicitacao', array(

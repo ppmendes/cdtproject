@@ -15,6 +15,12 @@ class Application_Model_Beneficiario
         $table->insert($data['beneficiario']);
     }
 
+    public function insertProjetoBeneficiario($data)
+    {
+        $table = new Application_Model_DbTable_ProjetoBeneficiario();
+        $table->insert($data['projeto_beneficiario']);
+    }
+
     public function delete($id)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -62,6 +68,46 @@ class Application_Model_Beneficiario
             ->from(array('b' => 'beneficiario'))
             ->where('b.deletado = ?', false)
             ->where('b.tipo_beneficiario_id = ?', 2)
+            ->joinLeft(array('ba' => 'banco'), 'b.banco_id = ba.banco_id',array('ba.banco_id'=>'ba.banco_id','ba.nome_banco'=>'ba.nome_banco'))
+            ->joinLeft(array('es' => 'escolaridade'), 'b.escolaridade_id = es.escolaridade_id',array('es.escolaridade_id'=>'es.escolaridade_id','es.nome_escolaridade'=>'es.nome_escolaridade'));
+
+        $stmt = $select->query();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function selectAllpf_projeto($pid)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()
+            ->from(array('b' => 'beneficiario'))
+            ->where('b.deletado = ?', false)
+            ->where('pb.projeto_id = ?', $pid)
+            ->where('b.tipo_beneficiario_id = ?', 1)
+            ->joinInner(array('pb'  => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.beneficiario_id' => 'pb.beneficiario_id'))
+            ->joinLeft(array('ba' => 'banco'), 'b.banco_id = ba.banco_id',array('ba.banco_id'=>'ba.banco_id','ba.nome_banco'=>'ba.nome_banco'))
+            ->joinLeft(array('es' => 'escolaridade'), 'b.escolaridade_id = es.escolaridade_id',array('es.escolaridade_id'=>'es.escolaridade_id','es.nome_escolaridade'=>'es.nome_escolaridade'));
+
+        $stmt = $select->query();
+
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    public function selectAllpj_projeto($pid)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        $select = $db->select()
+            ->from(array('b' => 'beneficiario'))
+            ->where('b.deletado = ?', false)
+            ->where('pb.projeto_id = ?', $pid)
+            ->where('b.tipo_beneficiario_id = ?', 2)
+            ->joinInner(array('pb'  => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.beneficiario_id' => 'pb.beneficiario_id'))
             ->joinLeft(array('ba' => 'banco'), 'b.banco_id = ba.banco_id',array('ba.banco_id'=>'ba.banco_id','ba.nome_banco'=>'ba.nome_banco'))
             ->joinLeft(array('es' => 'escolaridade'), 'b.escolaridade_id = es.escolaridade_id',array('es.escolaridade_id'=>'es.escolaridade_id','es.nome_escolaridade'=>'es.nome_escolaridade'));
 

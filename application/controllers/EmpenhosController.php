@@ -13,6 +13,7 @@ class EmpenhosController extends Zend_Controller_Action
         $model = new Application_Model_Empenho();
         $pid = $this->_getParam('projeto_id');
         $aux = $model->selectAll($pid);
+        $pre_empenhos = $model->selectAllPreEmpenhos($pid);
         $beneModel = new Application_Model_Beneficiario();
         $orcModel = new Application_Model_Orcamento();
         $orcModel->saldoOrcamentoDisponibilizado(952);
@@ -31,6 +32,7 @@ class EmpenhosController extends Zend_Controller_Action
             $aux[$i]['valor_executado'] = $totaldesembolsado[0]['SUM( valor_desembolso )'];
         }
         $this->view->resultado = $aux;
+        $this->view->pre_empenhos = $pre_empenhos;
         $this->view->soma = $model->selectAllSoma($pid);
         $this->view->pid = $pid;
     }
@@ -52,6 +54,9 @@ class EmpenhosController extends Zend_Controller_Action
         $model = new Application_Model_Empenho;
 
         if($this->getRequest()->isPost()){
+
+            $form->preValidation($_POST);
+
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
@@ -110,6 +115,7 @@ class EmpenhosController extends Zend_Controller_Action
 
     public function combogridbeneficiarioAction()
     {
+        $pid = $this->_getParam('projeto_id');
         $page = $this->_getParam('page');
         $limit = $this->_getParam('rows');
         $sidx = $this->_getParam('sidx');
@@ -129,10 +135,11 @@ class EmpenhosController extends Zend_Controller_Action
 
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
-        $where = 'nome like ? ';
+        $where = '(nome like ? or cpf_cnpj like ?) and projeto_id = ' . $pid;
 
         $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('count(*) as count'))
-                                      ->where($where,$searchTerm);
+                                      ->where($where,$searchTerm)
+                                      ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array());
 
 
         $qtdRubrica = $dbAdapter->fetchAll($select);
@@ -150,11 +157,13 @@ class EmpenhosController extends Zend_Controller_Action
         {
             $select = $dbAdapter->select()->from(array('b' => 'beneficiario') ,array('beneficiario_id', 'nome', 'cpf_cnpj'))
                                           ->where($where,$searchTerm)
+                                          ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.projeto_id' => 'pb.projeto_id'))
                                           ->order(array("$sidx $sord"))->limit($limit,$start);
         }
         else{
             $select = $dbAdapter->select()->from(array('b'=>'beneficiario'),array('beneficiario_id', 'nome', 'cpf_cnpj'))
                                           ->where($where,$searchTerm)
+                                          ->joinLeft(array('pb' => 'projeto_beneficiario'), 'b.beneficiario_id = pb.beneficiario_id', array('pb.projeto_id' => 'pb.projeto_id'))
                                           ->order(array("$sidx $sord"));
         }
 

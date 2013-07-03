@@ -1,3 +1,9 @@
+<style>
+    .novoprojeto {
+        float:right;
+    }
+</style>
+<button class='novoprojeto btn_back' onclick='voltar()'>Voltar</button>
 <script type="text/javascript">
 
     function atualizarTarefas(valor) {
@@ -16,9 +22,15 @@
 
     }
 
+    function voltar()
+    {
+        top.location.href = '/../arquivos/';
+    }
+
 </script>
 
 <?php
 $this->form->setAction($this->url());
 echo $this->form;
 ?>
+

@@ -1,3 +1,4 @@
+<button class='novoprojeto btn_back' onclick='voltar()'>Voltar</button>
 <?php
     $this->form->setAction($this->url());
     $pais = $this->pais;
@@ -70,4 +71,15 @@
         }
         ;
     }
+    function voltar()
+    {
+        top.location.href = '/../instituicoes/';
+
+    }
 </script>
+
+<style>
+    .novoprojeto {
+        float:right;
+    }
+</style>

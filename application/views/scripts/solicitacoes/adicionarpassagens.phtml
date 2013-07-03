@@ -1,6 +1,7 @@
 <script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+        var projeto_id = $("#solicitacoes-projeto_id").val();
 //        $( "#solicitacoes-projeto").combogrid({
 //            debug:true,
 //            colModel: [{'columnName':'apelido','width':'45','label':'Apelido'},{'columnName':'nome','width':'45','label':'Nome'}],
@@ -16,7 +17,7 @@
         $( "#solicitacoes-beneficiario").combogrid({
             debug:true,
             colModel: [{'columnName':'nome','width':'45','label':'Nome'},{'columnName':'cpf_cnpj','width':'45','label':'CPF'}],
-            url: 'solicitacoes/combogridbeneficiario/',
+            url: 'solicitacoes/combogridbeneficiario/projeto_id/'+ projeto_id,
             select: function( event, ui ) {
                 $("#solicitacoes-beneficiario").val( ui.item.nome );
                 $("#solicitacoes-beneficiario_id").val( ui.item.beneficiario_id );

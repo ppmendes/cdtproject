@@ -213,17 +213,13 @@ class Zend_Validate_Between2 extends Zend_Validate_Abstract
         $value = $decimalfilter->filter($value);
         $this->setMax($decimalfilter->filter($maximo));
 
-//        var_dump($this->_min);
-//        var_dump($value);
-//        var_dump($this->_max);
-
         if ($this->_inclusive) {
-            if ($minimo > $value || $value > $maximo) {
+            if ($minimo > $value || $value > $this->_max) {
                 $this->_error(self::NOT_BETWEEN);
                 return false;
             }
         } else {
-            if ($minimo >= $value || $value >= $maximo) {
+            if ($minimo >= $value || $value >= $this->_max) {
                 $this->_error(self::NOT_BETWEEN_STRICT);
                 return false;
             }

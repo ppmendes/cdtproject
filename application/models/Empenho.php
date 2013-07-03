@@ -123,8 +123,7 @@ class Application_Model_Empenho
             15 => 'e.orcamento_id',
             16 => 'e.usuario_id',
             17 => 'r.codigo_rubrica',
-            18 => 'e.processo_administrativo'
-
+            18 => 'e.processo_administrativo',
         );
 
         $select = $db->select()
@@ -147,6 +146,41 @@ class Application_Model_Empenho
     }catch(Exception $e){
         echo $e->getMessage();
     }
+    }
+
+    public function selectAllPreEmpenhos($id)
+    {
+        try
+        {
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $datefilter = new Zend_Filter_DateFilter();
+            $decimalfilter = new Zend_Filter_DecimalFilter();
+
+            $colunas = array(
+                1 => 'pe.pre_empenho_id',
+                2 => 'r.codigo_rubrica',
+                3 => 'r.descricao',
+                4 => 'pe.data_pre_empenho',
+                5 => 'pe.pre_empenho_historico',
+                6 => 'pe.valor_pre_empenho',
+            );
+
+            $select = $db->select()
+                ->from(array('pe' => 'pre_empenho'), array())
+                ->where('pe.projeto_id = ' . $id . ' AND pe.deletado = 0')
+                ->joinLeft(array('o'=>'orcamento'), 'pe.orcamento_id = o.orcamento_id', array())
+                ->joinLeft(array('r'=>'rubrica'), 'o.rubrica_id = r.rubrica_id', array())
+                ->columns($colunas);
+
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     public function selectAllSoma($id)
@@ -175,9 +209,9 @@ class Application_Model_Empenho
                                          ) AS valor_desembolso,
 
                                          (SELECT SUM( pe.valor_pre_empenho )
-                                         FROM pre_empenho AS pe, empenho as e1, orcamento as orc
-                                         WHERE pe.pre_empenho_id = e1.pre_empenho_id AND e1.orcamento_id = orc.orcamento_id AND orc.projeto_id = " . $id . "
-                                          AND pe.deletado = 0 AND e1.deletado = 0 AND orc.deletado = 0
+                                         FROM pre_empenho AS pe, orcamento as orc
+                                         WHERE pe.projeto_id = " . $id . " AND pe.orcamento_id = orc.orcamento_id
+                                         AND orc.projeto_id = " . $id . " AND pe.deletado = 0 AND orc.deletado = 0
                                          ) AS valor_pre_empenho,
 
                                          (SELECT SUM( valor_recebido )
@@ -189,6 +223,7 @@ class Application_Model_Empenho
                                          LEFT JOIN pre_empenho AS pe ON e.pre_empenho_id = pe.pre_empenho_id
                                          LEFT JOIN orcamento AS o ON e.orcamento_id = o.orcamento_id
                                          LEFT JOIN projeto as p ON o.projeto_id = p.projeto_id
+                                         LEFT JOIN rubrica as r ON o.rubrica_id = r.rubrica_id
                                          WHERE o.projeto_id = ". $id . " AND e.deletado = 0 AND o.deletado = 0");
 
 
@@ -238,7 +273,6 @@ class Application_Model_Empenho
                                         WHERE oc.orcamento_id = emp.orcamento_id AND emp.deletado = 0
                                         ) AS saldo_orcamento
 
-
                                         FROM orcamento_cronograma AS oc
                                         LEFT JOIN orcamento AS o ON oc.orcamento_id = o.orcamento_id
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
@@ -265,6 +299,8 @@ class Application_Model_Empenho
         foreach($orcamento as $item){
 
             $rubrica_id = $item['rubrica_id'];
+
+            $options[0] = "Selecione";
 
             if ( $rubrica_id != '44')
             {

@@ -1,3 +1,9 @@
+<button class='novoprojeto btn_back' onclick='voltar()'>Voltar</button>
+<style>
+    .novoprojeto {
+        float:right;
+    }
+</style>
 <script type="text/javascript">
     function validarDatas()
     {
@@ -33,6 +39,11 @@
         {
             alert('[Erro] a DATA FINAL REAL não pode ser menor que a DATA FINAL');
         }
+    }
+
+    function voltar()
+    {
+        top.location.href = '/../projetos/';
     }
 </script>
 
