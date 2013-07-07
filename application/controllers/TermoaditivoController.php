@@ -133,7 +133,7 @@ class TermoaditivoController extends Zend_Controller_Action
 
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
-        $where = 'o.projeto_id = ' . $pid . ' and (codigo_rubrica like ? or descricao like ? )';//, 'codigo_rubrica like '.$searchTerm);
+        $where = 'o.projeto_id = ' . $pid . ' AND (codigo_rubrica like ? or descricao like ? ) AND (r.rubrica_id <> 44 AND rubrica_id_pai <> 44)';//, 'codigo_rubrica like '.$searchTerm);
 
         $select = $dbAdapter->select()->from(array('r' => 'rubrica'),array('count(*) as count'))->where($where,$searchTerm)
             ->joinLeft(array('o' => 'orcamento'), 'r.rubrica_id = o.rubrica_id',array('o.projeto_id'=>'o.projeto_id'));
@@ -153,7 +153,7 @@ class TermoaditivoController extends Zend_Controller_Action
         {
             $select = $dbAdapter->select()
                 ->from(array('o' => 'orcamento'), array('orcamento_id'=>'o.orcamento_id', 'valor_orcamento'=>'o.valor_orcamento', 'rubrica_id' => 'r.rubrica_id'))
-                ->where('p.projeto_id = ' . $pid . ' AND p.deletado = 0 AND o.deletado = 0')
+                ->where('p.projeto_id = ' . $pid . ' AND p.deletado = 0 AND o.deletado = 0 AND (r.rubrica_id <> 44 AND rubrica_id_pai <> 44)')
                 ->joinInner(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('codigo_rubrica'=>'r.codigo_rubrica', 'descricao'=>'r.descricao'))
                 ->joinInner(array('d' => 'destinatario'), 'o.destinatario_id = d.destinatario_id', array('d.nome_destinatario'=>'d.nome_destinatario'))
                 ->joinInner(array('p' => 'projeto'), 'o.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id'))
@@ -162,7 +162,7 @@ class TermoaditivoController extends Zend_Controller_Action
         else{
             $select = $dbAdapter->select()
                 ->from(array('o' => 'orcamento'), array('orcamento_id'=>'o.orcamento_id', 'valor_orcamento'=>'o.valor_orcamento', 'rubrica_id' => 'r.rubrica_id'))
-                ->where('p.projeto_id = ' . $pid . ' AND p.deletado = 0 AND o.deletado = 0')
+                ->where('p.projeto_id = ' . $pid . ' AND p.deletado = 0 AND o.deletado = 0 AND (r.rubrica_id <> 44 AND rubrica_id_pai <> 44)')
                 ->joinInner(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('codigo_rubrica'=>'r.codigo_rubrica', 'descricao'=>'r.descricao'))
                 ->joinInner(array('d' => 'destinatario'), 'o.destinatario_id = d.destinatario_id', array('d.nome_destinatario'=>'d.nome_destinatario'))
                 ->joinInner(array('p' => 'projeto'), 'o.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id'))
