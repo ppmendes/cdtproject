@@ -63,9 +63,9 @@ class OrcamentosController extends Zend_Controller_Action
             }
         }else
 
-        $form->setProjetoId($pid);
-        $form->startform();
-        $this->view->form = $form;
+            //$form->setProjetoId($pid);
+            //$form->startform();
+            $this->view->form = $form;
     }
 
     public function detalhesAction(){
@@ -137,16 +137,16 @@ class OrcamentosController extends Zend_Controller_Action
 
         if($total_pages!=0)
         {
-        $select = $dbAdapter->select()->from('rubrica',array('rubrica_id','descricao','codigo_rubrica'))->where($where,$searchTerm)
-        ->order(array("$sidx $sord"))->limit($limit,$start);
+            $select = $dbAdapter->select()->from('rubrica',array('rubrica_id','descricao','codigo_rubrica'))->where($where,$searchTerm)
+                ->order(array("$sidx $sord"))->limit($limit,$start);
         }
         else{
             $select = $dbAdapter->select()->from('rubrica',array('rubrica_id','descricao','codigo_rubrica'))->where($where,$searchTerm)
-            ->order(array("$sidx $sord"));
+                ->order(array("$sidx $sord"));
         }
 
         try{
-        $rows = $dbAdapter->fetchAll($select);
+            $rows = $dbAdapter->fetchAll($select);
 
             $response = (object) array();
             $response->page = $page;

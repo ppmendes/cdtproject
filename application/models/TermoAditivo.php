@@ -9,15 +9,48 @@ class Application_Model_TermoAditivo
 		return $termoAditivo;
 	}
 
-    public function insert($data)
+    public function insertAlterar($data)
     {
         $str = $data['termo_aditivo']['valor_termino_aditivo'];
         $var = str_replace(".", "", $str);
         $var2 = str_replace(",", ".",$var);
         $data['termo_aditivo']['valor_termino_aditivo'] = $var2;
         $data['termo_aditivo']['data_termo_aditivo'] = date('Y-m-d H:i:s', time());
-        $table = new Application_Model_DbTable_TermoAditivo;
-        $table->insert($data['termo_aditivo']);
+
+
+        $table_termo_aditivo = new Application_Model_DbTable_TermoAditivo;
+        $table_orcamentos = new Application_Model_DbTable_Orcamento;
+
+        $table_termo_aditivo->insert($data['termo_aditivo']);
+        $table_orcamentos->update(array('valor_orcamento' => $data['termo_aditivo']['valor_termino_aditivo']), 'orcamento_id = ' . $data['termo_aditivo']['orcamento_destino']);
+    }
+
+    public function insertRemanejar($data)
+    {
+        $valor_orcamento_origem = $data['termo_aditivo']['valor_orcamento_origem'];
+        $valor_orcamento_destino = $data['termo_aditivo']['valor_orcamento_destino'];
+        unset($data['termo_aditivo']['valor_orcamento_origem']);
+        unset($data['termo_aditivo']['valor_orcamento_destino']);
+
+
+        $str = $data['termo_aditivo']['valor_termino_aditivo'];
+        $var = str_replace(".", "", $str);
+        $var2 = str_replace(",", ".",$var);
+        $data['termo_aditivo']['valor_termino_aditivo'] = $var2;
+        $data['termo_aditivo']['data_termo_aditivo'] = date('Y-m-d H:i:s', time());
+
+
+        $table_termo_aditivo = new Application_Model_DbTable_TermoAditivo;
+        $table_orcamentos = new Application_Model_DbTable_Orcamento;
+
+        $table_termo_aditivo->insert($data['termo_aditivo']);
+
+
+        $table_orcamentos->update(array('valor_orcamento' => $valor_orcamento_origem - $data['termo_aditivo']['valor_termino_aditivo']),
+                                        'orcamento_id = ' . $data['termo_aditivo']['orcamento_origem']);
+
+        $table_orcamentos->update(array('valor_orcamento' => $valor_orcamento_destino + $data['termo_aditivo']['valor_termino_aditivo']),
+            'orcamento_id = ' . $data['termo_aditivo']['orcamento_destino']);
     }
 
     public function atualizaData($nova_data, $id)

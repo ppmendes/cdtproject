@@ -1,42 +1,60 @@
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var projeto_id = $("#termo_aditivo-projeto_id").val();
+        $( "#termo_aditivo-termoAditivoAlterar").combogrid({
+            debug:false,
+            colModel: [{'columnName':'codigo_rubrica','width':'25','label':'Código Rubrica'},{'columnName':'descricao','width':'45','label':'Descrição'},{'columnName':'valor_orcamento','width':'20','label':'Valor da Rubrica'}],
+            url: 'termoaditivo/combogridrubrica/projeto_id/'+ projeto_id,
+            select: function( event, ui ) {
+                $("#termo_aditivo-termoAditivoAlterar").val( ui.item.codigo_rubrica + ' - ' + ui.item.descricao + ' - Valor: R$' + ui.item.valor_orcamento );
+                $("#termo_aditivo-orcamento_destino").val(ui.item.orcamento_id);
+               // $("#termo_aditivo-saldo_orcamento").val(ui.item.)
+                return false;
+            }
+        });
+    });
+
+</script>
 <?php
-    $this->form->setAction($this->url());
-    echo $this->form;
+$this->form->setAction($this->url());
+echo $this->form;
 ?>
 
 <script>
 
-function maskPre(val, msk, pre) {
+    function maskPre(val, msk, pre) {
 
-    val = val.replace(RegExp('[' + msk.replace(/#/g, '') + ']', 'g'), '')
+        val = val.replace(RegExp('[' + msk.replace(/#/g, '') + ']', 'g'), '')
 
-    if (val.length > 0) {
-        val = pre + val
-    }
-
-    mskVal = ''
-    v = val.length - 1
-    for (m = msk.length - 1; m >= 0 && v >= -msk.indexOf('#'); --m) {
-        if ('#' != msk.charAt(m)) {
-            mskVal = msk.charAt(m) + mskVal
-            if ('#' != msk.charAt(m - 1))
-                continue
-            --m
+        if (val.length > 0) {
+            val = pre + val
         }
-        mskVal = val.charAt(v) + mskVal
-        v--
+
+        mskVal = ''
+        v = val.length - 1
+        for (m = msk.length - 1; m >= 0 && v >= -msk.indexOf('#'); --m) {
+            if ('#' != msk.charAt(m)) {
+                mskVal = msk.charAt(m) + mskVal
+                if ('#' != msk.charAt(m - 1))
+                    continue
+                --m
+            }
+            mskVal = val.charAt(v) + mskVal
+            v--
+
+        }
+
+        if (pre.length > 0) {
+            mskVal = mskVal.replace(RegExp('^' + pre.charAt(0) + '+', 'g'), '')
+        }
+
+        return mskVal
 
     }
+    function mask(val, msk) {
 
-    if (pre.length > 0) {
-        mskVal = mskVal.replace(RegExp('^' + pre.charAt(0) + '+', 'g'), '')
+        return maskPre(val, msk, '')
     }
-
-    return mskVal
-
-}
-function mask(val, msk) {
-
-    return maskPre(val, msk, '')
-}
 
 </script>
