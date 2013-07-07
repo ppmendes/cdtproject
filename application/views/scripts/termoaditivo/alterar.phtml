@@ -9,7 +9,7 @@
             select: function( event, ui ) {
                 $("#termo_aditivo-termoAditivoAlterar").val( ui.item.codigo_rubrica + ' - ' + ui.item.descricao + ' - Valor: R$' + ui.item.valor_orcamento );
                 $("#termo_aditivo-orcamento_destino").val(ui.item.orcamento_id);
-               // $("#termo_aditivo-saldo_orcamento").val(ui.item.)
+                $("#termo_aditivo-rubrica_id").val(ui.item.rubrica_id);
                 return false;
             }
         });

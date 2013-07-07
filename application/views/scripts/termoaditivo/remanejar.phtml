@@ -10,6 +10,7 @@
                 $("#termo_aditivo-termoAditivoRemanejar1").val( ui.item.codigo_rubrica + ' - ' + ui.item.descricao + ' - Valor: R$' + ui.item.valor_orcamento );
                 $("#termo_aditivo-orcamento_origem").val(ui.item.orcamento_id);
                 $('#termo_aditivo-valor_orcamento_origem').val(ui.item.valor_orcamento);
+                $('#termo_aditivo-rubrica_id_origem').val(ui.item.rubrica_id);
 
                 return false;
             }
@@ -22,7 +23,7 @@
                 $("#termo_aditivo-termoAditivoRemanejar2").val( ui.item.codigo_rubrica + ' - ' + ui.item.descricao + ' - Valor: R$' + ui.item.valor_orcamento );
                 $("#termo_aditivo-orcamento_destino").val(ui.item.orcamento_id);
                 $('#termo_aditivo-valor_orcamento_destino').val(ui.item.valor_orcamento);
-
+                $('#termo_aditivo-rubrica_id_destino').val(ui.item.rubrica_id);
 
                 return false;
             }
