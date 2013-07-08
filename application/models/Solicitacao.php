@@ -53,11 +53,36 @@ class Application_Model_Solicitacao
         try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
+            $colunas = array(
+                0 => 's.solicitacao_id',
+                1 => 'dp.diarias_passagens_id',
+                2 => 'dp.tipo_diarias_passagens_id',
+                3 => 'dp.numero_dias',
+                4 => 'dp.pais_origem_id',
+                5 => 'dp.pais_destino_id',
+                6 => 'dp.data_saida',
+                7 => 'dp.data_volta',
+                8 => 'dp.motivos',
+                9 => 'dp.codigo_reservacao',
+                10 => 'dp.valor_passagens',
+                11 => 'dp.valor_voo',
+                12 => 'vd.cidade_origem',
+                13 => 'vd.cidade_destino',
+                14 => 'vd.hora_saida',
+                15 => 'vd.hora_chegada',
+                16 => 'vd.data',
+                17 => 'vd.numero_voo',
+                18 => 'vd.tipo_detalhe',
+                19 => 'td.nome_tipo',
+            );
+
             $select = $db->select()
-                ->from(array('d' => 'diarias_passagens'))
-                ->where('d.solicitacao_id = ?', $id)
-                ->joinLeft(array('td' => 'tipo_diarias_passagens'), 'd.tipo_diarias_passagens_id = td.tipo_diarias_passagens_id',
-                array('td.nome_tipo' => 'td.nome_tipo'));
+                ->from(array('s' => 'solicitacao'))
+                ->where('s.solicitacao_id = ?', $id)
+                ->joinLeft(array('dp' => 'diarias_passagens'), 's.solicitacao_id = dp.solicitacao_id',array())
+                ->joinLeft(array('td' => 'tipo_diarias_passagens'), 'dp.tipo_diarias_passagens_id = td.tipo_diarias_passagens_id',array())
+                ->joinLeft(array('vd' => 'viagem_detalhe'), 'dp.diarias_passagens_id = vd.diarias_passagens_id',array())
+                ->columns($colunas);
 
             $stmt = $select->query();
             $result = $stmt->fetchAll();
@@ -557,7 +582,7 @@ class Application_Model_Solicitacao
         }
         return $result;
     }
-     //
+    //
 
 
     public function buscaProjetoNome($solicitacao_id)
@@ -613,7 +638,7 @@ class Application_Model_Solicitacao
 
     public function getDiariasPassagensId($solicitacao_id){
 
-         try{
+        try{
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()

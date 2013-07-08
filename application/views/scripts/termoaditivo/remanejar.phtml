@@ -1,6 +1,40 @@
+<script type="text/javascript" src="js/jquery.ui.combogrid-1.6.2.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var projeto_id = $("#termo_aditivo-projeto_id").val();
+        $( "#termo_aditivo-termoAditivoRemanejar1").combogrid({
+            debug:false,
+            colModel: [{'columnName':'codigo_rubrica','width':'25','label':'Código Rubrica'},{'columnName':'descricao','width':'45','label':'Descrição'},{'columnName':'valor_orcamento','width':'20','label':'Valor da Rubrica'}],
+            url: 'termoaditivo/combogridrubrica/projeto_id/'+ projeto_id,
+            select: function( event, ui ) {
+                $("#termo_aditivo-termoAditivoRemanejar1").val( ui.item.codigo_rubrica + ' - ' + ui.item.descricao + ' - Valor: R$' + ui.item.valor_orcamento );
+                $("#termo_aditivo-orcamento_origem").val(ui.item.orcamento_id);
+                $('#termo_aditivo-valor_orcamento_origem').val(ui.item.valor_orcamento);
+                $('#termo_aditivo-rubrica_id_origem').val(ui.item.rubrica_id);
+
+                return false;
+            }
+        });
+        $( "#termo_aditivo-termoAditivoRemanejar2").combogrid({
+            debug:false,
+            colModel: [{'columnName':'codigo_rubrica','width':'25','label':'Código Rubrica'},{'columnName':'descricao','width':'45','label':'Descrição'},{'columnName':'valor_orcamento','width':'20','label':'Valor da Rubrica'}],
+            url: 'termoaditivo/combogridrubrica/projeto_id/'+ projeto_id,
+            select: function( event, ui ) {
+                $("#termo_aditivo-termoAditivoRemanejar2").val( ui.item.codigo_rubrica + ' - ' + ui.item.descricao + ' - Valor: R$' + ui.item.valor_orcamento );
+                $("#termo_aditivo-orcamento_destino").val(ui.item.orcamento_id);
+                $('#termo_aditivo-valor_orcamento_destino').val(ui.item.valor_orcamento);
+                $('#termo_aditivo-rubrica_id_destino').val(ui.item.rubrica_id);
+
+                return false;
+            }
+        });
+    });
+
+</script>
+
 <?php
-    $this->form->setAction($this->url());
-    echo $this->form;
+$this->form->setAction($this->url());
+echo $this->form;
 ?>
 
 <script>

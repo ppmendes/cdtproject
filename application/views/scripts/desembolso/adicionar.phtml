@@ -37,7 +37,7 @@
         })
     }
 
-function maskPre(val, msk, pre) {
+    function maskPre(val, msk, pre) {
 
         val = val.replace(RegExp('[' + msk.replace(/#/g, '') + ']', 'g'), '')
 
@@ -66,7 +66,7 @@ function maskPre(val, msk, pre) {
         return mskVal
 
     }
-    
+
     function mask(val, msk) {
 
         return maskPre(val, msk, '')

@@ -19,8 +19,9 @@ $(document).ready(function(){
         $(".positive").numeric({negative: false});
         $(".positive-integer").numeric({decimal: false, negative: false});
 
-        $("." +
-            "mask_processoadministrativo").mask('99999.999999/9999-99');
+        $(".mask_processoadministrativo").mask('99999.999999/9999-99');
+        //$(".mask_valor").mask('999.999.999,99');
+        $(".mask_ordem").mask('9999OB999999');
 	
 
 });

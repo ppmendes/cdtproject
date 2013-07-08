@@ -45,7 +45,7 @@ class Application_Model_Empenho
         unset($data['empenhos']['tarefas'],$data['empenhos']['tarefa_empenho']);
         
         $table->insert($data['empenhos']);
-        $embolso_rel = $this->getLastInsertedId('empenho');
+        $empenho_rel = $this->getLastInsertedId('empenho');
         //print_r($rubrica); exit;
         if ($rubrica[1] == '36')
         {
@@ -55,8 +55,10 @@ class Application_Model_Empenho
                 $imposto['empenhos'] = $data['empenhos'];
                 $imposto['empenhos']['orcamento_id'] = $data['empenhos']['orcamento_id'] + 1;
                 $imposto['empenhos']['descricao_historico'] = $data['empenhos']['descricao_historico']." - 20% INSS = R$ ".$valor;;
-                $imposto['empenhos']['empenho_rel'] = $embolso_rel;
+                $imposto['empenhos']['empenho_rel'] = $empenho_rel;
                 $imposto['empenhos']['valor_empenho'] = $valor;
+                unset($imposto['empenhos']['data_inicio']);
+                unset($imposto['empenhos']['data_fim']);
 
                 $table->insert($imposto['empenhos']);
             }
