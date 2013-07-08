@@ -14,7 +14,6 @@
         });
     });
 
-
     function saldoOrcamentoDisponibilizado(id) {
         $.ajax({
             url: '/empenhos/saldoorcamentodisponibilizado/orcamento_id/'+id,
@@ -78,6 +77,28 @@
             $("#empenhos-data_fim").attr('disabled', false);
         }
     }
+
+    $(function($){
+        // ADICIONAR TAREFAS
+        $('#empenhos-botao_Adicionar_Tarefa').click(function(){
+            $('#empenhos-tarefas option:selected').clone().prependTo($('#empenhos-tarefa_empenho'));
+            $('#empenhos-tarefas option:selected').remove();
+        });
+
+        // REMOVER TAREFAS
+        $('#empenhos-botao_Deletar_Tarefa').click(function(){
+            $('#empenhos-tarefa_empenho option:selected').clone().prependTo($('#empenhos-tarefas'));
+            $('#empenhos-tarefa_empenho option:selected').remove();
+        });
+
+        $('#empenhos-submit').click(function(){
+            $('#empenhos-tarefa_empenho > option').each(
+                    function(){
+                        $(this).prop('selected', true);
+                    });
+        });
+    })
+
 
 </script>
 

@@ -52,6 +52,7 @@ class EmpenhosController extends Zend_Controller_Action
         //$form->setBeneficiarioId(0);
         $form->startform();
         $model = new Application_Model_Empenho;
+        $modelTarefas= new Application_Model_DbTable_EmpenhoTarefa();
 
         if($this->getRequest()->isPost()){
 
@@ -60,20 +61,27 @@ class EmpenhosController extends Zend_Controller_Action
             if($form->isValid($request->getPost())){
 
                 $data = $form->getValues();
+                $arregloTarefas= $data['empenhos']['tarefa_empenho'];
+
 
                 if ($data['saldo_orcamento_disponibilizado'] < $data['valor_empenho']) {
                     echo "<script> alert('Saldo menor que o valor do empenho'); </script>";
                     $this->_redirect('/empenhos/adicionar/projeto_id/'.$pid);
                 }
-                
+
                 $model->insert($data);
+
+                $id_empenho=$model->getLastInsertedIdd(); //pega o id do orcamento
+                for($i=0; $i<count($arregloTarefas); $i++)
+                {
+                    $datate['empenho_id']=$id_empenho;
+                    $datate['tarefa_id']=$arregloTarefas[$i];
+                    $modelTarefas->insert($datate);
+                }
                 $this->_redirect('/empenhos/index/projeto_id/'.$pid);
             }
         }
-
         $this->view->form = $form;
-
-
     }
 
     public function detalhesAction(){

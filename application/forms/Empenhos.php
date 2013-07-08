@@ -19,21 +19,28 @@ class Application_Form_Empenhos extends Zend_Form
 
     private $id_projeto;
 
-    public function setProjetoId($id_projeto){
-        $this->id_projeto = $id_projeto;
+    public function setProjetoId($id_projeto_controller){
+        $this->id_projeto = $id_projeto_controller;
     }
 
-
-    public function init() {}
+   // public function init() {}
 
     public function startform()
     {
         $this->setIsArray('true');
-        //$this->setAttrib('enctype', 'multipart/form-data');
         $this->setElementsBelongTo('empenhos');
+        $this->setAttrib('enctype', 'multipart/form-data');
 
         // Setar metodo
         $this->setMethod('post');
+
+        $this->addElement('hidden', 'label_titulo', array(
+            'description' => 'Formulário de Empenhos',
+            'ignore' => true,
+            'decorators' => array(
+                array('Description', array('escape'=>false, 'id' => 'titulo')),
+            ),
+        ));
         
         $this->addElement('select', 'orcamento_id', array(
             'label'      => 'Rubrica: ',
@@ -41,7 +48,44 @@ class Application_Form_Empenhos extends Zend_Form
             'required'   => true,
             'attribs'    => array('onchange' => 'saldoOrcamentoDisponibilizado(this.value)'),
         ));
-        
+
+        $this->addElement('multiselect', 'tarefas', array(
+            'label'      => 'Tarefas:',
+            'multiOptions' => Application_Model_Tarefa::getTarefasByIdProjeto($this->id_projeto),
+            'required'   => false,
+            'size'=>8,
+            'RegisterInArrayValidator'=>false
+        ));
+
+        $this->addElement('button', 'botao_Adicionar_Tarefa', array(
+            'required' => false,
+            'label'     => '>>',
+        ));
+
+        $this->addElement('button', 'botao_Deletar_Tarefa', array(
+            'required' => false,
+            'label'     => '<<',
+        ));
+
+        $this->addDisplayGroup(array('botao_Adicionar_Tarefa','botao_Deletar_Tarefa'), 'individual');
+
+        $individual = $this->getDisplayGroup('individual');
+
+        $individual->setDecorators(array(
+            'FormElements',
+            array('HtmlTag',array('tag'=>'div','id'=>'cronograma'))
+        ));
+
+        $this->addElement('multiselect', 'tarefa_empenho', array(
+            ///'label' => 'xxx',
+            'required'   => false,
+            'size'=>8,
+            // aqui puede estar el error provar em tarefas modificando este linha
+            'multiOptions' => Application_Model_TarefasDependentes::getOptions($this->id_tarefa),
+            'RegisterInArrayValidator'=>false,
+
+        ));
+
         //input type text
         $this->addElement('text', 'descricao_historico', array(
             'label'      => '*Descrição: ',

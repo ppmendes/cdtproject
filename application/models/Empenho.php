@@ -42,6 +42,7 @@ class Application_Model_Empenho
         }
         
         unset($data['empenhos']['projeto_id']);
+        unset($data['empenhos']['tarefas'],$data['empenhos']['tarefa_empenho']);
         
         $table->insert($data['empenhos']);
         $embolso_rel = $this->getLastInsertedId('empenho');
@@ -324,7 +325,12 @@ class Application_Model_Empenho
 
         }
 
+    public function getLastInsertedIdd(){
 
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $result = $db->fetchOne("SELECT max(empenho_id) FROM empenho");
+        return (int)$result;
+    }
 }
 
         /* Esta parte é usada quando o módulo inteiro é carregado, podendo ser 40 mil registros.
