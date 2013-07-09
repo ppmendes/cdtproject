@@ -100,7 +100,7 @@ class Application_Model_Orcamento
 
             $select = $db->select()
                 ->from(array('o' => 'orcamento'), array('o.orcamento_id'=>'o.orcamento_id', 'o.valor_orcamento'=>'o.valor_orcamento', 'r.rubrica_id' => 'r.rubrica_id'))
-                ->where('p.projeto_id = ' . $id . ' AND o.deletado = 0')
+                ->where('p.projeto_id = ' . $id . ' AND p.deletado = 0 AND o.deletado = 0')
                 ->joinInner(array('r' => 'rubrica'), 'o.rubrica_id = r.rubrica_id', array('r.codigo_rubrica'=>'r.codigo_rubrica', 'r.descricao'=>'r.descricao'))
                 ->joinInner(array('d' => 'destinatario'), 'o.destinatario_id = d.destinatario_id', array('d.nome_destinatario'=>'d.nome_destinatario'))
                 ->joinInner(array('p' => 'projeto'), 'o.projeto_id = p.projeto_id', array('p.projeto_id'=>'p.projeto_id'));
@@ -111,11 +111,11 @@ class Application_Model_Orcamento
             foreach($resultado as $item){
                 //if(substr_count($item['codigo_rubrica'], '.') == 2)
                 //{
-                  //  $options2[$item['rubrica_id']] = $item['codigo_rubrica']." - ".$item['descricao'];
-                    $options[] = array('label' => $item['r.codigo_rubrica']." -> ".$item['r.descricao'] ." (" .
-                                                  $item['d.nome_destinatario'] . ") (R$" . $item['o.valor_orcamento'] .")" ,
-                                                  'id' => $item['o.orcamento_id']);
-                }
+                //  $options2[$item['rubrica_id']] = $item['codigo_rubrica']." - ".$item['descricao'];
+                $options[] = array('label' => $item['r.codigo_rubrica']." -> ".$item['r.descricao'] ." (" .
+                    $item['d.nome_destinatario'] . ") (R$" . $item['o.valor_orcamento'] .")" ,
+                    'id' => $item['o.orcamento_id']);
+            }
 
             return $options;
 
@@ -222,8 +222,8 @@ class Application_Model_Orcamento
             $db = Zend_Db_Table::getDefaultAdapter();
 
             $select = $db->select()
-                         ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
-                         ->where('r.rubrica_id = ?', $rid);
+                ->from(array('r' => 'rubrica'), array('r.codigo_rubrica' => 'r.codigo_rubrica'))
+                ->where('r.rubrica_id = ?', $rid);
 
             $stmt = $select->query();
             $resultado = $stmt->fetchAll();

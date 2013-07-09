@@ -111,7 +111,9 @@ class EmpenhosController extends Zend_Controller_Action
 
         $data = $model->find($id)->toArray();
 
-        $data['beneficiario'] = $beneficiarioModel->getNome($data['beneficiario_id'])[0]['nome'];
+        $var = $beneficiarioModel->getNome($data['beneficiario_id']);
+
+        $data['beneficiario'] = $var[0]['nome'];
 
         if(is_array($data)){
             $detalhes->setAction('/empenhos/detalhes/empenho_id/' . $id . '/projeto_id/' . $pid);

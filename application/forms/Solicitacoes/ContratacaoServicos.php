@@ -522,9 +522,9 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
             'required'       => true,
             'label'          => 'Qtde:',
             'value'          => $value3,
-            'class'          => 'campos_menor',
+            'class'          => 'campos',
             'order'          => $order,
-            'decorators'=> $this->decoratorMenor,
+            //'decorators'=> $this->decoratorMenor,
         ));
 
         $order++;

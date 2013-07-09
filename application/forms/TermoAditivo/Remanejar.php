@@ -3,7 +3,11 @@
 class Application_Form_TermoAditivo_Remanejar extends Zend_Form
 {
 
-    public function init()
+    public function init(){
+
+    }
+
+    public function startform()
     {
         $this->setIsArray('true');
         $this->setAttrib('enctype', 'multipart/form-data');
@@ -22,21 +26,33 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
 
         $id_projeto  = Zend_Controller_Front::getInstance()->getRequest()->getParam( 'projeto_id', null );
 
-        $emf = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar1');
-        $emf->setLabel('Elemento de Despesa Fonte:');
-        $emf->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#termo_aditivo-orcamento_origem").val(ui.item.id) }')
-        ));
-        $this->addElement($emf);
+//        $emf = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar1');
+//        $emf->setLabel('Elemento de Despesa Fonte:');
+//        $emf->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
+//            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+//            'function(event,ui) { $("#termo_aditivo-orcamento_origem").val(ui.item.id) }')
+//        ));
+//        $this->addElement($emf);
+//
+//        $emt = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar2');
+//        $emt->setLabel('Elemento de Despesa Destinatário:');
+//        $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
+//            ->setJQueryParams(array("select" => new Zend_Json_Expr(
+//            'function(event,ui) { $("#termo_aditivo-orcamento_destino").val(ui.item.id) }')
+//        ));
+//        $this->addElement($emt);
 
-        $emt = new ZendX_JQuery_Form_Element_AutoComplete('termoAditivoRemanejar2');
-        $emt->setLabel('Elemento de Despesa Destinatário:');
-        $emt->setJQueryParam('data', Application_Model_Orcamento::getCodigoDescricaoRubricaValorOrcamentoNomeDestino($id_projeto))
-            ->setJQueryParams(array("select" => new Zend_Json_Expr(
-            'function(event,ui) { $("#termo_aditivo-orcamento_destino").val(ui.item.id) }')
+        $this->addElement('text', 'termoAditivoRemanejar1', array(
+            'label'      => '*Elemento de Despesa Fonte: ',
+            'ignore'     => true,
+            'required'   => true,
         ));
-        $this->addElement($emt);
+
+        $this->addElement('text', 'termoAditivoRemanejar2', array(
+            'label'      => '*Elemento de Despesa Destinatário: ',
+            'ignore'     => true,
+            'required'   => true,
+        ));
 
         //Coordenador do projeto input type text
         $this->addElement('text', 'valor_termino_aditivo', array(
@@ -73,14 +89,26 @@ class Application_Form_TermoAditivo_Remanejar extends Zend_Form
             'value'      => $id_projeto
         ));
 
+        $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+
         //set hidden
         $this->addElement('hidden', 'usuario_id', array(
-            'value'      => '1'
+            'value'      => $usuario_logado->usuario_id,
         ));
 
         //set hidden
         $this->addElement('hidden', 'tipo_termo_aditivo_id', array(
             'value'      => '2'
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'valor_orcamento_origem', array(
+            'value'      => ''
+        ));
+
+        //set hidden
+        $this->addElement('hidden', 'valor_orcamento_destino', array(
+            'value'      => ''
         ));
     }
 }
