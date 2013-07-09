@@ -686,7 +686,8 @@ class SolicitacoesController extends Zend_Controller_Action
 
                 $data = $form->getValues();
                 $model_empenho->insert($data);
-                $this->_redirect('/projetos/detalhes/projeto_id/'.$pid);
+                $model_empenho->deletePreEmpenho($sid);
+                $this->_redirect('/empenhos/index/projeto_id/'.$pid);
             }
         }
 

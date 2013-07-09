@@ -75,6 +75,17 @@ class Application_Model_Empenho
         $db->update($table, $data, $where);
     }
 
+    public function deletePreEmpenho($sid)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $table = "pre_empenho";
+        $deletado = true;
+        $where = $db->quoteInto('solicitacao_id = ?', $sid);
+        $data = array('deletado' => $deletado);
+
+        $db->update($table, $data, $where);
+    }
+
     public function update($data, $id)
     {
         $table = new Application_Model_DbTable_Empenho;
