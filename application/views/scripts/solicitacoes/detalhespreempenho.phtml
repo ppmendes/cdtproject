@@ -1,0 +1,35 @@
+
+
+<script>
+
+    function aprovar(id, tipo, projeto_id)
+    {
+        if (tipo == 1 || tipo == 4 || tipo == 5)
+        {
+        //top.location.href = '/../solicitacoes/adicionaraquisicao/solicitacao_id/'+id+'/projeto_id/'+projeto_id;
+            alert('aquisição');
+        }
+        else if (tipo == 2 || tipo == 6 || tipo == 7 || tipo == 8)
+        {
+        //top.location.href = '/../solicitacoes/adicionarcontratacao/solicitacao_id/'+id+'/projeto_id/'+projeto_id;
+            alert('contratação');
+        }
+        else
+        {
+        //top.location.href = '/../solicitacoes/adicionarpassagens/solicitacao_id/'+id+'/projeto_id/'+projeto_id;
+            alert('passagens');
+        }
+    }
+</script>
+
+<?php
+$id = $this->id;
+$tipo = $this->tipo;
+$projeto_id = $this->pid;
+
+echo "<button onclick='aprovar($id, $tipo, $projeto_id)'>Aprovar Pre-Empenho</button>";
+
+$this->detalhespreempenho->setAction($this->url());
+echo $this->detalhespreempenho;
+
+?>
