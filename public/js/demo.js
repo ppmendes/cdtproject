@@ -84,6 +84,7 @@ $(document).ready(function(){
           */
           if ( bValid ) {
             //Chamar ajax!!!!!
+            receber(document.getElementById('date').value, document.getElementById('valor').value, id_crono, pid);
             $( this ).dialog( "close" );
           }
         },
