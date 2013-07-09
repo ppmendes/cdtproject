@@ -2,6 +2,32 @@
 $projeto_id = $this->pid;
 ?>
 
+<style>
+    body { font-size: 62.5%; }
+    label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
+    div#users-contain { width: 350px; margin: 20px 0; }
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+  </style>
+  
+<div id="dialog-form" title="Receber valor">
+  <p class="validateTips">Preencha todos os campos.</p>
+ 
+  <form>
+  <fieldset>
+    <label for="date">Data de recebimento:</label>
+    <input type="text" name="date" id="date" class="text ui-widget-content ui-corner-all " />
+    <label for="valor">Valor:</label>
+    <input type="text" name="valor" id="valor" value="" class="text ui-widget-content ui-corner-all" maxlength="13" onkeyup="this.value=mask(this.value, '###.###.###,##')" />
+  </fieldset>
+  </form>
+</div>
+ 
 <script>
     $(document).ready(function() {
         $('#table_id').dataTable({
@@ -41,7 +67,45 @@ $projeto_id = $this->pid;
                 overlayShow: true
             }).click();
         });
+
+        $("#date").datepicker({"dateFormat":"dd\/mm\/yy","dayNamesMin":["D","S","T","Q","Q","S","S"],"monthNames":["Janeiro","Fevereiro","Mar\u00e7o","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]});
+        
     });
+    
+    function maskPre(val, msk, pre) {
+
+        val = val.replace(RegExp('[' + msk.replace(/#/g, '') + ']', 'g'), '')
+
+        if (val.length > 0) {
+            val = pre + val
+        }
+
+        mskVal = ''
+        v = val.length - 1
+        for (m = msk.length - 1; m >= 0 && v >= -msk.indexOf('#'); --m) {
+            if ('#' != msk.charAt(m)) {
+                mskVal = msk.charAt(m) + mskVal
+                if ('#' != msk.charAt(m - 1))
+                    continue
+                --m
+            }
+            mskVal = val.charAt(v) + mskVal
+            v--
+
+        }
+
+        if (pre.length > 0) {
+            mskVal = mskVal.replace(RegExp('^' + pre.charAt(0) + '+', 'g'), '')
+        }
+
+        return mskVal
+
+    }
+    
+    function mask(val, msk) {
+
+        return maskPre(val, msk, '')
+    }
 </script>
 <script>
     function adicionar(projeto_id)
@@ -151,7 +215,9 @@ $projeto_id = $this->pid;
 //    echo "<td><a class='\right btn_edit\' href='/cronogramafinanceiro/adicionar/projeto_id/".$projeto_id."/cronograma_financeiro_id/"
 //    ."{$row['cronograma_financeiro_id']}'>aa</a></td>";
 //    echo "<td><a class='\right btn_delete\' href='/cronogramafinanceiro/excluir/cronograma_financeiro_id/{$row['cronograma_financeiro_id']}'>bb</a></td>";
-    echo "<td><button class=\"center btn_receive\" onclick='receber(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Receber</button>";
+    //echo "<td><button class=\"center btn_receive\" onclick='receber(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Receber</button>";
+    echo "<td><button id=\"create-user<?php echo $i; ?>\" class=\"create-user\">Receber</button>";
+        
     echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Editar</button>";
     echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_financeiro_id'].", ".$projeto_id.")'>Editar</button>";
 

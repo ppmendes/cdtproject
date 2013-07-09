@@ -21,6 +21,9 @@ class ProjetosController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_Projetos();
         $model = new Application_Model_Projeto;
+        
+        $model_rel = new Application_Model_ProjetoUsuario;
+        
         $id = $this->_getParam('projeto_id');
 
 
@@ -34,12 +37,21 @@ class ProjetosController extends Zend_Controller_Action
                 if($id){
                     $model->update($data, $id);
                 }else{
-                    $model->insert($data);
+                    $id = $model->insert($data);
+                    
+                    $data_rel = array("projeto_id" => $id, "usuario_id" => $data['projetos']['criador']);
+                    $model_rel->insert($data_rel);
+                    
+                    $data_rel = array("projeto_id" => $id, "usuario_id" => $data['projetos']['coordenador_tecnico']);
+                    $model_rel->insert($data_rel);
+                    
+                    $data_rel = array("projeto_id" => $id, "usuario_id" => $data['projetos']['gerente']);
+                    $model_rel->insert($data_rel);
                 }
 
                 $this->_redirect('/projetos/');
             }
-        }elseif ($id){
+        } elseif ($id){
             $data = $model->find($id)->toArray();
 
             if(is_array($data)){

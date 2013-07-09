@@ -47,11 +47,13 @@ class EmpenhosController extends Zend_Controller_Action
     public function adicionarAction(){
         $request = $this->getRequest();
         $pid = $this->_getParam('projeto_id');
-        $form = new Application_Form_Empenhos();
+        $id = $this->_getParam('empenho_id');
+        $form = $this->view->form = new Application_Form_Empenhos();
         $form->setProjetoId($pid);
         //$form->setBeneficiarioId(0);
         $form->startform();
         $model = new Application_Model_Empenho;
+        $beneficiarioModel = new Application_Model_Beneficiario();
 
         if($this->getRequest()->isPost()){
 
@@ -66,12 +68,30 @@ class EmpenhosController extends Zend_Controller_Action
                     $this->_redirect('/empenhos/adicionar/projeto_id/'.$pid);
                 }
                 
-                $model->insert($data);
+                if($id){
+                    $model->update($data, $id);
+                }else{
+                    $model->insert($data);
+                }
                 $this->_redirect('/empenhos/index/projeto_id/'.$pid);
             }
-        }
+        } elseif ($id){
+            
+             $data = $model->find($id)->toArray();
 
-        $this->view->form = $form;
+             $data['beneficiario'] = $beneficiarioModel->getNome($data['beneficiario_id'])[0]['nome'];
+
+             if(is_array($data)){
+                 $form->setAction('/empenhos/detalhes/empenho_id/' . $id . '/projeto_id/' . $pid);
+                 $form->populate(array("empenhos" => $data));
+                 $this->view->form = $form;
+             }
+        } else {
+
+            $form->setProjetoId($pid);
+            $form->startform();
+            $this->view->form = $form;
+        }
 
 
     }

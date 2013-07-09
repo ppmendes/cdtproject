@@ -49,23 +49,28 @@ class OrcamentosController extends Zend_Controller_Action
             }
             $this->view->form = $form;
 
-        }elseif ($id){
+        } elseif ($id){
             $data = $model->find($id)->toArray();
-
 
             if(is_array($data)){
                 $form->setAction('/orcamentos/detalhes/orcamento_id/' . $id);
-                $form->setProjetoId($pid);
+                $form->setProjetoId($data['projeto_id']);
+                $form->setRubricaId($data['rubrica_id']);
                 $form->startform();
-                $form->populate(array("orcamento" => $data));
+                $form->setDefault("descricao_orcamento", $data['descricao_orcamento']);
+                $form->setDefault("objetivo_orcamento", $data['objetivo_orcamento']);
+                $form->setDefault("valor_orcamento", $data['valor_orcamento']);
+                $form->setDefault("destinatario_id", $data['destinatario_id']);
+                $form->populate(array("orcamentos" => $data));
                 $this->view->form = $form;
-
             }
-        }else
+        } else {
 
-        $form->setProjetoId($pid);
-        $form->startform();
-        $this->view->form = $form;
+            $form->setProjetoId($pid);
+            $form->startform();
+            $this->view->form = $form;
+        }
+
     }
 
     public function detalhesAction(){

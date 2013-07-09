@@ -12,7 +12,7 @@ class Application_Model_Projeto
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Projeto;
-        $table->insert($data['projetos']);
+        return $table->insert($data['projetos']);
     }
 
     public function delete($id)

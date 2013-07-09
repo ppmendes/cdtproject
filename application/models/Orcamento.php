@@ -68,7 +68,7 @@ class Application_Model_Orcamento
     public function update($data, $id)
     {
         $decimalfilter = new Zend_Filter_DecimalFilter();
-        $data['orcamento']['valor'] = $decimalfilter->filter($data['orcamento']['valor']);
+        $data['orcamento']['valor_orcamento'] = $decimalfilter->filter($data['orcamento']['valor_orcamento']);
         unset($data['orcamento']['rubrica']);
         unset($data['orcamento']['saldo']);
 
