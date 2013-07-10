@@ -67,7 +67,7 @@ class CronogramafinanceiroController extends Zend_Controller_Action
             else
             {
                 if($form2->isValid($request->getPost())){
-
+// aaaaaaaaaaaaaaaaaaa
                 $data = $form2->getValues();
                 unset($data['cronograma_financeiro']['tipo_form']);
 
@@ -177,8 +177,10 @@ class CronogramafinanceiroController extends Zend_Controller_Action
     public function receberAction() {
         $id = $this->_getParam('cronograma_financeiro_id');
         $pid = $this->_getParam('projeto_id');
+        $valor = $this->_getParam('valor');
+        $data = $this->_getParam('date');
         $model = new Application_Model_CronogramaFinanceiro();
-        $model->receber($id);
+        $model->receber($id, $valor, $data);
         $this->_redirect('/cronogramafinanceiro/index/projeto_id/'.$pid);
     }
 

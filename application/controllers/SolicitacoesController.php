@@ -16,6 +16,7 @@ class SolicitacoesController extends Zend_Controller_Action
         $this->view->solicitacoesAquisicao =  $solicitacaoModel->selectAllAquisicao($pid);
         $this->view->solicitacoesContratacao = $solicitacaoModel->selectAllContratacao($pid);
         $this->view->solicitacoesPassagens = $solicitacaoModel->selectAllPassagens($pid);
+        $this->view->solicitacoesPendentes = $solicitacaoModel->selectAllPendentes($pid);
         $this->view->pid = $pid;
 
     }
@@ -635,6 +636,71 @@ class SolicitacoesController extends Zend_Controller_Action
 
 
     }
+
+    public function detalhespreempenhoAction(){
+        $request = $this->getRequest();
+        $model_solicitacao = new Application_Model_Solicitacao();
+        $model_empenho = new Application_Model_Empenho();
+        $model_preempenho = new Application_Model_PreEmpenho();
+        $model_beneficiario = new Application_Model_Beneficiario();
+        $model_orcamento = new Application_Model_Orcamento();
+        $decimal_filter = new Zend_Filter_DecimalFilter();
+
+        $id = $this->_getParam('pre_empenho_id');
+        $datapreempenho = $model_preempenho->find($id)->toArray();
+        $sid= $datapreempenho['solicitacao_id'];
+        $pid = $this->_getParam('projeto_id');
+
+        $this->view->id = $id;
+        $this->view->pid = $pid;
+
+        $form = new Application_Form_Empenhos();
+        $form->setProjetoId($pid);
+        $form->startform();
+
+        $datasolicitacoes = $model_solicitacao->find($sid)->toArray();
+
+
+        $this->view->tipo = intval($datasolicitacoes['tipo_solicitacao_id']);
+
+            $dadosProjeto = $model_solicitacao->buscaProjetoNome($sid);
+//        print_r($pid);
+//        exit;
+            $data['projeto'] = $dadosProjeto[0]['p.nome'];
+            $data['descricao_historico'] = $datapreempenho['pre_empenho_historico'];
+            $data['data'] = $datapreempenho['data_pre_empenho'];
+            $data['valor_empenho'] = $decimal_filter->filter($datapreempenho['valor_pre_empenho']);
+            $data['orcamento_id'] = $datapreempenho['orcamento_id'];
+            $data['beneficiario_id'] = $datasolicitacoes['beneficiario_id'];
+            $nome_beneficiario = $model_beneficiario->getNome($data['beneficiario_id']);
+            $data['beneficiario'] = $nome_beneficiario[0]['nome'];
+            $data['projeto_id'] = $pid;
+            $data['pre_empenho_id'] = $id;
+            $data['saldo_orcamento_disponibilizado'] = $model_orcamento->saldoOrcamentoDisponibilizado($data['orcamento_id']);
+
+        if($this->getRequest()->isPost()){
+
+            $form->preValidation($_POST);
+
+            if($form->isValid($request->getPost())){
+
+                $data = $form->getValues();
+                $model_empenho->insert($data);
+                $model_empenho->deletePreEmpenho($sid);
+                $this->_redirect('/empenhos/index/projeto_id/'.$pid);
+            }
+        }
+
+        if(is_array($data)){
+            //$form->setAction('/solicitacoes/detalhes/solicitacao_id/' . $id);
+            $form->populate(array("empenhos" => $data));
+        }
+
+        $this->view->detalhespreempenho = $form;
+
+
+    }
+
 
 
     public function excluiraquisicaoAction(){

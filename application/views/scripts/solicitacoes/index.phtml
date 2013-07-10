@@ -2,7 +2,7 @@
 
 <?php
 if($this->erro){
-    echo "<script>alert('buurro');</script>";
+    echo "<script>alert('Erro!');</script>";
 }
 $projeto_id = $this->pid;
 ?>
@@ -109,6 +109,30 @@ $projeto_id = $this->pid;
 
         });
 
+        $('#table_id_pendentes').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+
+        });
+
         $('button.menu_financeiro').click(function() {
             $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+ <?php echo $projeto_id; ?> +'">pesquisar</a>').fancybox({
                 overlayShow: true
@@ -168,6 +192,7 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
         <li><a href="#tabs-2">Aquisição de Bens e Serviços de Pessoa Jurídica</a></li>
         <li><a href="#tabs-3">Contratação de Serviços de Pessoa Física</a></li>
         <li><a href="#tabs-4">Passagens e Diárias</a></li>
+        <li><a href="#tabs-5">Solicitações Pendentes</a></li>
     </ul>
 
     <div id="tabs-1">
@@ -356,4 +381,36 @@ echo "<button class='menu_financeiro'>Menu Financeiro</button>";
             echo "</tbody></table>";
             ?>
     </div>
+
+    <div id="tabs-5">
+        <table id='table_id_pendentes' border='0'>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>NomePENDENTES</th>
+                <th>Valor</th>
+                <th>Historico</th>
+                <th>Data</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <?php
+            $filter = new Zend_Filter_DateFilter();
+            foreach($this->solicitacoesPendentes as $row)
+            {
+                //$row = $row->toArray();
+                echo "<tr id='".$row['pre_empenho_id']."'>";
+                echo "<td>" .   $row['s.solicitacao_id'] . "</td>";
+                echo "<td><a href='/solicitacoes/detalhespreempenho/pre_empenho_id/" .  $row['pre_empenho_id'] . "/projeto_id/" . $projeto_id . "'>
+        " .  $row['s.solicitacao_nome'] . "</a></td>";
+                echo "<td>" .   $row['valor_pre_empenho'] . "</td>";
+                echo "<td>" .   $row['pre_empenho_historico'] . "</td>";
+                echo "<td>" .   $filter->filter($row['data_pre_empenho']) . "</td>";
+                echo "</tr>";
+            }
+            echo "</tbody></table>";
+            ?>
+    </div>
+
 </div>

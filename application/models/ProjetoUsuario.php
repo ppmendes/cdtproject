@@ -11,7 +11,8 @@ class Application_Model_ProjetoUsuario
 
     public function insert($projeto_usuario)
     {
-
+        $table = new Application_Model_DbTable_ProjetoUsuario;
+        $table->insert($projeto_usuario);
     }
 
     public function delete($id)

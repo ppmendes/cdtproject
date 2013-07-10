@@ -131,15 +131,16 @@ class Application_Model_CronogramaOrcamentario
             echo $e->getMessage();
         }
     }
-    
-    public function receber($id) {
+        
+        public function receber($id, $valor, $date) {
             $table = new Application_Model_DbTable_CronogramaOrcamentario();
             $cronograma_orcamentario = $table->find($id)->current();
 
             $data['cronograma_orcamentario'] = array();
-            $aux = $cronograma_orcamentario['valor_a_receber'];
-            $data['cronograma_orcamentario']['valor_a_receber'] = 0;
-            $data['cronograma_orcamentario']['valor_recebido'] = $aux + $cronograma_orcamentario['valor_recebido'];
+            //$aux = $cronograma_orcamentario['valor_aplicado_a_rubrica'];
+            $data['cronograma_orcamentario']['data_pagamento'] = $date;
+            $decimalfilter = new Zend_Filter_DecimalFilter();
+            $data['cronograma_orcamentario']['valor_recebido'] = $decimalfilter->filter($valor);
 
             $db = Zend_Db_Table::getDefaultAdapter();
             $table = "cronograma_orcamentario";

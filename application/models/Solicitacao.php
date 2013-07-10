@@ -116,6 +116,25 @@ class Application_Model_Solicitacao
         }
     }
 
+    public function selectAllPendentes($pid)
+    {
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+
+            $select = $db->select()
+                ->from(array('p' => 'pre_empenho'), array('*'))
+                ->where('p.deletado = 0 and p.projeto_id = ' . $pid)
+                ->joinLeft(array('s' => 'solicitacao'), 'p.solicitacao_id = s.solicitacao_id',array('s.solicitacao_id'=>'s.solicitacao_id','s.solicitacao_nome'=>'s.solicitacao_nome'));
+
+            $stmt = $select->query();
+            $result = $stmt->fetchAll();
+
+            return $result;
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+    }
+
     public function selectAllAquisicao($pid)
     {
         try{

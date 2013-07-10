@@ -121,14 +121,17 @@ class Application_Model_CronogramaFinanceiro
         return $total;
         }
         
-        public function receber($id) {
+        public function receber($id, $valor, $date) {
             $table = new Application_Model_DbTable_CronogramaFinanceiro();
             $cronograma_financeiro = $table->find($id)->current();
 
+            
+            $decimalfilter = new Zend_Filter_DecimalFilter();
+            
             $data['cronograma_financeiro'] = array();
             $aux = $cronograma_financeiro['valor_aplicado_a_rubrica'];
-            $data['cronograma_financeiro']['valor_aplicado_a_rubrica'] = 0;
-            $data['cronograma_financeiro']['valor_recebido'] = $aux + $cronograma_financeiro['valor_recebido'];
+            $data['cronograma_financeiro']['data_pagamento'] = $date;
+            $data['cronograma_financeiro']['valor_recebido'] = $decimalfilter->filter($valor);
 
             $db = Zend_Db_Table::getDefaultAdapter();
             $table = "cronograma_financeiro";

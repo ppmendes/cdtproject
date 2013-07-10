@@ -127,8 +127,10 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
     public function receberAction() {
         $id = $this->_getParam('cronograma_orcamentario_id');
         $pid = $this->_getParam('projeto_id');
+        $valor = $this->_getParam('valor');
+        $data = $this->_getParam('date');
         $model = new Application_Model_CronogramaOrcamentario();
-        $model->receber($id);
+        $model->receber($id, $valor, $data);
         $this->_redirect('/cronogramaorcamentario/index/projeto_id/'.$pid);
     }
 

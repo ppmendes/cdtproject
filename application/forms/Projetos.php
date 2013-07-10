@@ -105,15 +105,18 @@ class Application_Form_Projetos extends Zend_Form
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
         $emtDatePicker1->setLabel('Data de Início: ');
         $emtDatePicker1->setFilters(array('DateFilter'));
+        $emtDatePicker1->setRequired(true);
         $this->addElement($emtDatePicker1);
 
         //Data de Final Prevista
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_final');
         $emtDatePicker2->setLabel('Data Final Prevista: ');
         $emtDatePicker2->setFilters(array('DateFilter'));
+        $emtDatePicker2->setRequired(true);
         $emtDatePicker2->setAttribs(array('onchange' => 'validarDatas()'));
         $this->addElement($emtDatePicker2);
-
+        
+        
         //Data de Final Real
         $emtDatePicker3 = new ZendX_JQuery_Form_Element_DatePicker('data_final_real');
         $emtDatePicker3->setLabel('Data Final Real: ');
