@@ -22,33 +22,33 @@ class Application_Form_Projetos extends Zend_Form
 
         //Nome do projeto input type text
         $this->addElement('text', 'nome', array(
-            'label'      => 'Nome do projeto:',
+            'label'      => '*Nome do projeto:',
             'required'   => true,
         ));
 
         //Apelido do projeto input type text
         $this->addElement('text', 'apelido', array(
-            'label'      => 'Apelido do Projeto:',
+            'label'      => '*Apelido do Projeto:',
             'required'   => true
         ));
 
         //Coordenador do projeto input type text
         $this->addElement('select', 'coordenador_tecnico', array(
-            'label'      => 'Coordenador Técnico:',
+            'label'      => '*Coordenador Técnico:',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
 
         //Gerência input type text
         $this->addElement('select', 'instituicao_gerencia_id', array(
-            'label'      => 'Instituição de Gerência:',
+            'label'      => '*Instituição:',
             'multiOptions' => Application_Model_InstituicaoGerencia::getOptions(),
             'required'   => true
         ));
 
         //Gerente input type text
         $this->addElement('select', 'gerente', array(
-            'label'      => 'Gerente do Projeto:',
+            'label'      => '*Gerente do Projeto:',
             'multiOptions' => Application_Model_Usuario::getOptions(),
             'required'   => true
         ));
@@ -69,7 +69,7 @@ class Application_Form_Projetos extends Zend_Form
 //        ));
 
         $this->addElement('select', 'projeto_tipo_id', array(
-            'label'      => 'Tipo de Projeto:',
+            'label'      => '*Tipo de Projeto:',
             'multiOptions' => Application_Model_ProjetoTipo::getOptions(),
             'required'   => true
         ));
@@ -77,40 +77,40 @@ class Application_Form_Projetos extends Zend_Form
         //modo de contratação
 
         $this->addElement('select', 'modo_contratacao_id', array(
-            'label'      => 'Modo de Contratação:',
+            'label'      => '*Modo de Contratação:',
             'multiOptions' => Application_Model_ModoContratacao::getOptions(),
             'required'   => true
         ));
 
         //Categoria de Financiador (publico, privado, rec. prop)
         $this->addElement('select', 'categoria_financiador_id', array(
-            'label'      => 'Categoria Financiador:',
+            'label'      => '*Categoria de Financiador:',
             'multiOptions' => Application_Model_CategoriaFinanciador::getOptions(),
             'required'   => true
         ));
 
         //taxa fai
         $this->addElement('text', 'taxa_fai', array(
-            'label'      => 'Taxa FAI:',
+            'label'      => '*Taxa FAI:',
             'required'   => true
         ));
 
         //justificacao
         $this->addElement('text', 'justificativa', array(
-            'label'      => 'Justificativa:',
+            'label'      => '*Justificativa:',
             'required'   => true
         ));
 
         //Data de Início (Atual)
         $emtDatePicker1 = new ZendX_JQuery_Form_Element_DatePicker('data_inicio');
-        $emtDatePicker1->setLabel('Data de Início: ');
+        $emtDatePicker1->setLabel('*Data de Início: ');
         $emtDatePicker1->setFilters(array('DateFilter'));
         $emtDatePicker1->setRequired(true);
         $this->addElement($emtDatePicker1);
 
         //Data de Final Prevista
         $emtDatePicker2 = new ZendX_JQuery_Form_Element_DatePicker('data_final');
-        $emtDatePicker2->setLabel('Data Final Prevista: ');
+        $emtDatePicker2->setLabel('*Data Final Prevista: ');
         $emtDatePicker2->setFilters(array('DateFilter'));
         $emtDatePicker2->setRequired(true);
         $emtDatePicker2->setAttribs(array('onchange' => 'validarDatas()'));
@@ -130,19 +130,25 @@ class Application_Form_Projetos extends Zend_Form
 
         //Orçamento previsto input type text
         $this->addElement('text', 'orcamento', array(
-            'label'      => 'Orçamento Previsto:',
-            'required'   => true
+            'label'      => '*Orçamento Previsto:',
+            'required'   => true,
+            'attribs'    => array('maxLength' => 13),
+            //'class' => 'mask_valor',
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
         //Contrapartida input input type text
         $this->addElement('text', 'contrapartida', array(
-            'label'      => 'Contrapartida:',
-            'required'   => true
+            'label'      => '*Contrapartida:',
+            'required'   => true,
+            'attribs'    => array('maxLength' => 13),
+            //'class' => 'mask_valor',
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
         //Descrição da Contrapartida (TAP)
         $this->addElement('textarea', 'contrapartida_descricao', array(
-            'label'      => 'Descrição da Contrapartida:',
+            'label'      => '*Descrição da Contrapartida:',
             'required'   => true
         ));
 
@@ -154,7 +160,7 @@ class Application_Form_Projetos extends Zend_Form
 
         //CCO do orçamento input type text  editavel (não tem regra)
         $this->addElement('text', 'orcamento_CCO', array(
-            'label'      => 'CCO do orçamento (% CDT):',
+            'label'      => '*CCO do orçamento (% CDT):',
             'required'   => true
         ));
 
@@ -162,71 +168,71 @@ class Application_Form_Projetos extends Zend_Form
 
         //Descrição da CCO input type textarea
         $this->addElement('textarea', 'descricao_CCO', array(
-                    'label'      => 'Descrição da CCO:',
+                    'label'      => '*Descrição da CCO:',
                     'required'   => true
         ));
 
         //Horas trabalhadas input type text
         $this->addElement('text', 'horas_trabalhadas', array(
-                    'label'      => 'Horas trabalhadas:',
+                    'label'      => '*Horas trabalhadas:',
                     'required'   => true
                 ));
 
         //Horas Programadas input type tex(horas agendadas caso de uso)
         $this->addElement('text', 'horas_agendadas', array(
-                    'label'      => 'Horas Agendadas:',
+                    'label'      => '*Horas Agendadas:',
                     'required'   => true
                 ));
 
         $this->addElement('select', 'estado_projeto_id', array(
-            'label'      => 'Estado do Projeto:',
+            'label'      => '*Estado do Projeto:',
             'multiOptions' => Application_Model_EstadoProjeto::getOptions(),
             'required'   => true
         ));
 
         $this->addElement('textarea', 'descricao', array(
-            'label'      => 'Descrição:',
+            'label'      => '*Descrição:',
             'required'   => true
         ));
 
         $this->addElement('select', 'prioridade_id', array(
-            'label'      => 'Prioridade:',
+            'label'      => '*Prioridade:',
             'multiOptions' => Application_Model_Prioridade::getOptions(),
             'required'   => true
         ));
 
         $this->addElement('text', 'prazo', array(
-            'label'      => 'Prazo:',
+            'label'      => '*Prazo:',
             'required'   => true
         ));
 
         $this->addElement('text', 'resultados_esperados', array(
-            'label'      => 'Resultados Esperados:',
+            'label'      => '*Resultados Esperados:',
             'required'   => true
         ));
 
         $this->addElement('text', 'escopo', array(
-            'label'      => 'Escopo:',
+            'label'      => '*Escopo:',
             'required'   => true
         ));
 
         $this->addElement('text', 'nao_escopo', array(
-            'label'      => 'Não Escopo:',
+            'label'      => '*Não Escopo:',
             'required'   => true
         ));
 
         $this->addElement('text', 'partes_interessadas', array(
-            'label'      => 'Partes Interessadas:',
+            'label'      => '*Partes Interessadas:',
             'required'   => true
         ));
 
         $this->addElement('text', 'ligacoes', array(
-            'label'      => 'Ligações:',
+            'label'      => '*Ligações:',
             'required'   => true
         ));
 
         $this->addElement('text', 'equipe', array(
-            'label'      => 'Equipe:',
+            'label'      => '*Equipe:',
             'required'   => true
         ));
 
@@ -247,7 +253,10 @@ class Application_Form_Projetos extends Zend_Form
 
         $this->addElement('text', 'orcamento_atual', array(
             'label'      => 'Orçamento Atual:',
-            'required'   => false
+            'required'   => false,
+            'attribs'    => array('maxLength' => 13),
+            //'class' => 'mask_valor',
+            'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
         ));
 
         $this->addElement('text', 'premissas', array(

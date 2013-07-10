@@ -6,12 +6,18 @@ class Application_Model_Projeto
 		//DB TABLE
 		$table = new Application_Model_DbTable_Projeto;
 		$projeto = $table->find($id)->current();
+                
 		return $projeto;
 	}
 
     public function insert($data)
     {
         $table = new Application_Model_DbTable_Projeto;
+        
+        $decimalfilter = new Zend_Filter_DecimalFilter();
+        $data['projetos']['contrapartida'] = $decimalfilter->filter($data['projetos']['contrapartida']);
+        $data['projetos']['orcamento'] = $decimalfilter->filter($data['projetos']['orcamento']);
+        $data['projetos']['orcamento_atual'] = $decimalfilter->filter($data['projetos']['orcamento_atual']);
         return $table->insert($data['projetos']);
     }
 

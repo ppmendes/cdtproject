@@ -69,6 +69,7 @@ class OrcamentosController extends Zend_Controller_Action
             //$form->setProjetoId($pid);
             //$form->startform();
             $this->view->form = $form;
+        }
     }
 
     public function detalhesAction(){

@@ -597,12 +597,17 @@ class Application_Form_Solicitacoes_ContratacaoServicos extends Zend_Form
         $('#cronograma').append("<dt id='solicitacoes-inicio_atividades-label'><label for='solicitacoes-inicio_atividades_" + num + "' " +
                 "class='required'>Início do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-inicio_atividades-element'><input type='text' " +
-                "name='solicitacoes[inicio_atividades_"+ num + "]' id='solicitacoes-inicio_atividades' value='' class='campos hasDatepicker'></dd>");
+                "name='solicitacoes[inicio_atividades_"+ num + "]' id='solicitacoes-inicio_atividades_"+num+"' value='' class='campos datepickerrr'></dd>");
         $('#cronograma').append("<dt id='solicitacoes-fim_atividades-label'><label for='solicitacoes-fim_atividades_" + num + "' " +
                 "class='required'>Fim do Cronograma:</label></dt>");
         $('#cronograma').append("<dd id='solicitacoes-fim_atividades-element'><input type='text' " +
-                "name='solicitacoes[fim_atividades_"+ num + "]' id='solicitacoes-fim_atividades' value='' class='campos hasDatepicker'></dd>");
+                "name='solicitacoes[fim_atividades_"+ num + "]' id='solicitacoes-fim_atividades_"+num+"' value='' class='campos datepickerrr'></dd>");
 
+        //$(".datepickerrr").each(function() {
+            $("#solicitacoes-inicio_atividades_"+num).datepicker({"dateFormat":"dd\/mm\/yy","dayNamesMin":["D","S","T","Q","Q","S","S"],"monthNames":["Janeiro","Fevereiro","Mar\u00e7o","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]});
+            $("#solicitacoes-fim_atividades_"+num).datepicker({"dateFormat":"dd\/mm\/yy","dayNamesMin":["D","S","T","Q","Q","S","S"],"monthNames":["Janeiro","Fevereiro","Mar\u00e7o","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]});
+            
+        //});
         $('#solicitacoes-hidden_teste').attr('value', num);
 
     }
