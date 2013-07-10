@@ -52,7 +52,7 @@ class EmpenhosController extends Zend_Controller_Action
         //$form->setBeneficiarioId(0);
         $form->startform();
         $model = new Application_Model_Empenho;
-        $modelTarefas= new Application_Model_DbTable_EmpenhoTarefa();
+        $modelTarefas= new Application_Model_DbTable_EmpenhoTarefa();//server para armazenar os dados de empenho-tarefas
 
         if($this->getRequest()->isPost()){
 
