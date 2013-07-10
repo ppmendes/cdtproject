@@ -85,12 +85,13 @@
             $('#empenhos-tarefas option:selected').remove();
         });
 
-        // REMOVER TAREFAS
+        // REMOVE TAREFAS
         $('#empenhos-botao_Deletar_Tarefa').click(function(){
             $('#empenhos-tarefa_empenho option:selected').clone().prependTo($('#empenhos-tarefas'));
             $('#empenhos-tarefa_empenho option:selected').remove();
         });
 
+        //seleciona as tarefas para serem envidas ao controller
         $('#empenhos-submit').click(function(){
             $('#empenhos-tarefa_empenho > option').each(
                     function(){

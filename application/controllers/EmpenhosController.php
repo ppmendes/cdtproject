@@ -71,12 +71,12 @@ class EmpenhosController extends Zend_Controller_Action
 
                 $model->insert($data);
 
-                $id_empenho=$model->getLastInsertedIdd(); //pega o id do orcamento
+                $id_empenho=$model->getLastInsertedIdd(); //pega o id do ultimo empenho
                 for($i=0; $i<count($arregloTarefas); $i++)
                 {
                     $datate['empenho_id']=$id_empenho;
                     $datate['tarefa_id']=$arregloTarefas[$i];
-                    $modelTarefas->insert($datate);
+                    $modelTarefas->insert($datate); //insere na tabela empenho_tarefa
                 }
                 $this->_redirect('/empenhos/index/projeto_id/'.$pid);
             }

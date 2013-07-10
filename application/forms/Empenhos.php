@@ -35,7 +35,7 @@ class Application_Form_Empenhos extends Zend_Form
         $this->setMethod('post');
 
         $this->addElement('hidden', 'label_titulo', array(
-            'description' => 'Formulário de Empenhos',
+            'description' => 'Formulário  de Empenhos',
             'ignore' => true,
             'decorators' => array(
                 array('Description', array('escape'=>false, 'id' => 'titulo')),
