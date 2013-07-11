@@ -132,6 +132,11 @@ $projeto_id = $this->pid;
             //alert( '/../cronogramafinanceiro/receber/cronograma_financeiro_id/'+id+'/projeto_id/'+pid+'/date/'+date+'/valor/'+valor);
         }
     }
+    
+    function distribuir(id, pid, saldo)
+    {
+        top.location.href = '/../cronogramaorcamentario/distribuir/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid+'/saldo/'+saldo;
+    }
 
     function confirmarExclusao(id, pid)
     {
@@ -164,10 +169,12 @@ $projeto_id = $this->pid;
         <th>Data</th>
         <th>Orçamento a receber</th>
         <th>Orçamento disponibilizado</th>
+        <th>Orçamento utilizado</th>
         <th>Data do pagamento</th>
         <th>Tipo</th>
         <th>Fatura</th>
         <th>Receber valor</th>
+        <th>Distribuir valor</th>
         <th>Editar</th>
         <th>Excluir</th>
 <!--        <th>Data final real</th>-->
@@ -190,6 +197,11 @@ $projeto_id = $this->pid;
     $totalRecebido = $this->total[0]['SUM( c.valor_recebido )'];
     foreach($this->cronograma_orcamentario as $row)
     {
+       $disabled = "";
+       $sub_saldo = $row['valor_recebido'] - $row['orcamento_utilizado'];
+       if ($sub_saldo <= 0) {
+           $disabled = "disabled='disabled'";
+       }
     //$row = $row->toArray();
     echo "<tr id='".$row['cronograma_orcamentario_id']."'>";
     echo "<td>" .$i. "</td>";
@@ -197,6 +209,7 @@ $projeto_id = $this->pid;
     echo "<td>" .   $decimalfilter->filter($row['valor_a_receber']) . "</td>";
     echo "<td><a href='/cronogramaorcamentario/detalhes/cronograma_orcamentario_id/{$row['cronograma_orcamentario_id']}/projeto_id/{$projeto_id}'>"
         .$decimalfilter->filter($row['valor_recebido']) . "</a></td>";
+    echo "<td>" .   $decimalfilter->filter($row['orcamento_utilizado']) . "</td>";
     echo "<td>" .   $datefilter->filter($row['data_pagamento']) . "</td>";
     echo "<td>" .   $row['tipo'] . "</td>";
     echo "<td>" .   $row['numero_fatura_pf'] . "</td>";
@@ -205,8 +218,9 @@ $projeto_id = $this->pid;
 //    echo "<td><a class='\right btn_delete\' href='/cronogramaorcamentario/excluir/cronograma_orcamentario_id/{$row['cronograma_orcamentario_id']}'>bb</a></td>";
     //echo "<td><button class=\"center btn_receive\" onclick='receber(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Receber</button>";
     echo "<td><button id=\"create-user". $i."\" class=\"create-user\" onclick=\"pid = ".$projeto_id."; id_crono = ".$row['cronograma_orcamentario_id'].";\">Receber</button>";
+    echo "<td><button onclick=\"distribuir(".$row['cronograma_orcamentario_id'].", ".$projeto_id.", '".base64_encode($sub_saldo)."')\" $disabled>Distribuir valor</button>";
     echo "<td><button class=\"center btn_edit\" onclick='editar(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
-    echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Editar</button>";
+    echo "<td><button class=\"center btn_delete\" onclick='confirmarExclusao(".$row['cronograma_orcamentario_id'].", ".$projeto_id.")'>Excluir</button>";
     $i++;
 
     if ($row['valor_a_receber'] == 0)

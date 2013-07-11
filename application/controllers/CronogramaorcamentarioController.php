@@ -15,14 +15,58 @@ class CronogramaorcamentarioController extends Zend_Controller_Action
         $cronogramaOrcamentario = $cronogramaOrcamentarioModel->selectAll($pid);
         $totalRubricas = $cronogramaOrcamentarioModel->selectTotalRubricas($pid);
 
-
+        for ($i = 0; $i < sizeof($cronogramaOrcamentario); $i++) {
+            $orcUtilizado = $cronogramaOrcamentarioModel->getOrcamentoUtilizado($cronogramaOrcamentario[$i]['cronograma_orcamentario_id']);
+            //print_r($orcUtilizado);
+            $cronogramaOrcamentario[$i]['orcamento_utilizado'] = $orcUtilizado[0]['valor'] == null ? "0" : $orcUtilizado[0]['valor'];
+        }
 
         $this->view->cronograma_orcamentario = $cronogramaOrcamentario;
+        
         $this->view->total = $cronogramaOrcamentarioModel->selectAllTotal(($pid));
         $this->view->pid = $pid;
         $this->view->totalRubricas = $totalRubricas;
 
 
+    }
+    
+    public function distribuirAction() {
+        
+        $orcamentoModel = new Application_Model_Orcamento();
+        $pid = $this->_getParam('projeto_id');
+        $this->view->orcamentos = $orcamentoModel->selectAll($pid);
+        $this->view->pid = $pid;
+        $this->view->orcamentoProjeto = $orcamentoModel->getOrcamentoProjeto($pid);        
+        
+        
+        $id_cronograma = $this->_getParam('cronograma_orcamentario_id');
+        $saldo = base64_decode($this->_getParam('saldo'));
+        
+        $this->view->id_cronograma = $id_cronograma;
+        $this->view->saldo = $saldo;
+    }
+    
+    public function distribuirsubmitAction() {
+        
+        $pid = $this->_getParam('projeto_id');
+        $co_id = $this->_getParam('cronograma_orcamentario_id');
+        $orcamentos_json = $this->_getParam('orcamentos');
+        $orcamentos = json_decode($orcamentos_json);
+        
+        $ocModel = new Application_Model_OrcamentoCronograma();
+        $data["orcamento_cronograma"]["cronograma_orcamentario_id"] = $co_id;
+        
+        foreach($orcamentos as $key => $orc) {
+            if ($orc != null) {
+                $key_aux = explode("_", $key);
+                $data["orcamento_cronograma"]["orcamento_id"] = $key_aux[1];
+                $data["orcamento_cronograma"]["valor"] = $orc;
+                
+                $ocModel->insert($data);
+            }
+        }        
+        
+        $this->_redirect('/cronogramaorcamentario/index/projeto_id/'.$pid);
     }
 
     public function adicionarAction(){

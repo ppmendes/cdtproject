@@ -1,0 +1,213 @@
+<?php
+$projeto_id = $this->pid;
+?>
+
+<script xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+    
+    array_relat = new Array();
+    id = <?php echo $this->id_cronograma; ?>;
+    pid = <?php echo $this->pid; ?>;
+    $(document).ready(function() {
+        
+        
+        $('#table_id').dataTable({
+            "sDom": 'R<"H"lfr>t<"F"ip<',
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostra _MENU_ Entradas por Página",
+                "sZeroRecords": "Nada Encontrado",
+                "sInfo": "Mostrando de _START_ até _END_ do total de _TOTAL_ ",
+                "sEmptyTable": "Nenhum Dado Disponível na Tabela",
+                "sLoadingRecords": "Carregando...",
+                "sInfoEmpty": "Mostrando 0 até 0 de 0 Entradas",
+                "sInfoFiltered": "(Filtrados de _MAX_ Total de Entradas)",
+                "sSearch": "BUSCA",
+                "oPaginate": {
+                    "sFirst":    " <<  ",
+                    "sPrevious": " < ",
+                    "sNext":     " > ",
+                    "sLast":     " >> "
+                }
+            }
+            //"bSort": false,
+//            "aaSorting": [ [4,'desc'], [1,'asc'], [2,'asc'], [3,'asc']  ],
+//            "aoColumns": [
+//                { "sType": 'string-case' },
+//                null,
+//                null,
+//                null,
+//                null,
+//            ]
+        });
+        $('.fancybox').fancybox();
+        $('button.menu_financeiro').click(function() {
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
+                overlayShow: true
+            }).click();
+        });
+    });
+</script>
+<script>
+    function adicionar(projeto_id)
+    {
+        top.location.href = '/../orcamentos/adicionar/projeto_id/'+projeto_id;
+
+    }
+
+    function checaEEnvia() {
+        i = 1;
+        final = 1;        
+        while (i < 1000) {
+            if (document.getElementById("distri_val"+i) == null) {
+                break;
+            }
+            i++;
+        }
+        final = i;
+        i = 1;
+        soma = 0;
+        while (i < final) {
+            soma += parseFloat(document.getElementById("distri_val"+i).value, 2);
+            i++;
+        }
+        if (soma > document.getElementById("saldo_disp").value) {
+            alert("O valor ultrapassou o limite de R$"+document.getElementById('saldo_disp').value+" disponíveis para distribuir. Reveja as quantidades inseridas!");
+        } else {
+            yourArray = new Object();
+            i = 1;
+            while (i < final) {                
+                //alert(array_relat[i]);
+                yourArray["index_"+array_relat[i]] = document.getElementById("distri_val"+i).value;
+                i++;
+            }
+            json = JSON.stringify(yourArray);
+            
+            //alert('/../cronogramaorcamentario/distribuirsubmit/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid+'/orcamentos/'+json)
+            top.location.href = '/../cronogramaorcamentario/distribuirsubmit/cronograma_orcamentario_id/'+id+'/projeto_id/'+pid+'/orcamentos/'+json;
+        }
+    }
+</script>
+<style>
+    table * *{
+        text-align: center;
+    }
+    .novoorcamento {
+        float:right;
+    }
+</style>
+
+<?php
+
+echo "<button class='menu_financeiro'>Menu Financeiro</button>";
+echo "<button class='novoorcamento btn_add' onclick='adicionar($projeto_id)'>Novo Orçamento</button>";
+?>
+
+<table id='table_id'>
+    <thead>
+    <tr>
+        <!-- Código; Rubrica; Natureza da despesa; Destinação; Valor da Rubrica; Valor empenhado; Saldo orçamentário Valor desembolsado; Valor total;
+        Valor estimado, Total empenhado, Saldo orçamentário, saldo financeiro -->
+        <th> </th>
+        <th>Código</th>
+        <th>Natureza da Despesa</th>
+        <th>Destinatário</th>
+        <th>Valor da Rubrica</th>
+        <th>Orçamento Disponibilizado</th>
+        <th>Distribuir orçamento</th>
+        <th>Empenhado</th>
+        <th>Saldo Orcam.</th>
+        <th>Desembolsado</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php
+    $i = 1;
+    $somaRubrica = 0;
+    $somaOrcamentoDisponibilizado = 0;
+    $somaEmpenho = 0;
+    $somaSaldoOrc = 0;
+    $somaDesembolso = 0;
+    $decimalfilter = new Zend_Filter_DecimalFilter();
+    $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['p.orcamento']);
+    if (isset($this->orcamentos[0]['valor_recebido']))
+    {
+        $valor_cronograma_financeiro = number_format(0 + $this->orcamentos[0]['valor_recebido'], 2, '.', '');
+    }
+    else
+    {
+        $valor_cronograma_financeiro = 0;
+    }
+
+    foreach($this->orcamentos as $row)
+    {
+    $valor_empenho = number_format(0 + ($row['valor_empenho'] + $row['valor_pre_empenho']), 2, '.', '');
+    $valor_cronograma_orcamentario = number_format(0 + $row['valor'], 2, '.', '');
+    $saldo_orcamentario =  number_format(0 + ($row['valor'] - $valor_empenho), 2, '.', '');
+    $valor_desembolso = number_format(0 + $row['valor_desembolso'], 2, '.', '');
+    $somaRubrica = number_format($somaRubrica + $row['SUM( o.valor_orcamento )'] + 0, 2, '.', '');
+    $somaOrcamentoDisponibilizado = number_format($somaOrcamentoDisponibilizado + $valor_cronograma_orcamentario + 0, 2, '.', '');
+    $somaEmpenho = number_format($somaEmpenho + $valor_empenho + 0, 2, '.', '');
+    $somaSaldoOrc = number_format($somaSaldoOrc + $saldo_orcamentario + 0, 2, '.', '');
+    $somaDesembolso = number_format($somaDesembolso + $valor_desembolso + 0, 2, '.', '');
+
+    ?>
+        <script>
+        array_relat[<?php echo $i; ?>] = <?php echo $row['orcamento_id']; ?>;
+        </script>
+    <?php
+
+        //$row = $row->toArray();
+    echo "<tr id='".$row['orcamento_id']."'>";
+    echo "<td>" .   $i . "</td>";
+    echo "<td><a href='/orcamentos/detalhes/orcamento_id/" .  $row['orcamento_id'] . "/projeto_id/" . $projeto_id . "'>
+    " .  $row['codigo_rubrica'] . "</a></td>";
+    echo "<td>" . $row['descricao'] . "</a></td>";
+    echo "<td>" .   $row['nome_destinatario'] . "</td>";
+    echo "<td >" .  $decimalfilter->filter($row['SUM( o.valor_orcamento )']) . "</td>";
+    echo "<td >" .  $decimalfilter->filter($valor_cronograma_orcamentario) . "</td>";
+    echo "<td ><input name='distri_val$i' id='distri_val$i' type='text' value='0' onkeyup=\"this.value=mask(this.value, '###.###.###,##')\" maxlength='13' /></td>";
+    echo "<td >" .  $decimalfilter->filter($valor_empenho) . "</td>";
+    echo "<td >" .  $decimalfilter->filter($saldo_orcamentario) . "</td>";
+    echo "<td >" .  $decimalfilter->filter($valor_desembolso) . "</td>";
+    echo "</tr>";
+    $i++;
+
+
+    }
+    echo "<input type='radio' value='".$this->saldo."' id='saldo_disp' name='saldo_disp' />";
+    echo "<button onclick='checaEEnvia()' style='width: 96px;margin-left: 30%;background: green;color: white;'>Enviar alterações!</button>";
+    echo "</tbody></table>";
+
+    echo "</br>";
+    echo "<table id='tabela' width='80%' border='0px;' style='left:10%; position:relative; font-size:14px;' >";
+    echo "<thead style='background-color: #E2E4FF;'>";
+    echo "<tr>";
+    echo "<th> Orçamento Previsto</th>";
+    echo "<th> Total Rubrica</th>";
+    echo "<th> Orçamento Disponibilizado</th>";
+    echo "<th> Total Empenhado</th>";
+    echo "<th> Saldo Orçamentário</th>";
+    echo "<th> Total Desembolsado</th>";
+    echo "<th> Saldo Financeiro</th>";
+    echo "</tr>";
+    echo "</thead>";
+
+    echo "<tbody style='color:green;'>";
+    echo "<tr>";
+    echo "<td>" . $orcamentoProjeto . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaRubrica, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaOrcamentoDisponibilizado, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 +$somaEmpenho, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaSaldoOrc, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $somaDesembolso, 2, '.', '')) . "</td>";
+    echo "<td>" . $decimalfilter->filter(number_format(0 + $valor_cronograma_financeiro - $somaDesembolso, 2, '.', '')) . "</td>";
+
+    echo "</tr>";
+    echo "</tbody>";
+    echo "</table>";
+    echo "</br></br></br>";
+
+?>

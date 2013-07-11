@@ -161,6 +161,14 @@ class Application_Model_CronogramaOrcamentario
 
         return $resultado;
     }
+    
+    public function getOrcamentoUtilizado($id) {
+        $db = Zend_Db_Table::getDefaultAdapter();
+        $resultado = $db->fetchAll("SELECT SUM( valor ) as valor
+                                         FROM orcamento_cronograma AS oc
+                                         WHERE oc.cronograma_orcamentario_id = $id AND oc.deletado = 0");
+        return $resultado;
+    }
 
 //        public function calculaTotal($cronogramaOrcamentario)
 //        {
