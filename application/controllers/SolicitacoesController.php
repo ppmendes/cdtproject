@@ -708,9 +708,10 @@ class SolicitacoesController extends Zend_Controller_Action
         $excluir = new Application_Form_Solicitacoes_AquisicaoBens();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
+        $pid = $this->_getParam('projeto_id');
 
         $model->deleteAquisicao($id);
-        $this->_redirect('/solicitacoes/');
+        $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
 
         $this->view->excluir = $excluir;
 
@@ -721,9 +722,10 @@ class SolicitacoesController extends Zend_Controller_Action
         $excluir = new Application_Form_Solicitacoes_ContratacaoServicos();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
+        $pid = $this->_getParam('projeto_id');
 
         $model->deleteContratacao($id);
-        $this->_redirect('/solicitacoes/');
+        $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
 
         $this->view->excluir = $excluir;
 
@@ -734,9 +736,10 @@ class SolicitacoesController extends Zend_Controller_Action
         $excluir = new Application_Form_Solicitacoes_PassagensDiarias();
         $model = new Application_Model_Solicitacao();
         $id = $this->_getParam('solicitacao_id');
+        $pid = $this->_getParam('projeto_id');
 
         $model->deletePassagens($id);
-        $this->_redirect('/solicitacoes/');
+        $this->_redirect('/../solicitacoes/index/projeto_id/' . $pid);
 
         $this->view->excluir = $excluir;
 

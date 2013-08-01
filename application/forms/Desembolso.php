@@ -67,7 +67,7 @@ class Application_Form_Desembolso extends Zend_Form
             'required'   => true,
             'attribs'    => array('maxLength' => 13),
             //'class' => 'mask_valor',
-            'validators' => array(array('Digits')),
+            //'validators' => array(array('Digits')),
             'onkeyup' => "this.value=mask(this.value, '###.###.###,##')",
 
 

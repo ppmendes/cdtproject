@@ -49,7 +49,7 @@ class Application_Form_Cronogramafinanceiro_Cronogramafinanceiro2 extends Zend_F
         $data_previa->setFilters(array('DateFilter'));
 
         $orcamento = Application_Model_Projeto::getValorOrcamento($this->id_projeto);
-        $valorLimite = number_format($orcamento['0']['orcamento'] - $this->valorParcelas, 2, ',', '.');
+        $valorLimite = number_format($orcamento['0']['orcamento'], 2, ',', '.');
 
 
         $this->addElement('text', 'saldo', array(

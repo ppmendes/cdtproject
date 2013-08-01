@@ -35,6 +35,7 @@ class EmpenhosController extends Zend_Controller_Action
         $this->view->pre_empenhos = $pre_empenhos;
         $this->view->soma = $model->selectAllSoma($pid);
         $this->view->pid = $pid;
+        $this->view->orcamentoProjeto = $orcModel->getOrcamentoProjeto($pid);
     }
 
 //    public function indexajaxAction(){

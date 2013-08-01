@@ -210,23 +210,26 @@ class Application_Model_Usuario
         return $renomeado;
     }
 
-    public function editarImagem($nome_imagem,$data)
+    public function editarImagem($nome_imagem,$data)//llega o id do usuario e os dados
     {
 
         $upload = new Zend_File_Transfer_Adapter_Http();
 
+        //definindo o caminho onde serão guardadas as imagens
         $pathimagem = 'files/usuarios/imagens';
+
        //Verificando a existencia da ruta
-        if(!file_exists($pathimagem))
+        if(file_exists($pathimagem)==false)
         {
-                mkdir($pathimagem, 0777);
+            mkdir($pathimagem, 0777);
         }
+
         // $pasta retorna a ruta da pasta
         $upload->addFilter('Rename', $pathimagem);
 
         //pegando o formato do arquivo
-        $file = $upload->getFileName('icone');
-        //$file = $data['usuario']['icone'];
+        //$file = $upload->getFileName('icone');
+        $file = $data['usuario']['icone'];
 
              try {
                 // upload received file(s)
@@ -260,40 +263,43 @@ class Application_Model_Usuario
         $nroElementos=count($array);
         $nivel=1;
 
-        $nome = $array[0]["nome"];
-        $id = $array[0]["id"];
-
-        echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
-
-        for($i=1;$i<$nroElementos;$i++)
+        if($array!=null)
         {
-            $novonivel=$array[$i]['geracao'];
+            $nome = $array[0]["nome"];
+            $id = $array[0]["id"];
 
-            $nome = $array[$i]['nome'];
-            $id = $array[$i]['id'];
+            echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
 
-            if($novonivel==$nivel)
+            for($i=1;$i<$nroElementos;$i++)
             {
-                echo'</li><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                $novonivel=$array[$i]['geracao'];
+
+                $nome = $array[$i]['nome'];
+                $id = $array[$i]['id'];
+
+                if($novonivel==$nivel)
+                {
+                    echo'</li><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+
+                }
+                elseif($novonivel>$nivel)
+                {
+                    echo'<ul>';
+                    echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                    $nivel=$novonivel;
+                }
+                elseif($novonivel<$nivel)
+                {
+                    $nro=$nivel-$novonivel;
+                    echo'</li>';
+                    $this->fecharnivel($nro);
+                    echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                    $nivel=$novonivel;
+                }
 
             }
-            elseif($novonivel>$nivel)
-            {
-                echo'<ul>';
-                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
-                $nivel=$novonivel;
-            }
-            elseif($novonivel<$nivel)
-            {
-                $nro=$nivel-$novonivel;
-                echo'</li>';
-                $this->fecharnivel($nro);
-                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
-                $nivel=$novonivel;
-            }
-
+            $this->fecharnivel($nivel);
         }
-        $this->fecharnivel($nivel);
     }
 
     public function fecharnivel($nivel)

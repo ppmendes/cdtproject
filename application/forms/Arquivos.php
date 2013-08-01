@@ -65,6 +65,7 @@ class Application_Form_Arquivos extends Zend_Form
             'label'      => 'tarefa:',
             'multiOptions'  => Application_Model_Tarefa::getOptions1($this->id_projeto),
             'required'   => false,
+            'RegisterInArrayValidator'=>false,
         ));
 
         // Add the submit button

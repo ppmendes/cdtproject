@@ -279,10 +279,39 @@ class Application_Model_Empenho
     {
         $options = array();
         $db = Zend_Db_Table::getDefaultAdapter();
-        $orcamentoSaldo = $db->fetchAll("SELECT o.rubrica_id, codigo_rubrica, descricao, nome_destinatario, oc.orcamento_id,
+
+        $soma = $db->fetchAll("SELECT orcamento_id, SUM( valor ) from orcamento_cronograma
+                               group by orcamento_id");
 
 
-                                        (SELECT (oc.valor - SUM( emp.valor_empenho ))
+        $orcamentoSaldo = array();
+
+        foreach ($soma as $index)
+        {
+
+        $totalPreEmpenhos = $db->fetchAll("SELECT o.rubrica_id, codigo_rubrica, descricao, nome_destinatario, oc.orcamento_id,
+
+
+                                        (SELECT SUM( pre_emp.valor_pre_empenho )
+                                        FROM pre_empenho AS pre_emp
+                                        WHERE oc.orcamento_id = pre_emp.orcamento_id AND pre_emp.deletado = 0
+                                        ) AS soma_pre_empenhos
+
+                                        FROM orcamento_cronograma AS oc
+                                        LEFT JOIN orcamento AS o ON oc.orcamento_id = o.orcamento_id
+                                        LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
+                                        LEFT JOIN destinatario AS d ON o.destinatario_id = d.destinatario_id
+
+                                        WHERE o.orcamento_id = " . $index['orcamento_id'] . " AND o.projeto_id = " . $id . " AND oc.deletado = 0 AND o.deletado = 0
+                                        GROUP BY o.orcamento_id");
+
+        $index['SUM( valor )'] -= $totalPreEmpenhos[0]['soma_pre_empenhos'];
+
+
+        $temp = $db->fetchAll("SELECT o.rubrica_id, codigo_rubrica, descricao, nome_destinatario, oc.orcamento_id,
+
+
+                                        (SELECT (" . $index['SUM( valor )'] . " - SUM( emp.valor_empenho ))
                                         FROM empenho AS emp
                                         WHERE oc.orcamento_id = emp.orcamento_id AND emp.deletado = 0
                                         ) AS saldo_orcamento
@@ -292,11 +321,14 @@ class Application_Model_Empenho
                                         LEFT JOIN rubrica AS r ON o.rubrica_id = r.rubrica_id
                                         LEFT JOIN destinatario AS d ON o.destinatario_id = d.destinatario_id
 
-                                        WHERE o.projeto_id = " . $id . " AND oc.deletado = 0 AND o.deletado = 0 AND
-                                        ((SELECT (oc.valor - SUM( emp.valor_empenho ))
-                                        FROM empenho AS emp
-                                        WHERE oc.orcamento_id = emp.orcamento_id AND emp.deletado = 0
-                                        ) > 0 )");
+                                        WHERE o.orcamento_id = " . $index['orcamento_id'] . " AND o.projeto_id = " . $id . " AND oc.deletado = 0 AND o.deletado = 0
+                                        GROUP BY o.orcamento_id");
+            if($temp[0]['saldo_orcamento'] == null)
+            {
+                $temp[0]['saldo_orcamento'] = $index['SUM( valor )'];
+            }
+            $orcamentoSaldo = array_merge($orcamentoSaldo, $temp);
+        }
 
 
         $orcamentoSemEmpenho = $db->fetchAll("SELECT orcamento.rubrica_id, codigo_rubrica, descricao, nome_destinatario, valor, valor_orcamento, orcamento.orcamento_id, orcamento.projeto_id
@@ -308,9 +340,17 @@ class Application_Model_Empenho
                                                   WHERE empenho.orcamento_id IS NULL AND orcamento.projeto_id = " . $id . " AND orcamento.deletado = 0
                                                   AND orcamento_cronograma.deletado = 0");
 
-        $orcamento = array_merge($orcamentoSaldo, $orcamentoSemEmpenho);
+        /*for($i = 0; $i<size($orcamentoSaldo); $i++)
+        {
+            if($orcamentoSaldo[$i]['saldo_orcamento']==null)
+            {
 
-        foreach($orcamento as $item){
+            }
+        }*/
+
+        //$orcamento = array_merge($orcamentoSaldo, $orcamentoSemEmpenho);
+
+        foreach($orcamentoSaldo as $item){
 
             $rubrica_id = $item['rubrica_id'];
 
@@ -333,6 +373,7 @@ class Application_Model_Empenho
 
             }
         }
+
 
         return $options;
 

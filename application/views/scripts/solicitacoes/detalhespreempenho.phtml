@@ -2,24 +2,27 @@
 
 <script>
 
-    function aprovar(id, tipo, projeto_id)
-    {
-        if (tipo == 1 || tipo == 4 || tipo == 5)
-        {
-        //top.location.href = '/../solicitacoes/adicionaraquisicao/solicitacao_id/'+id+'/projeto_id/'+projeto_id;
-            alert('aquisição');
-        }
-        else if (tipo == 2 || tipo == 6 || tipo == 7 || tipo == 8)
-        {
-        //top.location.href = '/../solicitacoes/adicionarcontratacao/solicitacao_id/'+id+'/projeto_id/'+projeto_id;
-            alert('contratação');
-        }
-        else
-        {
-        //top.location.href = '/../solicitacoes/adicionarpassagens/solicitacao_id/'+id+'/projeto_id/'+projeto_id;
-            alert('passagens');
-        }
-    }
+    $(function($){
+        // ADICIONAR TAREFAS
+        $('#empenhos-botao_Adicionar_Tarefa').click(function(){
+            $('#empenhos-tarefas option:selected').clone().prependTo($('#empenhos-tarefa_empenho'));
+            $('#empenhos-tarefas option:selected').remove();
+        });
+
+        // REMOVE TAREFAS
+        $('#empenhos-botao_Deletar_Tarefa').click(function(){
+            $('#empenhos-tarefa_empenho option:selected').clone().prependTo($('#empenhos-tarefas'));
+            $('#empenhos-tarefa_empenho option:selected').remove();
+        });
+
+        //seleciona as tarefas para serem envidas ao controller
+        $('#empenhos-submit').click(function(){
+            $('#empenhos-tarefa_empenho > option').each(
+                    function(){
+                        $(this).prop('selected', true);
+                    });
+        });
+    })
 </script>
 
 <?php

@@ -207,8 +207,7 @@ $projeto_id = $this->pid;
     echo "<td>" .$i. "</td>";
     echo "<td>" .   $datefilter->filter($row['data_previa']) . "</td>";
     echo "<td>" .   $decimalfilter->filter($row['valor_a_receber']) . "</td>";
-    echo "<td><a href='/cronogramaorcamentario/detalhes/cronograma_orcamentario_id/{$row['cronograma_orcamentario_id']}/projeto_id/{$projeto_id}'>"
-        .$decimalfilter->filter($row['valor_recebido']) . "</a></td>";
+    echo "<td>" .   $decimalfilter->filter($row['valor_recebido']) . "</td>";
     echo "<td>" .   $decimalfilter->filter($row['orcamento_utilizado']) . "</td>";
     echo "<td>" .   $datefilter->filter($row['data_pagamento']) . "</td>";
     echo "<td>" .   $row['tipo'] . "</td>";

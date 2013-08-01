@@ -52,9 +52,11 @@ class Application_Form_TermoAditivo_Prorrogar extends Zend_Form
             'value'      => $id_projeto
         ));
 
+        $usuario_logado = Zend_Auth::getInstance()->getStorage()->read();
+
         //set hidden
         $this->addElement('hidden', 'usuario_id', array(
-            'value'      => '1'
+            'value'      => $usuario_logado->usuario_id,
         ));
 
         //set hidden

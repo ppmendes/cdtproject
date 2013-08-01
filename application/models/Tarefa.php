@@ -232,7 +232,8 @@ class Application_Model_Tarefa
     {
         $nroElementos=count($array);
         $nivel=1;
-
+        if($array!=null)
+        {
         $nome = $array[0]["nome"];
         $id = $array[0]["id"];
 
@@ -268,6 +269,7 @@ class Application_Model_Tarefa
 
         }
         $this->fecharnivel($nivel);
+        }
     }
 
     public function fecharnivel($nivel)

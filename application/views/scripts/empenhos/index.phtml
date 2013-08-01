@@ -97,7 +97,7 @@ $projeto_id = $this->pid;
     $decimalfilter = new Zend_Filter_DecimalFilter();
 
 
-    $orcamentoProjeto = $decimalfilter->filter($this->soma[0]['orcamento']);
+    $orcamentoProjeto = $decimalfilter->filter($this->orcamentoProjeto[0]['p.orcamento']);
     $somaRubrica = number_format(0 + $this->soma[0]['valor_orcamento'], 2, '.', '');
     $valor_cronograma_orcamentario = number_format(0 + $this->soma[0]['valor'], 2, '.', '');
     $somaDesembolso = number_format(0 + $this->soma[0]['valor_desembolso'], 2, '.', '');

@@ -252,7 +252,7 @@ class Application_Form_Projetos extends Zend_Form
         ));
 
         $this->addElement('text', 'orcamento_atual', array(
-            'label'      => 'Orçamento Atual:',
+            'label'      => '*Orçamento Atual:',
             'required'   => false,
             'attribs'    => array('maxLength' => 13),
             //'class' => 'mask_valor',

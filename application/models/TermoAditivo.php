@@ -110,6 +110,19 @@ class Application_Model_TermoAditivo
         }
     }
 
+    public function insertProrrogar($data)
+    {
+
+        try{
+            $db = Zend_Db_Table::getDefaultAdapter();
+            $table = "termo_aditivo";
+            $db->insert($table, $data['termo_aditivo']);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
+
+    }
+
     public function atualizaData($nova_data, $id)
     {
         try{

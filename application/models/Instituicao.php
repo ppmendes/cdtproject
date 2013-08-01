@@ -94,42 +94,44 @@ class Application_Model_Instituicao
     {
         $nroElementos=count($array);
         $nivel=1;
-
-        $nome = $array[0]["nome"];
-        $id = $array[0]["id"];
-
-        echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
-
-
-        for($i=1;$i<$nroElementos;$i++)
+        if($array!=null)
         {
-            $novonivel=$array[$i]['geracao'];
+            $nome = $array[0]["nome"];
+            $id = $array[0]["id"];
 
-            $nome = $array[$i]['nome'];
-            $id = $array[$i]['id'];
+            echo '<ul id="red"><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[0]['nome'].'</a>';
 
-            if($novonivel==$nivel)
+
+            for($i=1;$i<$nroElementos;$i++)
             {
-                echo'</li><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                $novonivel=$array[$i]['geracao'];
+
+                $nome = $array[$i]['nome'];
+                $id = $array[$i]['id'];
+
+                if($novonivel==$nivel)
+                {
+                    echo'</li><li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+
+                }
+                elseif($novonivel>$nivel)
+                {
+                    echo'<ul>';
+                    echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                    $nivel=$novonivel;
+                }
+                elseif($novonivel<$nivel)
+                {
+                    $nro=$nivel-$novonivel;
+                    echo'</li>';
+                    $this->fecharnivel($nro);
+                    echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
+                    $nivel=$novonivel;
+                }
 
             }
-            elseif($novonivel>$nivel)
-            {
-                echo'<ul>';
-                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
-                $nivel=$novonivel;
-            }
-            elseif($novonivel<$nivel)
-            {
-                $nro=$nivel-$novonivel;
-                echo'</li>';
-                $this->fecharnivel($nro);
-                echo'<li><a onClick="retornaId(\''.$nome.'\','.$id.')">'.$array[$i]['nome'].'</a>';
-                $nivel=$novonivel;
-            }
-
+            $this->fecharnivel($nivel);
         }
-        $this->fecharnivel($nivel);
     }
 
     public function fecharnivel($nivel)

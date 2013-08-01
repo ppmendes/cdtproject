@@ -37,7 +37,7 @@ $projeto_id = $this->pid;
         });
         $('.fancybox').fancybox();
         $('button.menu_financeiro').click(function() {
-            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/'+<?php echo $projeto_id; ?>+'">pesquisar</a>').fancybox({
+            $('<a class="fancybox fancybox.iframe" href="projetos/fancyboxmenufinanceiro/projeto_id/' + <?php echo $projeto_id; ?> + '">pesquisar</a>').fancybox({
                 overlayShow: true
             }).click();
         });

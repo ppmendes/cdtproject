@@ -58,12 +58,13 @@ class UsuariosController extends Zend_Controller_Action
                     // finalmente atualizamos o banco de dados
                     $model->update($newdata, $id);
                 }else{
-
+                    //novo insert
                     if($data['usuario']['icone']!="")
                     {
-                        $nome_imagem=$model->getLastInsertedId();
+                        $nome_imagem=$model->getLastInsertedId(); //ultimo id mais um
                         $data=$model->editarImagem($nome_imagem,$data);
                     }
+
                     if($data['usuario']['tipo_usuario']=='contato')
                     {
                         unset($data['usuario']['perfil_id']);
@@ -72,6 +73,8 @@ class UsuariosController extends Zend_Controller_Action
                     }
                     $data['usuario']['password']=$passwordcriptografado;
                     $model->insert($data);
+
+
 
                     //obteniendo ID usuario
                     $IDusuario= $modelPermissoes->getLastInsertedId();
